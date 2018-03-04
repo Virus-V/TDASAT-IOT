@@ -1,0 +1,2795 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"libemqtt.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.mqtt_num_rem_len_bytes,"ax",%progbits
+  19              		.align	2
+  20              		.global	mqtt_num_rem_len_bytes
+  21              		.thumb
+  22              		.thumb_func
+  24              	mqtt_num_rem_len_bytes:
+  25              	.LFB0:
+  26              		.file 1 "/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c"
+   1:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** /*
+   2:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * This file is part of libemqtt.
+   3:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  *
+   4:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * libemqtt is free software: you can redistribute it and/or modify
+   5:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * it under the terms of the GNU Lesser General Public License as published by
+   6:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * the Free Software Foundation, either version 3 of the License, or
+   7:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * (at your option) any later version.
+   8:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  *
+   9:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * libemqtt is distributed in the hope that it will be useful,
+  10:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  11:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  12:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * GNU General Public License for more details.
+  13:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  *
+  14:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * You should have received a copy of the GNU General Public License
+  15:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * along with libemqtt.  If not, see <http://www.gnu.org/licenses/>.
+  16:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  */
+  17:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+  18:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** /*
+  19:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  *
+  20:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * Created by Filipe Varela on 09/10/16.
+  21:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * Copyright 2009 Caixa Mágica Software. All rights reserved.
+  22:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  *
+  23:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * Fork developed by Vicente Ruiz Rodríguez
+  24:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  * Copyright 2012 Vicente Ruiz Rodríguez <vruiz2.0@gmail.com>. All rights reserved.
+  25:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  *
+  26:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****  */
+  27:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+  28:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** #include <string.h>
+  29:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** #include <libemqtt.h>
+  30:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+  31:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** #define MQTT_DUP_FLAG     1<<3
+  32:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** #define MQTT_QOS0_FLAG    0<<1
+  33:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** #define MQTT_QOS1_FLAG    1<<1
+  34:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** #define MQTT_QOS2_FLAG    2<<1
+  35:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+  36:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** #define MQTT_RETAIN_FLAG  1
+  37:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+  38:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** #define MQTT_CLEAN_SESSION  1<<1
+  39:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** #define MQTT_WILL_FLAG      1<<2
+  40:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** #define MQTT_WILL_RETAIN    1<<5
+  41:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** #define MQTT_USERNAME_FLAG  1<<7
+  42:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** #define MQTT_PASSWORD_FLAG  1<<6
+  43:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+  44:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+  45:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** uint8_t mqtt_num_rem_len_bytes(const uint8_t* buf) {
+  27              		.loc 1 45 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 16
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32 0000 80B4     		push	{r7}
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 7, -4
+  35 0002 85B0     		sub	sp, sp, #20
+  36              		.cfi_def_cfa_offset 24
+  37 0004 00AF     		add	r7, sp, #0
+  38              		.cfi_def_cfa_register 7
+  39 0006 7860     		str	r0, [r7, #4]
+  46:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t num_bytes = 1;
+  40              		.loc 1 46 0
+  41 0008 0123     		movs	r3, #1
+  42 000a FB73     		strb	r3, [r7, #15]
+  47:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+  48:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	//printf("mqtt_num_rem_len_bytes\n");
+  49:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+  50:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if ((buf[1] & 0x80) == 0x80) {
+  43              		.loc 1 50 0
+  44 000c 7B68     		ldr	r3, [r7, #4]
+  45 000e 0133     		adds	r3, r3, #1
+  46 0010 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  47 0012 DBB2     		uxtb	r3, r3
+  48 0014 5BB2     		sxtb	r3, r3
+  49 0016 002B     		cmp	r3, #0
+  50 0018 16DA     		bge	.L2
+  51:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		num_bytes++;
+  51              		.loc 1 51 0
+  52 001a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+  53 001c 0133     		adds	r3, r3, #1
+  54 001e FB73     		strb	r3, [r7, #15]
+  52:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		if ((buf[2] & 0x80) == 0x80) {
+  55              		.loc 1 52 0
+  56 0020 7B68     		ldr	r3, [r7, #4]
+  57 0022 0233     		adds	r3, r3, #2
+  58 0024 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  59 0026 DBB2     		uxtb	r3, r3
+  60 0028 5BB2     		sxtb	r3, r3
+  61 002a 002B     		cmp	r3, #0
+  62 002c 0CDA     		bge	.L2
+  53:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 			num_bytes ++;
+  63              		.loc 1 53 0
+  64 002e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+  65 0030 0133     		adds	r3, r3, #1
+  66 0032 FB73     		strb	r3, [r7, #15]
+  54:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 			if ((buf[3] & 0x80) == 0x80) {
+  67              		.loc 1 54 0
+  68 0034 7B68     		ldr	r3, [r7, #4]
+  69 0036 0333     		adds	r3, r3, #3
+  70 0038 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  71 003a DBB2     		uxtb	r3, r3
+  72 003c 5BB2     		sxtb	r3, r3
+  73 003e 002B     		cmp	r3, #0
+  74 0040 02DA     		bge	.L2
+  55:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 				num_bytes ++;
+  75              		.loc 1 55 0
+  76 0042 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+  77 0044 0133     		adds	r3, r3, #1
+  78 0046 FB73     		strb	r3, [r7, #15]
+  79              	.L2:
+  56:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 			}
+  57:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		}
+  58:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+  59:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return num_bytes;
+  80              		.loc 1 59 0
+  81 0048 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+  60:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+  82              		.loc 1 60 0
+  83 004a 1846     		mov	r0, r3
+  84 004c 1437     		adds	r7, r7, #20
+  85              		.cfi_def_cfa_offset 4
+  86 004e BD46     		mov	sp, r7
+  87              		.cfi_def_cfa_register 13
+  88              		@ sp needed
+  89 0050 5DF8047B 		ldr	r7, [sp], #4
+  90              		.cfi_restore 7
+  91              		.cfi_def_cfa_offset 0
+  92 0054 7047     		bx	lr
+  93              		.cfi_endproc
+  94              	.LFE0:
+  96 0056 00BF     		.section	.text.mqtt_parse_rem_len,"ax",%progbits
+  97              		.align	2
+  98              		.global	mqtt_parse_rem_len
+  99              		.thumb
+ 100              		.thumb_func
+ 102              	mqtt_parse_rem_len:
+ 103              	.LFB1:
+  61:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+  62:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** uint16_t mqtt_parse_rem_len(const uint8_t* buf) {
+ 104              		.loc 1 62 0
+ 105              		.cfi_startproc
+ 106              		@ args = 0, pretend = 0, frame = 16
+ 107              		@ frame_needed = 1, uses_anonymous_args = 0
+ 108              		@ link register save eliminated.
+ 109 0000 80B4     		push	{r7}
+ 110              		.cfi_def_cfa_offset 4
+ 111              		.cfi_offset 7, -4
+ 112 0002 85B0     		sub	sp, sp, #20
+ 113              		.cfi_def_cfa_offset 24
+ 114 0004 00AF     		add	r7, sp, #0
+ 115              		.cfi_def_cfa_register 7
+ 116 0006 7860     		str	r0, [r7, #4]
+  63:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t multiplier = 1;
+ 117              		.loc 1 63 0
+ 118 0008 0123     		movs	r3, #1
+ 119 000a FB81     		strh	r3, [r7, #14]	@ movhi
+  64:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t value = 0;
+ 120              		.loc 1 64 0
+ 121 000c 0023     		movs	r3, #0
+ 122 000e BB81     		strh	r3, [r7, #12]	@ movhi
+  65:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t digit;
+  66:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+  67:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	//printf("mqtt_parse_rem_len\n");
+  68:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+  69:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	buf++;	// skip "flags" byte in fixed header
+ 123              		.loc 1 69 0
+ 124 0010 7B68     		ldr	r3, [r7, #4]
+ 125 0012 0133     		adds	r3, r3, #1
+ 126 0014 7B60     		str	r3, [r7, #4]
+ 127              	.L5:
+  70:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+  71:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	do {
+  72:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		digit = *buf;
+ 128              		.loc 1 72 0 discriminator 1
+ 129 0016 7B68     		ldr	r3, [r7, #4]
+ 130 0018 1B78     		ldrb	r3, [r3]
+ 131 001a FB72     		strb	r3, [r7, #11]
+  73:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		value += (digit & 127) * multiplier;
+ 132              		.loc 1 73 0 discriminator 1
+ 133 001c FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 134 001e 9BB2     		uxth	r3, r3
+ 135 0020 03F07F03 		and	r3, r3, #127
+ 136 0024 9BB2     		uxth	r3, r3
+ 137 0026 FA89     		ldrh	r2, [r7, #14]	@ movhi
+ 138 0028 02FB03F3 		mul	r3, r2, r3
+ 139 002c 9AB2     		uxth	r2, r3
+ 140 002e BB89     		ldrh	r3, [r7, #12]	@ movhi
+ 141 0030 1344     		add	r3, r3, r2
+ 142 0032 BB81     		strh	r3, [r7, #12]	@ movhi
+  74:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		multiplier *= 128;
+ 143              		.loc 1 74 0 discriminator 1
+ 144 0034 FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 145 0036 DB01     		lsls	r3, r3, #7
+ 146 0038 FB81     		strh	r3, [r7, #14]	@ movhi
+  75:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		buf++;
+ 147              		.loc 1 75 0 discriminator 1
+ 148 003a 7B68     		ldr	r3, [r7, #4]
+ 149 003c 0133     		adds	r3, r3, #1
+ 150 003e 7B60     		str	r3, [r7, #4]
+  76:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	} while ((digit & 128) != 0);
+ 151              		.loc 1 76 0 discriminator 1
+ 152 0040 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 153 0042 5BB2     		sxtb	r3, r3
+ 154 0044 002B     		cmp	r3, #0
+ 155 0046 E6DB     		blt	.L5
+  77:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+  78:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return value;
+ 156              		.loc 1 78 0
+ 157 0048 BB89     		ldrh	r3, [r7, #12]
+  79:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 158              		.loc 1 79 0
+ 159 004a 1846     		mov	r0, r3
+ 160 004c 1437     		adds	r7, r7, #20
+ 161              		.cfi_def_cfa_offset 4
+ 162 004e BD46     		mov	sp, r7
+ 163              		.cfi_def_cfa_register 13
+ 164              		@ sp needed
+ 165 0050 5DF8047B 		ldr	r7, [sp], #4
+ 166              		.cfi_restore 7
+ 167              		.cfi_def_cfa_offset 0
+ 168 0054 7047     		bx	lr
+ 169              		.cfi_endproc
+ 170              	.LFE1:
+ 172 0056 00BF     		.section	.text.mqtt_parse_msg_id,"ax",%progbits
+ 173              		.align	2
+ 174              		.global	mqtt_parse_msg_id
+ 175              		.thumb
+ 176              		.thumb_func
+ 178              	mqtt_parse_msg_id:
+ 179              	.LFB2:
+  80:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+  81:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** uint16_t mqtt_parse_msg_id(const uint8_t* buf) {
+ 180              		.loc 1 81 0
+ 181              		.cfi_startproc
+ 182              		@ args = 0, pretend = 0, frame = 16
+ 183              		@ frame_needed = 1, uses_anonymous_args = 0
+ 184 0000 80B5     		push	{r7, lr}
+ 185              		.cfi_def_cfa_offset 8
+ 186              		.cfi_offset 7, -8
+ 187              		.cfi_offset 14, -4
+ 188 0002 84B0     		sub	sp, sp, #16
+ 189              		.cfi_def_cfa_offset 24
+ 190 0004 00AF     		add	r7, sp, #0
+ 191              		.cfi_def_cfa_register 7
+ 192 0006 7860     		str	r0, [r7, #4]
+  82:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t type = MQTTParseMessageType(buf);
+ 193              		.loc 1 82 0
+ 194 0008 7B68     		ldr	r3, [r7, #4]
+ 195 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 196 000c 23F00F03 		bic	r3, r3, #15
+ 197 0010 7B73     		strb	r3, [r7, #13]
+  83:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t qos = MQTTParseMessageQos(buf);
+ 198              		.loc 1 83 0
+ 199 0012 7B68     		ldr	r3, [r7, #4]
+ 200 0014 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 201 0016 03F00603 		and	r3, r3, #6
+ 202 001a 5B10     		asrs	r3, r3, #1
+ 203 001c 3B73     		strb	r3, [r7, #12]
+  84:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t id = 0;
+ 204              		.loc 1 84 0
+ 205 001e 0023     		movs	r3, #0
+ 206 0020 FB81     		strh	r3, [r7, #14]	@ movhi
+  85:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+  86:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	//printf("mqtt_parse_msg_id\n");
+  87:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+  88:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(type >= MQTT_MSG_PUBLISH && type <= MQTT_MSG_UNSUBACK) {
+ 207              		.loc 1 88 0
+ 208 0022 7B7B     		ldrb	r3, [r7, #13]	@ zero_extendqisi2
+ 209 0024 2F2B     		cmp	r3, #47
+ 210 0026 44D9     		bls	.L8
+ 211              		.loc 1 88 0 is_stmt 0 discriminator 1
+ 212 0028 7B7B     		ldrb	r3, [r7, #13]	@ zero_extendqisi2
+ 213 002a B02B     		cmp	r3, #176
+ 214 002c 41D8     		bhi	.L8
+  89:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		if(type == MQTT_MSG_PUBLISH) {
+ 215              		.loc 1 89 0 is_stmt 1
+ 216 002e 7B7B     		ldrb	r3, [r7, #13]	@ zero_extendqisi2
+ 217 0030 302B     		cmp	r3, #48
+ 218 0032 28D1     		bne	.L9
+  90:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 			if(qos != 0) {
+ 219              		.loc 1 90 0
+ 220 0034 3B7B     		ldrb	r3, [r7, #12]	@ zero_extendqisi2
+ 221 0036 002B     		cmp	r3, #0
+ 222 0038 3BD0     		beq	.L8
+ 223              	.LBB2:
+  91:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 				// fixed header length + Topic (UTF encoded)
+  92:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 				// = 1 for "flags" byte + rlb for length bytes + topic size
+  93:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 				uint8_t rlb = mqtt_num_rem_len_bytes(buf);
+ 224              		.loc 1 93 0
+ 225 003a 7868     		ldr	r0, [r7, #4]
+ 226 003c FFF7FEFF 		bl	mqtt_num_rem_len_bytes
+ 227 0040 0346     		mov	r3, r0
+ 228 0042 FB72     		strb	r3, [r7, #11]
+  94:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 				uint8_t offset = *(buf+1+rlb)<<8;	// topic UTF MSB
+ 229              		.loc 1 94 0
+ 230 0044 0023     		movs	r3, #0
+ 231 0046 BB72     		strb	r3, [r7, #10]
+  95:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 				offset |= *(buf+1+rlb+1);			// topic UTF LSB
+ 232              		.loc 1 95 0
+ 233 0048 FB7A     		ldrb	r3, [r7, #11]	@ zero_extendqisi2
+ 234 004a 0233     		adds	r3, r3, #2
+ 235 004c 7A68     		ldr	r2, [r7, #4]
+ 236 004e 1344     		add	r3, r3, r2
+ 237 0050 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 238 0052 BB7A     		ldrb	r3, [r7, #10]
+ 239 0054 1343     		orrs	r3, r3, r2
+ 240 0056 BB72     		strb	r3, [r7, #10]
+  96:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 				offset += (1+rlb+2);					// fixed header + topic size
+ 241              		.loc 1 96 0
+ 242 0058 FA7A     		ldrb	r2, [r7, #11]
+ 243 005a BB7A     		ldrb	r3, [r7, #10]
+ 244 005c 1344     		add	r3, r3, r2
+ 245 005e DBB2     		uxtb	r3, r3
+ 246 0060 0333     		adds	r3, r3, #3
+ 247 0062 BB72     		strb	r3, [r7, #10]
+  97:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 				id = *(buf+offset)<<8;				// id MSB
+ 248              		.loc 1 97 0
+ 249 0064 BB7A     		ldrb	r3, [r7, #10]	@ zero_extendqisi2
+ 250 0066 7A68     		ldr	r2, [r7, #4]
+ 251 0068 1344     		add	r3, r3, r2
+ 252 006a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 253 006c 9BB2     		uxth	r3, r3
+ 254 006e 1B02     		lsls	r3, r3, #8
+ 255 0070 FB81     		strh	r3, [r7, #14]	@ movhi
+  98:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 				id |= *(buf+offset+1);				// id LSB
+ 256              		.loc 1 98 0
+ 257 0072 BB7A     		ldrb	r3, [r7, #10]	@ zero_extendqisi2
+ 258 0074 0133     		adds	r3, r3, #1
+ 259 0076 7A68     		ldr	r2, [r7, #4]
+ 260 0078 1344     		add	r3, r3, r2
+ 261 007a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 262 007c 9AB2     		uxth	r2, r3
+ 263 007e FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 264 0080 1343     		orrs	r3, r3, r2
+ 265 0082 FB81     		strh	r3, [r7, #14]	@ movhi
+ 266 0084 15E0     		b	.L8
+ 267              	.L9:
+ 268              	.LBE2:
+ 269              	.LBB3:
+  99:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 			}
+ 100:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		} else {
+ 101:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 			// fixed header length
+ 102:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 			// 1 for "flags" byte + rlb for length bytes
+ 103:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 			uint8_t rlb = mqtt_num_rem_len_bytes(buf);
+ 270              		.loc 1 103 0
+ 271 0086 7868     		ldr	r0, [r7, #4]
+ 272 0088 FFF7FEFF 		bl	mqtt_num_rem_len_bytes
+ 273 008c 0346     		mov	r3, r0
+ 274 008e 7B72     		strb	r3, [r7, #9]
+ 104:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 			id = *(buf+1+rlb)<<8;	// id MSB
+ 275              		.loc 1 104 0
+ 276 0090 7B7A     		ldrb	r3, [r7, #9]	@ zero_extendqisi2
+ 277 0092 0133     		adds	r3, r3, #1
+ 278 0094 7A68     		ldr	r2, [r7, #4]
+ 279 0096 1344     		add	r3, r3, r2
+ 280 0098 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 281 009a 9BB2     		uxth	r3, r3
+ 282 009c 1B02     		lsls	r3, r3, #8
+ 283 009e FB81     		strh	r3, [r7, #14]	@ movhi
+ 105:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 			id |= *(buf+1+rlb+1);	// id LSB
+ 284              		.loc 1 105 0
+ 285 00a0 7B7A     		ldrb	r3, [r7, #9]	@ zero_extendqisi2
+ 286 00a2 0233     		adds	r3, r3, #2
+ 287 00a4 7A68     		ldr	r2, [r7, #4]
+ 288 00a6 1344     		add	r3, r3, r2
+ 289 00a8 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 290 00aa 9AB2     		uxth	r2, r3
+ 291 00ac FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 292 00ae 1343     		orrs	r3, r3, r2
+ 293 00b0 FB81     		strh	r3, [r7, #14]	@ movhi
+ 294              	.L8:
+ 295              	.LBE3:
+ 106:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		}
+ 107:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 108:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return id;
+ 296              		.loc 1 108 0
+ 297 00b2 FB89     		ldrh	r3, [r7, #14]
+ 109:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 298              		.loc 1 109 0
+ 299 00b4 1846     		mov	r0, r3
+ 300 00b6 1037     		adds	r7, r7, #16
+ 301              		.cfi_def_cfa_offset 8
+ 302 00b8 BD46     		mov	sp, r7
+ 303              		.cfi_def_cfa_register 13
+ 304              		@ sp needed
+ 305 00ba 80BD     		pop	{r7, pc}
+ 306              		.cfi_endproc
+ 307              	.LFE2:
+ 309              		.section	.text.mqtt_parse_pub_topic,"ax",%progbits
+ 310              		.align	2
+ 311              		.global	mqtt_parse_pub_topic
+ 312              		.thumb
+ 313              		.thumb_func
+ 315              	mqtt_parse_pub_topic:
+ 316              	.LFB3:
+ 110:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 111:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** uint16_t mqtt_parse_pub_topic(const uint8_t* buf, uint8_t* topic) {
+ 317              		.loc 1 111 0
+ 318              		.cfi_startproc
+ 319              		@ args = 0, pretend = 0, frame = 16
+ 320              		@ frame_needed = 1, uses_anonymous_args = 0
+ 321 0000 80B5     		push	{r7, lr}
+ 322              		.cfi_def_cfa_offset 8
+ 323              		.cfi_offset 7, -8
+ 324              		.cfi_offset 14, -4
+ 325 0002 84B0     		sub	sp, sp, #16
+ 326              		.cfi_def_cfa_offset 24
+ 327 0004 00AF     		add	r7, sp, #0
+ 328              		.cfi_def_cfa_register 7
+ 329 0006 7860     		str	r0, [r7, #4]
+ 330 0008 3960     		str	r1, [r7]
+ 112:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	const uint8_t* ptr;
+ 113:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t topic_len = mqtt_parse_pub_topic_ptr(buf, &ptr);
+ 331              		.loc 1 113 0
+ 332 000a 07F10803 		add	r3, r7, #8
+ 333 000e 7868     		ldr	r0, [r7, #4]
+ 334 0010 1946     		mov	r1, r3
+ 335 0012 FFF7FEFF 		bl	mqtt_parse_pub_topic_ptr
+ 336 0016 0346     		mov	r3, r0
+ 337 0018 FB81     		strh	r3, [r7, #14]	@ movhi
+ 114:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+ 115:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	//printf("mqtt_parse_pub_topic\n");
+ 116:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+ 117:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(topic_len != 0 && ptr != NULL) {
+ 338              		.loc 1 117 0
+ 339 001a FB89     		ldrh	r3, [r7, #14]
+ 340 001c 002B     		cmp	r3, #0
+ 341 001e 09D0     		beq	.L13
+ 342              		.loc 1 117 0 is_stmt 0 discriminator 1
+ 343 0020 BB68     		ldr	r3, [r7, #8]
+ 344 0022 002B     		cmp	r3, #0
+ 345 0024 06D0     		beq	.L13
+ 118:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		memcpy(topic, ptr, topic_len);
+ 346              		.loc 1 118 0 is_stmt 1
+ 347 0026 BA68     		ldr	r2, [r7, #8]
+ 348 0028 FB89     		ldrh	r3, [r7, #14]
+ 349 002a 3868     		ldr	r0, [r7]
+ 350 002c 1146     		mov	r1, r2
+ 351 002e 1A46     		mov	r2, r3
+ 352 0030 FFF7FEFF 		bl	memcpy
+ 353              	.L13:
+ 119:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 120:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+ 121:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return topic_len;
+ 354              		.loc 1 121 0
+ 355 0034 FB89     		ldrh	r3, [r7, #14]
+ 122:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 356              		.loc 1 122 0
+ 357 0036 1846     		mov	r0, r3
+ 358 0038 1037     		adds	r7, r7, #16
+ 359              		.cfi_def_cfa_offset 8
+ 360 003a BD46     		mov	sp, r7
+ 361              		.cfi_def_cfa_register 13
+ 362              		@ sp needed
+ 363 003c 80BD     		pop	{r7, pc}
+ 364              		.cfi_endproc
+ 365              	.LFE3:
+ 367 003e 00BF     		.section	.text.mqtt_parse_pub_topic_ptr,"ax",%progbits
+ 368              		.align	2
+ 369              		.global	mqtt_parse_pub_topic_ptr
+ 370              		.thumb
+ 371              		.thumb_func
+ 373              	mqtt_parse_pub_topic_ptr:
+ 374              	.LFB4:
+ 123:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 124:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** uint16_t mqtt_parse_pub_topic_ptr(const uint8_t* buf, const uint8_t **topic_ptr) {
+ 375              		.loc 1 124 0
+ 376              		.cfi_startproc
+ 377              		@ args = 0, pretend = 0, frame = 16
+ 378              		@ frame_needed = 1, uses_anonymous_args = 0
+ 379 0000 80B5     		push	{r7, lr}
+ 380              		.cfi_def_cfa_offset 8
+ 381              		.cfi_offset 7, -8
+ 382              		.cfi_offset 14, -4
+ 383 0002 84B0     		sub	sp, sp, #16
+ 384              		.cfi_def_cfa_offset 24
+ 385 0004 00AF     		add	r7, sp, #0
+ 386              		.cfi_def_cfa_register 7
+ 387 0006 7860     		str	r0, [r7, #4]
+ 388 0008 3960     		str	r1, [r7]
+ 125:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t len = 0;
+ 389              		.loc 1 125 0
+ 390 000a 0023     		movs	r3, #0
+ 391 000c FB81     		strh	r3, [r7, #14]	@ movhi
+ 126:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+ 127:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	//printf("mqtt_parse_pub_topic_ptr\n");
+ 128:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 129:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(MQTTParseMessageType(buf) == MQTT_MSG_PUBLISH) {
+ 392              		.loc 1 129 0
+ 393 000e 7B68     		ldr	r3, [r7, #4]
+ 394 0010 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 395 0012 03F0F003 		and	r3, r3, #240
+ 396 0016 302B     		cmp	r3, #48
+ 397 0018 1CD1     		bne	.L16
+ 398              	.LBB4:
+ 130:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		// fixed header length = 1 for "flags" byte + rlb for length bytes
+ 131:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		uint8_t rlb = mqtt_num_rem_len_bytes(buf);
+ 399              		.loc 1 131 0
+ 400 001a 7868     		ldr	r0, [r7, #4]
+ 401 001c FFF7FEFF 		bl	mqtt_num_rem_len_bytes
+ 402 0020 0346     		mov	r3, r0
+ 403 0022 7B73     		strb	r3, [r7, #13]
+ 132:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		len = *(buf+1+rlb)<<8;	// MSB of topic UTF
+ 404              		.loc 1 132 0
+ 405 0024 7B7B     		ldrb	r3, [r7, #13]	@ zero_extendqisi2
+ 406 0026 0133     		adds	r3, r3, #1
+ 407 0028 7A68     		ldr	r2, [r7, #4]
+ 408 002a 1344     		add	r3, r3, r2
+ 409 002c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 410 002e 9BB2     		uxth	r3, r3
+ 411 0030 1B02     		lsls	r3, r3, #8
+ 412 0032 FB81     		strh	r3, [r7, #14]	@ movhi
+ 133:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		len |= *(buf+1+rlb+1);	// LSB of topic UTF
+ 413              		.loc 1 133 0
+ 414 0034 7B7B     		ldrb	r3, [r7, #13]	@ zero_extendqisi2
+ 415 0036 0233     		adds	r3, r3, #2
+ 416 0038 7A68     		ldr	r2, [r7, #4]
+ 417 003a 1344     		add	r3, r3, r2
+ 418 003c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 419 003e 9AB2     		uxth	r2, r3
+ 420 0040 FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 421 0042 1343     		orrs	r3, r3, r2
+ 422 0044 FB81     		strh	r3, [r7, #14]	@ movhi
+ 134:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		// start of topic = add 1 for "flags", rlb for remaining length, 2 for UTF
+ 135:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		*topic_ptr = (buf + (1+rlb+2));
+ 423              		.loc 1 135 0
+ 424 0046 7B7B     		ldrb	r3, [r7, #13]	@ zero_extendqisi2
+ 425 0048 0333     		adds	r3, r3, #3
+ 426 004a 7A68     		ldr	r2, [r7, #4]
+ 427 004c 1A44     		add	r2, r2, r3
+ 428 004e 3B68     		ldr	r3, [r7]
+ 429 0050 1A60     		str	r2, [r3]
+ 430              	.LBE4:
+ 431 0052 02E0     		b	.L17
+ 432              	.L16:
+ 136:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	} else {
+ 137:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		*topic_ptr = NULL;
+ 433              		.loc 1 137 0
+ 434 0054 3B68     		ldr	r3, [r7]
+ 435 0056 0022     		movs	r2, #0
+ 436 0058 1A60     		str	r2, [r3]
+ 437              	.L17:
+ 138:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 139:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return len;
+ 438              		.loc 1 139 0
+ 439 005a FB89     		ldrh	r3, [r7, #14]
+ 140:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 440              		.loc 1 140 0
+ 441 005c 1846     		mov	r0, r3
+ 442 005e 1037     		adds	r7, r7, #16
+ 443              		.cfi_def_cfa_offset 8
+ 444 0060 BD46     		mov	sp, r7
+ 445              		.cfi_def_cfa_register 13
+ 446              		@ sp needed
+ 447 0062 80BD     		pop	{r7, pc}
+ 448              		.cfi_endproc
+ 449              	.LFE4:
+ 451              		.section	.text.mqtt_parse_publish_msg,"ax",%progbits
+ 452              		.align	2
+ 453              		.global	mqtt_parse_publish_msg
+ 454              		.thumb
+ 455              		.thumb_func
+ 457              	mqtt_parse_publish_msg:
+ 458              	.LFB5:
+ 141:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 142:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** uint16_t mqtt_parse_publish_msg(const uint8_t* buf, uint8_t* msg) {
+ 459              		.loc 1 142 0
+ 460              		.cfi_startproc
+ 461              		@ args = 0, pretend = 0, frame = 16
+ 462              		@ frame_needed = 1, uses_anonymous_args = 0
+ 463 0000 80B5     		push	{r7, lr}
+ 464              		.cfi_def_cfa_offset 8
+ 465              		.cfi_offset 7, -8
+ 466              		.cfi_offset 14, -4
+ 467 0002 84B0     		sub	sp, sp, #16
+ 468              		.cfi_def_cfa_offset 24
+ 469 0004 00AF     		add	r7, sp, #0
+ 470              		.cfi_def_cfa_register 7
+ 471 0006 7860     		str	r0, [r7, #4]
+ 472 0008 3960     		str	r1, [r7]
+ 143:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	const uint8_t* ptr;
+ 144:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+ 145:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	//printf("mqtt_parse_publish_msg\n");
+ 146:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+ 147:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t msg_len = mqtt_parse_pub_msg_ptr(buf, &ptr);
+ 473              		.loc 1 147 0
+ 474 000a 07F10803 		add	r3, r7, #8
+ 475 000e 7868     		ldr	r0, [r7, #4]
+ 476 0010 1946     		mov	r1, r3
+ 477 0012 FFF7FEFF 		bl	mqtt_parse_pub_msg_ptr
+ 478 0016 0346     		mov	r3, r0
+ 479 0018 FB81     		strh	r3, [r7, #14]	@ movhi
+ 148:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+ 149:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(msg_len != 0 && ptr != NULL) {
+ 480              		.loc 1 149 0
+ 481 001a FB89     		ldrh	r3, [r7, #14]
+ 482 001c 002B     		cmp	r3, #0
+ 483 001e 09D0     		beq	.L20
+ 484              		.loc 1 149 0 is_stmt 0 discriminator 1
+ 485 0020 BB68     		ldr	r3, [r7, #8]
+ 486 0022 002B     		cmp	r3, #0
+ 487 0024 06D0     		beq	.L20
+ 150:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		memcpy(msg, ptr, msg_len);
+ 488              		.loc 1 150 0 is_stmt 1
+ 489 0026 BA68     		ldr	r2, [r7, #8]
+ 490 0028 FB89     		ldrh	r3, [r7, #14]
+ 491 002a 3868     		ldr	r0, [r7]
+ 492 002c 1146     		mov	r1, r2
+ 493 002e 1A46     		mov	r2, r3
+ 494 0030 FFF7FEFF 		bl	memcpy
+ 495              	.L20:
+ 151:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 152:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+ 153:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return msg_len;
+ 496              		.loc 1 153 0
+ 497 0034 FB89     		ldrh	r3, [r7, #14]
+ 154:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 498              		.loc 1 154 0
+ 499 0036 1846     		mov	r0, r3
+ 500 0038 1037     		adds	r7, r7, #16
+ 501              		.cfi_def_cfa_offset 8
+ 502 003a BD46     		mov	sp, r7
+ 503              		.cfi_def_cfa_register 13
+ 504              		@ sp needed
+ 505 003c 80BD     		pop	{r7, pc}
+ 506              		.cfi_endproc
+ 507              	.LFE5:
+ 509 003e 00BF     		.section	.text.mqtt_parse_pub_msg_ptr,"ax",%progbits
+ 510              		.align	2
+ 511              		.global	mqtt_parse_pub_msg_ptr
+ 512              		.thumb
+ 513              		.thumb_func
+ 515              	mqtt_parse_pub_msg_ptr:
+ 516              	.LFB6:
+ 155:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 156:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** uint16_t mqtt_parse_pub_msg_ptr(const uint8_t* buf, const uint8_t **msg_ptr) {
+ 517              		.loc 1 156 0
+ 518              		.cfi_startproc
+ 519              		@ args = 0, pretend = 0, frame = 16
+ 520              		@ frame_needed = 1, uses_anonymous_args = 0
+ 521 0000 80B5     		push	{r7, lr}
+ 522              		.cfi_def_cfa_offset 8
+ 523              		.cfi_offset 7, -8
+ 524              		.cfi_offset 14, -4
+ 525 0002 84B0     		sub	sp, sp, #16
+ 526              		.cfi_def_cfa_offset 24
+ 527 0004 00AF     		add	r7, sp, #0
+ 528              		.cfi_def_cfa_register 7
+ 529 0006 7860     		str	r0, [r7, #4]
+ 530 0008 3960     		str	r1, [r7]
+ 157:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t len = 0;
+ 531              		.loc 1 157 0
+ 532 000a 0023     		movs	r3, #0
+ 533 000c FB81     		strh	r3, [r7, #14]	@ movhi
+ 158:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+ 159:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	//printf("mqtt_parse_pub_msg_ptr\n");
+ 160:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	
+ 161:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(MQTTParseMessageType(buf) == MQTT_MSG_PUBLISH) {
+ 534              		.loc 1 161 0
+ 535 000e 7B68     		ldr	r3, [r7, #4]
+ 536 0010 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 537 0012 03F0F003 		and	r3, r3, #240
+ 538 0016 302B     		cmp	r3, #48
+ 539 0018 33D1     		bne	.L23
+ 540              	.LBB5:
+ 162:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		// message starts at
+ 163:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		// fixed header length + Topic (UTF encoded) + msg id (if QoS>0)
+ 164:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		uint8_t rlb = mqtt_num_rem_len_bytes(buf);
+ 541              		.loc 1 164 0
+ 542 001a 7868     		ldr	r0, [r7, #4]
+ 543 001c FFF7FEFF 		bl	mqtt_num_rem_len_bytes
+ 544 0020 0346     		mov	r3, r0
+ 545 0022 3B73     		strb	r3, [r7, #12]
+ 165:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		uint8_t offset = (*(buf+1+rlb))<<8;	// topic UTF MSB
+ 546              		.loc 1 165 0
+ 547 0024 0023     		movs	r3, #0
+ 548 0026 7B73     		strb	r3, [r7, #13]
+ 166:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		offset |= *(buf+1+rlb+1);			// topic UTF LSB
+ 549              		.loc 1 166 0
+ 550 0028 3B7B     		ldrb	r3, [r7, #12]	@ zero_extendqisi2
+ 551 002a 0233     		adds	r3, r3, #2
+ 552 002c 7A68     		ldr	r2, [r7, #4]
+ 553 002e 1344     		add	r3, r3, r2
+ 554 0030 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 555 0032 7B7B     		ldrb	r3, [r7, #13]
+ 556 0034 1343     		orrs	r3, r3, r2
+ 557 0036 7B73     		strb	r3, [r7, #13]
+ 167:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		offset += (1+rlb+2);				// fixed header + topic size
+ 558              		.loc 1 167 0
+ 559 0038 3A7B     		ldrb	r2, [r7, #12]
+ 560 003a 7B7B     		ldrb	r3, [r7, #13]
+ 561 003c 1344     		add	r3, r3, r2
+ 562 003e DBB2     		uxtb	r3, r3
+ 563 0040 0333     		adds	r3, r3, #3
+ 564 0042 7B73     		strb	r3, [r7, #13]
+ 168:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 169:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		if(MQTTParseMessageQos(buf)) {
+ 565              		.loc 1 169 0
+ 566 0044 7B68     		ldr	r3, [r7, #4]
+ 567 0046 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 568 0048 03F00603 		and	r3, r3, #6
+ 569 004c 5B10     		asrs	r3, r3, #1
+ 570 004e 002B     		cmp	r3, #0
+ 571 0050 02D0     		beq	.L24
+ 170:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 			offset += 2;					// add two bytes of msg id
+ 572              		.loc 1 170 0
+ 573 0052 7B7B     		ldrb	r3, [r7, #13]
+ 574 0054 0233     		adds	r3, r3, #2
+ 575 0056 7B73     		strb	r3, [r7, #13]
+ 576              	.L24:
+ 171:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		}
+ 172:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 173:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		*msg_ptr = (buf + offset);
+ 577              		.loc 1 173 0
+ 578 0058 7B7B     		ldrb	r3, [r7, #13]	@ zero_extendqisi2
+ 579 005a 7A68     		ldr	r2, [r7, #4]
+ 580 005c 1A44     		add	r2, r2, r3
+ 581 005e 3B68     		ldr	r3, [r7]
+ 582 0060 1A60     		str	r2, [r3]
+ 174:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 				
+ 175:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		// offset is now pointing to start of message
+ 176:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		// length of the message is remaining length - variable header
+ 177:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		// variable header is offset - fixed header
+ 178:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		// fixed header is 1 + rlb
+ 179:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		// so, lom = remlen - (offset - (1+rlb))
+ 180:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****       	len = mqtt_parse_rem_len(buf) - (offset-(rlb+1));
+ 583              		.loc 1 180 0
+ 584 0062 7868     		ldr	r0, [r7, #4]
+ 585 0064 FFF7FEFF 		bl	mqtt_parse_rem_len
+ 586 0068 0346     		mov	r3, r0
+ 587 006a 1946     		mov	r1, r3
+ 588 006c 3B7B     		ldrb	r3, [r7, #12]	@ zero_extendqisi2
+ 589 006e 9AB2     		uxth	r2, r3
+ 590 0070 7B7B     		ldrb	r3, [r7, #13]	@ zero_extendqisi2
+ 591 0072 9BB2     		uxth	r3, r3
+ 592 0074 D31A     		subs	r3, r2, r3
+ 593 0076 9BB2     		uxth	r3, r3
+ 594 0078 0B44     		add	r3, r3, r1
+ 595 007a 9BB2     		uxth	r3, r3
+ 596 007c 0133     		adds	r3, r3, #1
+ 597 007e FB81     		strh	r3, [r7, #14]	@ movhi
+ 598              	.LBE5:
+ 599 0080 02E0     		b	.L25
+ 600              	.L23:
+ 181:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	} else {
+ 182:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		*msg_ptr = NULL;
+ 601              		.loc 1 182 0
+ 602 0082 3B68     		ldr	r3, [r7]
+ 603 0084 0022     		movs	r2, #0
+ 604 0086 1A60     		str	r2, [r3]
+ 605              	.L25:
+ 183:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 184:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return len;
+ 606              		.loc 1 184 0
+ 607 0088 FB89     		ldrh	r3, [r7, #14]
+ 185:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 608              		.loc 1 185 0
+ 609 008a 1846     		mov	r0, r3
+ 610 008c 1037     		adds	r7, r7, #16
+ 611              		.cfi_def_cfa_offset 8
+ 612 008e BD46     		mov	sp, r7
+ 613              		.cfi_def_cfa_register 13
+ 614              		@ sp needed
+ 615 0090 80BD     		pop	{r7, pc}
+ 616              		.cfi_endproc
+ 617              	.LFE6:
+ 619 0092 00BF     		.section	.rodata
+ 620              		.align	2
+ 621              	.LC0:
+ 622 0000 656D7174 		.ascii	"emqtt\000"
+ 622      7400
+ 623              		.section	.text.mqtt_init,"ax",%progbits
+ 624              		.align	2
+ 625              		.global	mqtt_init
+ 626              		.thumb
+ 627              		.thumb_func
+ 629              	mqtt_init:
+ 630              	.LFB7:
+ 186:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 187:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** void mqtt_init(mqtt_broker_handle_t* broker, const char* clientid) {
+ 631              		.loc 1 187 0
+ 632              		.cfi_startproc
+ 633              		@ args = 0, pretend = 0, frame = 8
+ 634              		@ frame_needed = 1, uses_anonymous_args = 0
+ 635 0000 80B5     		push	{r7, lr}
+ 636              		.cfi_def_cfa_offset 8
+ 637              		.cfi_offset 7, -8
+ 638              		.cfi_offset 14, -4
+ 639 0002 82B0     		sub	sp, sp, #8
+ 640              		.cfi_def_cfa_offset 16
+ 641 0004 00AF     		add	r7, sp, #0
+ 642              		.cfi_def_cfa_register 7
+ 643 0006 7860     		str	r0, [r7, #4]
+ 644 0008 3960     		str	r1, [r7]
+ 188:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Connection options
+ 189:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	broker->alive = 300; // 300 seconds = 5 minutes
+ 645              		.loc 1 189 0
+ 646 000a 7B68     		ldr	r3, [r7, #4]
+ 647 000c 4FF49672 		mov	r2, #300
+ 648 0010 A3F85A20 		strh	r2, [r3, #90]	@ movhi
+ 190:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	broker->seq = 1; // Sequency for message indetifiers
+ 649              		.loc 1 190 0
+ 650 0014 7B68     		ldr	r3, [r7, #4]
+ 651 0016 0122     		movs	r2, #1
+ 652 0018 A3F85820 		strh	r2, [r3, #88]	@ movhi
+ 191:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Client options
+ 192:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memset(broker->clientid, 0, sizeof(broker->clientid));
+ 653              		.loc 1 192 0
+ 654 001c 7B68     		ldr	r3, [r7, #4]
+ 655 001e 0833     		adds	r3, r3, #8
+ 656 0020 1846     		mov	r0, r3
+ 657 0022 0021     		movs	r1, #0
+ 658 0024 3222     		movs	r2, #50
+ 659 0026 FFF7FEFF 		bl	memset
+ 193:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memset(broker->username, 0, sizeof(broker->username));
+ 660              		.loc 1 193 0
+ 661 002a 7B68     		ldr	r3, [r7, #4]
+ 662 002c 3A33     		adds	r3, r3, #58
+ 663 002e 1846     		mov	r0, r3
+ 664 0030 0021     		movs	r1, #0
+ 665 0032 0D22     		movs	r2, #13
+ 666 0034 FFF7FEFF 		bl	memset
+ 194:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memset(broker->password, 0, sizeof(broker->password));
+ 667              		.loc 1 194 0
+ 668 0038 7B68     		ldr	r3, [r7, #4]
+ 669 003a 4733     		adds	r3, r3, #71
+ 670 003c 1846     		mov	r0, r3
+ 671 003e 0021     		movs	r1, #0
+ 672 0040 0D22     		movs	r2, #13
+ 673 0042 FFF7FEFF 		bl	memset
+ 195:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(clientid) {
+ 674              		.loc 1 195 0
+ 675 0046 3B68     		ldr	r3, [r7]
+ 676 0048 002B     		cmp	r3, #0
+ 677 004a 07D0     		beq	.L28
+ 196:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		strncpy(broker->clientid, clientid, sizeof(broker->clientid));
+ 678              		.loc 1 196 0
+ 679 004c 7B68     		ldr	r3, [r7, #4]
+ 680 004e 0833     		adds	r3, r3, #8
+ 681 0050 1846     		mov	r0, r3
+ 682 0052 3968     		ldr	r1, [r7]
+ 683 0054 3222     		movs	r2, #50
+ 684 0056 FFF7FEFF 		bl	strncpy
+ 685 005a 06E0     		b	.L29
+ 686              	.L28:
+ 197:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	} else {
+ 198:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		strcpy(broker->clientid, "emqtt");
+ 687              		.loc 1 198 0
+ 688 005c 7B68     		ldr	r3, [r7, #4]
+ 689 005e 0833     		adds	r3, r3, #8
+ 690 0060 054A     		ldr	r2, .L30
+ 691 0062 1068     		ldr	r0, [r2]	@ unaligned
+ 692 0064 1860     		str	r0, [r3]	@ unaligned
+ 693 0066 9288     		ldrh	r2, [r2, #4]	@ unaligned
+ 694 0068 9A80     		strh	r2, [r3, #4]	@ unaligned
+ 695              	.L29:
+ 199:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 200:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Will topic
+ 201:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	broker->clean_session = 1;
+ 696              		.loc 1 201 0
+ 697 006a 7B68     		ldr	r3, [r7, #4]
+ 698 006c 0122     		movs	r2, #1
+ 699 006e 83F85620 		strb	r2, [r3, #86]
+ 202:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 700              		.loc 1 202 0
+ 701 0072 0837     		adds	r7, r7, #8
+ 702              		.cfi_def_cfa_offset 8
+ 703 0074 BD46     		mov	sp, r7
+ 704              		.cfi_def_cfa_register 13
+ 705              		@ sp needed
+ 706 0076 80BD     		pop	{r7, pc}
+ 707              	.L31:
+ 708              		.align	2
+ 709              	.L30:
+ 710 0078 00000000 		.word	.LC0
+ 711              		.cfi_endproc
+ 712              	.LFE7:
+ 714              		.section	.text.mqtt_init_auth,"ax",%progbits
+ 715              		.align	2
+ 716              		.global	mqtt_init_auth
+ 717              		.thumb
+ 718              		.thumb_func
+ 720              	mqtt_init_auth:
+ 721              	.LFB8:
+ 203:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 204:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** void mqtt_init_auth(mqtt_broker_handle_t* broker, const char* username, const char* password) {
+ 722              		.loc 1 204 0
+ 723              		.cfi_startproc
+ 724              		@ args = 0, pretend = 0, frame = 16
+ 725              		@ frame_needed = 1, uses_anonymous_args = 0
+ 726 0000 80B5     		push	{r7, lr}
+ 727              		.cfi_def_cfa_offset 8
+ 728              		.cfi_offset 7, -8
+ 729              		.cfi_offset 14, -4
+ 730 0002 84B0     		sub	sp, sp, #16
+ 731              		.cfi_def_cfa_offset 24
+ 732 0004 00AF     		add	r7, sp, #0
+ 733              		.cfi_def_cfa_register 7
+ 734 0006 F860     		str	r0, [r7, #12]
+ 735 0008 B960     		str	r1, [r7, #8]
+ 736 000a 7A60     		str	r2, [r7, #4]
+ 205:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(username && username[0] != '\0')
+ 737              		.loc 1 205 0
+ 738 000c BB68     		ldr	r3, [r7, #8]
+ 739 000e 002B     		cmp	r3, #0
+ 740 0010 0AD0     		beq	.L33
+ 741              		.loc 1 205 0 is_stmt 0 discriminator 1
+ 742 0012 BB68     		ldr	r3, [r7, #8]
+ 743 0014 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 744 0016 002B     		cmp	r3, #0
+ 745 0018 06D0     		beq	.L33
+ 206:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		strncpy(broker->username, username, sizeof(broker->username)-1);
+ 746              		.loc 1 206 0 is_stmt 1
+ 747 001a FB68     		ldr	r3, [r7, #12]
+ 748 001c 3A33     		adds	r3, r3, #58
+ 749 001e 1846     		mov	r0, r3
+ 750 0020 B968     		ldr	r1, [r7, #8]
+ 751 0022 0C22     		movs	r2, #12
+ 752 0024 FFF7FEFF 		bl	strncpy
+ 753              	.L33:
+ 207:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(password && password[0] != '\0')
+ 754              		.loc 1 207 0
+ 755 0028 7B68     		ldr	r3, [r7, #4]
+ 756 002a 002B     		cmp	r3, #0
+ 757 002c 0AD0     		beq	.L32
+ 758              		.loc 1 207 0 is_stmt 0 discriminator 1
+ 759 002e 7B68     		ldr	r3, [r7, #4]
+ 760 0030 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 761 0032 002B     		cmp	r3, #0
+ 762 0034 06D0     		beq	.L32
+ 208:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		strncpy(broker->password, password, sizeof(broker->password)-1);
+ 763              		.loc 1 208 0 is_stmt 1
+ 764 0036 FB68     		ldr	r3, [r7, #12]
+ 765 0038 4733     		adds	r3, r3, #71
+ 766 003a 1846     		mov	r0, r3
+ 767 003c 7968     		ldr	r1, [r7, #4]
+ 768 003e 0C22     		movs	r2, #12
+ 769 0040 FFF7FEFF 		bl	strncpy
+ 770              	.L32:
+ 209:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 771              		.loc 1 209 0
+ 772 0044 1037     		adds	r7, r7, #16
+ 773              		.cfi_def_cfa_offset 8
+ 774 0046 BD46     		mov	sp, r7
+ 775              		.cfi_def_cfa_register 13
+ 776              		@ sp needed
+ 777 0048 80BD     		pop	{r7, pc}
+ 778              		.cfi_endproc
+ 779              	.LFE8:
+ 781 004a 00BF     		.section	.text.mqtt_set_alive,"ax",%progbits
+ 782              		.align	2
+ 783              		.global	mqtt_set_alive
+ 784              		.thumb
+ 785              		.thumb_func
+ 787              	mqtt_set_alive:
+ 788              	.LFB9:
+ 210:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 211:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** void mqtt_set_alive(mqtt_broker_handle_t* broker, uint16_t alive) {
+ 789              		.loc 1 211 0
+ 790              		.cfi_startproc
+ 791              		@ args = 0, pretend = 0, frame = 8
+ 792              		@ frame_needed = 1, uses_anonymous_args = 0
+ 793              		@ link register save eliminated.
+ 794 0000 80B4     		push	{r7}
+ 795              		.cfi_def_cfa_offset 4
+ 796              		.cfi_offset 7, -4
+ 797 0002 83B0     		sub	sp, sp, #12
+ 798              		.cfi_def_cfa_offset 16
+ 799 0004 00AF     		add	r7, sp, #0
+ 800              		.cfi_def_cfa_register 7
+ 801 0006 7860     		str	r0, [r7, #4]
+ 802 0008 0B46     		mov	r3, r1
+ 803 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 212:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	broker->alive = alive;
+ 804              		.loc 1 212 0
+ 805 000c 7B68     		ldr	r3, [r7, #4]
+ 806 000e 7A88     		ldrh	r2, [r7, #2]	@ movhi
+ 807 0010 A3F85A20 		strh	r2, [r3, #90]	@ movhi
+ 213:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 808              		.loc 1 213 0
+ 809 0014 0C37     		adds	r7, r7, #12
+ 810              		.cfi_def_cfa_offset 4
+ 811 0016 BD46     		mov	sp, r7
+ 812              		.cfi_def_cfa_register 13
+ 813              		@ sp needed
+ 814 0018 5DF8047B 		ldr	r7, [sp], #4
+ 815              		.cfi_restore 7
+ 816              		.cfi_def_cfa_offset 0
+ 817 001c 7047     		bx	lr
+ 818              		.cfi_endproc
+ 819              	.LFE9:
+ 821 001e 00BF     		.section	.text.mqtt_connect,"ax",%progbits
+ 822              		.align	2
+ 823              		.global	mqtt_connect
+ 824              		.thumb
+ 825              		.thumb_func
+ 827              	mqtt_connect:
+ 828              	.LFB10:
+ 214:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 215:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** int mqtt_connect(mqtt_broker_handle_t* broker)
+ 216:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** {
+ 829              		.loc 1 216 0
+ 830              		.cfi_startproc
+ 831              		@ args = 0, pretend = 0, frame = 64
+ 832              		@ frame_needed = 1, uses_anonymous_args = 0
+ 833 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 834              		.cfi_def_cfa_offset 36
+ 835              		.cfi_offset 4, -36
+ 836              		.cfi_offset 5, -32
+ 837              		.cfi_offset 6, -28
+ 838              		.cfi_offset 7, -24
+ 839              		.cfi_offset 8, -20
+ 840              		.cfi_offset 9, -16
+ 841              		.cfi_offset 10, -12
+ 842              		.cfi_offset 11, -8
+ 843              		.cfi_offset 14, -4
+ 844 0004 91B0     		sub	sp, sp, #68
+ 845              		.cfi_def_cfa_offset 104
+ 846 0006 00AF     		add	r7, sp, #0
+ 847              		.cfi_def_cfa_register 7
+ 848 0008 F860     		str	r0, [r7, #12]
+ 849 000a 6B46     		mov	r3, sp
+ 850 000c BB60     		str	r3, [r7, #8]
+ 217:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t flags = 0x00;
+ 851              		.loc 1 217 0
+ 852 000e 0023     		movs	r3, #0
+ 853 0010 87F83F30 		strb	r3, [r7, #63]
+ 218:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 219:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t clientidlen = strlen(broker->clientid);
+ 854              		.loc 1 219 0
+ 855 0014 FB68     		ldr	r3, [r7, #12]
+ 856 0016 0833     		adds	r3, r3, #8
+ 857 0018 1846     		mov	r0, r3
+ 858 001a FFF7FEFF 		bl	strlen
+ 859 001e 0346     		mov	r3, r0
+ 860 0020 FB86     		strh	r3, [r7, #54]	@ movhi
+ 220:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t usernamelen = strlen(broker->username);
+ 861              		.loc 1 220 0
+ 862 0022 FB68     		ldr	r3, [r7, #12]
+ 863 0024 3A33     		adds	r3, r3, #58
+ 864 0026 1846     		mov	r0, r3
+ 865 0028 FFF7FEFF 		bl	strlen
+ 866 002c 0346     		mov	r3, r0
+ 867 002e BB86     		strh	r3, [r7, #52]	@ movhi
+ 221:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t passwordlen = strlen(broker->password);
+ 868              		.loc 1 221 0
+ 869 0030 FB68     		ldr	r3, [r7, #12]
+ 870 0032 4733     		adds	r3, r3, #71
+ 871 0034 1846     		mov	r0, r3
+ 872 0036 FFF7FEFF 		bl	strlen
+ 873 003a 0346     		mov	r3, r0
+ 874 003c 7B86     		strh	r3, [r7, #50]	@ movhi
+ 222:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t payload_len = clientidlen + 2;
+ 875              		.loc 1 222 0
+ 876 003e FB8E     		ldrh	r3, [r7, #54]	@ movhi
+ 877 0040 0233     		adds	r3, r3, #2
+ 878 0042 BB87     		strh	r3, [r7, #60]	@ movhi
+ 223:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 224:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Preparing the flags
+ 225:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(usernamelen) {
+ 879              		.loc 1 225 0
+ 880 0044 BB8E     		ldrh	r3, [r7, #52]
+ 881 0046 002B     		cmp	r3, #0
+ 882 0048 0BD0     		beq	.L37
+ 226:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		payload_len += usernamelen + 2;
+ 883              		.loc 1 226 0
+ 884 004a BA8E     		ldrh	r2, [r7, #52]	@ movhi
+ 885 004c BB8F     		ldrh	r3, [r7, #60]	@ movhi
+ 886 004e 1344     		add	r3, r3, r2
+ 887 0050 9BB2     		uxth	r3, r3
+ 888 0052 0233     		adds	r3, r3, #2
+ 889 0054 BB87     		strh	r3, [r7, #60]	@ movhi
+ 227:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		flags |= MQTT_USERNAME_FLAG;
+ 890              		.loc 1 227 0
+ 891 0056 97F83F30 		ldrb	r3, [r7, #63]
+ 892 005a 63F07F03 		orn	r3, r3, #127
+ 893 005e 87F83F30 		strb	r3, [r7, #63]
+ 894              	.L37:
+ 228:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 229:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(passwordlen) {
+ 895              		.loc 1 229 0
+ 896 0062 7B8E     		ldrh	r3, [r7, #50]
+ 897 0064 002B     		cmp	r3, #0
+ 898 0066 0BD0     		beq	.L38
+ 230:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		payload_len += passwordlen + 2;
+ 899              		.loc 1 230 0
+ 900 0068 7A8E     		ldrh	r2, [r7, #50]	@ movhi
+ 901 006a BB8F     		ldrh	r3, [r7, #60]	@ movhi
+ 902 006c 1344     		add	r3, r3, r2
+ 903 006e 9BB2     		uxth	r3, r3
+ 904 0070 0233     		adds	r3, r3, #2
+ 905 0072 BB87     		strh	r3, [r7, #60]	@ movhi
+ 231:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		flags |= MQTT_PASSWORD_FLAG;
+ 906              		.loc 1 231 0
+ 907 0074 97F83F30 		ldrb	r3, [r7, #63]
+ 908 0078 43F04003 		orr	r3, r3, #64
+ 909 007c 87F83F30 		strb	r3, [r7, #63]
+ 910              	.L38:
+ 232:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 233:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(broker->clean_session) {
+ 911              		.loc 1 233 0
+ 912 0080 FB68     		ldr	r3, [r7, #12]
+ 913 0082 93F85630 		ldrb	r3, [r3, #86]	@ zero_extendqisi2
+ 914 0086 002B     		cmp	r3, #0
+ 915 0088 05D0     		beq	.L39
+ 234:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		flags |= MQTT_CLEAN_SESSION;
+ 916              		.loc 1 234 0
+ 917 008a 97F83F30 		ldrb	r3, [r7, #63]
+ 918 008e 43F00203 		orr	r3, r3, #2
+ 919 0092 87F83F30 		strb	r3, [r7, #63]
+ 920              	.L39:
+ 235:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 236:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 237:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Variable header
+ 238:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t var_header[] = {
+ 921              		.loc 1 238 0
+ 922 0096 0023     		movs	r3, #0
+ 923 0098 3B75     		strb	r3, [r7, #20]
+ 924 009a 0623     		movs	r3, #6
+ 925 009c 7B75     		strb	r3, [r7, #21]
+ 926 009e 4D23     		movs	r3, #77
+ 927 00a0 BB75     		strb	r3, [r7, #22]
+ 928 00a2 5123     		movs	r3, #81
+ 929 00a4 FB75     		strb	r3, [r7, #23]
+ 930 00a6 4923     		movs	r3, #73
+ 931 00a8 3B76     		strb	r3, [r7, #24]
+ 932 00aa 7323     		movs	r3, #115
+ 933 00ac 7B76     		strb	r3, [r7, #25]
+ 934 00ae 6423     		movs	r3, #100
+ 935 00b0 BB76     		strb	r3, [r7, #26]
+ 936 00b2 7023     		movs	r3, #112
+ 937 00b4 FB76     		strb	r3, [r7, #27]
+ 938 00b6 0323     		movs	r3, #3
+ 939 00b8 3B77     		strb	r3, [r7, #28]
+ 940 00ba 97F83F30 		ldrb	r3, [r7, #63]
+ 941 00be 7B77     		strb	r3, [r7, #29]
+ 239:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		0x00,0x06,0x4d,0x51,0x49,0x73,0x64,0x70, // Protocol name: MQIsdp
+ 240:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		0x03, // Protocol version
+ 241:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		flags, // Connect flags
+ 242:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		broker->alive>>8, broker->alive&0xFF, // Keep alive
+ 942              		.loc 1 242 0
+ 943 00c0 FB68     		ldr	r3, [r7, #12]
+ 944 00c2 B3F85A30 		ldrh	r3, [r3, #90]
+ 238:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		0x00,0x06,0x4d,0x51,0x49,0x73,0x64,0x70, // Protocol name: MQIsdp
+ 945              		.loc 1 238 0
+ 946 00c6 1B0A     		lsrs	r3, r3, #8
+ 947 00c8 9BB2     		uxth	r3, r3
+ 948 00ca DBB2     		uxtb	r3, r3
+ 949 00cc BB77     		strb	r3, [r7, #30]
+ 950              		.loc 1 242 0
+ 951 00ce FB68     		ldr	r3, [r7, #12]
+ 952 00d0 B3F85A30 		ldrh	r3, [r3, #90]
+ 238:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		0x00,0x06,0x4d,0x51,0x49,0x73,0x64,0x70, // Protocol name: MQIsdp
+ 953              		.loc 1 238 0
+ 954 00d4 DBB2     		uxtb	r3, r3
+ 955 00d6 FB77     		strb	r3, [r7, #31]
+ 243:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	};
+ 244:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 245:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 246:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****    	// Fixed header
+ 247:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****     uint8_t fixedHeaderSize = 2;    // Default size = one byte Message Type + one byte Remaining Le
+ 956              		.loc 1 247 0
+ 957 00d8 0223     		movs	r3, #2
+ 958 00da 87F83B30 		strb	r3, [r7, #59]
+ 248:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****     uint8_t remainLen = sizeof(var_header)+payload_len;
+ 959              		.loc 1 248 0
+ 960 00de BB8F     		ldrh	r3, [r7, #60]	@ movhi
+ 961 00e0 DBB2     		uxtb	r3, r3
+ 962 00e2 0C33     		adds	r3, r3, #12
+ 963 00e4 87F83130 		strb	r3, [r7, #49]
+ 249:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****     if (remainLen > 127) {
+ 964              		.loc 1 249 0
+ 965 00e8 97F83130 		ldrb	r3, [r7, #49]	@ zero_extendqisi2
+ 966 00ec 5BB2     		sxtb	r3, r3
+ 967 00ee 002B     		cmp	r3, #0
+ 968 00f0 04DA     		bge	.L40
+ 250:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****         fixedHeaderSize++;          // add an additional byte for Remaining Length
+ 969              		.loc 1 250 0
+ 970 00f2 97F83B30 		ldrb	r3, [r7, #59]	@ zero_extendqisi2
+ 971 00f6 0133     		adds	r3, r3, #1
+ 972 00f8 87F83B30 		strb	r3, [r7, #59]
+ 973              	.L40:
+ 251:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****     }
+ 252:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****     uint8_t fixed_header[fixedHeaderSize];
+ 974              		.loc 1 252 0
+ 975 00fc 97F83B30 		ldrb	r3, [r7, #59]	@ zero_extendqisi2
+ 976 0100 1846     		mov	r0, r3
+ 977 0102 0346     		mov	r3, r0
+ 978 0104 013B     		subs	r3, r3, #1
+ 979 0106 FB62     		str	r3, [r7, #44]
+ 980 0108 C2B2     		uxtb	r2, r0
+ 981 010a 4FF00003 		mov	r3, #0
+ 982 010e D900     		lsls	r1, r3, #3
+ 983 0110 7960     		str	r1, [r7, #4]
+ 984 0112 7968     		ldr	r1, [r7, #4]
+ 985 0114 41EA5271 		orr	r1, r1, r2, lsr #29
+ 986 0118 7960     		str	r1, [r7, #4]
+ 987 011a D200     		lsls	r2, r2, #3
+ 988 011c 3A60     		str	r2, [r7]
+ 989 011e C2B2     		uxtb	r2, r0
+ 990 0120 4FF00003 		mov	r3, #0
+ 991 0124 4FEAC30B 		lsl	fp, r3, #3
+ 992 0128 4BEA527B 		orr	fp, fp, r2, lsr #29
+ 993 012c 4FEAC20A 		lsl	r10, r2, #3
+ 994 0130 0346     		mov	r3, r0
+ 995 0132 0733     		adds	r3, r3, #7
+ 996 0134 DB08     		lsrs	r3, r3, #3
+ 997 0136 DB00     		lsls	r3, r3, #3
+ 998 0138 ADEB030D 		sub	sp, sp, r3
+ 999 013c 6B46     		mov	r3, sp
+ 1000 013e 0033     		adds	r3, r3, #0
+ 1001 0140 BB62     		str	r3, [r7, #40]
+ 253:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****     
+ 254:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****     // Message Type
+ 255:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****     fixed_header[0] = MQTT_MSG_CONNECT;
+ 1002              		.loc 1 255 0
+ 1003 0142 BB6A     		ldr	r3, [r7, #40]
+ 1004 0144 1022     		movs	r2, #16
+ 1005 0146 1A70     		strb	r2, [r3]
+ 256:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 257:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****     // Remaining Length
+ 258:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****     if (remainLen <= 127) {
+ 1006              		.loc 1 258 0
+ 1007 0148 97F83130 		ldrb	r3, [r7, #49]	@ zero_extendqisi2
+ 1008 014c 5BB2     		sxtb	r3, r3
+ 1009 014e 002B     		cmp	r3, #0
+ 1010 0150 04DB     		blt	.L41
+ 259:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****         fixed_header[1] = remainLen;
+ 1011              		.loc 1 259 0
+ 1012 0152 BB6A     		ldr	r3, [r7, #40]
+ 1013 0154 97F83120 		ldrb	r2, [r7, #49]
+ 1014 0158 5A70     		strb	r2, [r3, #1]
+ 1015 015a 13E0     		b	.L42
+ 1016              	.L41:
+ 260:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****     } else {
+ 261:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****         // first byte is remainder (mod) of 128, then set the MSB to indicate more bytes
+ 262:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****         fixed_header[1] = remainLen % 128;
+ 1017              		.loc 1 262 0
+ 1018 015c 97F83130 		ldrb	r3, [r7, #49]
+ 1019 0160 03F07F03 		and	r3, r3, #127
+ 1020 0164 DAB2     		uxtb	r2, r3
+ 1021 0166 BB6A     		ldr	r3, [r7, #40]
+ 1022 0168 5A70     		strb	r2, [r3, #1]
+ 263:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****         fixed_header[1] = fixed_header[1] | 0x80;
+ 1023              		.loc 1 263 0
+ 1024 016a BB6A     		ldr	r3, [r7, #40]
+ 1025 016c 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 1026 016e 63F07F03 		orn	r3, r3, #127
+ 1027 0172 DAB2     		uxtb	r2, r3
+ 1028 0174 BB6A     		ldr	r3, [r7, #40]
+ 1029 0176 5A70     		strb	r2, [r3, #1]
+ 264:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****         // second byte is number of 128s
+ 265:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****         fixed_header[2] = remainLen / 128;
+ 1030              		.loc 1 265 0
+ 1031 0178 97F83130 		ldrb	r3, [r7, #49]	@ zero_extendqisi2
+ 1032 017c DB09     		lsrs	r3, r3, #7
+ 1033 017e DAB2     		uxtb	r2, r3
+ 1034 0180 BB6A     		ldr	r3, [r7, #40]
+ 1035 0182 9A70     		strb	r2, [r3, #2]
+ 1036              	.L42:
+ 266:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****     }
+ 267:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 268:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t offset = 0;
+ 1037              		.loc 1 268 0
+ 1038 0184 0023     		movs	r3, #0
+ 1039 0186 3B87     		strh	r3, [r7, #56]	@ movhi
+ 269:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t packet[sizeof(fixed_header)+sizeof(var_header)+payload_len];
+ 1040              		.loc 1 269 0
+ 1041 0188 8246     		mov	r10, r0
+ 1042 018a 5246     		mov	r2, r10
+ 1043 018c BB8F     		ldrh	r3, [r7, #60]
+ 1044 018e 1344     		add	r3, r3, r2
+ 1045 0190 03F10C06 		add	r6, r3, #12
+ 1046 0194 3346     		mov	r3, r6
+ 1047 0196 013B     		subs	r3, r3, #1
+ 1048 0198 7B62     		str	r3, [r7, #36]
+ 1049 019a 3246     		mov	r2, r6
+ 1050 019c 4FF00003 		mov	r3, #0
+ 1051 01a0 4FEAC309 		lsl	r9, r3, #3
+ 1052 01a4 49EA5279 		orr	r9, r9, r2, lsr #29
+ 1053 01a8 4FEAC208 		lsl	r8, r2, #3
+ 1054 01ac 3246     		mov	r2, r6
+ 1055 01ae 4FF00003 		mov	r3, #0
+ 1056 01b2 DD00     		lsls	r5, r3, #3
+ 1057 01b4 45EA5275 		orr	r5, r5, r2, lsr #29
+ 1058 01b8 D400     		lsls	r4, r2, #3
+ 1059 01ba F31D     		adds	r3, r6, #7
+ 1060 01bc DB08     		lsrs	r3, r3, #3
+ 1061 01be DB00     		lsls	r3, r3, #3
+ 1062 01c0 ADEB030D 		sub	sp, sp, r3
+ 1063 01c4 6B46     		mov	r3, sp
+ 1064 01c6 0033     		adds	r3, r3, #0
+ 1065 01c8 3B62     		str	r3, [r7, #32]
+ 270:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memset(packet, 0, sizeof(packet));
+ 1066              		.loc 1 270 0
+ 1067 01ca 3B6A     		ldr	r3, [r7, #32]
+ 1068 01cc 1846     		mov	r0, r3
+ 1069 01ce 0021     		movs	r1, #0
+ 1070 01d0 3246     		mov	r2, r6
+ 1071 01d2 FFF7FEFF 		bl	memset
+ 271:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(packet, fixed_header, sizeof(fixed_header));
+ 1072              		.loc 1 271 0
+ 1073 01d6 3A6A     		ldr	r2, [r7, #32]
+ 1074 01d8 BB6A     		ldr	r3, [r7, #40]
+ 1075 01da 5446     		mov	r4, r10
+ 1076 01dc 1046     		mov	r0, r2
+ 1077 01de 1946     		mov	r1, r3
+ 1078 01e0 2246     		mov	r2, r4
+ 1079 01e2 FFF7FEFF 		bl	memcpy
+ 272:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	offset += sizeof(fixed_header);
+ 1080              		.loc 1 272 0
+ 1081 01e6 1FFA8AF2 		uxth	r2, r10
+ 1082 01ea 3B8F     		ldrh	r3, [r7, #56]	@ movhi
+ 1083 01ec 1344     		add	r3, r3, r2
+ 1084 01ee 3B87     		strh	r3, [r7, #56]	@ movhi
+ 273:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(packet+offset, var_header, sizeof(var_header));
+ 1085              		.loc 1 273 0
+ 1086 01f0 3A6A     		ldr	r2, [r7, #32]
+ 1087 01f2 3B8F     		ldrh	r3, [r7, #56]
+ 1088 01f4 1344     		add	r3, r3, r2
+ 1089 01f6 1C46     		mov	r4, r3
+ 1090 01f8 07F11403 		add	r3, r7, #20
+ 1091 01fc 07CB     		ldmia	r3!, {r0, r1, r2}
+ 1092 01fe 2060     		str	r0, [r4]	@ unaligned
+ 1093 0200 6160     		str	r1, [r4, #4]	@ unaligned
+ 1094 0202 A260     		str	r2, [r4, #8]	@ unaligned
+ 274:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	offset += sizeof(var_header);
+ 1095              		.loc 1 274 0
+ 1096 0204 3B8F     		ldrh	r3, [r7, #56]	@ movhi
+ 1097 0206 0C33     		adds	r3, r3, #12
+ 1098 0208 3B87     		strh	r3, [r7, #56]	@ movhi
+ 275:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Client ID - UTF encoded
+ 276:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	packet[offset++] = clientidlen>>8;
+ 1099              		.loc 1 276 0
+ 1100 020a 3B8F     		ldrh	r3, [r7, #56]
+ 1101 020c 5A1C     		adds	r2, r3, #1
+ 1102 020e 3A87     		strh	r2, [r7, #56]	@ movhi
+ 1103 0210 1A46     		mov	r2, r3
+ 1104 0212 FB8E     		ldrh	r3, [r7, #54]
+ 1105 0214 1B0A     		lsrs	r3, r3, #8
+ 1106 0216 9BB2     		uxth	r3, r3
+ 1107 0218 D9B2     		uxtb	r1, r3
+ 1108 021a 3B6A     		ldr	r3, [r7, #32]
+ 1109 021c 9954     		strb	r1, [r3, r2]
+ 277:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	packet[offset++] = clientidlen&0xFF;
+ 1110              		.loc 1 277 0
+ 1111 021e 3B8F     		ldrh	r3, [r7, #56]
+ 1112 0220 5A1C     		adds	r2, r3, #1
+ 1113 0222 3A87     		strh	r2, [r7, #56]	@ movhi
+ 1114 0224 1A46     		mov	r2, r3
+ 1115 0226 FB8E     		ldrh	r3, [r7, #54]	@ movhi
+ 1116 0228 D9B2     		uxtb	r1, r3
+ 1117 022a 3B6A     		ldr	r3, [r7, #32]
+ 1118 022c 9954     		strb	r1, [r3, r2]
+ 278:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(packet+offset, broker->clientid, clientidlen);
+ 1119              		.loc 1 278 0
+ 1120 022e 3A6A     		ldr	r2, [r7, #32]
+ 1121 0230 3B8F     		ldrh	r3, [r7, #56]
+ 1122 0232 D118     		adds	r1, r2, r3
+ 1123 0234 FB68     		ldr	r3, [r7, #12]
+ 1124 0236 03F10802 		add	r2, r3, #8
+ 1125 023a FB8E     		ldrh	r3, [r7, #54]
+ 1126 023c 0846     		mov	r0, r1
+ 1127 023e 1146     		mov	r1, r2
+ 1128 0240 1A46     		mov	r2, r3
+ 1129 0242 FFF7FEFF 		bl	memcpy
+ 279:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	offset += clientidlen;
+ 1130              		.loc 1 279 0
+ 1131 0246 3A8F     		ldrh	r2, [r7, #56]	@ movhi
+ 1132 0248 FB8E     		ldrh	r3, [r7, #54]	@ movhi
+ 1133 024a 1344     		add	r3, r3, r2
+ 1134 024c 3B87     		strh	r3, [r7, #56]	@ movhi
+ 280:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 281:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(usernamelen) {
+ 1135              		.loc 1 281 0
+ 1136 024e BB8E     		ldrh	r3, [r7, #52]
+ 1137 0250 002B     		cmp	r3, #0
+ 1138 0252 21D0     		beq	.L43
+ 282:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		// Username - UTF encoded
+ 283:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		packet[offset++] = usernamelen>>8;
+ 1139              		.loc 1 283 0
+ 1140 0254 3B8F     		ldrh	r3, [r7, #56]
+ 1141 0256 5A1C     		adds	r2, r3, #1
+ 1142 0258 3A87     		strh	r2, [r7, #56]	@ movhi
+ 1143 025a 1A46     		mov	r2, r3
+ 1144 025c BB8E     		ldrh	r3, [r7, #52]
+ 1145 025e 1B0A     		lsrs	r3, r3, #8
+ 1146 0260 9BB2     		uxth	r3, r3
+ 1147 0262 D9B2     		uxtb	r1, r3
+ 1148 0264 3B6A     		ldr	r3, [r7, #32]
+ 1149 0266 9954     		strb	r1, [r3, r2]
+ 284:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		packet[offset++] = usernamelen&0xFF;
+ 1150              		.loc 1 284 0
+ 1151 0268 3B8F     		ldrh	r3, [r7, #56]
+ 1152 026a 5A1C     		adds	r2, r3, #1
+ 1153 026c 3A87     		strh	r2, [r7, #56]	@ movhi
+ 1154 026e 1A46     		mov	r2, r3
+ 1155 0270 BB8E     		ldrh	r3, [r7, #52]	@ movhi
+ 1156 0272 D9B2     		uxtb	r1, r3
+ 1157 0274 3B6A     		ldr	r3, [r7, #32]
+ 1158 0276 9954     		strb	r1, [r3, r2]
+ 285:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		memcpy(packet+offset, broker->username, usernamelen);
+ 1159              		.loc 1 285 0
+ 1160 0278 3A6A     		ldr	r2, [r7, #32]
+ 1161 027a 3B8F     		ldrh	r3, [r7, #56]
+ 1162 027c D118     		adds	r1, r2, r3
+ 1163 027e FB68     		ldr	r3, [r7, #12]
+ 1164 0280 03F13A02 		add	r2, r3, #58
+ 1165 0284 BB8E     		ldrh	r3, [r7, #52]
+ 1166 0286 0846     		mov	r0, r1
+ 1167 0288 1146     		mov	r1, r2
+ 1168 028a 1A46     		mov	r2, r3
+ 1169 028c FFF7FEFF 		bl	memcpy
+ 286:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		offset += usernamelen;
+ 1170              		.loc 1 286 0
+ 1171 0290 3A8F     		ldrh	r2, [r7, #56]	@ movhi
+ 1172 0292 BB8E     		ldrh	r3, [r7, #52]	@ movhi
+ 1173 0294 1344     		add	r3, r3, r2
+ 1174 0296 3B87     		strh	r3, [r7, #56]	@ movhi
+ 1175              	.L43:
+ 287:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 288:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 289:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(passwordlen) {
+ 1176              		.loc 1 289 0
+ 1177 0298 7B8E     		ldrh	r3, [r7, #50]
+ 1178 029a 002B     		cmp	r3, #0
+ 1179 029c 21D0     		beq	.L44
+ 290:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		// Password - UTF encoded
+ 291:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		packet[offset++] = passwordlen>>8;
+ 1180              		.loc 1 291 0
+ 1181 029e 3B8F     		ldrh	r3, [r7, #56]
+ 1182 02a0 5A1C     		adds	r2, r3, #1
+ 1183 02a2 3A87     		strh	r2, [r7, #56]	@ movhi
+ 1184 02a4 1A46     		mov	r2, r3
+ 1185 02a6 7B8E     		ldrh	r3, [r7, #50]
+ 1186 02a8 1B0A     		lsrs	r3, r3, #8
+ 1187 02aa 9BB2     		uxth	r3, r3
+ 1188 02ac D9B2     		uxtb	r1, r3
+ 1189 02ae 3B6A     		ldr	r3, [r7, #32]
+ 1190 02b0 9954     		strb	r1, [r3, r2]
+ 292:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		packet[offset++] = passwordlen&0xFF;
+ 1191              		.loc 1 292 0
+ 1192 02b2 3B8F     		ldrh	r3, [r7, #56]
+ 1193 02b4 5A1C     		adds	r2, r3, #1
+ 1194 02b6 3A87     		strh	r2, [r7, #56]	@ movhi
+ 1195 02b8 1A46     		mov	r2, r3
+ 1196 02ba 7B8E     		ldrh	r3, [r7, #50]	@ movhi
+ 1197 02bc D9B2     		uxtb	r1, r3
+ 1198 02be 3B6A     		ldr	r3, [r7, #32]
+ 1199 02c0 9954     		strb	r1, [r3, r2]
+ 293:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		memcpy(packet+offset, broker->password, passwordlen);
+ 1200              		.loc 1 293 0
+ 1201 02c2 3A6A     		ldr	r2, [r7, #32]
+ 1202 02c4 3B8F     		ldrh	r3, [r7, #56]
+ 1203 02c6 D118     		adds	r1, r2, r3
+ 1204 02c8 FB68     		ldr	r3, [r7, #12]
+ 1205 02ca 03F14702 		add	r2, r3, #71
+ 1206 02ce 7B8E     		ldrh	r3, [r7, #50]
+ 1207 02d0 0846     		mov	r0, r1
+ 1208 02d2 1146     		mov	r1, r2
+ 1209 02d4 1A46     		mov	r2, r3
+ 1210 02d6 FFF7FEFF 		bl	memcpy
+ 294:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		offset += passwordlen;
+ 1211              		.loc 1 294 0
+ 1212 02da 3A8F     		ldrh	r2, [r7, #56]	@ movhi
+ 1213 02dc 7B8E     		ldrh	r3, [r7, #50]	@ movhi
+ 1214 02de 1344     		add	r3, r3, r2
+ 1215 02e0 3B87     		strh	r3, [r7, #56]	@ movhi
+ 1216              	.L44:
+ 295:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 296:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 297:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Send the packet
+ 298:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(broker->send(broker->socket_info, packet, sizeof(packet)) < sizeof(packet)) {
+ 1217              		.loc 1 298 0
+ 1218 02e2 FB68     		ldr	r3, [r7, #12]
+ 1219 02e4 5B68     		ldr	r3, [r3, #4]
+ 1220 02e6 FA68     		ldr	r2, [r7, #12]
+ 1221 02e8 1168     		ldr	r1, [r2]
+ 1222 02ea 3A6A     		ldr	r2, [r7, #32]
+ 1223 02ec 0846     		mov	r0, r1
+ 1224 02ee 1146     		mov	r1, r2
+ 1225 02f0 3246     		mov	r2, r6
+ 1226 02f2 9847     		blx	r3
+ 1227 02f4 0346     		mov	r3, r0
+ 1228 02f6 B342     		cmp	r3, r6
+ 1229 02f8 02D2     		bcs	.L45
+ 299:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		return -1;
+ 1230              		.loc 1 299 0
+ 1231 02fa 4FF0FF33 		mov	r3, #-1
+ 1232 02fe 00E0     		b	.L46
+ 1233              	.L45:
+ 300:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 301:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 302:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return 1;
+ 1234              		.loc 1 302 0
+ 1235 0300 0123     		movs	r3, #1
+ 1236              	.L46:
+ 1237 0302 D7F808D0 		ldr	sp, [r7, #8]
+ 303:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 1238              		.loc 1 303 0
+ 1239 0306 1846     		mov	r0, r3
+ 1240 0308 4437     		adds	r7, r7, #68
+ 1241              		.cfi_def_cfa_offset 36
+ 1242 030a BD46     		mov	sp, r7
+ 1243              		.cfi_def_cfa_register 13
+ 1244              		@ sp needed
+ 1245 030c BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 1246              		.cfi_endproc
+ 1247              	.LFE10:
+ 1249              		.section	.text.mqtt_disconnect,"ax",%progbits
+ 1250              		.align	2
+ 1251              		.global	mqtt_disconnect
+ 1252              		.thumb
+ 1253              		.thumb_func
+ 1255              	mqtt_disconnect:
+ 1256              	.LFB11:
+ 304:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 305:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** int mqtt_disconnect(mqtt_broker_handle_t* broker) {
+ 1257              		.loc 1 305 0
+ 1258              		.cfi_startproc
+ 1259              		@ args = 0, pretend = 0, frame = 16
+ 1260              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1261 0000 80B5     		push	{r7, lr}
+ 1262              		.cfi_def_cfa_offset 8
+ 1263              		.cfi_offset 7, -8
+ 1264              		.cfi_offset 14, -4
+ 1265 0002 84B0     		sub	sp, sp, #16
+ 1266              		.cfi_def_cfa_offset 24
+ 1267 0004 00AF     		add	r7, sp, #0
+ 1268              		.cfi_def_cfa_register 7
+ 1269 0006 7860     		str	r0, [r7, #4]
+ 306:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t packet[] = {
+ 1270              		.loc 1 306 0
+ 1271 0008 E023     		movs	r3, #224
+ 1272 000a 3B73     		strb	r3, [r7, #12]
+ 1273 000c 0023     		movs	r3, #0
+ 1274 000e 7B73     		strb	r3, [r7, #13]
+ 307:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		MQTT_MSG_DISCONNECT, // Message Type, DUP flag, QoS level, Retain
+ 308:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		0x00 // Remaining length
+ 309:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	};
+ 310:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 311:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Send the packet
+ 312:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(broker->send(broker->socket_info, packet, sizeof(packet)) < sizeof(packet)) {
+ 1275              		.loc 1 312 0
+ 1276 0010 7B68     		ldr	r3, [r7, #4]
+ 1277 0012 5B68     		ldr	r3, [r3, #4]
+ 1278 0014 7A68     		ldr	r2, [r7, #4]
+ 1279 0016 1168     		ldr	r1, [r2]
+ 1280 0018 07F10C02 		add	r2, r7, #12
+ 1281 001c 0846     		mov	r0, r1
+ 1282 001e 1146     		mov	r1, r2
+ 1283 0020 0222     		movs	r2, #2
+ 1284 0022 9847     		blx	r3
+ 1285 0024 0346     		mov	r3, r0
+ 1286 0026 012B     		cmp	r3, #1
+ 1287 0028 02D8     		bhi	.L49
+ 313:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		return -1;
+ 1288              		.loc 1 313 0
+ 1289 002a 4FF0FF33 		mov	r3, #-1
+ 1290 002e 00E0     		b	.L51
+ 1291              	.L49:
+ 314:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 315:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 316:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return 1;
+ 1292              		.loc 1 316 0
+ 1293 0030 0123     		movs	r3, #1
+ 1294              	.L51:
+ 317:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 1295              		.loc 1 317 0 discriminator 1
+ 1296 0032 1846     		mov	r0, r3
+ 1297 0034 1037     		adds	r7, r7, #16
+ 1298              		.cfi_def_cfa_offset 8
+ 1299 0036 BD46     		mov	sp, r7
+ 1300              		.cfi_def_cfa_register 13
+ 1301              		@ sp needed
+ 1302 0038 80BD     		pop	{r7, pc}
+ 1303              		.cfi_endproc
+ 1304              	.LFE11:
+ 1306 003a 00BF     		.section	.text.mqtt_ping,"ax",%progbits
+ 1307              		.align	2
+ 1308              		.global	mqtt_ping
+ 1309              		.thumb
+ 1310              		.thumb_func
+ 1312              	mqtt_ping:
+ 1313              	.LFB12:
+ 318:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 319:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** int mqtt_ping(mqtt_broker_handle_t* broker) {
+ 1314              		.loc 1 319 0
+ 1315              		.cfi_startproc
+ 1316              		@ args = 0, pretend = 0, frame = 16
+ 1317              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1318 0000 80B5     		push	{r7, lr}
+ 1319              		.cfi_def_cfa_offset 8
+ 1320              		.cfi_offset 7, -8
+ 1321              		.cfi_offset 14, -4
+ 1322 0002 84B0     		sub	sp, sp, #16
+ 1323              		.cfi_def_cfa_offset 24
+ 1324 0004 00AF     		add	r7, sp, #0
+ 1325              		.cfi_def_cfa_register 7
+ 1326 0006 7860     		str	r0, [r7, #4]
+ 320:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t packet[] = {
+ 1327              		.loc 1 320 0
+ 1328 0008 C023     		movs	r3, #192
+ 1329 000a 3B73     		strb	r3, [r7, #12]
+ 1330 000c 0023     		movs	r3, #0
+ 1331 000e 7B73     		strb	r3, [r7, #13]
+ 321:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		MQTT_MSG_PINGREQ, // Message Type, DUP flag, QoS level, Retain
+ 322:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		0x00 // Remaining length
+ 323:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	};
+ 324:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 325:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Send the packet
+ 326:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(broker->send(broker->socket_info, packet, sizeof(packet)) < sizeof(packet)) {
+ 1332              		.loc 1 326 0
+ 1333 0010 7B68     		ldr	r3, [r7, #4]
+ 1334 0012 5B68     		ldr	r3, [r3, #4]
+ 1335 0014 7A68     		ldr	r2, [r7, #4]
+ 1336 0016 1168     		ldr	r1, [r2]
+ 1337 0018 07F10C02 		add	r2, r7, #12
+ 1338 001c 0846     		mov	r0, r1
+ 1339 001e 1146     		mov	r1, r2
+ 1340 0020 0222     		movs	r2, #2
+ 1341 0022 9847     		blx	r3
+ 1342 0024 0346     		mov	r3, r0
+ 1343 0026 012B     		cmp	r3, #1
+ 1344 0028 02D8     		bhi	.L53
+ 327:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		return -1;
+ 1345              		.loc 1 327 0
+ 1346 002a 4FF0FF33 		mov	r3, #-1
+ 1347 002e 00E0     		b	.L55
+ 1348              	.L53:
+ 328:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 329:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 330:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return 1;
+ 1349              		.loc 1 330 0
+ 1350 0030 0123     		movs	r3, #1
+ 1351              	.L55:
+ 331:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 1352              		.loc 1 331 0 discriminator 1
+ 1353 0032 1846     		mov	r0, r3
+ 1354 0034 1037     		adds	r7, r7, #16
+ 1355              		.cfi_def_cfa_offset 8
+ 1356 0036 BD46     		mov	sp, r7
+ 1357              		.cfi_def_cfa_register 13
+ 1358              		@ sp needed
+ 1359 0038 80BD     		pop	{r7, pc}
+ 1360              		.cfi_endproc
+ 1361              	.LFE12:
+ 1363 003a 00BF     		.section	.text.mqtt_publish,"ax",%progbits
+ 1364              		.align	2
+ 1365              		.global	mqtt_publish
+ 1366              		.thumb
+ 1367              		.thumb_func
+ 1369              	mqtt_publish:
+ 1370              	.LFB13:
+ 332:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 333:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** int mqtt_publish(mqtt_broker_handle_t* broker, const char* topic, const char* msg, uint8_t retain) 
+ 1371              		.loc 1 333 0
+ 1372              		.cfi_startproc
+ 1373              		@ args = 0, pretend = 0, frame = 16
+ 1374              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1375 0000 90B5     		push	{r4, r7, lr}
+ 1376              		.cfi_def_cfa_offset 12
+ 1377              		.cfi_offset 4, -12
+ 1378              		.cfi_offset 7, -8
+ 1379              		.cfi_offset 14, -4
+ 1380 0002 87B0     		sub	sp, sp, #28
+ 1381              		.cfi_def_cfa_offset 40
+ 1382 0004 02AF     		add	r7, sp, #8
+ 1383              		.cfi_def_cfa 7, 32
+ 1384 0006 F860     		str	r0, [r7, #12]
+ 1385 0008 B960     		str	r1, [r7, #8]
+ 1386 000a 7A60     		str	r2, [r7, #4]
+ 1387 000c FB70     		strb	r3, [r7, #3]
+ 334:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return mqtt_publish_with_qos(broker, topic, msg, retain, 0, NULL);
+ 1388              		.loc 1 334 0
+ 1389 000e FC78     		ldrb	r4, [r7, #3]	@ zero_extendqisi2
+ 1390 0010 0023     		movs	r3, #0
+ 1391 0012 0093     		str	r3, [sp]
+ 1392 0014 0023     		movs	r3, #0
+ 1393 0016 0193     		str	r3, [sp, #4]
+ 1394 0018 F868     		ldr	r0, [r7, #12]
+ 1395 001a B968     		ldr	r1, [r7, #8]
+ 1396 001c 7A68     		ldr	r2, [r7, #4]
+ 1397 001e 2346     		mov	r3, r4
+ 1398 0020 FFF7FEFF 		bl	mqtt_publish_with_qos
+ 1399 0024 0346     		mov	r3, r0
+ 335:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 1400              		.loc 1 335 0
+ 1401 0026 1846     		mov	r0, r3
+ 1402 0028 1437     		adds	r7, r7, #20
+ 1403              		.cfi_def_cfa_offset 12
+ 1404 002a BD46     		mov	sp, r7
+ 1405              		.cfi_def_cfa_register 13
+ 1406              		@ sp needed
+ 1407 002c 90BD     		pop	{r4, r7, pc}
+ 1408              		.cfi_endproc
+ 1409              	.LFE13:
+ 1411 002e 00BF     		.section	.text.mqtt_publish_with_qos,"ax",%progbits
+ 1412              		.align	2
+ 1413              		.global	mqtt_publish_with_qos
+ 1414              		.thumb
+ 1415              		.thumb_func
+ 1417              	mqtt_publish_with_qos:
+ 1418              	.LFB14:
+ 336:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 337:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** int mqtt_publish_with_qos(mqtt_broker_handle_t* broker, const char* topic, const char* msg, uint8_t
+ 1419              		.loc 1 337 0
+ 1420              		.cfi_startproc
+ 1421              		@ args = 8, pretend = 0, frame = 88
+ 1422              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1423 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 1424              		.cfi_def_cfa_offset 36
+ 1425              		.cfi_offset 4, -36
+ 1426              		.cfi_offset 5, -32
+ 1427              		.cfi_offset 6, -28
+ 1428              		.cfi_offset 7, -24
+ 1429              		.cfi_offset 8, -20
+ 1430              		.cfi_offset 9, -16
+ 1431              		.cfi_offset 10, -12
+ 1432              		.cfi_offset 11, -8
+ 1433              		.cfi_offset 14, -4
+ 1434 0004 97B0     		sub	sp, sp, #92
+ 1435              		.cfi_def_cfa_offset 128
+ 1436 0006 00AF     		add	r7, sp, #0
+ 1437              		.cfi_def_cfa_register 7
+ 1438 0008 F862     		str	r0, [r7, #44]
+ 1439 000a B962     		str	r1, [r7, #40]
+ 1440 000c 7A62     		str	r2, [r7, #36]
+ 1441 000e 87F82330 		strb	r3, [r7, #35]
+ 1442 0012 6B46     		mov	r3, sp
+ 1443 0014 7B60     		str	r3, [r7, #4]
+ 338:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t topiclen = strlen(topic);
+ 1444              		.loc 1 338 0
+ 1445 0016 B86A     		ldr	r0, [r7, #40]
+ 1446 0018 FFF7FEFF 		bl	strlen
+ 1447 001c 0346     		mov	r3, r0
+ 1448 001e A7F85230 		strh	r3, [r7, #82]	@ movhi
+ 339:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t msglen = strlen(msg);
+ 1449              		.loc 1 339 0
+ 1450 0022 786A     		ldr	r0, [r7, #36]
+ 1451 0024 FFF7FEFF 		bl	strlen
+ 1452 0028 0346     		mov	r3, r0
+ 1453 002a A7F85030 		strh	r3, [r7, #80]	@ movhi
+ 340:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 341:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t qos_flag = MQTT_QOS0_FLAG;
+ 1454              		.loc 1 341 0
+ 1455 002e 0023     		movs	r3, #0
+ 1456 0030 87F85730 		strb	r3, [r7, #87]
+ 342:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t qos_size = 0; // No QoS included
+ 1457              		.loc 1 342 0
+ 1458 0034 0023     		movs	r3, #0
+ 1459 0036 87F85630 		strb	r3, [r7, #86]
+ 343:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(qos == 1) {
+ 1460              		.loc 1 343 0
+ 1461 003a 97F88030 		ldrb	r3, [r7, #128]	@ zero_extendqisi2
+ 1462 003e 012B     		cmp	r3, #1
+ 1463 0040 06D1     		bne	.L59
+ 344:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		qos_size = 2; // 2 bytes for QoS
+ 1464              		.loc 1 344 0
+ 1465 0042 0223     		movs	r3, #2
+ 1466 0044 87F85630 		strb	r3, [r7, #86]
+ 345:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		qos_flag = MQTT_QOS1_FLAG;
+ 1467              		.loc 1 345 0
+ 1468 0048 0223     		movs	r3, #2
+ 1469 004a 87F85730 		strb	r3, [r7, #87]
+ 1470 004e 09E0     		b	.L60
+ 1471              	.L59:
+ 346:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 347:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	else if(qos == 2) {
+ 1472              		.loc 1 347 0
+ 1473 0050 97F88030 		ldrb	r3, [r7, #128]	@ zero_extendqisi2
+ 1474 0054 022B     		cmp	r3, #2
+ 1475 0056 05D1     		bne	.L60
+ 348:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		qos_size = 2; // 2 bytes for QoS
+ 1476              		.loc 1 348 0
+ 1477 0058 0223     		movs	r3, #2
+ 1478 005a 87F85630 		strb	r3, [r7, #86]
+ 349:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		qos_flag = MQTT_QOS2_FLAG;
+ 1479              		.loc 1 349 0
+ 1480 005e 0423     		movs	r3, #4
+ 1481 0060 87F85730 		strb	r3, [r7, #87]
+ 1482              	.L60:
+ 350:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 351:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 352:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Variable header
+ 353:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t var_header[topiclen+2+qos_size]; // Topic size (2 bytes), utf-encoded topic
+ 1483              		.loc 1 353 0
+ 1484 0064 B7F85230 		ldrh	r3, [r7, #82]
+ 1485 0068 9A1C     		adds	r2, r3, #2
+ 1486 006a 97F85630 		ldrb	r3, [r7, #86]	@ zero_extendqisi2
+ 1487 006e D618     		adds	r6, r2, r3
+ 1488 0070 731E     		subs	r3, r6, #1
+ 1489 0072 FB64     		str	r3, [r7, #76]
+ 1490 0074 3346     		mov	r3, r6
+ 1491 0076 1A46     		mov	r2, r3
+ 1492 0078 4FF00003 		mov	r3, #0
+ 1493 007c 4FEAC309 		lsl	r9, r3, #3
+ 1494 0080 49EA5279 		orr	r9, r9, r2, lsr #29
+ 1495 0084 4FEAC208 		lsl	r8, r2, #3
+ 1496 0088 3346     		mov	r3, r6
+ 1497 008a 1A46     		mov	r2, r3
+ 1498 008c 4FF00003 		mov	r3, #0
+ 1499 0090 DD00     		lsls	r5, r3, #3
+ 1500 0092 45EA5275 		orr	r5, r5, r2, lsr #29
+ 1501 0096 D400     		lsls	r4, r2, #3
+ 1502 0098 3346     		mov	r3, r6
+ 1503 009a 0733     		adds	r3, r3, #7
+ 1504 009c DB08     		lsrs	r3, r3, #3
+ 1505 009e DB00     		lsls	r3, r3, #3
+ 1506 00a0 ADEB030D 		sub	sp, sp, r3
+ 1507 00a4 6B46     		mov	r3, sp
+ 1508 00a6 0033     		adds	r3, r3, #0
+ 1509 00a8 BB64     		str	r3, [r7, #72]
+ 354:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memset(var_header, 0, sizeof(var_header));
+ 1510              		.loc 1 354 0
+ 1511 00aa BB6C     		ldr	r3, [r7, #72]
+ 1512 00ac 3246     		mov	r2, r6
+ 1513 00ae 1846     		mov	r0, r3
+ 1514 00b0 0021     		movs	r1, #0
+ 1515 00b2 FFF7FEFF 		bl	memset
+ 355:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	var_header[0] = topiclen>>8;
+ 1516              		.loc 1 355 0
+ 1517 00b6 B7F85230 		ldrh	r3, [r7, #82]
+ 1518 00ba 1B0A     		lsrs	r3, r3, #8
+ 1519 00bc 9BB2     		uxth	r3, r3
+ 1520 00be DAB2     		uxtb	r2, r3
+ 1521 00c0 BB6C     		ldr	r3, [r7, #72]
+ 1522 00c2 1A70     		strb	r2, [r3]
+ 356:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	var_header[1] = topiclen&0xFF;
+ 1523              		.loc 1 356 0
+ 1524 00c4 B7F85230 		ldrh	r3, [r7, #82]	@ movhi
+ 1525 00c8 DAB2     		uxtb	r2, r3
+ 1526 00ca BB6C     		ldr	r3, [r7, #72]
+ 1527 00cc 5A70     		strb	r2, [r3, #1]
+ 357:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(var_header+2, topic, topiclen);
+ 1528              		.loc 1 357 0
+ 1529 00ce BB6C     		ldr	r3, [r7, #72]
+ 1530 00d0 9A1C     		adds	r2, r3, #2
+ 1531 00d2 B7F85230 		ldrh	r3, [r7, #82]
+ 1532 00d6 1046     		mov	r0, r2
+ 1533 00d8 B96A     		ldr	r1, [r7, #40]
+ 1534 00da 1A46     		mov	r2, r3
+ 1535 00dc FFF7FEFF 		bl	memcpy
+ 358:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(qos_size) {
+ 1536              		.loc 1 358 0
+ 1537 00e0 97F85630 		ldrb	r3, [r7, #86]	@ zero_extendqisi2
+ 1538 00e4 002B     		cmp	r3, #0
+ 1539 00e6 25D0     		beq	.L61
+ 359:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		var_header[topiclen+2] = broker->seq>>8;
+ 1540              		.loc 1 359 0
+ 1541 00e8 B7F85230 		ldrh	r3, [r7, #82]
+ 1542 00ec 0233     		adds	r3, r3, #2
+ 1543 00ee FA6A     		ldr	r2, [r7, #44]
+ 1544 00f0 B2F85820 		ldrh	r2, [r2, #88]
+ 1545 00f4 120A     		lsrs	r2, r2, #8
+ 1546 00f6 92B2     		uxth	r2, r2
+ 1547 00f8 D1B2     		uxtb	r1, r2
+ 1548 00fa BA6C     		ldr	r2, [r7, #72]
+ 1549 00fc D154     		strb	r1, [r2, r3]
+ 360:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		var_header[topiclen+3] = broker->seq&0xFF;
+ 1550              		.loc 1 360 0
+ 1551 00fe B7F85230 		ldrh	r3, [r7, #82]
+ 1552 0102 0333     		adds	r3, r3, #3
+ 1553 0104 FA6A     		ldr	r2, [r7, #44]
+ 1554 0106 B2F85820 		ldrh	r2, [r2, #88]
+ 1555 010a D1B2     		uxtb	r1, r2
+ 1556 010c BA6C     		ldr	r2, [r7, #72]
+ 1557 010e D154     		strb	r1, [r2, r3]
+ 361:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		if(message_id) { // Returning message id
+ 1558              		.loc 1 361 0
+ 1559 0110 D7F88430 		ldr	r3, [r7, #132]
+ 1560 0114 002B     		cmp	r3, #0
+ 1561 0116 05D0     		beq	.L62
+ 362:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 			*message_id = broker->seq;
+ 1562              		.loc 1 362 0
+ 1563 0118 FB6A     		ldr	r3, [r7, #44]
+ 1564 011a B3F85820 		ldrh	r2, [r3, #88]
+ 1565 011e D7F88430 		ldr	r3, [r7, #132]
+ 1566 0122 1A80     		strh	r2, [r3]	@ movhi
+ 1567              	.L62:
+ 363:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		}
+ 364:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		broker->seq++;
+ 1568              		.loc 1 364 0
+ 1569 0124 FB6A     		ldr	r3, [r7, #44]
+ 1570 0126 B3F85830 		ldrh	r3, [r3, #88]
+ 1571 012a 0133     		adds	r3, r3, #1
+ 1572 012c 9AB2     		uxth	r2, r3
+ 1573 012e FB6A     		ldr	r3, [r7, #44]
+ 1574 0130 A3F85820 		strh	r2, [r3, #88]	@ movhi
+ 1575              	.L61:
+ 365:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 366:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 367:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Fixed header
+ 368:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// the remaining length is one byte for messages up to 127 bytes, then two bytes after that
+ 369:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// actually, it can be up to 4 bytes but I'm making the assumption the embedded device will only
+ 370:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// need up to two bytes of length (handles up to 16,383 (almost 16k) sized message)
+ 371:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t fixedHeaderSize = 2;    // Default size = one byte Message Type + one byte Remaining Lengt
+ 1576              		.loc 1 371 0
+ 1577 0134 0223     		movs	r3, #2
+ 1578 0136 87F85530 		strb	r3, [r7, #85]
+ 372:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t remainLen = sizeof(var_header)+msglen;
+ 1579              		.loc 1 372 0
+ 1580 013a B2B2     		uxth	r2, r6
+ 1581 013c B7F85030 		ldrh	r3, [r7, #80]	@ movhi
+ 1582 0140 1344     		add	r3, r3, r2
+ 1583 0142 A7F84630 		strh	r3, [r7, #70]	@ movhi
+ 373:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if (remainLen > 127) {
+ 1584              		.loc 1 373 0
+ 1585 0146 B7F84630 		ldrh	r3, [r7, #70]
+ 1586 014a 7F2B     		cmp	r3, #127
+ 1587 014c 04D9     		bls	.L63
+ 374:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		fixedHeaderSize++;          // add an additional byte for Remaining Length
+ 1588              		.loc 1 374 0
+ 1589 014e 97F85530 		ldrb	r3, [r7, #85]	@ zero_extendqisi2
+ 1590 0152 0133     		adds	r3, r3, #1
+ 1591 0154 87F85530 		strb	r3, [r7, #85]
+ 1592              	.L63:
+ 375:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 376:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t fixed_header[fixedHeaderSize];
+ 1593              		.loc 1 376 0
+ 1594 0158 97F85550 		ldrb	r5, [r7, #85]	@ zero_extendqisi2
+ 1595 015c 2B46     		mov	r3, r5
+ 1596 015e 013B     		subs	r3, r3, #1
+ 1597 0160 3B64     		str	r3, [r7, #64]
+ 1598 0162 EAB2     		uxtb	r2, r5
+ 1599 0164 4FF00003 		mov	r3, #0
+ 1600 0168 D900     		lsls	r1, r3, #3
+ 1601 016a F961     		str	r1, [r7, #28]
+ 1602 016c F969     		ldr	r1, [r7, #28]
+ 1603 016e 41EA5271 		orr	r1, r1, r2, lsr #29
+ 1604 0172 F961     		str	r1, [r7, #28]
+ 1605 0174 D300     		lsls	r3, r2, #3
+ 1606 0176 BB61     		str	r3, [r7, #24]
+ 1607 0178 EAB2     		uxtb	r2, r5
+ 1608 017a 4FF00003 		mov	r3, #0
+ 1609 017e D900     		lsls	r1, r3, #3
+ 1610 0180 7961     		str	r1, [r7, #20]
+ 1611 0182 7969     		ldr	r1, [r7, #20]
+ 1612 0184 41EA5271 		orr	r1, r1, r2, lsr #29
+ 1613 0188 7961     		str	r1, [r7, #20]
+ 1614 018a D300     		lsls	r3, r2, #3
+ 1615 018c 3B61     		str	r3, [r7, #16]
+ 1616 018e 2B46     		mov	r3, r5
+ 1617 0190 0733     		adds	r3, r3, #7
+ 1618 0192 DB08     		lsrs	r3, r3, #3
+ 1619 0194 DB00     		lsls	r3, r3, #3
+ 1620 0196 ADEB030D 		sub	sp, sp, r3
+ 1621 019a 6B46     		mov	r3, sp
+ 1622 019c 0033     		adds	r3, r3, #0
+ 1623 019e FB63     		str	r3, [r7, #60]
+ 377:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****     
+ 378:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****    // Message Type, DUP flag, QoS level, Retain
+ 379:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****    fixed_header[0] = MQTT_MSG_PUBLISH | qos_flag;
+ 1624              		.loc 1 379 0
+ 1625 01a0 97F85730 		ldrb	r3, [r7, #87]
+ 1626 01a4 43F03003 		orr	r3, r3, #48
+ 1627 01a8 DAB2     		uxtb	r2, r3
+ 1628 01aa FB6B     		ldr	r3, [r7, #60]
+ 1629 01ac 1A70     		strb	r2, [r3]
+ 380:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(retain) {
+ 1630              		.loc 1 380 0
+ 1631 01ae 97F82330 		ldrb	r3, [r7, #35]	@ zero_extendqisi2
+ 1632 01b2 002B     		cmp	r3, #0
+ 1633 01b4 06D0     		beq	.L64
+ 381:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		fixed_header[0] |= MQTT_RETAIN_FLAG;
+ 1634              		.loc 1 381 0
+ 1635 01b6 FB6B     		ldr	r3, [r7, #60]
+ 1636 01b8 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1637 01ba 43F00103 		orr	r3, r3, #1
+ 1638 01be DAB2     		uxtb	r2, r3
+ 1639 01c0 FB6B     		ldr	r3, [r7, #60]
+ 1640 01c2 1A70     		strb	r2, [r3]
+ 1641              	.L64:
+ 382:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****    }
+ 383:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****    // Remaining Length
+ 384:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****    if (remainLen <= 127) {
+ 1642              		.loc 1 384 0
+ 1643 01c4 B7F84630 		ldrh	r3, [r7, #70]
+ 1644 01c8 7F2B     		cmp	r3, #127
+ 1645 01ca 05D8     		bhi	.L65
+ 385:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****        fixed_header[1] = remainLen;
+ 1646              		.loc 1 385 0
+ 1647 01cc B7F84630 		ldrh	r3, [r7, #70]	@ movhi
+ 1648 01d0 DAB2     		uxtb	r2, r3
+ 1649 01d2 FB6B     		ldr	r3, [r7, #60]
+ 1650 01d4 5A70     		strb	r2, [r3, #1]
+ 1651 01d6 15E0     		b	.L66
+ 1652              	.L65:
+ 386:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****    } else {
+ 387:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****        // first byte is remainder (mod) of 128, then set the MSB to indicate more bytes
+ 388:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****        fixed_header[1] = remainLen % 128;
+ 1653              		.loc 1 388 0
+ 1654 01d8 B7F84630 		ldrh	r3, [r7, #70]	@ movhi
+ 1655 01dc DBB2     		uxtb	r3, r3
+ 1656 01de 03F07F03 		and	r3, r3, #127
+ 1657 01e2 DAB2     		uxtb	r2, r3
+ 1658 01e4 FB6B     		ldr	r3, [r7, #60]
+ 1659 01e6 5A70     		strb	r2, [r3, #1]
+ 389:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****        fixed_header[1] = fixed_header[1] | 0x80;
+ 1660              		.loc 1 389 0
+ 1661 01e8 FB6B     		ldr	r3, [r7, #60]
+ 1662 01ea 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 1663 01ec 63F07F03 		orn	r3, r3, #127
+ 1664 01f0 DAB2     		uxtb	r2, r3
+ 1665 01f2 FB6B     		ldr	r3, [r7, #60]
+ 1666 01f4 5A70     		strb	r2, [r3, #1]
+ 390:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****        // second byte is number of 128s
+ 391:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****        fixed_header[2] = remainLen / 128;
+ 1667              		.loc 1 391 0
+ 1668 01f6 B7F84630 		ldrh	r3, [r7, #70]
+ 1669 01fa DB09     		lsrs	r3, r3, #7
+ 1670 01fc 9BB2     		uxth	r3, r3
+ 1671 01fe DAB2     		uxtb	r2, r3
+ 1672 0200 FB6B     		ldr	r3, [r7, #60]
+ 1673 0202 9A70     		strb	r2, [r3, #2]
+ 1674              	.L66:
+ 392:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c ****    }
+ 393:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 394:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t packet[sizeof(fixed_header)+sizeof(var_header)+msglen];
+ 1675              		.loc 1 394 0
+ 1676 0204 2A46     		mov	r2, r5
+ 1677 0206 3346     		mov	r3, r6
+ 1678 0208 1A44     		add	r2, r2, r3
+ 1679 020a B7F85030 		ldrh	r3, [r7, #80]
+ 1680 020e D418     		adds	r4, r2, r3
+ 1681 0210 2346     		mov	r3, r4
+ 1682 0212 013B     		subs	r3, r3, #1
+ 1683 0214 BB63     		str	r3, [r7, #56]
+ 1684 0216 2246     		mov	r2, r4
+ 1685 0218 4FF00003 		mov	r3, #0
+ 1686 021c D900     		lsls	r1, r3, #3
+ 1687 021e F960     		str	r1, [r7, #12]
+ 1688 0220 F968     		ldr	r1, [r7, #12]
+ 1689 0222 41EA5271 		orr	r1, r1, r2, lsr #29
+ 1690 0226 F960     		str	r1, [r7, #12]
+ 1691 0228 D300     		lsls	r3, r2, #3
+ 1692 022a BB60     		str	r3, [r7, #8]
+ 1693 022c 2246     		mov	r2, r4
+ 1694 022e 4FF00003 		mov	r3, #0
+ 1695 0232 4FEAC30B 		lsl	fp, r3, #3
+ 1696 0236 4BEA527B 		orr	fp, fp, r2, lsr #29
+ 1697 023a 4FEAC20A 		lsl	r10, r2, #3
+ 1698 023e E31D     		adds	r3, r4, #7
+ 1699 0240 DB08     		lsrs	r3, r3, #3
+ 1700 0242 DB00     		lsls	r3, r3, #3
+ 1701 0244 ADEB030D 		sub	sp, sp, r3
+ 1702 0248 6B46     		mov	r3, sp
+ 1703 024a 0033     		adds	r3, r3, #0
+ 1704 024c 7B63     		str	r3, [r7, #52]
+ 395:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memset(packet, 0, sizeof(packet));
+ 1705              		.loc 1 395 0
+ 1706 024e 7B6B     		ldr	r3, [r7, #52]
+ 1707 0250 1846     		mov	r0, r3
+ 1708 0252 0021     		movs	r1, #0
+ 1709 0254 2246     		mov	r2, r4
+ 1710 0256 FFF7FEFF 		bl	memset
+ 396:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(packet, fixed_header, sizeof(fixed_header));
+ 1711              		.loc 1 396 0
+ 1712 025a 7A6B     		ldr	r2, [r7, #52]
+ 1713 025c FB6B     		ldr	r3, [r7, #60]
+ 1714 025e AE46     		mov	lr, r5
+ 1715 0260 1046     		mov	r0, r2
+ 1716 0262 1946     		mov	r1, r3
+ 1717 0264 7246     		mov	r2, lr
+ 1718 0266 FFF7FEFF 		bl	memcpy
+ 397:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(packet+sizeof(fixed_header), var_header, sizeof(var_header));
+ 1719              		.loc 1 397 0
+ 1720 026a 7B6B     		ldr	r3, [r7, #52]
+ 1721 026c 2A46     		mov	r2, r5
+ 1722 026e 1A44     		add	r2, r2, r3
+ 1723 0270 BB6C     		ldr	r3, [r7, #72]
+ 1724 0272 B646     		mov	lr, r6
+ 1725 0274 1046     		mov	r0, r2
+ 1726 0276 1946     		mov	r1, r3
+ 1727 0278 7246     		mov	r2, lr
+ 1728 027a FFF7FEFF 		bl	memcpy
+ 398:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(packet+sizeof(fixed_header)+sizeof(var_header), msg, msglen);
+ 1729              		.loc 1 398 0
+ 1730 027e 7A6B     		ldr	r2, [r7, #52]
+ 1731 0280 2946     		mov	r1, r5
+ 1732 0282 3346     		mov	r3, r6
+ 1733 0284 0B44     		add	r3, r3, r1
+ 1734 0286 1A44     		add	r2, r2, r3
+ 1735 0288 B7F85030 		ldrh	r3, [r7, #80]
+ 1736 028c 1046     		mov	r0, r2
+ 1737 028e 796A     		ldr	r1, [r7, #36]
+ 1738 0290 1A46     		mov	r2, r3
+ 1739 0292 FFF7FEFF 		bl	memcpy
+ 399:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 400:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Send the packet
+ 401:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(broker->send(broker->socket_info, packet, sizeof(packet)) < sizeof(packet)) {
+ 1740              		.loc 1 401 0
+ 1741 0296 FB6A     		ldr	r3, [r7, #44]
+ 1742 0298 5B68     		ldr	r3, [r3, #4]
+ 1743 029a FA6A     		ldr	r2, [r7, #44]
+ 1744 029c 1168     		ldr	r1, [r2]
+ 1745 029e 7A6B     		ldr	r2, [r7, #52]
+ 1746 02a0 0846     		mov	r0, r1
+ 1747 02a2 1146     		mov	r1, r2
+ 1748 02a4 2246     		mov	r2, r4
+ 1749 02a6 9847     		blx	r3
+ 1750 02a8 0346     		mov	r3, r0
+ 1751 02aa A342     		cmp	r3, r4
+ 1752 02ac 02D2     		bcs	.L67
+ 402:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		return -1;
+ 1753              		.loc 1 402 0
+ 1754 02ae 4FF0FF33 		mov	r3, #-1
+ 1755 02b2 00E0     		b	.L68
+ 1756              	.L67:
+ 403:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 404:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 405:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return 1;
+ 1757              		.loc 1 405 0
+ 1758 02b4 0123     		movs	r3, #1
+ 1759              	.L68:
+ 1760 02b6 D7F804D0 		ldr	sp, [r7, #4]
+ 406:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 1761              		.loc 1 406 0
+ 1762 02ba 1846     		mov	r0, r3
+ 1763 02bc 5C37     		adds	r7, r7, #92
+ 1764              		.cfi_def_cfa_offset 36
+ 1765 02be BD46     		mov	sp, r7
+ 1766              		.cfi_def_cfa_register 13
+ 1767              		@ sp needed
+ 1768 02c0 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 1769              		.cfi_endproc
+ 1770              	.LFE14:
+ 1772              		.section	.text.mqtt_pubrel,"ax",%progbits
+ 1773              		.align	2
+ 1774              		.global	mqtt_pubrel
+ 1775              		.thumb
+ 1776              		.thumb_func
+ 1778              	mqtt_pubrel:
+ 1779              	.LFB15:
+ 407:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 408:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** int mqtt_pubrel(mqtt_broker_handle_t* broker, uint16_t message_id) {
+ 1780              		.loc 1 408 0
+ 1781              		.cfi_startproc
+ 1782              		@ args = 0, pretend = 0, frame = 16
+ 1783              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1784 0000 80B5     		push	{r7, lr}
+ 1785              		.cfi_def_cfa_offset 8
+ 1786              		.cfi_offset 7, -8
+ 1787              		.cfi_offset 14, -4
+ 1788 0002 84B0     		sub	sp, sp, #16
+ 1789              		.cfi_def_cfa_offset 24
+ 1790 0004 00AF     		add	r7, sp, #0
+ 1791              		.cfi_def_cfa_register 7
+ 1792 0006 7860     		str	r0, [r7, #4]
+ 1793 0008 0B46     		mov	r3, r1
+ 1794 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 409:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t packet[] = {
+ 1795              		.loc 1 409 0
+ 1796 000c 6223     		movs	r3, #98
+ 1797 000e 3B73     		strb	r3, [r7, #12]
+ 1798 0010 0223     		movs	r3, #2
+ 1799 0012 7B73     		strb	r3, [r7, #13]
+ 1800 0014 7B88     		ldrh	r3, [r7, #2]
+ 1801 0016 1B0A     		lsrs	r3, r3, #8
+ 1802 0018 9BB2     		uxth	r3, r3
+ 1803 001a DBB2     		uxtb	r3, r3
+ 1804 001c BB73     		strb	r3, [r7, #14]
+ 1805 001e 7B88     		ldrh	r3, [r7, #2]	@ movhi
+ 1806 0020 DBB2     		uxtb	r3, r3
+ 1807 0022 FB73     		strb	r3, [r7, #15]
+ 410:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		MQTT_MSG_PUBREL | MQTT_QOS1_FLAG, // Message Type, DUP flag, QoS level, Retain
+ 411:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		0x02, // Remaining length
+ 412:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		message_id>>8,
+ 413:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		message_id&0xFF
+ 414:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	};
+ 415:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 416:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Send the packet
+ 417:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(broker->send(broker->socket_info, packet, sizeof(packet)) < sizeof(packet)) {
+ 1808              		.loc 1 417 0
+ 1809 0024 7B68     		ldr	r3, [r7, #4]
+ 1810 0026 5B68     		ldr	r3, [r3, #4]
+ 1811 0028 7A68     		ldr	r2, [r7, #4]
+ 1812 002a 1168     		ldr	r1, [r2]
+ 1813 002c 07F10C02 		add	r2, r7, #12
+ 1814 0030 0846     		mov	r0, r1
+ 1815 0032 1146     		mov	r1, r2
+ 1816 0034 0422     		movs	r2, #4
+ 1817 0036 9847     		blx	r3
+ 1818 0038 0346     		mov	r3, r0
+ 1819 003a 032B     		cmp	r3, #3
+ 1820 003c 02D8     		bhi	.L71
+ 418:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		return -1;
+ 1821              		.loc 1 418 0
+ 1822 003e 4FF0FF33 		mov	r3, #-1
+ 1823 0042 00E0     		b	.L73
+ 1824              	.L71:
+ 419:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 420:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 421:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return 1;
+ 1825              		.loc 1 421 0
+ 1826 0044 0123     		movs	r3, #1
+ 1827              	.L73:
+ 422:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 1828              		.loc 1 422 0 discriminator 1
+ 1829 0046 1846     		mov	r0, r3
+ 1830 0048 1037     		adds	r7, r7, #16
+ 1831              		.cfi_def_cfa_offset 8
+ 1832 004a BD46     		mov	sp, r7
+ 1833              		.cfi_def_cfa_register 13
+ 1834              		@ sp needed
+ 1835 004c 80BD     		pop	{r7, pc}
+ 1836              		.cfi_endproc
+ 1837              	.LFE15:
+ 1839 004e 00BF     		.section	.text.mqtt_subscribe,"ax",%progbits
+ 1840              		.align	2
+ 1841              		.global	mqtt_subscribe
+ 1842              		.thumb
+ 1843              		.thumb_func
+ 1845              	mqtt_subscribe:
+ 1846              	.LFB16:
+ 423:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 424:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** int mqtt_subscribe(mqtt_broker_handle_t* broker, const char* topic, uint16_t* message_id) {
+ 1847              		.loc 1 424 0
+ 1848              		.cfi_startproc
+ 1849              		@ args = 0, pretend = 0, frame = 56
+ 1850              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1851 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 1852              		.cfi_def_cfa_offset 36
+ 1853              		.cfi_offset 4, -36
+ 1854              		.cfi_offset 5, -32
+ 1855              		.cfi_offset 6, -28
+ 1856              		.cfi_offset 7, -24
+ 1857              		.cfi_offset 8, -20
+ 1858              		.cfi_offset 9, -16
+ 1859              		.cfi_offset 10, -12
+ 1860              		.cfi_offset 11, -8
+ 1861              		.cfi_offset 14, -4
+ 1862 0004 8FB0     		sub	sp, sp, #60
+ 1863              		.cfi_def_cfa_offset 96
+ 1864 0006 00AF     		add	r7, sp, #0
+ 1865              		.cfi_def_cfa_register 7
+ 1866 0008 7861     		str	r0, [r7, #20]
+ 1867 000a 3961     		str	r1, [r7, #16]
+ 1868 000c FA60     		str	r2, [r7, #12]
+ 1869 000e 6B46     		mov	r3, sp
+ 1870 0010 BB60     		str	r3, [r7, #8]
+ 425:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t topiclen = strlen(topic);
+ 1871              		.loc 1 425 0
+ 1872 0012 3869     		ldr	r0, [r7, #16]
+ 1873 0014 FFF7FEFF 		bl	strlen
+ 1874 0018 0346     		mov	r3, r0
+ 1875 001a FB86     		strh	r3, [r7, #54]	@ movhi
+ 426:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 427:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Variable header
+ 428:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t var_header[2]; // Message ID
+ 429:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	var_header[0] = broker->seq>>8;
+ 1876              		.loc 1 429 0
+ 1877 001c 7B69     		ldr	r3, [r7, #20]
+ 1878 001e B3F85830 		ldrh	r3, [r3, #88]
+ 1879 0022 1B0A     		lsrs	r3, r3, #8
+ 1880 0024 9BB2     		uxth	r3, r3
+ 1881 0026 DBB2     		uxtb	r3, r3
+ 1882 0028 87F82030 		strb	r3, [r7, #32]
+ 430:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	var_header[1] = broker->seq&0xFF;
+ 1883              		.loc 1 430 0
+ 1884 002c 7B69     		ldr	r3, [r7, #20]
+ 1885 002e B3F85830 		ldrh	r3, [r3, #88]
+ 1886 0032 DBB2     		uxtb	r3, r3
+ 1887 0034 87F82130 		strb	r3, [r7, #33]
+ 431:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(message_id) { // Returning message id
+ 1888              		.loc 1 431 0
+ 1889 0038 FB68     		ldr	r3, [r7, #12]
+ 1890 003a 002B     		cmp	r3, #0
+ 1891 003c 04D0     		beq	.L75
+ 432:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		*message_id = broker->seq;
+ 1892              		.loc 1 432 0
+ 1893 003e 7B69     		ldr	r3, [r7, #20]
+ 1894 0040 B3F85820 		ldrh	r2, [r3, #88]
+ 1895 0044 FB68     		ldr	r3, [r7, #12]
+ 1896 0046 1A80     		strh	r2, [r3]	@ movhi
+ 1897              	.L75:
+ 433:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 434:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	broker->seq++;
+ 1898              		.loc 1 434 0
+ 1899 0048 7B69     		ldr	r3, [r7, #20]
+ 1900 004a B3F85830 		ldrh	r3, [r3, #88]
+ 1901 004e 0133     		adds	r3, r3, #1
+ 1902 0050 9AB2     		uxth	r2, r3
+ 1903 0052 7B69     		ldr	r3, [r7, #20]
+ 1904 0054 A3F85820 		strh	r2, [r3, #88]	@ movhi
+ 435:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 436:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// utf topic
+ 437:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t utf_topic[topiclen+3]; // Topic size (2 bytes), utf-encoded topic, QoS byte
+ 1905              		.loc 1 437 0
+ 1906 0058 FB8E     		ldrh	r3, [r7, #54]
+ 1907 005a DE1C     		adds	r6, r3, #3
+ 1908 005c 731E     		subs	r3, r6, #1
+ 1909 005e 3B63     		str	r3, [r7, #48]
+ 1910 0060 3346     		mov	r3, r6
+ 1911 0062 1A46     		mov	r2, r3
+ 1912 0064 4FF00003 		mov	r3, #0
+ 1913 0068 D900     		lsls	r1, r3, #3
+ 1914 006a 7960     		str	r1, [r7, #4]
+ 1915 006c 7968     		ldr	r1, [r7, #4]
+ 1916 006e 41EA5271 		orr	r1, r1, r2, lsr #29
+ 1917 0072 7960     		str	r1, [r7, #4]
+ 1918 0074 D300     		lsls	r3, r2, #3
+ 1919 0076 3B60     		str	r3, [r7]
+ 1920 0078 3346     		mov	r3, r6
+ 1921 007a 1A46     		mov	r2, r3
+ 1922 007c 4FF00003 		mov	r3, #0
+ 1923 0080 4FEAC30B 		lsl	fp, r3, #3
+ 1924 0084 4BEA527B 		orr	fp, fp, r2, lsr #29
+ 1925 0088 4FEAC20A 		lsl	r10, r2, #3
+ 1926 008c 3346     		mov	r3, r6
+ 1927 008e 0733     		adds	r3, r3, #7
+ 1928 0090 DB08     		lsrs	r3, r3, #3
+ 1929 0092 DB00     		lsls	r3, r3, #3
+ 1930 0094 ADEB030D 		sub	sp, sp, r3
+ 1931 0098 6B46     		mov	r3, sp
+ 1932 009a 0033     		adds	r3, r3, #0
+ 1933 009c FB62     		str	r3, [r7, #44]
+ 438:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memset(utf_topic, 0, sizeof(utf_topic));
+ 1934              		.loc 1 438 0
+ 1935 009e FB6A     		ldr	r3, [r7, #44]
+ 1936 00a0 3246     		mov	r2, r6
+ 1937 00a2 1846     		mov	r0, r3
+ 1938 00a4 0021     		movs	r1, #0
+ 1939 00a6 FFF7FEFF 		bl	memset
+ 439:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	utf_topic[0] = topiclen>>8;
+ 1940              		.loc 1 439 0
+ 1941 00aa FB8E     		ldrh	r3, [r7, #54]
+ 1942 00ac 1B0A     		lsrs	r3, r3, #8
+ 1943 00ae 9BB2     		uxth	r3, r3
+ 1944 00b0 DAB2     		uxtb	r2, r3
+ 1945 00b2 FB6A     		ldr	r3, [r7, #44]
+ 1946 00b4 1A70     		strb	r2, [r3]
+ 440:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	utf_topic[1] = topiclen&0xFF;
+ 1947              		.loc 1 440 0
+ 1948 00b6 FB8E     		ldrh	r3, [r7, #54]	@ movhi
+ 1949 00b8 DAB2     		uxtb	r2, r3
+ 1950 00ba FB6A     		ldr	r3, [r7, #44]
+ 1951 00bc 5A70     		strb	r2, [r3, #1]
+ 441:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(utf_topic+2, topic, topiclen);
+ 1952              		.loc 1 441 0
+ 1953 00be FB6A     		ldr	r3, [r7, #44]
+ 1954 00c0 9A1C     		adds	r2, r3, #2
+ 1955 00c2 FB8E     		ldrh	r3, [r7, #54]
+ 1956 00c4 1046     		mov	r0, r2
+ 1957 00c6 3969     		ldr	r1, [r7, #16]
+ 1958 00c8 1A46     		mov	r2, r3
+ 1959 00ca FFF7FEFF 		bl	memcpy
+ 442:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 443:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Fixed header
+ 444:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t fixed_header[] = {
+ 1960              		.loc 1 444 0
+ 1961 00ce 8223     		movs	r3, #130
+ 1962 00d0 3B77     		strb	r3, [r7, #28]
+ 1963 00d2 F3B2     		uxtb	r3, r6
+ 1964 00d4 0233     		adds	r3, r3, #2
+ 1965 00d6 DBB2     		uxtb	r3, r3
+ 1966 00d8 7B77     		strb	r3, [r7, #29]
+ 445:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		MQTT_MSG_SUBSCRIBE | MQTT_QOS1_FLAG, // Message Type, DUP flag, QoS level, Retain
+ 446:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		sizeof(var_header)+sizeof(utf_topic)
+ 447:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	};
+ 448:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 449:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t packet[sizeof(var_header)+sizeof(fixed_header)+sizeof(utf_topic)];
+ 1967              		.loc 1 449 0
+ 1968 00da 3346     		mov	r3, r6
+ 1969 00dc 0333     		adds	r3, r3, #3
+ 1970 00de BB62     		str	r3, [r7, #40]
+ 1971 00e0 3346     		mov	r3, r6
+ 1972 00e2 0433     		adds	r3, r3, #4
+ 1973 00e4 1A46     		mov	r2, r3
+ 1974 00e6 4FF00003 		mov	r3, #0
+ 1975 00ea 4FEAC309 		lsl	r9, r3, #3
+ 1976 00ee 49EA5279 		orr	r9, r9, r2, lsr #29
+ 1977 00f2 4FEAC208 		lsl	r8, r2, #3
+ 1978 00f6 3346     		mov	r3, r6
+ 1979 00f8 0433     		adds	r3, r3, #4
+ 1980 00fa 1A46     		mov	r2, r3
+ 1981 00fc 4FF00003 		mov	r3, #0
+ 1982 0100 DD00     		lsls	r5, r3, #3
+ 1983 0102 45EA5275 		orr	r5, r5, r2, lsr #29
+ 1984 0106 D400     		lsls	r4, r2, #3
+ 1985 0108 3346     		mov	r3, r6
+ 1986 010a 0433     		adds	r3, r3, #4
+ 1987 010c 0733     		adds	r3, r3, #7
+ 1988 010e DB08     		lsrs	r3, r3, #3
+ 1989 0110 DB00     		lsls	r3, r3, #3
+ 1990 0112 ADEB030D 		sub	sp, sp, r3
+ 1991 0116 6B46     		mov	r3, sp
+ 1992 0118 0033     		adds	r3, r3, #0
+ 1993 011a 7B62     		str	r3, [r7, #36]
+ 450:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memset(packet, 0, sizeof(packet));
+ 1994              		.loc 1 450 0
+ 1995 011c 7A6A     		ldr	r2, [r7, #36]
+ 1996 011e 3346     		mov	r3, r6
+ 1997 0120 0433     		adds	r3, r3, #4
+ 1998 0122 1046     		mov	r0, r2
+ 1999 0124 0021     		movs	r1, #0
+ 2000 0126 1A46     		mov	r2, r3
+ 2001 0128 FFF7FEFF 		bl	memset
+ 451:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(packet, fixed_header, sizeof(fixed_header));
+ 2002              		.loc 1 451 0
+ 2003 012c 7B6A     		ldr	r3, [r7, #36]
+ 2004 012e 1A46     		mov	r2, r3
+ 2005 0130 07F11C03 		add	r3, r7, #28
+ 2006 0134 1B88     		ldrh	r3, [r3]	@ unaligned
+ 2007 0136 1380     		strh	r3, [r2]	@ unaligned
+ 452:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(packet+sizeof(fixed_header), var_header, sizeof(var_header));
+ 2008              		.loc 1 452 0
+ 2009 0138 7B6A     		ldr	r3, [r7, #36]
+ 2010 013a 0233     		adds	r3, r3, #2
+ 2011 013c 1A46     		mov	r2, r3
+ 2012 013e 07F12003 		add	r3, r7, #32
+ 2013 0142 1B88     		ldrh	r3, [r3]	@ unaligned
+ 2014 0144 1380     		strh	r3, [r2]	@ unaligned
+ 453:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(packet+sizeof(fixed_header)+sizeof(var_header), utf_topic, sizeof(utf_topic));
+ 2015              		.loc 1 453 0
+ 2016 0146 7B6A     		ldr	r3, [r7, #36]
+ 2017 0148 1A1D     		adds	r2, r3, #4
+ 2018 014a FB6A     		ldr	r3, [r7, #44]
+ 2019 014c 3446     		mov	r4, r6
+ 2020 014e 1046     		mov	r0, r2
+ 2021 0150 1946     		mov	r1, r3
+ 2022 0152 2246     		mov	r2, r4
+ 2023 0154 FFF7FEFF 		bl	memcpy
+ 454:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 455:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Send the packet
+ 456:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(broker->send(broker->socket_info, packet, sizeof(packet)) < sizeof(packet)) {
+ 2024              		.loc 1 456 0
+ 2025 0158 7B69     		ldr	r3, [r7, #20]
+ 2026 015a 5B68     		ldr	r3, [r3, #4]
+ 2027 015c 7A69     		ldr	r2, [r7, #20]
+ 2028 015e 1068     		ldr	r0, [r2]
+ 2029 0160 796A     		ldr	r1, [r7, #36]
+ 2030 0162 3246     		mov	r2, r6
+ 2031 0164 0432     		adds	r2, r2, #4
+ 2032 0166 9847     		blx	r3
+ 2033 0168 0346     		mov	r3, r0
+ 2034 016a 1A46     		mov	r2, r3
+ 2035 016c 3346     		mov	r3, r6
+ 2036 016e 0433     		adds	r3, r3, #4
+ 2037 0170 9A42     		cmp	r2, r3
+ 2038 0172 02D2     		bcs	.L76
+ 457:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		return -1;
+ 2039              		.loc 1 457 0
+ 2040 0174 4FF0FF33 		mov	r3, #-1
+ 2041 0178 00E0     		b	.L77
+ 2042              	.L76:
+ 458:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 459:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 460:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return 1;
+ 2043              		.loc 1 460 0
+ 2044 017a 0123     		movs	r3, #1
+ 2045              	.L77:
+ 2046 017c D7F808D0 		ldr	sp, [r7, #8]
+ 461:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }
+ 2047              		.loc 1 461 0
+ 2048 0180 1846     		mov	r0, r3
+ 2049 0182 3C37     		adds	r7, r7, #60
+ 2050              		.cfi_def_cfa_offset 36
+ 2051 0184 BD46     		mov	sp, r7
+ 2052              		.cfi_def_cfa_register 13
+ 2053              		@ sp needed
+ 2054 0186 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 2055              		.cfi_endproc
+ 2056              	.LFE16:
+ 2058 018a 00BF     		.section	.text.mqtt_unsubscribe,"ax",%progbits
+ 2059              		.align	2
+ 2060              		.global	mqtt_unsubscribe
+ 2061              		.thumb
+ 2062              		.thumb_func
+ 2064              	mqtt_unsubscribe:
+ 2065              	.LFB17:
+ 462:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 463:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** int mqtt_unsubscribe(mqtt_broker_handle_t* broker, const char* topic, uint16_t* message_id) {
+ 2066              		.loc 1 463 0
+ 2067              		.cfi_startproc
+ 2068              		@ args = 0, pretend = 0, frame = 56
+ 2069              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2070 0000 2DE9F04F 		push	{r4, r5, r6, r7, r8, r9, r10, fp, lr}
+ 2071              		.cfi_def_cfa_offset 36
+ 2072              		.cfi_offset 4, -36
+ 2073              		.cfi_offset 5, -32
+ 2074              		.cfi_offset 6, -28
+ 2075              		.cfi_offset 7, -24
+ 2076              		.cfi_offset 8, -20
+ 2077              		.cfi_offset 9, -16
+ 2078              		.cfi_offset 10, -12
+ 2079              		.cfi_offset 11, -8
+ 2080              		.cfi_offset 14, -4
+ 2081 0004 8FB0     		sub	sp, sp, #60
+ 2082              		.cfi_def_cfa_offset 96
+ 2083 0006 00AF     		add	r7, sp, #0
+ 2084              		.cfi_def_cfa_register 7
+ 2085 0008 7861     		str	r0, [r7, #20]
+ 2086 000a 3961     		str	r1, [r7, #16]
+ 2087 000c FA60     		str	r2, [r7, #12]
+ 2088 000e 6B46     		mov	r3, sp
+ 2089 0010 BB60     		str	r3, [r7, #8]
+ 464:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint16_t topiclen = strlen(topic);
+ 2090              		.loc 1 464 0
+ 2091 0012 3869     		ldr	r0, [r7, #16]
+ 2092 0014 FFF7FEFF 		bl	strlen
+ 2093 0018 0346     		mov	r3, r0
+ 2094 001a FB86     		strh	r3, [r7, #54]	@ movhi
+ 465:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 466:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Variable header
+ 467:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t var_header[2]; // Message ID
+ 468:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	var_header[0] = broker->seq>>8;
+ 2095              		.loc 1 468 0
+ 2096 001c 7B69     		ldr	r3, [r7, #20]
+ 2097 001e B3F85830 		ldrh	r3, [r3, #88]
+ 2098 0022 1B0A     		lsrs	r3, r3, #8
+ 2099 0024 9BB2     		uxth	r3, r3
+ 2100 0026 DBB2     		uxtb	r3, r3
+ 2101 0028 87F82030 		strb	r3, [r7, #32]
+ 469:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	var_header[1] = broker->seq&0xFF;
+ 2102              		.loc 1 469 0
+ 2103 002c 7B69     		ldr	r3, [r7, #20]
+ 2104 002e B3F85830 		ldrh	r3, [r3, #88]
+ 2105 0032 DBB2     		uxtb	r3, r3
+ 2106 0034 87F82130 		strb	r3, [r7, #33]
+ 470:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(message_id) { // Returning message id
+ 2107              		.loc 1 470 0
+ 2108 0038 FB68     		ldr	r3, [r7, #12]
+ 2109 003a 002B     		cmp	r3, #0
+ 2110 003c 04D0     		beq	.L80
+ 471:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		*message_id = broker->seq;
+ 2111              		.loc 1 471 0
+ 2112 003e 7B69     		ldr	r3, [r7, #20]
+ 2113 0040 B3F85820 		ldrh	r2, [r3, #88]
+ 2114 0044 FB68     		ldr	r3, [r7, #12]
+ 2115 0046 1A80     		strh	r2, [r3]	@ movhi
+ 2116              	.L80:
+ 472:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 473:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	broker->seq++;
+ 2117              		.loc 1 473 0
+ 2118 0048 7B69     		ldr	r3, [r7, #20]
+ 2119 004a B3F85830 		ldrh	r3, [r3, #88]
+ 2120 004e 0133     		adds	r3, r3, #1
+ 2121 0050 9AB2     		uxth	r2, r3
+ 2122 0052 7B69     		ldr	r3, [r7, #20]
+ 2123 0054 A3F85820 		strh	r2, [r3, #88]	@ movhi
+ 474:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 475:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// utf topic
+ 476:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t utf_topic[topiclen+2]; // Topic size (2 bytes), utf-encoded topic
+ 2124              		.loc 1 476 0
+ 2125 0058 FB8E     		ldrh	r3, [r7, #54]
+ 2126 005a 9E1C     		adds	r6, r3, #2
+ 2127 005c 731E     		subs	r3, r6, #1
+ 2128 005e 3B63     		str	r3, [r7, #48]
+ 2129 0060 3346     		mov	r3, r6
+ 2130 0062 1A46     		mov	r2, r3
+ 2131 0064 4FF00003 		mov	r3, #0
+ 2132 0068 D900     		lsls	r1, r3, #3
+ 2133 006a 7960     		str	r1, [r7, #4]
+ 2134 006c 7968     		ldr	r1, [r7, #4]
+ 2135 006e 41EA5271 		orr	r1, r1, r2, lsr #29
+ 2136 0072 7960     		str	r1, [r7, #4]
+ 2137 0074 D300     		lsls	r3, r2, #3
+ 2138 0076 3B60     		str	r3, [r7]
+ 2139 0078 3346     		mov	r3, r6
+ 2140 007a 1A46     		mov	r2, r3
+ 2141 007c 4FF00003 		mov	r3, #0
+ 2142 0080 4FEAC30B 		lsl	fp, r3, #3
+ 2143 0084 4BEA527B 		orr	fp, fp, r2, lsr #29
+ 2144 0088 4FEAC20A 		lsl	r10, r2, #3
+ 2145 008c 3346     		mov	r3, r6
+ 2146 008e 0733     		adds	r3, r3, #7
+ 2147 0090 DB08     		lsrs	r3, r3, #3
+ 2148 0092 DB00     		lsls	r3, r3, #3
+ 2149 0094 ADEB030D 		sub	sp, sp, r3
+ 2150 0098 6B46     		mov	r3, sp
+ 2151 009a 0033     		adds	r3, r3, #0
+ 2152 009c FB62     		str	r3, [r7, #44]
+ 477:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memset(utf_topic, 0, sizeof(utf_topic));
+ 2153              		.loc 1 477 0
+ 2154 009e FB6A     		ldr	r3, [r7, #44]
+ 2155 00a0 3246     		mov	r2, r6
+ 2156 00a2 1846     		mov	r0, r3
+ 2157 00a4 0021     		movs	r1, #0
+ 2158 00a6 FFF7FEFF 		bl	memset
+ 478:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	utf_topic[0] = topiclen>>8;
+ 2159              		.loc 1 478 0
+ 2160 00aa FB8E     		ldrh	r3, [r7, #54]
+ 2161 00ac 1B0A     		lsrs	r3, r3, #8
+ 2162 00ae 9BB2     		uxth	r3, r3
+ 2163 00b0 DAB2     		uxtb	r2, r3
+ 2164 00b2 FB6A     		ldr	r3, [r7, #44]
+ 2165 00b4 1A70     		strb	r2, [r3]
+ 479:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	utf_topic[1] = topiclen&0xFF;
+ 2166              		.loc 1 479 0
+ 2167 00b6 FB8E     		ldrh	r3, [r7, #54]	@ movhi
+ 2168 00b8 DAB2     		uxtb	r2, r3
+ 2169 00ba FB6A     		ldr	r3, [r7, #44]
+ 2170 00bc 5A70     		strb	r2, [r3, #1]
+ 480:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(utf_topic+2, topic, topiclen);
+ 2171              		.loc 1 480 0
+ 2172 00be FB6A     		ldr	r3, [r7, #44]
+ 2173 00c0 9A1C     		adds	r2, r3, #2
+ 2174 00c2 FB8E     		ldrh	r3, [r7, #54]
+ 2175 00c4 1046     		mov	r0, r2
+ 2176 00c6 3969     		ldr	r1, [r7, #16]
+ 2177 00c8 1A46     		mov	r2, r3
+ 2178 00ca FFF7FEFF 		bl	memcpy
+ 481:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 482:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Fixed header
+ 483:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t fixed_header[] = {
+ 2179              		.loc 1 483 0
+ 2180 00ce A223     		movs	r3, #162
+ 2181 00d0 3B77     		strb	r3, [r7, #28]
+ 2182 00d2 F3B2     		uxtb	r3, r6
+ 2183 00d4 0233     		adds	r3, r3, #2
+ 2184 00d6 DBB2     		uxtb	r3, r3
+ 2185 00d8 7B77     		strb	r3, [r7, #29]
+ 484:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		MQTT_MSG_UNSUBSCRIBE | MQTT_QOS1_FLAG, // Message Type, DUP flag, QoS level, Retain
+ 485:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		sizeof(var_header)+sizeof(utf_topic)
+ 486:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	};
+ 487:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 488:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	uint8_t packet[sizeof(var_header)+sizeof(fixed_header)+sizeof(utf_topic)];
+ 2186              		.loc 1 488 0
+ 2187 00da 3346     		mov	r3, r6
+ 2188 00dc 0333     		adds	r3, r3, #3
+ 2189 00de BB62     		str	r3, [r7, #40]
+ 2190 00e0 3346     		mov	r3, r6
+ 2191 00e2 0433     		adds	r3, r3, #4
+ 2192 00e4 1A46     		mov	r2, r3
+ 2193 00e6 4FF00003 		mov	r3, #0
+ 2194 00ea 4FEAC309 		lsl	r9, r3, #3
+ 2195 00ee 49EA5279 		orr	r9, r9, r2, lsr #29
+ 2196 00f2 4FEAC208 		lsl	r8, r2, #3
+ 2197 00f6 3346     		mov	r3, r6
+ 2198 00f8 0433     		adds	r3, r3, #4
+ 2199 00fa 1A46     		mov	r2, r3
+ 2200 00fc 4FF00003 		mov	r3, #0
+ 2201 0100 DD00     		lsls	r5, r3, #3
+ 2202 0102 45EA5275 		orr	r5, r5, r2, lsr #29
+ 2203 0106 D400     		lsls	r4, r2, #3
+ 2204 0108 3346     		mov	r3, r6
+ 2205 010a 0433     		adds	r3, r3, #4
+ 2206 010c 0733     		adds	r3, r3, #7
+ 2207 010e DB08     		lsrs	r3, r3, #3
+ 2208 0110 DB00     		lsls	r3, r3, #3
+ 2209 0112 ADEB030D 		sub	sp, sp, r3
+ 2210 0116 6B46     		mov	r3, sp
+ 2211 0118 0033     		adds	r3, r3, #0
+ 2212 011a 7B62     		str	r3, [r7, #36]
+ 489:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memset(packet, 0, sizeof(packet));
+ 2213              		.loc 1 489 0
+ 2214 011c 7A6A     		ldr	r2, [r7, #36]
+ 2215 011e 3346     		mov	r3, r6
+ 2216 0120 0433     		adds	r3, r3, #4
+ 2217 0122 1046     		mov	r0, r2
+ 2218 0124 0021     		movs	r1, #0
+ 2219 0126 1A46     		mov	r2, r3
+ 2220 0128 FFF7FEFF 		bl	memset
+ 490:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(packet, fixed_header, sizeof(fixed_header));
+ 2221              		.loc 1 490 0
+ 2222 012c 7B6A     		ldr	r3, [r7, #36]
+ 2223 012e 1A46     		mov	r2, r3
+ 2224 0130 07F11C03 		add	r3, r7, #28
+ 2225 0134 1B88     		ldrh	r3, [r3]	@ unaligned
+ 2226 0136 1380     		strh	r3, [r2]	@ unaligned
+ 491:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(packet+sizeof(fixed_header), var_header, sizeof(var_header));
+ 2227              		.loc 1 491 0
+ 2228 0138 7B6A     		ldr	r3, [r7, #36]
+ 2229 013a 0233     		adds	r3, r3, #2
+ 2230 013c 1A46     		mov	r2, r3
+ 2231 013e 07F12003 		add	r3, r7, #32
+ 2232 0142 1B88     		ldrh	r3, [r3]	@ unaligned
+ 2233 0144 1380     		strh	r3, [r2]	@ unaligned
+ 492:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	memcpy(packet+sizeof(fixed_header)+sizeof(var_header), utf_topic, sizeof(utf_topic));
+ 2234              		.loc 1 492 0
+ 2235 0146 7B6A     		ldr	r3, [r7, #36]
+ 2236 0148 1A1D     		adds	r2, r3, #4
+ 2237 014a FB6A     		ldr	r3, [r7, #44]
+ 2238 014c 3446     		mov	r4, r6
+ 2239 014e 1046     		mov	r0, r2
+ 2240 0150 1946     		mov	r1, r3
+ 2241 0152 2246     		mov	r2, r4
+ 2242 0154 FFF7FEFF 		bl	memcpy
+ 493:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 494:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	// Send the packet
+ 495:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	if(broker->send(broker->socket_info, packet, sizeof(packet)) < sizeof(packet)) {
+ 2243              		.loc 1 495 0
+ 2244 0158 7B69     		ldr	r3, [r7, #20]
+ 2245 015a 5B68     		ldr	r3, [r3, #4]
+ 2246 015c 7A69     		ldr	r2, [r7, #20]
+ 2247 015e 1068     		ldr	r0, [r2]
+ 2248 0160 796A     		ldr	r1, [r7, #36]
+ 2249 0162 3246     		mov	r2, r6
+ 2250 0164 0432     		adds	r2, r2, #4
+ 2251 0166 9847     		blx	r3
+ 2252 0168 0346     		mov	r3, r0
+ 2253 016a 1A46     		mov	r2, r3
+ 2254 016c 3346     		mov	r3, r6
+ 2255 016e 0433     		adds	r3, r3, #4
+ 2256 0170 9A42     		cmp	r2, r3
+ 2257 0172 02D2     		bcs	.L81
+ 496:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 		return -1;
+ 2258              		.loc 1 496 0
+ 2259 0174 4FF0FF33 		mov	r3, #-1
+ 2260 0178 00E0     		b	.L82
+ 2261              	.L81:
+ 497:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	}
+ 498:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 
+ 499:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** 	return 1;
+ 2262              		.loc 1 499 0
+ 2263 017a 0123     		movs	r3, #1
+ 2264              	.L82:
+ 2265 017c D7F808D0 		ldr	sp, [r7, #8]
+ 500:/home/virusv/TDSAST_IOT/libemqtt/src/libemqtt.c **** }...
+ 2266              		.loc 1 500 0
+ 2267 0180 1846     		mov	r0, r3
+ 2268 0182 3C37     		adds	r7, r7, #60
+ 2269              		.cfi_def_cfa_offset 36
+ 2270 0184 BD46     		mov	sp, r7
+ 2271              		.cfi_def_cfa_register 13
+ 2272              		@ sp needed
+ 2273 0186 BDE8F08F 		pop	{r4, r5, r6, r7, r8, r9, r10, fp, pc}
+ 2274              		.cfi_endproc
+ 2275              	.LFE17:
+ 2277 018a 00BF     		.text
+ 2278              	.Letext0:
+ 2279              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 2280              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 2281              		.file 4 "/home/virusv/TDSAST_IOT/libemqtt/include/libemqtt.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 libemqtt.c
+     /tmp/ccrkVv25.s:19     .text.mqtt_num_rem_len_bytes:0000000000000000 $t
+     /tmp/ccrkVv25.s:24     .text.mqtt_num_rem_len_bytes:0000000000000000 mqtt_num_rem_len_bytes
+     /tmp/ccrkVv25.s:97     .text.mqtt_parse_rem_len:0000000000000000 $t
+     /tmp/ccrkVv25.s:102    .text.mqtt_parse_rem_len:0000000000000000 mqtt_parse_rem_len
+     /tmp/ccrkVv25.s:173    .text.mqtt_parse_msg_id:0000000000000000 $t
+     /tmp/ccrkVv25.s:178    .text.mqtt_parse_msg_id:0000000000000000 mqtt_parse_msg_id
+     /tmp/ccrkVv25.s:310    .text.mqtt_parse_pub_topic:0000000000000000 $t
+     /tmp/ccrkVv25.s:315    .text.mqtt_parse_pub_topic:0000000000000000 mqtt_parse_pub_topic
+     /tmp/ccrkVv25.s:373    .text.mqtt_parse_pub_topic_ptr:0000000000000000 mqtt_parse_pub_topic_ptr
+     /tmp/ccrkVv25.s:368    .text.mqtt_parse_pub_topic_ptr:0000000000000000 $t
+     /tmp/ccrkVv25.s:452    .text.mqtt_parse_publish_msg:0000000000000000 $t
+     /tmp/ccrkVv25.s:457    .text.mqtt_parse_publish_msg:0000000000000000 mqtt_parse_publish_msg
+     /tmp/ccrkVv25.s:515    .text.mqtt_parse_pub_msg_ptr:0000000000000000 mqtt_parse_pub_msg_ptr
+     /tmp/ccrkVv25.s:510    .text.mqtt_parse_pub_msg_ptr:0000000000000000 $t
+     /tmp/ccrkVv25.s:620    .rodata:0000000000000000 $d
+     /tmp/ccrkVv25.s:624    .text.mqtt_init:0000000000000000 $t
+     /tmp/ccrkVv25.s:629    .text.mqtt_init:0000000000000000 mqtt_init
+     /tmp/ccrkVv25.s:710    .text.mqtt_init:0000000000000078 $d
+     /tmp/ccrkVv25.s:715    .text.mqtt_init_auth:0000000000000000 $t
+     /tmp/ccrkVv25.s:720    .text.mqtt_init_auth:0000000000000000 mqtt_init_auth
+     /tmp/ccrkVv25.s:782    .text.mqtt_set_alive:0000000000000000 $t
+     /tmp/ccrkVv25.s:787    .text.mqtt_set_alive:0000000000000000 mqtt_set_alive
+     /tmp/ccrkVv25.s:822    .text.mqtt_connect:0000000000000000 $t
+     /tmp/ccrkVv25.s:827    .text.mqtt_connect:0000000000000000 mqtt_connect
+     /tmp/ccrkVv25.s:1250   .text.mqtt_disconnect:0000000000000000 $t
+     /tmp/ccrkVv25.s:1255   .text.mqtt_disconnect:0000000000000000 mqtt_disconnect
+     /tmp/ccrkVv25.s:1307   .text.mqtt_ping:0000000000000000 $t
+     /tmp/ccrkVv25.s:1312   .text.mqtt_ping:0000000000000000 mqtt_ping
+     /tmp/ccrkVv25.s:1364   .text.mqtt_publish:0000000000000000 $t
+     /tmp/ccrkVv25.s:1369   .text.mqtt_publish:0000000000000000 mqtt_publish
+     /tmp/ccrkVv25.s:1417   .text.mqtt_publish_with_qos:0000000000000000 mqtt_publish_with_qos
+     /tmp/ccrkVv25.s:1412   .text.mqtt_publish_with_qos:0000000000000000 $t
+     /tmp/ccrkVv25.s:1773   .text.mqtt_pubrel:0000000000000000 $t
+     /tmp/ccrkVv25.s:1778   .text.mqtt_pubrel:0000000000000000 mqtt_pubrel
+     /tmp/ccrkVv25.s:1840   .text.mqtt_subscribe:0000000000000000 $t
+     /tmp/ccrkVv25.s:1845   .text.mqtt_subscribe:0000000000000000 mqtt_subscribe
+     /tmp/ccrkVv25.s:2059   .text.mqtt_unsubscribe:0000000000000000 $t
+     /tmp/ccrkVv25.s:2064   .text.mqtt_unsubscribe:0000000000000000 mqtt_unsubscribe
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+memcpy
+memset
+strncpy
+strlen
