@@ -1,0 +1,1226 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32f10x_dac.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.DAC_DeInit,"ax",%progbits
+  19              		.align	2
+  20              		.global	DAC_DeInit
+  21              		.thumb
+  22              		.thumb_func
+  24              	DAC_DeInit:
+  25              	.LFB29:
+  26              		.file 1 "/home/virusv/usart/Libraries/src/stm32f10x_dac.c"
+   1:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+   2:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   ******************************************************************************
+   3:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @file    stm32f10x_dac.c
+   4:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @author  MCD Application Team
+   5:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @version V3.5.0
+   6:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @date    11-March-2011
+   7:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief   This file provides all the DAC firmware functions.
+   8:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   ******************************************************************************
+   9:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @attention
+  10:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *
+  11:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *
+  18:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  19:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   ******************************************************************************
+  20:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+  21:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  22:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /* Includes ------------------------------------------------------------------*/
+  23:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** #include "stm32f10x_dac.h"
+  24:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** #include "stm32f10x_rcc.h"
+  25:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  26:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /** @addtogroup STM32F10x_StdPeriph_Driver
+  27:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @{
+  28:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+  29:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  30:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /** @defgroup DAC 
+  31:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief DAC driver modules
+  32:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @{
+  33:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */ 
+  34:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  35:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /** @defgroup DAC_Private_TypesDefinitions
+  36:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @{
+  37:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+  38:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  39:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+  40:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @}
+  41:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+  42:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  43:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /** @defgroup DAC_Private_Defines
+  44:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @{
+  45:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+  46:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  47:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /* CR register Mask */
+  48:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** #define CR_CLEAR_MASK              ((uint32_t)0x00000FFE)
+  49:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  50:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /* DAC Dual Channels SWTRIG masks */
+  51:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** #define DUAL_SWTRIG_SET            ((uint32_t)0x00000003)
+  52:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** #define DUAL_SWTRIG_RESET          ((uint32_t)0xFFFFFFFC)
+  53:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  54:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /* DHR registers offsets */
+  55:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** #define DHR12R1_OFFSET             ((uint32_t)0x00000008)
+  56:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** #define DHR12R2_OFFSET             ((uint32_t)0x00000014)
+  57:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** #define DHR12RD_OFFSET             ((uint32_t)0x00000020)
+  58:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  59:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /* DOR register offset */
+  60:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** #define DOR_OFFSET                 ((uint32_t)0x0000002C)
+  61:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+  62:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @}
+  63:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+  64:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  65:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /** @defgroup DAC_Private_Macros
+  66:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @{
+  67:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+  68:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  69:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+  70:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @}
+  71:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+  72:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  73:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /** @defgroup DAC_Private_Variables
+  74:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @{
+  75:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+  76:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  77:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+  78:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @}
+  79:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+  80:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  81:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /** @defgroup DAC_Private_FunctionPrototypes
+  82:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @{
+  83:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+  84:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  85:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+  86:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @}
+  87:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+  88:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  89:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /** @defgroup DAC_Private_Functions
+  90:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @{
+  91:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+  92:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+  93:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+  94:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief  Deinitializes the DAC peripheral registers to their default reset values.
+  95:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  None
+  96:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @retval None
+  97:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+  98:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** void DAC_DeInit(void)
+  99:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** {
+  27              		.loc 1 99 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31 0000 80B5     		push	{r7, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 7, -8
+  34              		.cfi_offset 14, -4
+  35 0002 00AF     		add	r7, sp, #0
+  36              		.cfi_def_cfa_register 7
+ 100:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Enable DAC reset state */
+ 101:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_DAC, ENABLE);
+  37              		.loc 1 101 0
+  38 0004 4FF00050 		mov	r0, #536870912
+  39 0008 0121     		movs	r1, #1
+  40 000a FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+ 102:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Release DAC from reset state */
+ 103:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_DAC, DISABLE);
+  41              		.loc 1 103 0
+  42 000e 4FF00050 		mov	r0, #536870912
+  43 0012 0021     		movs	r1, #0
+  44 0014 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+ 104:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** }
+  45              		.loc 1 104 0
+  46 0018 80BD     		pop	{r7, pc}
+  47              		.cfi_endproc
+  48              	.LFE29:
+  50 001a 00BF     		.section	.text.DAC_Init,"ax",%progbits
+  51              		.align	2
+  52              		.global	DAC_Init
+  53              		.thumb
+  54              		.thumb_func
+  56              	DAC_Init:
+  57              	.LFB30:
+ 105:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 106:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+ 107:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief  Initializes the DAC peripheral according to the specified 
+ 108:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *         parameters in the DAC_InitStruct.
+ 109:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  DAC_Channel: the selected DAC channel. 
+ 110:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 111:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_1: DAC Channel1 selected
+ 112:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_2: DAC Channel2 selected
+ 113:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  DAC_InitStruct: pointer to a DAC_InitTypeDef structure that
+ 114:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *        contains the configuration information for the specified DAC channel.
+ 115:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @retval None
+ 116:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+ 117:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** void DAC_Init(uint32_t DAC_Channel, DAC_InitTypeDef* DAC_InitStruct)
+ 118:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** {
+  58              		.loc 1 118 0
+  59              		.cfi_startproc
+  60              		@ args = 0, pretend = 0, frame = 16
+  61              		@ frame_needed = 1, uses_anonymous_args = 0
+  62              		@ link register save eliminated.
+  63 0000 80B4     		push	{r7}
+  64              		.cfi_def_cfa_offset 4
+  65              		.cfi_offset 7, -4
+  66 0002 85B0     		sub	sp, sp, #20
+  67              		.cfi_def_cfa_offset 24
+  68 0004 00AF     		add	r7, sp, #0
+  69              		.cfi_def_cfa_register 7
+  70 0006 7860     		str	r0, [r7, #4]
+  71 0008 3960     		str	r1, [r7]
+ 119:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   uint32_t tmpreg1 = 0, tmpreg2 = 0;
+  72              		.loc 1 119 0
+  73 000a 0023     		movs	r3, #0
+  74 000c FB60     		str	r3, [r7, #12]
+  75 000e 0023     		movs	r3, #0
+  76 0010 BB60     		str	r3, [r7, #8]
+ 120:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Check the DAC parameters */
+ 121:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_TRIGGER(DAC_InitStruct->DAC_Trigger));
+ 122:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_GENERATE_WAVE(DAC_InitStruct->DAC_WaveGeneration));
+ 123:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_LFSR_UNMASK_TRIANGLE_AMPLITUDE(DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitu
+ 124:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_OUTPUT_BUFFER_STATE(DAC_InitStruct->DAC_OutputBuffer));
+ 125:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /*---------------------------- DAC CR Configuration --------------------------*/
+ 126:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Get the DAC CR value */
+ 127:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   tmpreg1 = DAC->CR;
+  77              		.loc 1 127 0
+  78 0012 134B     		ldr	r3, .L3
+  79 0014 1B68     		ldr	r3, [r3]
+  80 0016 FB60     		str	r3, [r7, #12]
+ 128:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Clear BOFFx, TENx, TSELx, WAVEx and MAMPx bits */
+ 129:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   tmpreg1 &= ~(CR_CLEAR_MASK << DAC_Channel);
+  81              		.loc 1 129 0
+  82 0018 7B68     		ldr	r3, [r7, #4]
+  83 001a 40F6FE72 		movw	r2, #4094
+  84 001e 02FA03F3 		lsl	r3, r2, r3
+  85 0022 DB43     		mvns	r3, r3
+  86 0024 FA68     		ldr	r2, [r7, #12]
+  87 0026 1340     		ands	r3, r3, r2
+  88 0028 FB60     		str	r3, [r7, #12]
+ 130:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Configure for the selected DAC channel: buffer output, trigger, wave generation,
+ 131:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****      mask/amplitude for wave generation */
+ 132:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Set TSELx and TENx bits according to DAC_Trigger value */
+ 133:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Set WAVEx bits according to DAC_WaveGeneration value */
+ 134:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Set MAMPx bits according to DAC_LFSRUnmask_TriangleAmplitude value */ 
+ 135:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Set BOFFx bit according to DAC_OutputBuffer value */   
+ 136:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   tmpreg2 = (DAC_InitStruct->DAC_Trigger | DAC_InitStruct->DAC_WaveGeneration |
+  89              		.loc 1 136 0
+  90 002a 3B68     		ldr	r3, [r7]
+  91 002c 1A68     		ldr	r2, [r3]
+  92 002e 3B68     		ldr	r3, [r7]
+  93 0030 5B68     		ldr	r3, [r3, #4]
+  94 0032 1A43     		orrs	r2, r2, r3
+ 137:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****              DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude | DAC_InitStruct->DAC_OutputBuffer);
+  95              		.loc 1 137 0
+  96 0034 3B68     		ldr	r3, [r7]
+  97 0036 9B68     		ldr	r3, [r3, #8]
+ 136:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****              DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude | DAC_InitStruct->DAC_OutputBuffer);
+  98              		.loc 1 136 0
+  99 0038 1A43     		orrs	r2, r2, r3
+ 100              		.loc 1 137 0
+ 101 003a 3B68     		ldr	r3, [r7]
+ 102 003c DB68     		ldr	r3, [r3, #12]
+ 136:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****              DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude | DAC_InitStruct->DAC_OutputBuffer);
+ 103              		.loc 1 136 0
+ 104 003e 1343     		orrs	r3, r3, r2
+ 105 0040 BB60     		str	r3, [r7, #8]
+ 138:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Calculate CR register value depending on DAC_Channel */
+ 139:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   tmpreg1 |= tmpreg2 << DAC_Channel;
+ 106              		.loc 1 139 0
+ 107 0042 7B68     		ldr	r3, [r7, #4]
+ 108 0044 BA68     		ldr	r2, [r7, #8]
+ 109 0046 02FA03F3 		lsl	r3, r2, r3
+ 110 004a FA68     		ldr	r2, [r7, #12]
+ 111 004c 1343     		orrs	r3, r3, r2
+ 112 004e FB60     		str	r3, [r7, #12]
+ 140:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Write to DAC CR */
+ 141:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   DAC->CR = tmpreg1;
+ 113              		.loc 1 141 0
+ 114 0050 034A     		ldr	r2, .L3
+ 115 0052 FB68     		ldr	r3, [r7, #12]
+ 116 0054 1360     		str	r3, [r2]
+ 142:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** }
+ 117              		.loc 1 142 0
+ 118 0056 1437     		adds	r7, r7, #20
+ 119              		.cfi_def_cfa_offset 4
+ 120 0058 BD46     		mov	sp, r7
+ 121              		.cfi_def_cfa_register 13
+ 122              		@ sp needed
+ 123 005a 5DF8047B 		ldr	r7, [sp], #4
+ 124              		.cfi_restore 7
+ 125              		.cfi_def_cfa_offset 0
+ 126 005e 7047     		bx	lr
+ 127              	.L4:
+ 128              		.align	2
+ 129              	.L3:
+ 130 0060 00740040 		.word	1073771520
+ 131              		.cfi_endproc
+ 132              	.LFE30:
+ 134              		.section	.text.DAC_StructInit,"ax",%progbits
+ 135              		.align	2
+ 136              		.global	DAC_StructInit
+ 137              		.thumb
+ 138              		.thumb_func
+ 140              	DAC_StructInit:
+ 141              	.LFB31:
+ 143:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 144:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+ 145:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief  Fills each DAC_InitStruct member with its default value.
+ 146:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  DAC_InitStruct : pointer to a DAC_InitTypeDef structure which will
+ 147:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *         be initialized.
+ 148:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @retval None
+ 149:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+ 150:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** void DAC_StructInit(DAC_InitTypeDef* DAC_InitStruct)
+ 151:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** {
+ 142              		.loc 1 151 0
+ 143              		.cfi_startproc
+ 144              		@ args = 0, pretend = 0, frame = 8
+ 145              		@ frame_needed = 1, uses_anonymous_args = 0
+ 146              		@ link register save eliminated.
+ 147 0000 80B4     		push	{r7}
+ 148              		.cfi_def_cfa_offset 4
+ 149              		.cfi_offset 7, -4
+ 150 0002 83B0     		sub	sp, sp, #12
+ 151              		.cfi_def_cfa_offset 16
+ 152 0004 00AF     		add	r7, sp, #0
+ 153              		.cfi_def_cfa_register 7
+ 154 0006 7860     		str	r0, [r7, #4]
+ 152:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /*--------------- Reset DAC init structure parameters values -----------------*/
+ 153:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Initialize the DAC_Trigger member */
+ 154:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   DAC_InitStruct->DAC_Trigger = DAC_Trigger_None;
+ 155              		.loc 1 154 0
+ 156 0008 7B68     		ldr	r3, [r7, #4]
+ 157 000a 0022     		movs	r2, #0
+ 158 000c 1A60     		str	r2, [r3]
+ 155:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Initialize the DAC_WaveGeneration member */
+ 156:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   DAC_InitStruct->DAC_WaveGeneration = DAC_WaveGeneration_None;
+ 159              		.loc 1 156 0
+ 160 000e 7B68     		ldr	r3, [r7, #4]
+ 161 0010 0022     		movs	r2, #0
+ 162 0012 5A60     		str	r2, [r3, #4]
+ 157:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Initialize the DAC_LFSRUnmask_TriangleAmplitude member */
+ 158:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   DAC_InitStruct->DAC_LFSRUnmask_TriangleAmplitude = DAC_LFSRUnmask_Bit0;
+ 163              		.loc 1 158 0
+ 164 0014 7B68     		ldr	r3, [r7, #4]
+ 165 0016 0022     		movs	r2, #0
+ 166 0018 9A60     		str	r2, [r3, #8]
+ 159:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Initialize the DAC_OutputBuffer member */
+ 160:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   DAC_InitStruct->DAC_OutputBuffer = DAC_OutputBuffer_Enable;
+ 167              		.loc 1 160 0
+ 168 001a 7B68     		ldr	r3, [r7, #4]
+ 169 001c 0022     		movs	r2, #0
+ 170 001e DA60     		str	r2, [r3, #12]
+ 161:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** }
+ 171              		.loc 1 161 0
+ 172 0020 0C37     		adds	r7, r7, #12
+ 173              		.cfi_def_cfa_offset 4
+ 174 0022 BD46     		mov	sp, r7
+ 175              		.cfi_def_cfa_register 13
+ 176              		@ sp needed
+ 177 0024 5DF8047B 		ldr	r7, [sp], #4
+ 178              		.cfi_restore 7
+ 179              		.cfi_def_cfa_offset 0
+ 180 0028 7047     		bx	lr
+ 181              		.cfi_endproc
+ 182              	.LFE31:
+ 184 002a 00BF     		.section	.text.DAC_Cmd,"ax",%progbits
+ 185              		.align	2
+ 186              		.global	DAC_Cmd
+ 187              		.thumb
+ 188              		.thumb_func
+ 190              	DAC_Cmd:
+ 191              	.LFB32:
+ 162:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 163:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+ 164:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief  Enables or disables the specified DAC channel.
+ 165:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  DAC_Channel: the selected DAC channel. 
+ 166:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 167:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_1: DAC Channel1 selected
+ 168:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_2: DAC Channel2 selected
+ 169:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  NewState: new state of the DAC channel. 
+ 170:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 171:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @retval None
+ 172:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+ 173:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** void DAC_Cmd(uint32_t DAC_Channel, FunctionalState NewState)
+ 174:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** {
+ 192              		.loc 1 174 0
+ 193              		.cfi_startproc
+ 194              		@ args = 0, pretend = 0, frame = 8
+ 195              		@ frame_needed = 1, uses_anonymous_args = 0
+ 196              		@ link register save eliminated.
+ 197 0000 80B4     		push	{r7}
+ 198              		.cfi_def_cfa_offset 4
+ 199              		.cfi_offset 7, -4
+ 200 0002 83B0     		sub	sp, sp, #12
+ 201              		.cfi_def_cfa_offset 16
+ 202 0004 00AF     		add	r7, sp, #0
+ 203              		.cfi_def_cfa_register 7
+ 204 0006 7860     		str	r0, [r7, #4]
+ 205 0008 0B46     		mov	r3, r1
+ 206 000a FB70     		strb	r3, [r7, #3]
+ 175:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 176:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
+ 177:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 178:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   if (NewState != DISABLE)
+ 207              		.loc 1 178 0
+ 208 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 209 000e 002B     		cmp	r3, #0
+ 210 0010 09D0     		beq	.L7
+ 179:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   {
+ 180:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     /* Enable the selected DAC channel */
+ 181:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     DAC->CR |= (DAC_CR_EN1 << DAC_Channel);
+ 211              		.loc 1 181 0
+ 212 0012 0C49     		ldr	r1, .L9
+ 213 0014 0B4B     		ldr	r3, .L9
+ 214 0016 1A68     		ldr	r2, [r3]
+ 215 0018 7B68     		ldr	r3, [r7, #4]
+ 216 001a 0120     		movs	r0, #1
+ 217 001c 00FA03F3 		lsl	r3, r0, r3
+ 218 0020 1343     		orrs	r3, r3, r2
+ 219 0022 0B60     		str	r3, [r1]
+ 220 0024 09E0     		b	.L6
+ 221              	.L7:
+ 182:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   }
+ 183:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   else
+ 184:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   {
+ 185:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     /* Disable the selected DAC channel */
+ 186:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     DAC->CR &= ~(DAC_CR_EN1 << DAC_Channel);
+ 222              		.loc 1 186 0
+ 223 0026 0749     		ldr	r1, .L9
+ 224 0028 064B     		ldr	r3, .L9
+ 225 002a 1A68     		ldr	r2, [r3]
+ 226 002c 7B68     		ldr	r3, [r7, #4]
+ 227 002e 0120     		movs	r0, #1
+ 228 0030 00FA03F3 		lsl	r3, r0, r3
+ 229 0034 DB43     		mvns	r3, r3
+ 230 0036 1340     		ands	r3, r3, r2
+ 231 0038 0B60     		str	r3, [r1]
+ 232              	.L6:
+ 187:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   }
+ 188:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** }
+ 233              		.loc 1 188 0
+ 234 003a 0C37     		adds	r7, r7, #12
+ 235              		.cfi_def_cfa_offset 4
+ 236 003c BD46     		mov	sp, r7
+ 237              		.cfi_def_cfa_register 13
+ 238              		@ sp needed
+ 239 003e 5DF8047B 		ldr	r7, [sp], #4
+ 240              		.cfi_restore 7
+ 241              		.cfi_def_cfa_offset 0
+ 242 0042 7047     		bx	lr
+ 243              	.L10:
+ 244              		.align	2
+ 245              	.L9:
+ 246 0044 00740040 		.word	1073771520
+ 247              		.cfi_endproc
+ 248              	.LFE32:
+ 250              		.section	.text.DAC_DMACmd,"ax",%progbits
+ 251              		.align	2
+ 252              		.global	DAC_DMACmd
+ 253              		.thumb
+ 254              		.thumb_func
+ 256              	DAC_DMACmd:
+ 257              	.LFB33:
+ 189:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** #if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || defined (STM32F10X_HD_VL)
+ 190:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+ 191:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief  Enables or disables the specified DAC interrupts.
+ 192:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  DAC_Channel: the selected DAC channel. 
+ 193:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 194:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_1: DAC Channel1 selected
+ 195:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_2: DAC Channel2 selected
+ 196:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  DAC_IT: specifies the DAC interrupt sources to be enabled or disabled. 
+ 197:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be the following values:
+ 198:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_IT_DMAUDR: DMA underrun interrupt mask                      
+ 199:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  NewState: new state of the specified DAC interrupts.
+ 200:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 201:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @retval None
+ 202:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */ 
+ 203:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** void DAC_ITConfig(uint32_t DAC_Channel, uint32_t DAC_IT, FunctionalState NewState)  
+ 204:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** {
+ 205:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 206:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
+ 207:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 208:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_IT(DAC_IT)); 
+ 209:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 210:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   if (NewState != DISABLE)
+ 211:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   {
+ 212:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     /* Enable the selected DAC interrupts */
+ 213:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     DAC->CR |=  (DAC_IT << DAC_Channel);
+ 214:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   }
+ 215:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   else
+ 216:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   {
+ 217:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     /* Disable the selected DAC interrupts */
+ 218:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     DAC->CR &= (~(uint32_t)(DAC_IT << DAC_Channel));
+ 219:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   }
+ 220:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** }
+ 221:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** #endif
+ 222:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 223:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+ 224:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief  Enables or disables the specified DAC channel DMA request.
+ 225:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  DAC_Channel: the selected DAC channel. 
+ 226:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 227:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_1: DAC Channel1 selected
+ 228:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_2: DAC Channel2 selected
+ 229:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  NewState: new state of the selected DAC channel DMA request.
+ 230:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 231:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @retval None
+ 232:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+ 233:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** void DAC_DMACmd(uint32_t DAC_Channel, FunctionalState NewState)
+ 234:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** {
+ 258              		.loc 1 234 0
+ 259              		.cfi_startproc
+ 260              		@ args = 0, pretend = 0, frame = 8
+ 261              		@ frame_needed = 1, uses_anonymous_args = 0
+ 262              		@ link register save eliminated.
+ 263 0000 80B4     		push	{r7}
+ 264              		.cfi_def_cfa_offset 4
+ 265              		.cfi_offset 7, -4
+ 266 0002 83B0     		sub	sp, sp, #12
+ 267              		.cfi_def_cfa_offset 16
+ 268 0004 00AF     		add	r7, sp, #0
+ 269              		.cfi_def_cfa_register 7
+ 270 0006 7860     		str	r0, [r7, #4]
+ 271 0008 0B46     		mov	r3, r1
+ 272 000a FB70     		strb	r3, [r7, #3]
+ 235:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 236:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
+ 237:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 238:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   if (NewState != DISABLE)
+ 273              		.loc 1 238 0
+ 274 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 275 000e 002B     		cmp	r3, #0
+ 276 0010 0AD0     		beq	.L12
+ 239:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   {
+ 240:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     /* Enable the selected DAC channel DMA request */
+ 241:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     DAC->CR |= (DAC_CR_DMAEN1 << DAC_Channel);
+ 277              		.loc 1 241 0
+ 278 0012 0D49     		ldr	r1, .L14
+ 279 0014 0C4B     		ldr	r3, .L14
+ 280 0016 1A68     		ldr	r2, [r3]
+ 281 0018 7B68     		ldr	r3, [r7, #4]
+ 282 001a 4FF48050 		mov	r0, #4096
+ 283 001e 00FA03F3 		lsl	r3, r0, r3
+ 284 0022 1343     		orrs	r3, r3, r2
+ 285 0024 0B60     		str	r3, [r1]
+ 286 0026 0AE0     		b	.L11
+ 287              	.L12:
+ 242:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   }
+ 243:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   else
+ 244:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   {
+ 245:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     /* Disable the selected DAC channel DMA request */
+ 246:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     DAC->CR &= ~(DAC_CR_DMAEN1 << DAC_Channel);
+ 288              		.loc 1 246 0
+ 289 0028 0749     		ldr	r1, .L14
+ 290 002a 074B     		ldr	r3, .L14
+ 291 002c 1A68     		ldr	r2, [r3]
+ 292 002e 7B68     		ldr	r3, [r7, #4]
+ 293 0030 4FF48050 		mov	r0, #4096
+ 294 0034 00FA03F3 		lsl	r3, r0, r3
+ 295 0038 DB43     		mvns	r3, r3
+ 296 003a 1340     		ands	r3, r3, r2
+ 297 003c 0B60     		str	r3, [r1]
+ 298              	.L11:
+ 247:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   }
+ 248:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** }
+ 299              		.loc 1 248 0
+ 300 003e 0C37     		adds	r7, r7, #12
+ 301              		.cfi_def_cfa_offset 4
+ 302 0040 BD46     		mov	sp, r7
+ 303              		.cfi_def_cfa_register 13
+ 304              		@ sp needed
+ 305 0042 5DF8047B 		ldr	r7, [sp], #4
+ 306              		.cfi_restore 7
+ 307              		.cfi_def_cfa_offset 0
+ 308 0046 7047     		bx	lr
+ 309              	.L15:
+ 310              		.align	2
+ 311              	.L14:
+ 312 0048 00740040 		.word	1073771520
+ 313              		.cfi_endproc
+ 314              	.LFE33:
+ 316              		.section	.text.DAC_SoftwareTriggerCmd,"ax",%progbits
+ 317              		.align	2
+ 318              		.global	DAC_SoftwareTriggerCmd
+ 319              		.thumb
+ 320              		.thumb_func
+ 322              	DAC_SoftwareTriggerCmd:
+ 323              	.LFB34:
+ 249:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 250:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+ 251:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief  Enables or disables the selected DAC channel software trigger.
+ 252:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  DAC_Channel: the selected DAC channel. 
+ 253:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 254:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_1: DAC Channel1 selected
+ 255:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_2: DAC Channel2 selected
+ 256:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  NewState: new state of the selected DAC channel software trigger.
+ 257:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 258:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @retval None
+ 259:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+ 260:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** void DAC_SoftwareTriggerCmd(uint32_t DAC_Channel, FunctionalState NewState)
+ 261:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** {
+ 324              		.loc 1 261 0
+ 325              		.cfi_startproc
+ 326              		@ args = 0, pretend = 0, frame = 8
+ 327              		@ frame_needed = 1, uses_anonymous_args = 0
+ 328              		@ link register save eliminated.
+ 329 0000 80B4     		push	{r7}
+ 330              		.cfi_def_cfa_offset 4
+ 331              		.cfi_offset 7, -4
+ 332 0002 83B0     		sub	sp, sp, #12
+ 333              		.cfi_def_cfa_offset 16
+ 334 0004 00AF     		add	r7, sp, #0
+ 335              		.cfi_def_cfa_register 7
+ 336 0006 7860     		str	r0, [r7, #4]
+ 337 0008 0B46     		mov	r3, r1
+ 338 000a FB70     		strb	r3, [r7, #3]
+ 262:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 263:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
+ 264:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 265:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   if (NewState != DISABLE)
+ 339              		.loc 1 265 0
+ 340 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 341 000e 002B     		cmp	r3, #0
+ 342 0010 0AD0     		beq	.L17
+ 266:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   {
+ 267:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     /* Enable software trigger for the selected DAC channel */
+ 268:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     DAC->SWTRIGR |= (uint32_t)DAC_SWTRIGR_SWTRIG1 << (DAC_Channel >> 4);
+ 343              		.loc 1 268 0
+ 344 0012 0D49     		ldr	r1, .L19
+ 345 0014 0C4B     		ldr	r3, .L19
+ 346 0016 5A68     		ldr	r2, [r3, #4]
+ 347 0018 7B68     		ldr	r3, [r7, #4]
+ 348 001a 1B09     		lsrs	r3, r3, #4
+ 349 001c 1846     		mov	r0, r3
+ 350 001e 0123     		movs	r3, #1
+ 351 0020 8340     		lsls	r3, r3, r0
+ 352 0022 1343     		orrs	r3, r3, r2
+ 353 0024 4B60     		str	r3, [r1, #4]
+ 354 0026 0AE0     		b	.L16
+ 355              	.L17:
+ 269:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   }
+ 270:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   else
+ 271:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   {
+ 272:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     /* Disable software trigger for the selected DAC channel */
+ 273:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     DAC->SWTRIGR &= ~((uint32_t)DAC_SWTRIGR_SWTRIG1 << (DAC_Channel >> 4));
+ 356              		.loc 1 273 0
+ 357 0028 0749     		ldr	r1, .L19
+ 358 002a 074B     		ldr	r3, .L19
+ 359 002c 5A68     		ldr	r2, [r3, #4]
+ 360 002e 7B68     		ldr	r3, [r7, #4]
+ 361 0030 1B09     		lsrs	r3, r3, #4
+ 362 0032 1846     		mov	r0, r3
+ 363 0034 0123     		movs	r3, #1
+ 364 0036 8340     		lsls	r3, r3, r0
+ 365 0038 DB43     		mvns	r3, r3
+ 366 003a 1340     		ands	r3, r3, r2
+ 367 003c 4B60     		str	r3, [r1, #4]
+ 368              	.L16:
+ 274:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   }
+ 275:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** }
+ 369              		.loc 1 275 0
+ 370 003e 0C37     		adds	r7, r7, #12
+ 371              		.cfi_def_cfa_offset 4
+ 372 0040 BD46     		mov	sp, r7
+ 373              		.cfi_def_cfa_register 13
+ 374              		@ sp needed
+ 375 0042 5DF8047B 		ldr	r7, [sp], #4
+ 376              		.cfi_restore 7
+ 377              		.cfi_def_cfa_offset 0
+ 378 0046 7047     		bx	lr
+ 379              	.L20:
+ 380              		.align	2
+ 381              	.L19:
+ 382 0048 00740040 		.word	1073771520
+ 383              		.cfi_endproc
+ 384              	.LFE34:
+ 386              		.section	.text.DAC_DualSoftwareTriggerCmd,"ax",%progbits
+ 387              		.align	2
+ 388              		.global	DAC_DualSoftwareTriggerCmd
+ 389              		.thumb
+ 390              		.thumb_func
+ 392              	DAC_DualSoftwareTriggerCmd:
+ 393              	.LFB35:
+ 276:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 277:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+ 278:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief  Enables or disables simultaneously the two DAC channels software
+ 279:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   triggers.
+ 280:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  NewState: new state of the DAC channels software triggers.
+ 281:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 282:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @retval None
+ 283:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+ 284:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** void DAC_DualSoftwareTriggerCmd(FunctionalState NewState)
+ 285:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** {
+ 394              		.loc 1 285 0
+ 395              		.cfi_startproc
+ 396              		@ args = 0, pretend = 0, frame = 8
+ 397              		@ frame_needed = 1, uses_anonymous_args = 0
+ 398              		@ link register save eliminated.
+ 399 0000 80B4     		push	{r7}
+ 400              		.cfi_def_cfa_offset 4
+ 401              		.cfi_offset 7, -4
+ 402 0002 83B0     		sub	sp, sp, #12
+ 403              		.cfi_def_cfa_offset 16
+ 404 0004 00AF     		add	r7, sp, #0
+ 405              		.cfi_def_cfa_register 7
+ 406 0006 0346     		mov	r3, r0
+ 407 0008 FB71     		strb	r3, [r7, #7]
+ 286:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 287:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 288:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   if (NewState != DISABLE)
+ 408              		.loc 1 288 0
+ 409 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 410 000c 002B     		cmp	r3, #0
+ 411 000e 06D0     		beq	.L22
+ 289:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   {
+ 290:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     /* Enable software trigger for both DAC channels */
+ 291:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     DAC->SWTRIGR |= DUAL_SWTRIG_SET ;
+ 412              		.loc 1 291 0
+ 413 0010 084A     		ldr	r2, .L24
+ 414 0012 084B     		ldr	r3, .L24
+ 415 0014 5B68     		ldr	r3, [r3, #4]
+ 416 0016 43F00303 		orr	r3, r3, #3
+ 417 001a 5360     		str	r3, [r2, #4]
+ 418 001c 05E0     		b	.L21
+ 419              	.L22:
+ 292:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   }
+ 293:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   else
+ 294:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   {
+ 295:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     /* Disable software trigger for both DAC channels */
+ 296:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     DAC->SWTRIGR &= DUAL_SWTRIG_RESET;
+ 420              		.loc 1 296 0
+ 421 001e 054A     		ldr	r2, .L24
+ 422 0020 044B     		ldr	r3, .L24
+ 423 0022 5B68     		ldr	r3, [r3, #4]
+ 424 0024 23F00303 		bic	r3, r3, #3
+ 425 0028 5360     		str	r3, [r2, #4]
+ 426              	.L21:
+ 297:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   }
+ 298:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** }
+ 427              		.loc 1 298 0
+ 428 002a 0C37     		adds	r7, r7, #12
+ 429              		.cfi_def_cfa_offset 4
+ 430 002c BD46     		mov	sp, r7
+ 431              		.cfi_def_cfa_register 13
+ 432              		@ sp needed
+ 433 002e 5DF8047B 		ldr	r7, [sp], #4
+ 434              		.cfi_restore 7
+ 435              		.cfi_def_cfa_offset 0
+ 436 0032 7047     		bx	lr
+ 437              	.L25:
+ 438              		.align	2
+ 439              	.L24:
+ 440 0034 00740040 		.word	1073771520
+ 441              		.cfi_endproc
+ 442              	.LFE35:
+ 444              		.section	.text.DAC_WaveGenerationCmd,"ax",%progbits
+ 445              		.align	2
+ 446              		.global	DAC_WaveGenerationCmd
+ 447              		.thumb
+ 448              		.thumb_func
+ 450              	DAC_WaveGenerationCmd:
+ 451              	.LFB36:
+ 299:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 300:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+ 301:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief  Enables or disables the selected DAC channel wave generation.
+ 302:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  DAC_Channel: the selected DAC channel. 
+ 303:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 304:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_1: DAC Channel1 selected
+ 305:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_2: DAC Channel2 selected
+ 306:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  DAC_Wave: Specifies the wave type to enable or disable.
+ 307:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 308:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Wave_Noise: noise wave generation
+ 309:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Wave_Triangle: triangle wave generation
+ 310:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  NewState: new state of the selected DAC channel wave generation.
+ 311:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 312:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @retval None
+ 313:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+ 314:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** void DAC_WaveGenerationCmd(uint32_t DAC_Channel, uint32_t DAC_Wave, FunctionalState NewState)
+ 315:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** {
+ 452              		.loc 1 315 0
+ 453              		.cfi_startproc
+ 454              		@ args = 0, pretend = 0, frame = 16
+ 455              		@ frame_needed = 1, uses_anonymous_args = 0
+ 456              		@ link register save eliminated.
+ 457 0000 80B4     		push	{r7}
+ 458              		.cfi_def_cfa_offset 4
+ 459              		.cfi_offset 7, -4
+ 460 0002 85B0     		sub	sp, sp, #20
+ 461              		.cfi_def_cfa_offset 24
+ 462 0004 00AF     		add	r7, sp, #0
+ 463              		.cfi_def_cfa_register 7
+ 464 0006 F860     		str	r0, [r7, #12]
+ 465 0008 B960     		str	r1, [r7, #8]
+ 466 000a 1346     		mov	r3, r2
+ 467 000c FB71     		strb	r3, [r7, #7]
+ 316:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 317:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
+ 318:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_WAVE(DAC_Wave)); 
+ 319:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 320:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   if (NewState != DISABLE)
+ 468              		.loc 1 320 0
+ 469 000e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 470 0010 002B     		cmp	r3, #0
+ 471 0012 09D0     		beq	.L27
+ 321:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   {
+ 322:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     /* Enable the selected wave generation for the selected DAC channel */
+ 323:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     DAC->CR |= DAC_Wave << DAC_Channel;
+ 472              		.loc 1 323 0
+ 473 0014 0C48     		ldr	r0, .L29
+ 474 0016 0C4B     		ldr	r3, .L29
+ 475 0018 1A68     		ldr	r2, [r3]
+ 476 001a FB68     		ldr	r3, [r7, #12]
+ 477 001c B968     		ldr	r1, [r7, #8]
+ 478 001e 01FA03F3 		lsl	r3, r1, r3
+ 479 0022 1343     		orrs	r3, r3, r2
+ 480 0024 0360     		str	r3, [r0]
+ 481 0026 09E0     		b	.L26
+ 482              	.L27:
+ 324:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   }
+ 325:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   else
+ 326:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   {
+ 327:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     /* Disable the selected wave generation for the selected DAC channel */
+ 328:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     DAC->CR &= ~(DAC_Wave << DAC_Channel);
+ 483              		.loc 1 328 0
+ 484 0028 0748     		ldr	r0, .L29
+ 485 002a 074B     		ldr	r3, .L29
+ 486 002c 1A68     		ldr	r2, [r3]
+ 487 002e FB68     		ldr	r3, [r7, #12]
+ 488 0030 B968     		ldr	r1, [r7, #8]
+ 489 0032 01FA03F3 		lsl	r3, r1, r3
+ 490 0036 DB43     		mvns	r3, r3
+ 491 0038 1340     		ands	r3, r3, r2
+ 492 003a 0360     		str	r3, [r0]
+ 493              	.L26:
+ 329:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   }
+ 330:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** }
+ 494              		.loc 1 330 0
+ 495 003c 1437     		adds	r7, r7, #20
+ 496              		.cfi_def_cfa_offset 4
+ 497 003e BD46     		mov	sp, r7
+ 498              		.cfi_def_cfa_register 13
+ 499              		@ sp needed
+ 500 0040 5DF8047B 		ldr	r7, [sp], #4
+ 501              		.cfi_restore 7
+ 502              		.cfi_def_cfa_offset 0
+ 503 0044 7047     		bx	lr
+ 504              	.L30:
+ 505 0046 00BF     		.align	2
+ 506              	.L29:
+ 507 0048 00740040 		.word	1073771520
+ 508              		.cfi_endproc
+ 509              	.LFE36:
+ 511              		.section	.text.DAC_SetChannel1Data,"ax",%progbits
+ 512              		.align	2
+ 513              		.global	DAC_SetChannel1Data
+ 514              		.thumb
+ 515              		.thumb_func
+ 517              	DAC_SetChannel1Data:
+ 518              	.LFB37:
+ 331:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 332:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+ 333:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief  Set the specified data holding register value for DAC channel1.
+ 334:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  DAC_Align: Specifies the data alignment for DAC channel1.
+ 335:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 336:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Align_8b_R: 8bit right data alignment selected
+ 337:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Align_12b_L: 12bit left data alignment selected
+ 338:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Align_12b_R: 12bit right data alignment selected
+ 339:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  Data : Data to be loaded in the selected data holding register.
+ 340:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @retval None
+ 341:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+ 342:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** void DAC_SetChannel1Data(uint32_t DAC_Align, uint16_t Data)
+ 343:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** {  
+ 519              		.loc 1 343 0
+ 520              		.cfi_startproc
+ 521              		@ args = 0, pretend = 0, frame = 16
+ 522              		@ frame_needed = 1, uses_anonymous_args = 0
+ 523              		@ link register save eliminated.
+ 524 0000 80B4     		push	{r7}
+ 525              		.cfi_def_cfa_offset 4
+ 526              		.cfi_offset 7, -4
+ 527 0002 85B0     		sub	sp, sp, #20
+ 528              		.cfi_def_cfa_offset 24
+ 529 0004 00AF     		add	r7, sp, #0
+ 530              		.cfi_def_cfa_register 7
+ 531 0006 7860     		str	r0, [r7, #4]
+ 532 0008 0B46     		mov	r3, r1
+ 533 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 344:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   __IO uint32_t tmp = 0;
+ 534              		.loc 1 344 0
+ 535 000c 0023     		movs	r3, #0
+ 536 000e FB60     		str	r3, [r7, #12]
+ 345:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   
+ 346:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 347:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_ALIGN(DAC_Align));
+ 348:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_DATA(Data));
+ 349:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   
+ 350:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   tmp = (uint32_t)DAC_BASE; 
+ 537              		.loc 1 350 0
+ 538 0010 074B     		ldr	r3, .L32
+ 539 0012 FB60     		str	r3, [r7, #12]
+ 351:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   tmp += DHR12R1_OFFSET + DAC_Align;
+ 540              		.loc 1 351 0
+ 541 0014 FA68     		ldr	r2, [r7, #12]
+ 542 0016 7B68     		ldr	r3, [r7, #4]
+ 543 0018 1344     		add	r3, r3, r2
+ 544 001a 0833     		adds	r3, r3, #8
+ 545 001c FB60     		str	r3, [r7, #12]
+ 352:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 353:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Set the DAC channel1 selected data holding register */
+ 354:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *(__IO uint32_t *) tmp = Data;
+ 546              		.loc 1 354 0
+ 547 001e FB68     		ldr	r3, [r7, #12]
+ 548 0020 1A46     		mov	r2, r3
+ 549 0022 7B88     		ldrh	r3, [r7, #2]
+ 550 0024 1360     		str	r3, [r2]
+ 355:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** }
+ 551              		.loc 1 355 0
+ 552 0026 1437     		adds	r7, r7, #20
+ 553              		.cfi_def_cfa_offset 4
+ 554 0028 BD46     		mov	sp, r7
+ 555              		.cfi_def_cfa_register 13
+ 556              		@ sp needed
+ 557 002a 5DF8047B 		ldr	r7, [sp], #4
+ 558              		.cfi_restore 7
+ 559              		.cfi_def_cfa_offset 0
+ 560 002e 7047     		bx	lr
+ 561              	.L33:
+ 562              		.align	2
+ 563              	.L32:
+ 564 0030 00740040 		.word	1073771520
+ 565              		.cfi_endproc
+ 566              	.LFE37:
+ 568              		.section	.text.DAC_SetChannel2Data,"ax",%progbits
+ 569              		.align	2
+ 570              		.global	DAC_SetChannel2Data
+ 571              		.thumb
+ 572              		.thumb_func
+ 574              	DAC_SetChannel2Data:
+ 575              	.LFB38:
+ 356:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 357:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+ 358:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief  Set the specified data holding register value for DAC channel2.
+ 359:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  DAC_Align: Specifies the data alignment for DAC channel2.
+ 360:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 361:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Align_8b_R: 8bit right data alignment selected
+ 362:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Align_12b_L: 12bit left data alignment selected
+ 363:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Align_12b_R: 12bit right data alignment selected
+ 364:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  Data : Data to be loaded in the selected data holding register.
+ 365:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @retval None
+ 366:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+ 367:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** void DAC_SetChannel2Data(uint32_t DAC_Align, uint16_t Data)
+ 368:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** {
+ 576              		.loc 1 368 0
+ 577              		.cfi_startproc
+ 578              		@ args = 0, pretend = 0, frame = 16
+ 579              		@ frame_needed = 1, uses_anonymous_args = 0
+ 580              		@ link register save eliminated.
+ 581 0000 80B4     		push	{r7}
+ 582              		.cfi_def_cfa_offset 4
+ 583              		.cfi_offset 7, -4
+ 584 0002 85B0     		sub	sp, sp, #20
+ 585              		.cfi_def_cfa_offset 24
+ 586 0004 00AF     		add	r7, sp, #0
+ 587              		.cfi_def_cfa_register 7
+ 588 0006 7860     		str	r0, [r7, #4]
+ 589 0008 0B46     		mov	r3, r1
+ 590 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 369:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   __IO uint32_t tmp = 0;
+ 591              		.loc 1 369 0
+ 592 000c 0023     		movs	r3, #0
+ 593 000e FB60     		str	r3, [r7, #12]
+ 370:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 371:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 372:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_ALIGN(DAC_Align));
+ 373:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_DATA(Data));
+ 374:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   
+ 375:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   tmp = (uint32_t)DAC_BASE;
+ 594              		.loc 1 375 0
+ 595 0010 074B     		ldr	r3, .L35
+ 596 0012 FB60     		str	r3, [r7, #12]
+ 376:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   tmp += DHR12R2_OFFSET + DAC_Align;
+ 597              		.loc 1 376 0
+ 598 0014 FA68     		ldr	r2, [r7, #12]
+ 599 0016 7B68     		ldr	r3, [r7, #4]
+ 600 0018 1344     		add	r3, r3, r2
+ 601 001a 1433     		adds	r3, r3, #20
+ 602 001c FB60     		str	r3, [r7, #12]
+ 377:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 378:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Set the DAC channel2 selected data holding register */
+ 379:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *(__IO uint32_t *)tmp = Data;
+ 603              		.loc 1 379 0
+ 604 001e FB68     		ldr	r3, [r7, #12]
+ 605 0020 1A46     		mov	r2, r3
+ 606 0022 7B88     		ldrh	r3, [r7, #2]
+ 607 0024 1360     		str	r3, [r2]
+ 380:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** }
+ 608              		.loc 1 380 0
+ 609 0026 1437     		adds	r7, r7, #20
+ 610              		.cfi_def_cfa_offset 4
+ 611 0028 BD46     		mov	sp, r7
+ 612              		.cfi_def_cfa_register 13
+ 613              		@ sp needed
+ 614 002a 5DF8047B 		ldr	r7, [sp], #4
+ 615              		.cfi_restore 7
+ 616              		.cfi_def_cfa_offset 0
+ 617 002e 7047     		bx	lr
+ 618              	.L36:
+ 619              		.align	2
+ 620              	.L35:
+ 621 0030 00740040 		.word	1073771520
+ 622              		.cfi_endproc
+ 623              	.LFE38:
+ 625              		.section	.text.DAC_SetDualChannelData,"ax",%progbits
+ 626              		.align	2
+ 627              		.global	DAC_SetDualChannelData
+ 628              		.thumb
+ 629              		.thumb_func
+ 631              	DAC_SetDualChannelData:
+ 632              	.LFB39:
+ 381:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 382:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+ 383:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief  Set the specified data holding register value for dual channel
+ 384:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   DAC.
+ 385:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  DAC_Align: Specifies the data alignment for dual channel DAC.
+ 386:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 387:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Align_8b_R: 8bit right data alignment selected
+ 388:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Align_12b_L: 12bit left data alignment selected
+ 389:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Align_12b_R: 12bit right data alignment selected
+ 390:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  Data2: Data for DAC Channel2 to be loaded in the selected data 
+ 391:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   holding register.
+ 392:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  Data1: Data for DAC Channel1 to be loaded in the selected data 
+ 393:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   holding register.
+ 394:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @retval None
+ 395:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+ 396:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** void DAC_SetDualChannelData(uint32_t DAC_Align, uint16_t Data2, uint16_t Data1)
+ 397:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** {
+ 633              		.loc 1 397 0
+ 634              		.cfi_startproc
+ 635              		@ args = 0, pretend = 0, frame = 16
+ 636              		@ frame_needed = 1, uses_anonymous_args = 0
+ 637              		@ link register save eliminated.
+ 638 0000 80B4     		push	{r7}
+ 639              		.cfi_def_cfa_offset 4
+ 640              		.cfi_offset 7, -4
+ 641 0002 85B0     		sub	sp, sp, #20
+ 642              		.cfi_def_cfa_offset 24
+ 643 0004 00AF     		add	r7, sp, #0
+ 644              		.cfi_def_cfa_register 7
+ 645 0006 7860     		str	r0, [r7, #4]
+ 646 0008 0B46     		mov	r3, r1
+ 647 000a 7B80     		strh	r3, [r7, #2]	@ movhi
+ 648 000c 1346     		mov	r3, r2	@ movhi
+ 649 000e 3B80     		strh	r3, [r7]	@ movhi
+ 398:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   uint32_t data = 0, tmp = 0;
+ 650              		.loc 1 398 0
+ 651 0010 0023     		movs	r3, #0
+ 652 0012 FB60     		str	r3, [r7, #12]
+ 653 0014 0023     		movs	r3, #0
+ 654 0016 BB60     		str	r3, [r7, #8]
+ 399:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   
+ 400:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 401:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_ALIGN(DAC_Align));
+ 402:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_DATA(Data1));
+ 403:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_DATA(Data2));
+ 404:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   
+ 405:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Calculate and set dual DAC data holding register value */
+ 406:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   if (DAC_Align == DAC_Align_8b_R)
+ 655              		.loc 1 406 0
+ 656 0018 7B68     		ldr	r3, [r7, #4]
+ 657 001a 082B     		cmp	r3, #8
+ 658 001c 05D1     		bne	.L38
+ 407:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   {
+ 408:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     data = ((uint32_t)Data2 << 8) | Data1; 
+ 659              		.loc 1 408 0
+ 660 001e 7B88     		ldrh	r3, [r7, #2]
+ 661 0020 1A02     		lsls	r2, r3, #8
+ 662 0022 3B88     		ldrh	r3, [r7]
+ 663 0024 1343     		orrs	r3, r3, r2
+ 664 0026 FB60     		str	r3, [r7, #12]
+ 665 0028 04E0     		b	.L39
+ 666              	.L38:
+ 409:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   }
+ 410:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   else
+ 411:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   {
+ 412:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****     data = ((uint32_t)Data2 << 16) | Data1;
+ 667              		.loc 1 412 0
+ 668 002a 7B88     		ldrh	r3, [r7, #2]
+ 669 002c 1A04     		lsls	r2, r3, #16
+ 670 002e 3B88     		ldrh	r3, [r7]
+ 671 0030 1343     		orrs	r3, r3, r2
+ 672 0032 FB60     		str	r3, [r7, #12]
+ 673              	.L39:
+ 413:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   }
+ 414:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   
+ 415:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   tmp = (uint32_t)DAC_BASE;
+ 674              		.loc 1 415 0
+ 675 0034 074B     		ldr	r3, .L40
+ 676 0036 BB60     		str	r3, [r7, #8]
+ 416:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   tmp += DHR12RD_OFFSET + DAC_Align;
+ 677              		.loc 1 416 0
+ 678 0038 7A68     		ldr	r2, [r7, #4]
+ 679 003a BB68     		ldr	r3, [r7, #8]
+ 680 003c 1344     		add	r3, r3, r2
+ 681 003e 2033     		adds	r3, r3, #32
+ 682 0040 BB60     		str	r3, [r7, #8]
+ 417:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 418:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Set the dual DAC selected data holding register */
+ 419:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *(__IO uint32_t *)tmp = data;
+ 683              		.loc 1 419 0
+ 684 0042 BB68     		ldr	r3, [r7, #8]
+ 685 0044 FA68     		ldr	r2, [r7, #12]
+ 686 0046 1A60     		str	r2, [r3]
+ 420:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** }
+ 687              		.loc 1 420 0
+ 688 0048 1437     		adds	r7, r7, #20
+ 689              		.cfi_def_cfa_offset 4
+ 690 004a BD46     		mov	sp, r7
+ 691              		.cfi_def_cfa_register 13
+ 692              		@ sp needed
+ 693 004c 5DF8047B 		ldr	r7, [sp], #4
+ 694              		.cfi_restore 7
+ 695              		.cfi_def_cfa_offset 0
+ 696 0050 7047     		bx	lr
+ 697              	.L41:
+ 698 0052 00BF     		.align	2
+ 699              	.L40:
+ 700 0054 00740040 		.word	1073771520
+ 701              		.cfi_endproc
+ 702              	.LFE39:
+ 704              		.section	.text.DAC_GetDataOutputValue,"ax",%progbits
+ 705              		.align	2
+ 706              		.global	DAC_GetDataOutputValue
+ 707              		.thumb
+ 708              		.thumb_func
+ 710              	DAC_GetDataOutputValue:
+ 711              	.LFB40:
+ 421:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** 
+ 422:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** /**
+ 423:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @brief  Returns the last data output value of the selected DAC channel.
+ 424:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @param  DAC_Channel: the selected DAC channel. 
+ 425:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *   This parameter can be one of the following values:
+ 426:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_1: DAC Channel1 selected
+ 427:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   *     @arg DAC_Channel_2: DAC Channel2 selected
+ 428:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   * @retval The selected DAC channel data output value.
+ 429:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   */
+ 430:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** uint16_t DAC_GetDataOutputValue(uint32_t DAC_Channel)
+ 431:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** {
+ 712              		.loc 1 431 0
+ 713              		.cfi_startproc
+ 714              		@ args = 0, pretend = 0, frame = 16
+ 715              		@ frame_needed = 1, uses_anonymous_args = 0
+ 716              		@ link register save eliminated.
+ 717 0000 80B4     		push	{r7}
+ 718              		.cfi_def_cfa_offset 4
+ 719              		.cfi_offset 7, -4
+ 720 0002 85B0     		sub	sp, sp, #20
+ 721              		.cfi_def_cfa_offset 24
+ 722 0004 00AF     		add	r7, sp, #0
+ 723              		.cfi_def_cfa_register 7
+ 724 0006 7860     		str	r0, [r7, #4]
+ 432:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   __IO uint32_t tmp = 0;
+ 725              		.loc 1 432 0
+ 726 0008 0023     		movs	r3, #0
+ 727 000a FB60     		str	r3, [r7, #12]
+ 433:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   
+ 434:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Check the parameters */
+ 435:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   assert_param(IS_DAC_CHANNEL(DAC_Channel));
+ 436:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   
+ 437:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   tmp = (uint32_t) DAC_BASE ;
+ 728              		.loc 1 437 0
+ 729 000c 084B     		ldr	r3, .L44
+ 730 000e FB60     		str	r3, [r7, #12]
+ 438:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   tmp += DOR_OFFSET + ((uint32_t)DAC_Channel >> 2);
+ 731              		.loc 1 438 0
+ 732 0010 7B68     		ldr	r3, [r7, #4]
+ 733 0012 9A08     		lsrs	r2, r3, #2
+ 734 0014 FB68     		ldr	r3, [r7, #12]
+ 735 0016 1344     		add	r3, r3, r2
+ 736 0018 2C33     		adds	r3, r3, #44
+ 737 001a FB60     		str	r3, [r7, #12]
+ 439:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   
+ 440:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   /* Returns the DAC channel data output register value */
+ 441:/home/virusv/usart/Libraries/src/stm32f10x_dac.c ****   return (uint16_t) (*(__IO uint32_t*) tmp);
+ 738              		.loc 1 441 0
+ 739 001c FB68     		ldr	r3, [r7, #12]
+ 740 001e 1B68     		ldr	r3, [r3]
+ 741 0020 9BB2     		uxth	r3, r3
+ 442:/home/virusv/usart/Libraries/src/stm32f10x_dac.c **** }
+ 742              		.loc 1 442 0
+ 743 0022 1846     		mov	r0, r3
+ 744 0024 1437     		adds	r7, r7, #20
+ 745              		.cfi_def_cfa_offset 4
+ 746 0026 BD46     		mov	sp, r7
+ 747              		.cfi_def_cfa_register 13
+ 748              		@ sp needed
+ 749 0028 5DF8047B 		ldr	r7, [sp], #4
+ 750              		.cfi_restore 7
+ 751              		.cfi_def_cfa_offset 0
+ 752 002c 7047     		bx	lr
+ 753              	.L45:
+ 754 002e 00BF     		.align	2
+ 755              	.L44:
+ 756 0030 00740040 		.word	1073771520
+ 757              		.cfi_endproc
+ 758              	.LFE40:
+ 760              		.text
+ 761              	.Letext0:
+ 762              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 763              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 764              		.file 4 "/home/virusv/usart/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h"
+ 765              		.file 5 "/home/virusv/usart/Libraries/inc/stm32f10x_dac.h"
+ 766              		.file 6 "/home/virusv/usart/CMSIS/CM3/CoreSupport/core_cm3.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f10x_dac.c
+     /tmp/ccPmFT2f.s:19     .text.DAC_DeInit:0000000000000000 $t
+     /tmp/ccPmFT2f.s:24     .text.DAC_DeInit:0000000000000000 DAC_DeInit
+     /tmp/ccPmFT2f.s:51     .text.DAC_Init:0000000000000000 $t
+     /tmp/ccPmFT2f.s:56     .text.DAC_Init:0000000000000000 DAC_Init
+     /tmp/ccPmFT2f.s:130    .text.DAC_Init:0000000000000060 $d
+     /tmp/ccPmFT2f.s:135    .text.DAC_StructInit:0000000000000000 $t
+     /tmp/ccPmFT2f.s:140    .text.DAC_StructInit:0000000000000000 DAC_StructInit
+     /tmp/ccPmFT2f.s:185    .text.DAC_Cmd:0000000000000000 $t
+     /tmp/ccPmFT2f.s:190    .text.DAC_Cmd:0000000000000000 DAC_Cmd
+     /tmp/ccPmFT2f.s:246    .text.DAC_Cmd:0000000000000044 $d
+     /tmp/ccPmFT2f.s:251    .text.DAC_DMACmd:0000000000000000 $t
+     /tmp/ccPmFT2f.s:256    .text.DAC_DMACmd:0000000000000000 DAC_DMACmd
+     /tmp/ccPmFT2f.s:312    .text.DAC_DMACmd:0000000000000048 $d
+     /tmp/ccPmFT2f.s:317    .text.DAC_SoftwareTriggerCmd:0000000000000000 $t
+     /tmp/ccPmFT2f.s:322    .text.DAC_SoftwareTriggerCmd:0000000000000000 DAC_SoftwareTriggerCmd
+     /tmp/ccPmFT2f.s:382    .text.DAC_SoftwareTriggerCmd:0000000000000048 $d
+     /tmp/ccPmFT2f.s:387    .text.DAC_DualSoftwareTriggerCmd:0000000000000000 $t
+     /tmp/ccPmFT2f.s:392    .text.DAC_DualSoftwareTriggerCmd:0000000000000000 DAC_DualSoftwareTriggerCmd
+     /tmp/ccPmFT2f.s:440    .text.DAC_DualSoftwareTriggerCmd:0000000000000034 $d
+     /tmp/ccPmFT2f.s:445    .text.DAC_WaveGenerationCmd:0000000000000000 $t
+     /tmp/ccPmFT2f.s:450    .text.DAC_WaveGenerationCmd:0000000000000000 DAC_WaveGenerationCmd
+     /tmp/ccPmFT2f.s:507    .text.DAC_WaveGenerationCmd:0000000000000048 $d
+     /tmp/ccPmFT2f.s:512    .text.DAC_SetChannel1Data:0000000000000000 $t
+     /tmp/ccPmFT2f.s:517    .text.DAC_SetChannel1Data:0000000000000000 DAC_SetChannel1Data
+     /tmp/ccPmFT2f.s:564    .text.DAC_SetChannel1Data:0000000000000030 $d
+     /tmp/ccPmFT2f.s:569    .text.DAC_SetChannel2Data:0000000000000000 $t
+     /tmp/ccPmFT2f.s:574    .text.DAC_SetChannel2Data:0000000000000000 DAC_SetChannel2Data
+     /tmp/ccPmFT2f.s:621    .text.DAC_SetChannel2Data:0000000000000030 $d
+     /tmp/ccPmFT2f.s:626    .text.DAC_SetDualChannelData:0000000000000000 $t
+     /tmp/ccPmFT2f.s:631    .text.DAC_SetDualChannelData:0000000000000000 DAC_SetDualChannelData
+     /tmp/ccPmFT2f.s:700    .text.DAC_SetDualChannelData:0000000000000054 $d
+     /tmp/ccPmFT2f.s:705    .text.DAC_GetDataOutputValue:0000000000000000 $t
+     /tmp/ccPmFT2f.s:710    .text.DAC_GetDataOutputValue:0000000000000000 DAC_GetDataOutputValue
+     /tmp/ccPmFT2f.s:756    .text.DAC_GetDataOutputValue:0000000000000030 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphResetCmd

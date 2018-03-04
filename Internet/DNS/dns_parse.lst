@@ -1,0 +1,1262 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"dns_parse.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.get16,"ax",%progbits
+  19              		.align	2
+  20              		.global	get16
+  21              		.thumb
+  22              		.thumb_func
+  24              	get16:
+  25              	.LFB0:
+  26              		.file 1 "/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c"
+   1:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** #include <string.h>
+   2:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** #include <stdio.h>
+   3:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** #include "socket.h"
+   4:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** #include "dns.h"
+   5:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** #include "dns_parse.h"
+   6:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+   7:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** /*
+   8:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** ********************************************************************************
+   9:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *              GET HOST BYTE ORDERED INT.
+  10:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *
+  11:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Description : This function converts uint16_t from network buffer to a host byte order integer.
+  12:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Arguments   : s - is a pointer to the network buffer
+  13:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Returns     : host byte order unsigned integer.
+  14:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Note        : Internal Function
+  15:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** ********************************************************************************
+  16:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** */
+  17:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** uint16_t get16(uint8_t * s)
+  18:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** {
+  27              		.loc 1 18 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 16
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32 0000 80B4     		push	{r7}
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 7, -4
+  35 0002 85B0     		sub	sp, sp, #20
+  36              		.cfi_def_cfa_offset 24
+  37 0004 00AF     		add	r7, sp, #0
+  38              		.cfi_def_cfa_register 7
+  39 0006 7860     		str	r0, [r7, #4]
+  19:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	uint16_t i;
+  20:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  21:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	i = *s++ << 8;
+  40              		.loc 1 21 0
+  41 0008 7B68     		ldr	r3, [r7, #4]
+  42 000a 5A1C     		adds	r2, r3, #1
+  43 000c 7A60     		str	r2, [r7, #4]
+  44 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  45 0010 9BB2     		uxth	r3, r3
+  46 0012 1B02     		lsls	r3, r3, #8
+  47 0014 FB81     		strh	r3, [r7, #14]	@ movhi
+  22:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	i = i + *s;
+  48              		.loc 1 22 0
+  49 0016 7B68     		ldr	r3, [r7, #4]
+  50 0018 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+  51 001a 9AB2     		uxth	r2, r3
+  52 001c FB89     		ldrh	r3, [r7, #14]	@ movhi
+  53 001e 1344     		add	r3, r3, r2
+  54 0020 FB81     		strh	r3, [r7, #14]	@ movhi
+  23:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  24:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	return i;
+  55              		.loc 1 24 0
+  56 0022 FB89     		ldrh	r3, [r7, #14]
+  25:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** }
+  57              		.loc 1 25 0
+  58 0024 1846     		mov	r0, r3
+  59 0026 1437     		adds	r7, r7, #20
+  60              		.cfi_def_cfa_offset 4
+  61 0028 BD46     		mov	sp, r7
+  62              		.cfi_def_cfa_register 13
+  63              		@ sp needed
+  64 002a 5DF8047B 		ldr	r7, [sp], #4
+  65              		.cfi_restore 7
+  66              		.cfi_def_cfa_offset 0
+  67 002e 7047     		bx	lr
+  68              		.cfi_endproc
+  69              	.LFE0:
+  71              		.section	.text.parse_name,"ax",%progbits
+  72              		.align	2
+  73              		.global	parse_name
+  74              		.thumb
+  75              		.thumb_func
+  77              	parse_name:
+  78              	.LFB1:
+  26:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  27:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** /*
+  28:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** ********************************************************************************
+  29:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *              CONVERT A DOMAIN NAME TO THE HUMAN-READABLE FORM
+  30:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *
+  31:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Description : This function converts a compressed domain name to the human-readable form
+  32:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Arguments   : msg        - is a pointer to the reply message
+  33:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *               compressed - is a pointer to the domain name in reply message.
+  34:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *               buf        - is a pointer to the buffer for the human-readable form name.
+  35:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *               len        - is the MAX. size of buffer.
+  36:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Returns     : the length of compressed message
+  37:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Note        :
+  38:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** ********************************************************************************
+  39:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** */
+  40:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** int parse_name(uint8_t * msg, uint8_t * compressed, char * buf, int16_t len)
+  41:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** {
+  79              		.loc 1 41 0
+  80              		.cfi_startproc
+  81              		@ args = 0, pretend = 0, frame = 40
+  82              		@ frame_needed = 1, uses_anonymous_args = 0
+  83              		@ link register save eliminated.
+  84 0000 80B4     		push	{r7}
+  85              		.cfi_def_cfa_offset 4
+  86              		.cfi_offset 7, -4
+  87 0002 8BB0     		sub	sp, sp, #44
+  88              		.cfi_def_cfa_offset 48
+  89 0004 00AF     		add	r7, sp, #0
+  90              		.cfi_def_cfa_register 7
+  91 0006 F860     		str	r0, [r7, #12]
+  92 0008 B960     		str	r1, [r7, #8]
+  93 000a 7A60     		str	r2, [r7, #4]
+  94 000c 7B80     		strh	r3, [r7, #2]	@ movhi
+  42:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	uint16_t slen;		/* Length of current segment */
+  43:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	uint8_t * cp;
+  44:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	int clen = 0;		/* Total length of compressed name */
+  95              		.loc 1 44 0
+  96 000e 0023     		movs	r3, #0
+  97 0010 FB61     		str	r3, [r7, #28]
+  45:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	int indirect = 0;	/* Set if indirection encountered */
+  98              		.loc 1 45 0
+  99 0012 0023     		movs	r3, #0
+ 100 0014 BB61     		str	r3, [r7, #24]
+  46:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	int nseg = 0;		/* Total number of segments in name */
+ 101              		.loc 1 46 0
+ 102 0016 0023     		movs	r3, #0
+ 103 0018 7B61     		str	r3, [r7, #20]
+  47:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  48:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	cp = compressed;
+ 104              		.loc 1 48 0
+ 105 001a BB68     		ldr	r3, [r7, #8]
+ 106 001c 3B62     		str	r3, [r7, #32]
+ 107              	.L14:
+  49:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  50:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	for (;;)
+  51:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	{
+  52:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		slen = *cp++;	/* Length of this segment */
+ 108              		.loc 1 52 0
+ 109 001e 3B6A     		ldr	r3, [r7, #32]
+ 110 0020 5A1C     		adds	r2, r3, #1
+ 111 0022 3A62     		str	r2, [r7, #32]
+ 112 0024 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 113 0026 FB84     		strh	r3, [r7, #38]	@ movhi
+  53:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  54:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		if (!indirect) clen++;
+ 114              		.loc 1 54 0
+ 115 0028 BB69     		ldr	r3, [r7, #24]
+ 116 002a 002B     		cmp	r3, #0
+ 117 002c 02D1     		bne	.L4
+ 118              		.loc 1 54 0 is_stmt 0 discriminator 1
+ 119 002e FB69     		ldr	r3, [r7, #28]
+ 120 0030 0133     		adds	r3, r3, #1
+ 121 0032 FB61     		str	r3, [r7, #28]
+ 122              	.L4:
+  55:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  56:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		if ((slen & 0xc0) == 0xc0)
+ 123              		.loc 1 56 0 is_stmt 1
+ 124 0034 FB8C     		ldrh	r3, [r7, #38]
+ 125 0036 03F0C003 		and	r3, r3, #192
+ 126 003a C02B     		cmp	r3, #192
+ 127 003c 17D1     		bne	.L5
+  57:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		{
+  58:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 			if (!indirect)
+ 128              		.loc 1 58 0
+ 129 003e BB69     		ldr	r3, [r7, #24]
+ 130 0040 002B     		cmp	r3, #0
+ 131 0042 02D1     		bne	.L6
+  59:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 				clen++;
+ 132              		.loc 1 59 0
+ 133 0044 FB69     		ldr	r3, [r7, #28]
+ 134 0046 0133     		adds	r3, r3, #1
+ 135 0048 FB61     		str	r3, [r7, #28]
+ 136              	.L6:
+  60:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 			indirect = 1;
+ 137              		.loc 1 60 0
+ 138 004a 0123     		movs	r3, #1
+ 139 004c BB61     		str	r3, [r7, #24]
+  61:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 			/* Follow indirection */
+  62:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 			cp = &msg[((slen & 0x3f)<<8) + *cp];
+ 140              		.loc 1 62 0
+ 141 004e FB8C     		ldrh	r3, [r7, #38]
+ 142 0050 03F03F03 		and	r3, r3, #63
+ 143 0054 1B02     		lsls	r3, r3, #8
+ 144 0056 3A6A     		ldr	r2, [r7, #32]
+ 145 0058 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 146 005a 1344     		add	r3, r3, r2
+ 147 005c 1A46     		mov	r2, r3
+ 148 005e FB68     		ldr	r3, [r7, #12]
+ 149 0060 1344     		add	r3, r3, r2
+ 150 0062 3B62     		str	r3, [r7, #32]
+  63:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 			slen = *cp++;
+ 151              		.loc 1 63 0
+ 152 0064 3B6A     		ldr	r3, [r7, #32]
+ 153 0066 5A1C     		adds	r2, r3, #1
+ 154 0068 3A62     		str	r2, [r7, #32]
+ 155 006a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 156 006c FB84     		strh	r3, [r7, #38]	@ movhi
+ 157              	.L5:
+  64:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		}
+  65:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  66:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		if (slen == 0)	/* zero length == all done */
+ 158              		.loc 1 66 0
+ 159 006e FB8C     		ldrh	r3, [r7, #38]
+ 160 0070 002B     		cmp	r3, #0
+ 161 0072 04D1     		bne	.L7
+  67:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 			break;
+ 162              		.loc 1 67 0
+ 163 0074 00BF     		nop
+  68:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  69:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		len -= slen + 1;
+  70:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  71:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		if (len < 0) return -1;
+  72:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  73:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		if (!indirect) clen += slen;
+  74:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  75:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		while (slen-- != 0) *buf++ = (char)*cp++;
+  76:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		*buf++ = '.';
+  77:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		nseg++;
+  78:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	}
+  79:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  80:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	if (nseg == 0)
+ 164              		.loc 1 80 0
+ 165 0076 7B69     		ldr	r3, [r7, #20]
+ 166 0078 002B     		cmp	r3, #0
+ 167 007a 36D1     		bne	.L15
+ 168 007c 2BE0     		b	.L16
+ 169              	.L7:
+  69:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 170              		.loc 1 69 0
+ 171 007e 7A88     		ldrh	r2, [r7, #2]
+ 172 0080 FB8C     		ldrh	r3, [r7, #38]	@ movhi
+ 173 0082 D31A     		subs	r3, r2, r3
+ 174 0084 9BB2     		uxth	r3, r3
+ 175 0086 013B     		subs	r3, r3, #1
+ 176 0088 9BB2     		uxth	r3, r3
+ 177 008a 7B80     		strh	r3, [r7, #2]	@ movhi
+  71:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 178              		.loc 1 71 0
+ 179 008c B7F90230 		ldrsh	r3, [r7, #2]
+ 180 0090 002B     		cmp	r3, #0
+ 181 0092 02DA     		bge	.L9
+  71:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 182              		.loc 1 71 0 is_stmt 0 discriminator 1
+ 183 0094 4FF0FF33 		mov	r3, #-1
+ 184 0098 32E0     		b	.L10
+ 185              	.L9:
+  73:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 186              		.loc 1 73 0 is_stmt 1
+ 187 009a BB69     		ldr	r3, [r7, #24]
+ 188 009c 002B     		cmp	r3, #0
+ 189 009e 03D1     		bne	.L11
+  73:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 190              		.loc 1 73 0 is_stmt 0 discriminator 1
+ 191 00a0 FB8C     		ldrh	r3, [r7, #38]
+ 192 00a2 FA69     		ldr	r2, [r7, #28]
+ 193 00a4 1344     		add	r3, r3, r2
+ 194 00a6 FB61     		str	r3, [r7, #28]
+ 195              	.L11:
+  75:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		*buf++ = '.';
+ 196              		.loc 1 75 0 is_stmt 1
+ 197 00a8 07E0     		b	.L12
+ 198              	.L13:
+  75:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		*buf++ = '.';
+ 199              		.loc 1 75 0 is_stmt 0 discriminator 2
+ 200 00aa 7B68     		ldr	r3, [r7, #4]
+ 201 00ac 5A1C     		adds	r2, r3, #1
+ 202 00ae 7A60     		str	r2, [r7, #4]
+ 203 00b0 3A6A     		ldr	r2, [r7, #32]
+ 204 00b2 511C     		adds	r1, r2, #1
+ 205 00b4 3962     		str	r1, [r7, #32]
+ 206 00b6 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 207 00b8 1A70     		strb	r2, [r3]
+ 208              	.L12:
+  75:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		*buf++ = '.';
+ 209              		.loc 1 75 0 discriminator 1
+ 210 00ba FB8C     		ldrh	r3, [r7, #38]
+ 211 00bc 5A1E     		subs	r2, r3, #1
+ 212 00be FA84     		strh	r2, [r7, #38]	@ movhi
+ 213 00c0 002B     		cmp	r3, #0
+ 214 00c2 F2D1     		bne	.L13
+  76:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		nseg++;
+ 215              		.loc 1 76 0 is_stmt 1
+ 216 00c4 7B68     		ldr	r3, [r7, #4]
+ 217 00c6 5A1C     		adds	r2, r3, #1
+ 218 00c8 7A60     		str	r2, [r7, #4]
+ 219 00ca 2E22     		movs	r2, #46
+ 220 00cc 1A70     		strb	r2, [r3]
+  77:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	}
+ 221              		.loc 1 77 0
+ 222 00ce 7B69     		ldr	r3, [r7, #20]
+ 223 00d0 0133     		adds	r3, r3, #1
+ 224 00d2 7B61     		str	r3, [r7, #20]
+  78:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 225              		.loc 1 78 0
+ 226 00d4 A3E7     		b	.L14
+ 227              	.L16:
+  81:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	{
+  82:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		/* Root name; represent as single dot */
+  83:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		*buf++ = '.';
+ 228              		.loc 1 83 0
+ 229 00d6 7B68     		ldr	r3, [r7, #4]
+ 230 00d8 5A1C     		adds	r2, r3, #1
+ 231 00da 7A60     		str	r2, [r7, #4]
+ 232 00dc 2E22     		movs	r2, #46
+ 233 00de 1A70     		strb	r2, [r3]
+  84:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		len--;
+ 234              		.loc 1 84 0
+ 235 00e0 7B88     		ldrh	r3, [r7, #2]
+ 236 00e2 9BB2     		uxth	r3, r3
+ 237 00e4 013B     		subs	r3, r3, #1
+ 238 00e6 9BB2     		uxth	r3, r3
+ 239 00e8 7B80     		strh	r3, [r7, #2]	@ movhi
+ 240              	.L15:
+  85:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	}
+  86:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  87:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	*buf++ = '\0';
+ 241              		.loc 1 87 0
+ 242 00ea 7B68     		ldr	r3, [r7, #4]
+ 243 00ec 5A1C     		adds	r2, r3, #1
+ 244 00ee 7A60     		str	r2, [r7, #4]
+ 245 00f0 0022     		movs	r2, #0
+ 246 00f2 1A70     		strb	r2, [r3]
+  88:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	len--;
+ 247              		.loc 1 88 0
+ 248 00f4 7B88     		ldrh	r3, [r7, #2]
+ 249 00f6 9BB2     		uxth	r3, r3
+ 250 00f8 013B     		subs	r3, r3, #1
+ 251 00fa 9BB2     		uxth	r3, r3
+ 252 00fc 7B80     		strh	r3, [r7, #2]	@ movhi
+  89:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  90:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	return clen;	/* Length of compressed message */
+ 253              		.loc 1 90 0
+ 254 00fe FB69     		ldr	r3, [r7, #28]
+ 255              	.L10:
+  91:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** }
+ 256              		.loc 1 91 0
+ 257 0100 1846     		mov	r0, r3
+ 258 0102 2C37     		adds	r7, r7, #44
+ 259              		.cfi_def_cfa_offset 4
+ 260 0104 BD46     		mov	sp, r7
+ 261              		.cfi_def_cfa_register 13
+ 262              		@ sp needed
+ 263 0106 5DF8047B 		ldr	r7, [sp], #4
+ 264              		.cfi_restore 7
+ 265              		.cfi_def_cfa_offset 0
+ 266 010a 7047     		bx	lr
+ 267              		.cfi_endproc
+ 268              	.LFE1:
+ 270              		.section	.text.dns_question,"ax",%progbits
+ 271              		.align	2
+ 272              		.global	dns_question
+ 273              		.thumb
+ 274              		.thumb_func
+ 276              	dns_question:
+ 277              	.LFB2:
+  92:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  93:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  94:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+  95:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** /*
+  96:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** ********************************************************************************
+  97:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *              PARSE QUESTION SECTION
+  98:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *
+  99:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Description : This function parses the qeustion record of the reply message.
+ 100:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Arguments   : msg - is a pointer to the reply message
+ 101:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *               cp  - is a pointer to the qeustion record.
+ 102:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Returns     : a pointer the to next record.
+ 103:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Note        :
+ 104:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** ********************************************************************************
+ 105:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** */
+ 106:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** uint8_t * dns_question(uint8_t * msg, uint8_t * cp)
+ 107:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** {
+ 278              		.loc 1 107 0
+ 279              		.cfi_startproc
+ 280              		@ args = 0, pretend = 0, frame = 272
+ 281              		@ frame_needed = 1, uses_anonymous_args = 0
+ 282 0000 90B5     		push	{r4, r7, lr}
+ 283              		.cfi_def_cfa_offset 12
+ 284              		.cfi_offset 4, -12
+ 285              		.cfi_offset 7, -8
+ 286              		.cfi_offset 14, -4
+ 287 0002 C5B0     		sub	sp, sp, #276
+ 288              		.cfi_def_cfa_offset 288
+ 289 0004 00AF     		add	r7, sp, #0
+ 290              		.cfi_def_cfa_register 7
+ 291 0006 3B1D     		adds	r3, r7, #4
+ 292 0008 1860     		str	r0, [r3]
+ 293 000a 3B46     		mov	r3, r7
+ 294 000c 1960     		str	r1, [r3]
+ 108:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	int len;
+ 109:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	char name[MAX_DNS_BUF_SIZE];
+ 110:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 111:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	len = parse_name(msg, cp, name, MAX_DNS_BUF_SIZE);
+ 295              		.loc 1 111 0
+ 296 000e 3A1D     		adds	r2, r7, #4
+ 297 0010 3B46     		mov	r3, r7
+ 298 0012 07F10C04 		add	r4, r7, #12
+ 299 0016 1068     		ldr	r0, [r2]
+ 300 0018 1968     		ldr	r1, [r3]
+ 301 001a 2246     		mov	r2, r4
+ 302 001c 4FF48073 		mov	r3, #256
+ 303 0020 FFF7FEFF 		bl	parse_name
+ 304 0024 C7F80C01 		str	r0, [r7, #268]
+ 112:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 113:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 114:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	if (len == -1) return 0;
+ 305              		.loc 1 114 0
+ 306 0028 D7F80C31 		ldr	r3, [r7, #268]
+ 307 002c B3F1FF3F 		cmp	r3, #-1
+ 308 0030 01D1     		bne	.L18
+ 309              		.loc 1 114 0 is_stmt 0 discriminator 1
+ 310 0032 0023     		movs	r3, #0
+ 311 0034 12E0     		b	.L20
+ 312              	.L18:
+ 115:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 116:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	cp += len;
+ 313              		.loc 1 116 0 is_stmt 1
+ 314 0036 D7F80C21 		ldr	r2, [r7, #268]
+ 315 003a 3B46     		mov	r3, r7
+ 316 003c 3946     		mov	r1, r7
+ 317 003e 0968     		ldr	r1, [r1]
+ 318 0040 0A44     		add	r2, r2, r1
+ 319 0042 1A60     		str	r2, [r3]
+ 117:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	cp += 2;		/* type */
+ 320              		.loc 1 117 0
+ 321 0044 3B46     		mov	r3, r7
+ 322 0046 3A46     		mov	r2, r7
+ 323 0048 1268     		ldr	r2, [r2]
+ 324 004a 0232     		adds	r2, r2, #2
+ 325 004c 1A60     		str	r2, [r3]
+ 118:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	cp += 2;		/* class */
+ 326              		.loc 1 118 0
+ 327 004e 3B46     		mov	r3, r7
+ 328 0050 3A46     		mov	r2, r7
+ 329 0052 1268     		ldr	r2, [r2]
+ 330 0054 0232     		adds	r2, r2, #2
+ 331 0056 1A60     		str	r2, [r3]
+ 119:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 120:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	return cp;
+ 332              		.loc 1 120 0
+ 333 0058 3B46     		mov	r3, r7
+ 334 005a 1B68     		ldr	r3, [r3]
+ 335              	.L20:
+ 121:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** }
+ 336              		.loc 1 121 0 discriminator 1
+ 337 005c 1846     		mov	r0, r3
+ 338 005e 07F58A77 		add	r7, r7, #276
+ 339              		.cfi_def_cfa_offset 12
+ 340 0062 BD46     		mov	sp, r7
+ 341              		.cfi_def_cfa_register 13
+ 342              		@ sp needed
+ 343 0064 90BD     		pop	{r4, r7, pc}
+ 344              		.cfi_endproc
+ 345              	.LFE2:
+ 347 0066 00BF     		.section	.text.dns_answer,"ax",%progbits
+ 348              		.align	2
+ 349              		.global	dns_answer
+ 350              		.thumb
+ 351              		.thumb_func
+ 353              	dns_answer:
+ 354              	.LFB3:
+ 122:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 123:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 124:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** /*
+ 125:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** ********************************************************************************
+ 126:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *              PARSE ANSER SECTION
+ 127:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *
+ 128:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Description : This function parses the answer record of the reply message.
+ 129:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Arguments   : msg - is a pointer to the reply message
+ 130:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *               cp  - is a pointer to the answer record.
+ 131:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Returns     : a pointer the to next record.
+ 132:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Note        :
+ 133:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** ********************************************************************************
+ 134:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** */
+ 135:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** uint8_t * dns_answer(uint8_t * msg, uint8_t * cp, uint8_t * ip_from_dns)
+ 136:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** {
+ 355              		.loc 1 136 0
+ 356              		.cfi_startproc
+ 357              		@ args = 0, pretend = 0, frame = 280
+ 358              		@ frame_needed = 1, uses_anonymous_args = 0
+ 359 0000 90B5     		push	{r4, r7, lr}
+ 360              		.cfi_def_cfa_offset 12
+ 361              		.cfi_offset 4, -12
+ 362              		.cfi_offset 7, -8
+ 363              		.cfi_offset 14, -4
+ 364 0002 C7B0     		sub	sp, sp, #284
+ 365              		.cfi_def_cfa_offset 296
+ 366 0004 00AF     		add	r7, sp, #0
+ 367              		.cfi_def_cfa_register 7
+ 368 0006 07F10C03 		add	r3, r7, #12
+ 369 000a 1860     		str	r0, [r3]
+ 370 000c 07F10803 		add	r3, r7, #8
+ 371 0010 1960     		str	r1, [r3]
+ 372 0012 3B1D     		adds	r3, r7, #4
+ 373 0014 1A60     		str	r2, [r3]
+ 137:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	int len, type;
+ 138:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	char name[MAX_DNS_BUF_SIZE];
+ 139:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 140:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	len = parse_name(msg, cp, name, MAX_DNS_BUF_SIZE);
+ 374              		.loc 1 140 0
+ 375 0016 07F10C02 		add	r2, r7, #12
+ 376 001a 07F10803 		add	r3, r7, #8
+ 377 001e 07F11004 		add	r4, r7, #16
+ 378 0022 1068     		ldr	r0, [r2]
+ 379 0024 1968     		ldr	r1, [r3]
+ 380 0026 2246     		mov	r2, r4
+ 381 0028 4FF48073 		mov	r3, #256
+ 382 002c FFF7FEFF 		bl	parse_name
+ 383 0030 C7F81401 		str	r0, [r7, #276]
+ 141:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 142:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	if (len == -1) return 0;
+ 384              		.loc 1 142 0
+ 385 0034 D7F81431 		ldr	r3, [r7, #276]
+ 386 0038 B3F1FF3F 		cmp	r3, #-1
+ 387 003c 01D1     		bne	.L22
+ 388              		.loc 1 142 0 is_stmt 0 discriminator 1
+ 389 003e 0023     		movs	r3, #0
+ 390 0040 5AE1     		b	.L37
+ 391              	.L22:
+ 143:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 144:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	cp += len;
+ 392              		.loc 1 144 0 is_stmt 1
+ 393 0042 D7F81421 		ldr	r2, [r7, #276]
+ 394 0046 07F10803 		add	r3, r7, #8
+ 395 004a 07F10801 		add	r1, r7, #8
+ 396 004e 0968     		ldr	r1, [r1]
+ 397 0050 0A44     		add	r2, r2, r1
+ 398 0052 1A60     		str	r2, [r3]
+ 145:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	type = get16(cp);
+ 399              		.loc 1 145 0
+ 400 0054 07F10803 		add	r3, r7, #8
+ 401 0058 1868     		ldr	r0, [r3]
+ 402 005a FFF7FEFF 		bl	get16
+ 403 005e 0346     		mov	r3, r0
+ 404 0060 C7F81031 		str	r3, [r7, #272]
+ 146:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	cp += 2;		/* type */
+ 405              		.loc 1 146 0
+ 406 0064 07F10803 		add	r3, r7, #8
+ 407 0068 07F10802 		add	r2, r7, #8
+ 408 006c 1268     		ldr	r2, [r2]
+ 409 006e 0232     		adds	r2, r2, #2
+ 410 0070 1A60     		str	r2, [r3]
+ 147:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	cp += 2;		/* class */
+ 411              		.loc 1 147 0
+ 412 0072 07F10803 		add	r3, r7, #8
+ 413 0076 07F10802 		add	r2, r7, #8
+ 414 007a 1268     		ldr	r2, [r2]
+ 415 007c 0232     		adds	r2, r2, #2
+ 416 007e 1A60     		str	r2, [r3]
+ 148:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	cp += 4;		/* ttl */
+ 417              		.loc 1 148 0
+ 418 0080 07F10803 		add	r3, r7, #8
+ 419 0084 07F10802 		add	r2, r7, #8
+ 420 0088 1268     		ldr	r2, [r2]
+ 421 008a 0432     		adds	r2, r2, #4
+ 422 008c 1A60     		str	r2, [r3]
+ 149:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	cp += 2;		/* len */
+ 423              		.loc 1 149 0
+ 424 008e 07F10803 		add	r3, r7, #8
+ 425 0092 07F10802 		add	r2, r7, #8
+ 426 0096 1268     		ldr	r2, [r2]
+ 427 0098 0232     		adds	r2, r2, #2
+ 428 009a 1A60     		str	r2, [r3]
+ 150:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 151:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 152:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	switch (type)
+ 429              		.loc 1 152 0
+ 430 009c D7F81031 		ldr	r3, [r7, #272]
+ 431 00a0 013B     		subs	r3, r3, #1
+ 432 00a2 0F2B     		cmp	r3, #15
+ 433 00a4 00F22481 		bhi	.L38
+ 434 00a8 01A2     		adr	r2, .L26
+ 435 00aa 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 436 00ae 00BF     		.p2align 2
+ 437              	.L26:
+ 438 00b0 F1000000 		.word	.L25+1
+ 439 00b4 51010000 		.word	.L27+1
+ 440 00b8 F1020000 		.word	.L38+1
+ 441 00bc F1020000 		.word	.L38+1
+ 442 00c0 51010000 		.word	.L27+1
+ 443 00c4 2D020000 		.word	.L28+1
+ 444 00c8 51010000 		.word	.L27+1
+ 445 00cc 51010000 		.word	.L27+1
+ 446 00d0 51010000 		.word	.L27+1
+ 447 00d4 F1020000 		.word	.L38+1
+ 448 00d8 F1020000 		.word	.L38+1
+ 449 00dc 51010000 		.word	.L27+1
+ 450 00e0 91010000 		.word	.L29+1
+ 451 00e4 F1020000 		.word	.L38+1
+ 452 00e8 DF010000 		.word	.L30+1
+ 453 00ec F1020000 		.word	.L38+1
+ 454              		.p2align 1
+ 455              	.L25:
+ 153:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	{
+ 154:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	case TYPE_A:
+ 155:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		/* Just read the address directly into the structure */
+ 156:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		ip_from_dns[0] = *cp++;
+ 456              		.loc 1 156 0
+ 457 00f0 07F10803 		add	r3, r7, #8
+ 458 00f4 1B68     		ldr	r3, [r3]
+ 459 00f6 07F10802 		add	r2, r7, #8
+ 460 00fa 591C     		adds	r1, r3, #1
+ 461 00fc 1160     		str	r1, [r2]
+ 462 00fe 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 463 0100 3B1D     		adds	r3, r7, #4
+ 464 0102 1B68     		ldr	r3, [r3]
+ 465 0104 1A70     		strb	r2, [r3]
+ 157:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		ip_from_dns[1] = *cp++;
+ 466              		.loc 1 157 0
+ 467 0106 3B1D     		adds	r3, r7, #4
+ 468 0108 1B68     		ldr	r3, [r3]
+ 469 010a 5A1C     		adds	r2, r3, #1
+ 470 010c 07F10803 		add	r3, r7, #8
+ 471 0110 1B68     		ldr	r3, [r3]
+ 472 0112 07F10801 		add	r1, r7, #8
+ 473 0116 581C     		adds	r0, r3, #1
+ 474 0118 0860     		str	r0, [r1]
+ 475 011a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 476 011c 1370     		strb	r3, [r2]
+ 158:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		ip_from_dns[2] = *cp++;
+ 477              		.loc 1 158 0
+ 478 011e 3B1D     		adds	r3, r7, #4
+ 479 0120 1B68     		ldr	r3, [r3]
+ 480 0122 9A1C     		adds	r2, r3, #2
+ 481 0124 07F10803 		add	r3, r7, #8
+ 482 0128 1B68     		ldr	r3, [r3]
+ 483 012a 07F10801 		add	r1, r7, #8
+ 484 012e 581C     		adds	r0, r3, #1
+ 485 0130 0860     		str	r0, [r1]
+ 486 0132 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 487 0134 1370     		strb	r3, [r2]
+ 159:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		ip_from_dns[3] = *cp++;
+ 488              		.loc 1 159 0
+ 489 0136 3B1D     		adds	r3, r7, #4
+ 490 0138 1B68     		ldr	r3, [r3]
+ 491 013a DA1C     		adds	r2, r3, #3
+ 492 013c 07F10803 		add	r3, r7, #8
+ 493 0140 1B68     		ldr	r3, [r3]
+ 494 0142 07F10801 		add	r1, r7, #8
+ 495 0146 581C     		adds	r0, r3, #1
+ 496 0148 0860     		str	r0, [r1]
+ 497 014a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 498 014c 1370     		strb	r3, [r2]
+ 160:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		break;
+ 499              		.loc 1 160 0
+ 500 014e D0E0     		b	.L32
+ 501              	.L27:
+ 161:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	case TYPE_CNAME:
+ 162:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	case TYPE_MB:
+ 163:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	case TYPE_MG:
+ 164:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	case TYPE_MR:
+ 165:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	case TYPE_NS:
+ 166:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	case TYPE_PTR:
+ 167:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		/* These types all consist of a single domain name */
+ 168:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		/* convert it to ascii format */
+ 169:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		len = parse_name(msg, cp, name, MAX_DNS_BUF_SIZE);
+ 502              		.loc 1 169 0
+ 503 0150 07F10C02 		add	r2, r7, #12
+ 504 0154 07F10803 		add	r3, r7, #8
+ 505 0158 07F11004 		add	r4, r7, #16
+ 506 015c 1068     		ldr	r0, [r2]
+ 507 015e 1968     		ldr	r1, [r3]
+ 508 0160 2246     		mov	r2, r4
+ 509 0162 4FF48073 		mov	r3, #256
+ 510 0166 FFF7FEFF 		bl	parse_name
+ 511 016a C7F81401 		str	r0, [r7, #276]
+ 170:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		if (len == -1) return 0;
+ 512              		.loc 1 170 0
+ 513 016e D7F81431 		ldr	r3, [r7, #276]
+ 514 0172 B3F1FF3F 		cmp	r3, #-1
+ 515 0176 01D1     		bne	.L33
+ 516              		.loc 1 170 0 is_stmt 0 discriminator 1
+ 517 0178 0023     		movs	r3, #0
+ 518 017a BDE0     		b	.L37
+ 519              	.L33:
+ 171:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 172:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		cp += len;
+ 520              		.loc 1 172 0 is_stmt 1
+ 521 017c D7F81421 		ldr	r2, [r7, #276]
+ 522 0180 07F10803 		add	r3, r7, #8
+ 523 0184 07F10801 		add	r1, r7, #8
+ 524 0188 0968     		ldr	r1, [r1]
+ 525 018a 0A44     		add	r2, r2, r1
+ 526 018c 1A60     		str	r2, [r3]
+ 173:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		break;
+ 527              		.loc 1 173 0
+ 528 018e B0E0     		b	.L32
+ 529              	.L29:
+ 174:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	case TYPE_HINFO:
+ 175:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		len = *cp++;
+ 530              		.loc 1 175 0
+ 531 0190 07F10803 		add	r3, r7, #8
+ 532 0194 1B68     		ldr	r3, [r3]
+ 533 0196 07F10802 		add	r2, r7, #8
+ 534 019a 591C     		adds	r1, r3, #1
+ 535 019c 1160     		str	r1, [r2]
+ 536 019e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 537 01a0 C7F81431 		str	r3, [r7, #276]
+ 176:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		cp += len;
+ 538              		.loc 1 176 0
+ 539 01a4 D7F81421 		ldr	r2, [r7, #276]
+ 540 01a8 07F10803 		add	r3, r7, #8
+ 541 01ac 07F10801 		add	r1, r7, #8
+ 542 01b0 0968     		ldr	r1, [r1]
+ 543 01b2 0A44     		add	r2, r2, r1
+ 544 01b4 1A60     		str	r2, [r3]
+ 177:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 178:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		len = *cp++;
+ 545              		.loc 1 178 0
+ 546 01b6 07F10803 		add	r3, r7, #8
+ 547 01ba 1B68     		ldr	r3, [r3]
+ 548 01bc 07F10802 		add	r2, r7, #8
+ 549 01c0 591C     		adds	r1, r3, #1
+ 550 01c2 1160     		str	r1, [r2]
+ 551 01c4 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 552 01c6 C7F81431 		str	r3, [r7, #276]
+ 179:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		cp += len;
+ 553              		.loc 1 179 0
+ 554 01ca D7F81421 		ldr	r2, [r7, #276]
+ 555 01ce 07F10803 		add	r3, r7, #8
+ 556 01d2 07F10801 		add	r1, r7, #8
+ 557 01d6 0968     		ldr	r1, [r1]
+ 558 01d8 0A44     		add	r2, r2, r1
+ 559 01da 1A60     		str	r2, [r3]
+ 180:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		break;
+ 560              		.loc 1 180 0
+ 561 01dc 89E0     		b	.L32
+ 562              	.L30:
+ 181:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	case TYPE_MX:
+ 182:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		cp += 2;
+ 563              		.loc 1 182 0
+ 564 01de 07F10803 		add	r3, r7, #8
+ 565 01e2 07F10802 		add	r2, r7, #8
+ 566 01e6 1268     		ldr	r2, [r2]
+ 567 01e8 0232     		adds	r2, r2, #2
+ 568 01ea 1A60     		str	r2, [r3]
+ 183:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		/* Get domain name of exchanger */
+ 184:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		len = parse_name(msg, cp, name, MAX_DNS_BUF_SIZE);
+ 569              		.loc 1 184 0
+ 570 01ec 07F10C02 		add	r2, r7, #12
+ 571 01f0 07F10803 		add	r3, r7, #8
+ 572 01f4 07F11004 		add	r4, r7, #16
+ 573 01f8 1068     		ldr	r0, [r2]
+ 574 01fa 1968     		ldr	r1, [r3]
+ 575 01fc 2246     		mov	r2, r4
+ 576 01fe 4FF48073 		mov	r3, #256
+ 577 0202 FFF7FEFF 		bl	parse_name
+ 578 0206 C7F81401 		str	r0, [r7, #276]
+ 185:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		if (len == -1) return 0;
+ 579              		.loc 1 185 0
+ 580 020a D7F81431 		ldr	r3, [r7, #276]
+ 581 020e B3F1FF3F 		cmp	r3, #-1
+ 582 0212 01D1     		bne	.L34
+ 583              		.loc 1 185 0 is_stmt 0 discriminator 1
+ 584 0214 0023     		movs	r3, #0
+ 585 0216 6FE0     		b	.L37
+ 586              	.L34:
+ 186:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 187:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		cp += len;
+ 587              		.loc 1 187 0 is_stmt 1
+ 588 0218 D7F81421 		ldr	r2, [r7, #276]
+ 589 021c 07F10803 		add	r3, r7, #8
+ 590 0220 07F10801 		add	r1, r7, #8
+ 591 0224 0968     		ldr	r1, [r1]
+ 592 0226 0A44     		add	r2, r2, r1
+ 593 0228 1A60     		str	r2, [r3]
+ 188:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		break;
+ 594              		.loc 1 188 0
+ 595 022a 62E0     		b	.L32
+ 596              	.L28:
+ 189:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	case TYPE_SOA:
+ 190:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		/* Get domain name of name server */
+ 191:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		len = parse_name(msg, cp, name, MAX_DNS_BUF_SIZE);
+ 597              		.loc 1 191 0
+ 598 022c 07F10C02 		add	r2, r7, #12
+ 599 0230 07F10803 		add	r3, r7, #8
+ 600 0234 07F11004 		add	r4, r7, #16
+ 601 0238 1068     		ldr	r0, [r2]
+ 602 023a 1968     		ldr	r1, [r3]
+ 603 023c 2246     		mov	r2, r4
+ 604 023e 4FF48073 		mov	r3, #256
+ 605 0242 FFF7FEFF 		bl	parse_name
+ 606 0246 C7F81401 		str	r0, [r7, #276]
+ 192:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		if (len == -1) return 0;
+ 607              		.loc 1 192 0
+ 608 024a D7F81431 		ldr	r3, [r7, #276]
+ 609 024e B3F1FF3F 		cmp	r3, #-1
+ 610 0252 01D1     		bne	.L35
+ 611              		.loc 1 192 0 is_stmt 0 discriminator 1
+ 612 0254 0023     		movs	r3, #0
+ 613 0256 4FE0     		b	.L37
+ 614              	.L35:
+ 193:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 194:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		cp += len;
+ 615              		.loc 1 194 0 is_stmt 1
+ 616 0258 D7F81421 		ldr	r2, [r7, #276]
+ 617 025c 07F10803 		add	r3, r7, #8
+ 618 0260 07F10801 		add	r1, r7, #8
+ 619 0264 0968     		ldr	r1, [r1]
+ 620 0266 0A44     		add	r2, r2, r1
+ 621 0268 1A60     		str	r2, [r3]
+ 195:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 196:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		/* Get domain name of responsible person */
+ 197:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		len = parse_name(msg, cp, name, MAX_DNS_BUF_SIZE);
+ 622              		.loc 1 197 0
+ 623 026a 07F10C02 		add	r2, r7, #12
+ 624 026e 07F10803 		add	r3, r7, #8
+ 625 0272 07F11004 		add	r4, r7, #16
+ 626 0276 1068     		ldr	r0, [r2]
+ 627 0278 1968     		ldr	r1, [r3]
+ 628 027a 2246     		mov	r2, r4
+ 629 027c 4FF48073 		mov	r3, #256
+ 630 0280 FFF7FEFF 		bl	parse_name
+ 631 0284 C7F81401 		str	r0, [r7, #276]
+ 198:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		if (len == -1) return 0;
+ 632              		.loc 1 198 0
+ 633 0288 D7F81431 		ldr	r3, [r7, #276]
+ 634 028c B3F1FF3F 		cmp	r3, #-1
+ 635 0290 01D1     		bne	.L36
+ 636              		.loc 1 198 0 is_stmt 0 discriminator 1
+ 637 0292 0023     		movs	r3, #0
+ 638 0294 30E0     		b	.L37
+ 639              	.L36:
+ 199:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 200:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		cp += len;
+ 640              		.loc 1 200 0 is_stmt 1
+ 641 0296 D7F81421 		ldr	r2, [r7, #276]
+ 642 029a 07F10803 		add	r3, r7, #8
+ 643 029e 07F10801 		add	r1, r7, #8
+ 644 02a2 0968     		ldr	r1, [r1]
+ 645 02a4 0A44     		add	r2, r2, r1
+ 646 02a6 1A60     		str	r2, [r3]
+ 201:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 202:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		cp += 4;
+ 647              		.loc 1 202 0
+ 648 02a8 07F10803 		add	r3, r7, #8
+ 649 02ac 07F10802 		add	r2, r7, #8
+ 650 02b0 1268     		ldr	r2, [r2]
+ 651 02b2 0432     		adds	r2, r2, #4
+ 652 02b4 1A60     		str	r2, [r3]
+ 203:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		cp += 4;
+ 653              		.loc 1 203 0
+ 654 02b6 07F10803 		add	r3, r7, #8
+ 655 02ba 07F10802 		add	r2, r7, #8
+ 656 02be 1268     		ldr	r2, [r2]
+ 657 02c0 0432     		adds	r2, r2, #4
+ 658 02c2 1A60     		str	r2, [r3]
+ 204:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		cp += 4;
+ 659              		.loc 1 204 0
+ 660 02c4 07F10803 		add	r3, r7, #8
+ 661 02c8 07F10802 		add	r2, r7, #8
+ 662 02cc 1268     		ldr	r2, [r2]
+ 663 02ce 0432     		adds	r2, r2, #4
+ 664 02d0 1A60     		str	r2, [r3]
+ 205:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		cp += 4;
+ 665              		.loc 1 205 0
+ 666 02d2 07F10803 		add	r3, r7, #8
+ 667 02d6 07F10802 		add	r2, r7, #8
+ 668 02da 1268     		ldr	r2, [r2]
+ 669 02dc 0432     		adds	r2, r2, #4
+ 670 02de 1A60     		str	r2, [r3]
+ 206:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		cp += 4;
+ 671              		.loc 1 206 0
+ 672 02e0 07F10803 		add	r3, r7, #8
+ 673 02e4 07F10802 		add	r2, r7, #8
+ 674 02e8 1268     		ldr	r2, [r2]
+ 675 02ea 0432     		adds	r2, r2, #4
+ 676 02ec 1A60     		str	r2, [r3]
+ 207:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		break;
+ 677              		.loc 1 207 0
+ 678 02ee 00E0     		b	.L32
+ 679              	.L38:
+ 208:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	case TYPE_TXT:
+ 209:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		/* Just stash */
+ 210:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		break;
+ 211:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	default:
+ 212:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		/* Ignore */
+ 213:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		break;
+ 680              		.loc 1 213 0
+ 681 02f0 00BF     		nop
+ 682              	.L32:
+ 214:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	}
+ 215:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 216:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	return cp;
+ 683              		.loc 1 216 0
+ 684 02f2 07F10803 		add	r3, r7, #8
+ 685 02f6 1B68     		ldr	r3, [r3]
+ 686              	.L37:
+ 217:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** }
+ 687              		.loc 1 217 0 discriminator 1
+ 688 02f8 1846     		mov	r0, r3
+ 689 02fa 07F58E77 		add	r7, r7, #284
+ 690              		.cfi_def_cfa_offset 12
+ 691 02fe BD46     		mov	sp, r7
+ 692              		.cfi_def_cfa_register 13
+ 693              		@ sp needed
+ 694 0300 90BD     		pop	{r4, r7, pc}
+ 695              		.cfi_endproc
+ 696              	.LFE3:
+ 698 0302 00BF     		.section	.text.parseMSG,"ax",%progbits
+ 699              		.align	2
+ 700              		.global	parseMSG
+ 701              		.thumb
+ 702              		.thumb_func
+ 704              	parseMSG:
+ 705              	.LFB4:
+ 218:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 219:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** /*
+ 220:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** ********************************************************************************
+ 221:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *              PARSE THE DNS REPLY
+ 222:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *
+ 223:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Description : This function parses the reply message from DNS server.
+ 224:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Arguments   : dhdr - is a pointer to the header for DNS message
+ 225:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *               buf  - is a pointer to the reply message.
+ 226:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** *               len  - is the size of reply message.
+ 227:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Returns     : 1 - is success, 0 - is fail
+ 228:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** * Note        :
+ 229:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** ********************************************************************************
+ 230:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** */
+ 231:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** uint8_t parseMSG(struct dhdr * pdhdr, uint8_t * pbuf, uint8_t * ip_from_dns)
+ 232:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** {
+ 706              		.loc 1 232 0
+ 707              		.cfi_startproc
+ 708              		@ args = 0, pretend = 0, frame = 32
+ 709              		@ frame_needed = 1, uses_anonymous_args = 0
+ 710 0000 80B5     		push	{r7, lr}
+ 711              		.cfi_def_cfa_offset 8
+ 712              		.cfi_offset 7, -8
+ 713              		.cfi_offset 14, -4
+ 714 0002 88B0     		sub	sp, sp, #32
+ 715              		.cfi_def_cfa_offset 40
+ 716 0004 00AF     		add	r7, sp, #0
+ 717              		.cfi_def_cfa_register 7
+ 718 0006 F860     		str	r0, [r7, #12]
+ 719 0008 B960     		str	r1, [r7, #8]
+ 720 000a 7A60     		str	r2, [r7, #4]
+ 233:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	uint16_t tmp;
+ 234:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	uint16_t i;
+ 235:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	uint8_t * msg;
+ 236:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	uint8_t * cp;
+ 237:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 238:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	msg = pbuf;
+ 721              		.loc 1 238 0
+ 722 000c BB68     		ldr	r3, [r7, #8]
+ 723 000e 7B61     		str	r3, [r7, #20]
+ 239:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	memset(pdhdr, 0, sizeof(pdhdr));
+ 724              		.loc 1 239 0
+ 725 0010 F868     		ldr	r0, [r7, #12]
+ 726 0012 0021     		movs	r1, #0
+ 727 0014 0422     		movs	r2, #4
+ 728 0016 FFF7FEFF 		bl	memset
+ 240:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 241:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	pdhdr->id = get16(&msg[0]);
+ 729              		.loc 1 241 0
+ 730 001a 7869     		ldr	r0, [r7, #20]
+ 731 001c FFF7FEFF 		bl	get16
+ 732 0020 0346     		mov	r3, r0
+ 733 0022 1A46     		mov	r2, r3
+ 734 0024 FB68     		ldr	r3, [r7, #12]
+ 735 0026 1A80     		strh	r2, [r3]	@ movhi
+ 242:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	tmp = get16(&msg[2]);
+ 736              		.loc 1 242 0
+ 737 0028 7B69     		ldr	r3, [r7, #20]
+ 738 002a 0233     		adds	r3, r3, #2
+ 739 002c 1846     		mov	r0, r3
+ 740 002e FFF7FEFF 		bl	get16
+ 741 0032 0346     		mov	r3, r0
+ 742 0034 7B82     		strh	r3, [r7, #18]	@ movhi
+ 243:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	if (tmp & 0x8000) pdhdr->qr = 1;
+ 743              		.loc 1 243 0
+ 744 0036 7B8A     		ldrh	r3, [r7, #18]
+ 745 0038 1BB2     		sxth	r3, r3
+ 746 003a 002B     		cmp	r3, #0
+ 747 003c 02DA     		bge	.L40
+ 748              		.loc 1 243 0 is_stmt 0 discriminator 1
+ 749 003e FB68     		ldr	r3, [r7, #12]
+ 750 0040 0122     		movs	r2, #1
+ 751 0042 9A70     		strb	r2, [r3, #2]
+ 752              	.L40:
+ 244:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 245:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	pdhdr->opcode = (tmp >> 11) & 0xf;
+ 753              		.loc 1 245 0 is_stmt 1
+ 754 0044 7B8A     		ldrh	r3, [r7, #18]
+ 755 0046 DB0A     		lsrs	r3, r3, #11
+ 756 0048 9BB2     		uxth	r3, r3
+ 757 004a DBB2     		uxtb	r3, r3
+ 758 004c 03F00F03 		and	r3, r3, #15
+ 759 0050 DAB2     		uxtb	r2, r3
+ 760 0052 FB68     		ldr	r3, [r7, #12]
+ 761 0054 DA70     		strb	r2, [r3, #3]
+ 246:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 247:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	if (tmp & 0x0400) pdhdr->aa = 1;
+ 762              		.loc 1 247 0
+ 763 0056 7B8A     		ldrh	r3, [r7, #18]
+ 764 0058 03F48063 		and	r3, r3, #1024
+ 765 005c 002B     		cmp	r3, #0
+ 766 005e 02D0     		beq	.L41
+ 767              		.loc 1 247 0 is_stmt 0 discriminator 1
+ 768 0060 FB68     		ldr	r3, [r7, #12]
+ 769 0062 0122     		movs	r2, #1
+ 770 0064 1A71     		strb	r2, [r3, #4]
+ 771              	.L41:
+ 248:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	if (tmp & 0x0200) pdhdr->tc = 1;
+ 772              		.loc 1 248 0 is_stmt 1
+ 773 0066 7B8A     		ldrh	r3, [r7, #18]
+ 774 0068 03F40073 		and	r3, r3, #512
+ 775 006c 002B     		cmp	r3, #0
+ 776 006e 02D0     		beq	.L42
+ 777              		.loc 1 248 0 is_stmt 0 discriminator 1
+ 778 0070 FB68     		ldr	r3, [r7, #12]
+ 779 0072 0122     		movs	r2, #1
+ 780 0074 5A71     		strb	r2, [r3, #5]
+ 781              	.L42:
+ 249:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	if (tmp & 0x0100) pdhdr->rd = 1;
+ 782              		.loc 1 249 0 is_stmt 1
+ 783 0076 7B8A     		ldrh	r3, [r7, #18]
+ 784 0078 03F48073 		and	r3, r3, #256
+ 785 007c 002B     		cmp	r3, #0
+ 786 007e 02D0     		beq	.L43
+ 787              		.loc 1 249 0 is_stmt 0 discriminator 1
+ 788 0080 FB68     		ldr	r3, [r7, #12]
+ 789 0082 0122     		movs	r2, #1
+ 790 0084 9A71     		strb	r2, [r3, #6]
+ 791              	.L43:
+ 250:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	if (tmp & 0x0080) pdhdr->ra = 1;
+ 792              		.loc 1 250 0 is_stmt 1
+ 793 0086 7B8A     		ldrh	r3, [r7, #18]
+ 794 0088 03F08003 		and	r3, r3, #128
+ 795 008c 002B     		cmp	r3, #0
+ 796 008e 02D0     		beq	.L44
+ 797              		.loc 1 250 0 is_stmt 0 discriminator 1
+ 798 0090 FB68     		ldr	r3, [r7, #12]
+ 799 0092 0122     		movs	r2, #1
+ 800 0094 DA71     		strb	r2, [r3, #7]
+ 801              	.L44:
+ 251:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 252:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	pdhdr->rcode = tmp & 0xf;
+ 802              		.loc 1 252 0 is_stmt 1
+ 803 0096 7B8A     		ldrh	r3, [r7, #18]	@ movhi
+ 804 0098 DBB2     		uxtb	r3, r3
+ 805 009a 03F00F03 		and	r3, r3, #15
+ 806 009e DAB2     		uxtb	r2, r3
+ 807 00a0 FB68     		ldr	r3, [r7, #12]
+ 808 00a2 1A72     		strb	r2, [r3, #8]
+ 253:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	pdhdr->qdcount = get16(&msg[4]);
+ 809              		.loc 1 253 0
+ 810 00a4 7B69     		ldr	r3, [r7, #20]
+ 811 00a6 0433     		adds	r3, r3, #4
+ 812 00a8 1846     		mov	r0, r3
+ 813 00aa FFF7FEFF 		bl	get16
+ 814 00ae 0346     		mov	r3, r0
+ 815 00b0 1A46     		mov	r2, r3
+ 816 00b2 FB68     		ldr	r3, [r7, #12]
+ 817 00b4 5A81     		strh	r2, [r3, #10]	@ movhi
+ 254:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	pdhdr->ancount = get16(&msg[6]);
+ 818              		.loc 1 254 0
+ 819 00b6 7B69     		ldr	r3, [r7, #20]
+ 820 00b8 0633     		adds	r3, r3, #6
+ 821 00ba 1846     		mov	r0, r3
+ 822 00bc FFF7FEFF 		bl	get16
+ 823 00c0 0346     		mov	r3, r0
+ 824 00c2 1A46     		mov	r2, r3
+ 825 00c4 FB68     		ldr	r3, [r7, #12]
+ 826 00c6 9A81     		strh	r2, [r3, #12]	@ movhi
+ 255:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	pdhdr->nscount = get16(&msg[8]);
+ 827              		.loc 1 255 0
+ 828 00c8 7B69     		ldr	r3, [r7, #20]
+ 829 00ca 0833     		adds	r3, r3, #8
+ 830 00cc 1846     		mov	r0, r3
+ 831 00ce FFF7FEFF 		bl	get16
+ 832 00d2 0346     		mov	r3, r0
+ 833 00d4 1A46     		mov	r2, r3
+ 834 00d6 FB68     		ldr	r3, [r7, #12]
+ 835 00d8 DA81     		strh	r2, [r3, #14]	@ movhi
+ 256:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	pdhdr->arcount = get16(&msg[10]);
+ 836              		.loc 1 256 0
+ 837 00da 7B69     		ldr	r3, [r7, #20]
+ 838 00dc 0A33     		adds	r3, r3, #10
+ 839 00de 1846     		mov	r0, r3
+ 840 00e0 FFF7FEFF 		bl	get16
+ 841 00e4 0346     		mov	r3, r0
+ 842 00e6 1A46     		mov	r2, r3
+ 843 00e8 FB68     		ldr	r3, [r7, #12]
+ 844 00ea 1A82     		strh	r2, [r3, #16]	@ movhi
+ 257:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 258:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 259:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	/* Now parse the variable length sections */
+ 260:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	cp = &msg[12];
+ 845              		.loc 1 260 0
+ 846 00ec 7B69     		ldr	r3, [r7, #20]
+ 847 00ee 0C33     		adds	r3, r3, #12
+ 848 00f0 BB61     		str	r3, [r7, #24]
+ 261:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 262:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	/* Question section */
+ 263:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	for (i = 0; i < pdhdr->qdcount; i++)
+ 849              		.loc 1 263 0
+ 850 00f2 0023     		movs	r3, #0
+ 851 00f4 FB83     		strh	r3, [r7, #30]	@ movhi
+ 852 00f6 07E0     		b	.L45
+ 853              	.L46:
+ 264:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	{
+ 265:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		cp = dns_question(msg, cp);
+ 854              		.loc 1 265 0 discriminator 3
+ 855 00f8 7869     		ldr	r0, [r7, #20]
+ 856 00fa B969     		ldr	r1, [r7, #24]
+ 857 00fc FFF7FEFF 		bl	dns_question
+ 858 0100 B861     		str	r0, [r7, #24]
+ 263:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	{
+ 859              		.loc 1 263 0 discriminator 3
+ 860 0102 FB8B     		ldrh	r3, [r7, #30]
+ 861 0104 0133     		adds	r3, r3, #1
+ 862 0106 FB83     		strh	r3, [r7, #30]	@ movhi
+ 863              	.L45:
+ 263:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	{
+ 864              		.loc 1 263 0 is_stmt 0 discriminator 1
+ 865 0108 FB68     		ldr	r3, [r7, #12]
+ 866 010a 5B89     		ldrh	r3, [r3, #10]
+ 867 010c FA8B     		ldrh	r2, [r7, #30]
+ 868 010e 9A42     		cmp	r2, r3
+ 869 0110 F2D3     		bcc	.L46
+ 266:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	}
+ 267:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 268:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	/* Answer section */
+ 269:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	for (i = 0; i < pdhdr->ancount; i++)
+ 870              		.loc 1 269 0 is_stmt 1
+ 871 0112 0023     		movs	r3, #0
+ 872 0114 FB83     		strh	r3, [r7, #30]	@ movhi
+ 873 0116 08E0     		b	.L47
+ 874              	.L48:
+ 270:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	{
+ 271:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		cp = dns_answer(msg, cp, ip_from_dns);
+ 875              		.loc 1 271 0 discriminator 3
+ 876 0118 7869     		ldr	r0, [r7, #20]
+ 877 011a B969     		ldr	r1, [r7, #24]
+ 878 011c 7A68     		ldr	r2, [r7, #4]
+ 879 011e FFF7FEFF 		bl	dns_answer
+ 880 0122 B861     		str	r0, [r7, #24]
+ 269:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	{
+ 881              		.loc 1 269 0 discriminator 3
+ 882 0124 FB8B     		ldrh	r3, [r7, #30]
+ 883 0126 0133     		adds	r3, r3, #1
+ 884 0128 FB83     		strh	r3, [r7, #30]	@ movhi
+ 885              	.L47:
+ 269:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	{
+ 886              		.loc 1 269 0 is_stmt 0 discriminator 1
+ 887 012a FB68     		ldr	r3, [r7, #12]
+ 888 012c 9B89     		ldrh	r3, [r3, #12]
+ 889 012e FA8B     		ldrh	r2, [r7, #30]
+ 890 0130 9A42     		cmp	r2, r3
+ 891 0132 F1D3     		bcc	.L48
+ 272:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	}
+ 273:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 274:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	/* Name server (authority) section */
+ 275:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	for (i = 0; i < pdhdr->nscount; i++)
+ 892              		.loc 1 275 0 is_stmt 1
+ 893 0134 0023     		movs	r3, #0
+ 894 0136 FB83     		strh	r3, [r7, #30]	@ movhi
+ 895 0138 02E0     		b	.L49
+ 896              	.L50:
+ 897              		.loc 1 275 0 is_stmt 0 discriminator 3
+ 898 013a FB8B     		ldrh	r3, [r7, #30]
+ 899 013c 0133     		adds	r3, r3, #1
+ 900 013e FB83     		strh	r3, [r7, #30]	@ movhi
+ 901              	.L49:
+ 902              		.loc 1 275 0 discriminator 1
+ 903 0140 FB68     		ldr	r3, [r7, #12]
+ 904 0142 DB89     		ldrh	r3, [r3, #14]
+ 905 0144 FA8B     		ldrh	r2, [r7, #30]
+ 906 0146 9A42     		cmp	r2, r3
+ 907 0148 F7D3     		bcc	.L50
+ 276:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	{
+ 277:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		;
+ 278:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	}
+ 279:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 280:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	/* Additional section */
+ 281:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	for (i = 0; i < pdhdr->arcount; i++)
+ 908              		.loc 1 281 0 is_stmt 1
+ 909 014a 0023     		movs	r3, #0
+ 910 014c FB83     		strh	r3, [r7, #30]	@ movhi
+ 911 014e 02E0     		b	.L51
+ 912              	.L52:
+ 913              		.loc 1 281 0 is_stmt 0 discriminator 3
+ 914 0150 FB8B     		ldrh	r3, [r7, #30]
+ 915 0152 0133     		adds	r3, r3, #1
+ 916 0154 FB83     		strh	r3, [r7, #30]	@ movhi
+ 917              	.L51:
+ 918              		.loc 1 281 0 discriminator 1
+ 919 0156 FB68     		ldr	r3, [r7, #12]
+ 920 0158 1B8A     		ldrh	r3, [r3, #16]
+ 921 015a FA8B     		ldrh	r2, [r7, #30]
+ 922 015c 9A42     		cmp	r2, r3
+ 923 015e F7D3     		bcc	.L52
+ 282:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	{
+ 283:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 		;
+ 284:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	}
+ 285:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 
+ 286:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	if(pdhdr->rcode == 0) return 1;		// No error
+ 924              		.loc 1 286 0 is_stmt 1
+ 925 0160 FB68     		ldr	r3, [r7, #12]
+ 926 0162 1B7A     		ldrb	r3, [r3, #8]	@ zero_extendqisi2
+ 927 0164 002B     		cmp	r3, #0
+ 928 0166 01D1     		bne	.L53
+ 929              		.loc 1 286 0 is_stmt 0 discriminator 1
+ 930 0168 0123     		movs	r3, #1
+ 931 016a 00E0     		b	.L54
+ 932              	.L53:
+ 287:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** 	else return 0;
+ 933              		.loc 1 287 0 is_stmt 1
+ 934 016c 0023     		movs	r3, #0
+ 935              	.L54:
+ 288:/home/virusv/TDSAST_IOT/Internet/DNS/dns_parse.c **** }
+ 936              		.loc 1 288 0
+ 937 016e 1846     		mov	r0, r3
+ 938 0170 2037     		adds	r7, r7, #32
+ 939              		.cfi_def_cfa_offset 8
+ 940 0172 BD46     		mov	sp, r7
+ 941              		.cfi_def_cfa_register 13
+ 942              		@ sp needed
+ 943 0174 80BD     		pop	{r7, pc}
+ 944              		.cfi_endproc
+ 945              	.LFE4:
+ 947 0176 00BF     		.text
+ 948              	.Letext0:
+ 949              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 950              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 951              		.file 4 "/home/virusv/TDSAST_IOT/Internet/DNS/dns.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 dns_parse.c
+     /tmp/ccGCYWck.s:19     .text.get16:0000000000000000 $t
+     /tmp/ccGCYWck.s:24     .text.get16:0000000000000000 get16
+     /tmp/ccGCYWck.s:72     .text.parse_name:0000000000000000 $t
+     /tmp/ccGCYWck.s:77     .text.parse_name:0000000000000000 parse_name
+     /tmp/ccGCYWck.s:271    .text.dns_question:0000000000000000 $t
+     /tmp/ccGCYWck.s:276    .text.dns_question:0000000000000000 dns_question
+     /tmp/ccGCYWck.s:348    .text.dns_answer:0000000000000000 $t
+     /tmp/ccGCYWck.s:353    .text.dns_answer:0000000000000000 dns_answer
+     /tmp/ccGCYWck.s:438    .text.dns_answer:00000000000000b0 $d
+     /tmp/ccGCYWck.s:454    .text.dns_answer:00000000000000f0 $t
+     /tmp/ccGCYWck.s:699    .text.parseMSG:0000000000000000 $t
+     /tmp/ccGCYWck.s:704    .text.parseMSG:0000000000000000 parseMSG
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+memset

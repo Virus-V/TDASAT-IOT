@@ -1,0 +1,1560 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"system_stm32f10x.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.global	SystemCoreClock
+  19              		.section	.data.SystemCoreClock,"aw",%progbits
+  20              		.align	2
+  23              	SystemCoreClock:
+  24 0000 00A24A04 		.word	72000000
+  25              		.global	AHBPrescTable
+  26              		.section	.data.AHBPrescTable,"aw",%progbits
+  27              		.align	2
+  30              	AHBPrescTable:
+  31 0000 00       		.byte	0
+  32 0001 00       		.byte	0
+  33 0002 00       		.byte	0
+  34 0003 00       		.byte	0
+  35 0004 00       		.byte	0
+  36 0005 00       		.byte	0
+  37 0006 00       		.byte	0
+  38 0007 00       		.byte	0
+  39 0008 01       		.byte	1
+  40 0009 02       		.byte	2
+  41 000a 03       		.byte	3
+  42 000b 04       		.byte	4
+  43 000c 06       		.byte	6
+  44 000d 07       		.byte	7
+  45 000e 08       		.byte	8
+  46 000f 09       		.byte	9
+  47              		.section	.text.SystemInit,"ax",%progbits
+  48              		.align	2
+  49              		.global	SystemInit
+  50              		.thumb
+  51              		.thumb_func
+  53              	SystemInit:
+  54              	.LFB29:
+  55              		.file 1 "/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c"
+   1:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+   2:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   ******************************************************************************
+   3:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @file    system_stm32f10x.c
+   4:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @author  MCD Application Team
+   5:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @version V3.5.0
+   6:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @date    11-March-2011
+   7:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @brief   CMSIS Cortex-M3 Device Peripheral Access Layer System Source File.
+   8:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * 
+   9:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * 1.  This file provides two functions and one global variable to be called from 
+  10:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *     user application:
+  11:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *      - SystemInit(): Setups the system clock (System clock source, PLL Multiplier
+  12:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *                      factors, AHB/APBx prescalers and Flash settings). 
+  13:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *                      This function is called at startup just after reset and 
+  14:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *                      before branch to main program. This call is made inside
+  15:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *                      the "startup_stm32f10x_xx.s" file.
+  16:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *
+  17:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *      - SystemCoreClock variable: Contains the core clock (HCLK), it can be used
+  18:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *                                  by the user application to setup the SysTick 
+  19:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *                                  timer or configure other parameters.
+  20:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *                                     
+  21:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *      - SystemCoreClockUpdate(): Updates the variable SystemCoreClock and must
+  22:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *                                 be called whenever the core clock is changed
+  23:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *                                 during program execution.
+  24:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *
+  25:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * 2. After each device reset the HSI (8 MHz) is used as system clock source.
+  26:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *    Then SystemInit() function is called, in "startup_stm32f10x_xx.s" file, to
+  27:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *    configure the system clock before to branch to main program.
+  28:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *
+  29:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * 3. If the system clock source selected by user fails to startup, the SystemInit()
+  30:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *    function will do nothing and HSI still used as system clock source. User can 
+  31:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *    add some code to deal with this issue inside the SetSysClock() function.
+  32:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *
+  33:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * 4. The default value of HSE crystal is set to 8 MHz (or 25 MHz, depedning on
+  34:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *    the product used), refer to "HSE_VALUE" define in "stm32f10x.h" file. 
+  35:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *    When HSE is used as system clock source, directly or through PLL, and you
+  36:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *    are using different crystal you have to adapt the HSE value to your own
+  37:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *    configuration.
+  38:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *        
+  39:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   ******************************************************************************
+  40:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @attention
+  41:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *
+  42:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  43:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  44:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  45:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  46:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  47:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  48:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *
+  49:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  50:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   ******************************************************************************
+  51:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+  52:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+  53:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /** @addtogroup CMSIS
+  54:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @{
+  55:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+  56:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+  57:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /** @addtogroup stm32f10x_system
+  58:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @{
+  59:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */  
+  60:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+  61:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Includes
+  62:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @{
+  63:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+  64:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+  65:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #include "stm32f10x.h"
+  66:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+  67:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+  68:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @}
+  69:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+  70:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+  71:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_TypesDefinitions
+  72:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @{
+  73:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+  74:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+  75:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+  76:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @}
+  77:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+  78:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+  79:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Defines
+  80:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @{
+  81:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+  82:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+  83:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /*!< Uncomment the line corresponding to the desired System clock (SYSCLK)
+  84:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****    frequency (after reset the HSI is used as SYSCLK source)
+  85:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****    
+  86:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****    IMPORTANT NOTE:
+  87:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****    ============== 
+  88:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****    1. After each device reset the HSI is used as System clock source.
+  89:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+  90:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****    2. Please make sure that the selected System clock doesn't exceed your device's
+  91:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       maximum frequency.
+  92:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       
+  93:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****    3. If none of the define below is enabled, the HSI is used as System clock
+  94:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     source.
+  95:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+  96:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****    4. The System clock configuration functions provided within this file assume that:
+  97:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         - For Low, Medium and High density Value line devices an external 8MHz 
+  98:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****           crystal is used to drive the System clock.
+  99:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         - For Low, Medium and High density devices an external 8MHz crystal is
+ 100:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****           used to drive the System clock.
+ 101:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         - For Connectivity line devices an external 25MHz crystal is used to drive
+ 102:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****           the System clock.
+ 103:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****      If you are using different crystal you have to adapt those functions accordingly.
+ 104:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     */
+ 105:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 106:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #if defined (STM32F10X_LD_VL) || (defined STM32F10X_MD_VL) || (defined STM32F10X_HD_VL)
+ 107:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /* #define SYSCLK_FREQ_HSE    HSE_VALUE */
+ 108:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  #define SYSCLK_FREQ_24MHz  24000000
+ 109:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #else
+ 110:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /* #define SYSCLK_FREQ_HSE    HSE_VALUE */
+ 111:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /* #define SYSCLK_FREQ_24MHz  24000000 */ 
+ 112:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /* #define SYSCLK_FREQ_36MHz  36000000 */
+ 113:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /* #define SYSCLK_FREQ_48MHz  48000000 */
+ 114:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /* #define SYSCLK_FREQ_56MHz  56000000 */
+ 115:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #define SYSCLK_FREQ_72MHz  72000000
+ 116:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif
+ 117:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 118:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /*!< Uncomment the following line if you need to use external SRAM mounted
+ 119:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****      on STM3210E-EVAL board (STM32 High density and XL-density devices) or on 
+ 120:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****      STM32100E-EVAL board (STM32 High-density value line devices) as data memory */ 
+ 121:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #if defined (STM32F10X_HD) || (defined STM32F10X_XL) || (defined STM32F10X_HD_VL)
+ 122:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /* #define DATA_IN_ExtSRAM */
+ 123:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif
+ 124:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 125:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /*!< Uncomment the following line if you need to relocate your vector Table in
+ 126:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****      Internal SRAM. */ 
+ 127:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /* #define VECT_TAB_SRAM */
+ 128:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #define VECT_TAB_OFFSET  0x0 /*!< Vector Table base offset field. 
+ 129:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                                   This value must be a multiple of 0x200. */
+ 130:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 131:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 132:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 133:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @}
+ 134:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 135:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 136:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Macros
+ 137:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @{
+ 138:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 139:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 140:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 141:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @}
+ 142:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 143:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 144:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Variables
+ 145:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @{
+ 146:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 147:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 148:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /*******************************************************************************
+ 149:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** *  Clock Definitions
+ 150:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** *******************************************************************************/
+ 151:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifdef SYSCLK_FREQ_HSE
+ 152:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_HSE;        /*!< System Clock Frequency (Core Cloc
+ 153:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_24MHz
+ 154:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_24MHz;        /*!< System Clock Frequency (Core Cl
+ 155:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_36MHz
+ 156:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_36MHz;        /*!< System Clock Frequency (Core Cl
+ 157:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_48MHz
+ 158:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_48MHz;        /*!< System Clock Frequency (Core Cl
+ 159:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_56MHz
+ 160:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_56MHz;        /*!< System Clock Frequency (Core Cl
+ 161:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_72MHz
+ 162:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   uint32_t SystemCoreClock         = SYSCLK_FREQ_72MHz;        /*!< System Clock Frequency (Core Cl
+ 163:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #else /*!< HSI Selected as System Clock source */
+ 164:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   uint32_t SystemCoreClock         = HSI_VALUE;        /*!< System Clock Frequency (Core Clock) */
+ 165:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif
+ 166:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 167:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** __I uint8_t AHBPrescTable[16] = {0, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 6, 7, 8, 9};
+ 168:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 169:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @}
+ 170:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 171:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 172:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_FunctionPrototypes
+ 173:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @{
+ 174:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 175:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 176:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** static void SetSysClock(void);
+ 177:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 178:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifdef SYSCLK_FREQ_HSE
+ 179:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   static void SetSysClockToHSE(void);
+ 180:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_24MHz
+ 181:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   static void SetSysClockTo24(void);
+ 182:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_36MHz
+ 183:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   static void SetSysClockTo36(void);
+ 184:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_48MHz
+ 185:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   static void SetSysClockTo48(void);
+ 186:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_56MHz
+ 187:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   static void SetSysClockTo56(void);  
+ 188:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_72MHz
+ 189:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   static void SetSysClockTo72(void);
+ 190:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif
+ 191:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 192:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifdef DATA_IN_ExtSRAM
+ 193:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   static void SystemInit_ExtMemCtl(void); 
+ 194:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif /* DATA_IN_ExtSRAM */
+ 195:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 196:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 197:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @}
+ 198:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 199:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 200:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /** @addtogroup STM32F10x_System_Private_Functions
+ 201:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @{
+ 202:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 203:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 204:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 205:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @brief  Setup the microcontroller system
+ 206:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         Initialize the Embedded Flash Interface, the PLL and update the 
+ 207:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         SystemCoreClock variable.
+ 208:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 209:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @param  None
+ 210:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @retval None
+ 211:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 212:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** void SystemInit (void)
+ 213:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** {
+  56              		.loc 1 213 0
+  57              		.cfi_startproc
+  58              		@ args = 0, pretend = 0, frame = 0
+  59              		@ frame_needed = 1, uses_anonymous_args = 0
+  60 0000 80B5     		push	{r7, lr}
+  61              		.cfi_def_cfa_offset 8
+  62              		.cfi_offset 7, -8
+  63              		.cfi_offset 14, -4
+  64 0002 00AF     		add	r7, sp, #0
+  65              		.cfi_def_cfa_register 7
+ 214:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Reset the RCC clock configuration to the default reset state(for debug purpose) */
+ 215:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Set HSION bit */
+ 216:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CR |= (uint32_t)0x00000001;
+  66              		.loc 1 216 0
+  67 0004 154A     		ldr	r2, .L3
+  68 0006 154B     		ldr	r3, .L3
+  69 0008 1B68     		ldr	r3, [r3]
+  70 000a 43F00103 		orr	r3, r3, #1
+  71 000e 1360     		str	r3, [r2]
+ 217:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 218:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Reset SW, HPRE, PPRE1, PPRE2, ADCPRE and MCO bits */
+ 219:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifndef STM32F10X_CL
+ 220:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CFGR &= (uint32_t)0xF8FF0000;
+  72              		.loc 1 220 0
+  73 0010 1249     		ldr	r1, .L3
+  74 0012 124B     		ldr	r3, .L3
+  75 0014 5A68     		ldr	r2, [r3, #4]
+  76 0016 124B     		ldr	r3, .L3+4
+  77 0018 1340     		ands	r3, r3, r2
+  78 001a 4B60     		str	r3, [r1, #4]
+ 221:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #else
+ 222:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CFGR &= (uint32_t)0xF0FF0000;
+ 223:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif /* STM32F10X_CL */   
+ 224:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 225:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Reset HSEON, CSSON and PLLON bits */
+ 226:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CR &= (uint32_t)0xFEF6FFFF;
+  79              		.loc 1 226 0
+  80 001c 0F4A     		ldr	r2, .L3
+  81 001e 0F4B     		ldr	r3, .L3
+  82 0020 1B68     		ldr	r3, [r3]
+  83 0022 23F08473 		bic	r3, r3, #17301504
+  84 0026 23F48033 		bic	r3, r3, #65536
+  85 002a 1360     		str	r3, [r2]
+ 227:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 228:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Reset HSEBYP bit */
+ 229:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CR &= (uint32_t)0xFFFBFFFF;
+  86              		.loc 1 229 0
+  87 002c 0B4A     		ldr	r2, .L3
+  88 002e 0B4B     		ldr	r3, .L3
+  89 0030 1B68     		ldr	r3, [r3]
+  90 0032 23F48023 		bic	r3, r3, #262144
+  91 0036 1360     		str	r3, [r2]
+ 230:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 231:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Reset PLLSRC, PLLXTPRE, PLLMUL and USBPRE/OTGFSPRE bits */
+ 232:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CFGR &= (uint32_t)0xFF80FFFF;
+  92              		.loc 1 232 0
+  93 0038 084A     		ldr	r2, .L3
+  94 003a 084B     		ldr	r3, .L3
+  95 003c 5B68     		ldr	r3, [r3, #4]
+  96 003e 23F4FE03 		bic	r3, r3, #8323072
+  97 0042 5360     		str	r3, [r2, #4]
+ 233:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 234:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 235:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Reset PLL2ON and PLL3ON bits */
+ 236:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CR &= (uint32_t)0xEBFFFFFF;
+ 237:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 238:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Disable all interrupts and clear pending bits  */
+ 239:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CIR = 0x00FF0000;
+ 240:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 241:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Reset CFGR2 register */
+ 242:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CFGR2 = 0x00000000;
+ 243:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || (defined STM32F10X_HD_VL)
+ 244:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Disable all interrupts and clear pending bits  */
+ 245:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CIR = 0x009F0000;
+ 246:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 247:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Reset CFGR2 register */
+ 248:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CFGR2 = 0x00000000;      
+ 249:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #else
+ 250:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Disable all interrupts and clear pending bits  */
+ 251:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CIR = 0x009F0000;
+  98              		.loc 1 251 0
+  99 0044 054B     		ldr	r3, .L3
+ 100 0046 4FF41F02 		mov	r2, #10420224
+ 101 004a 9A60     		str	r2, [r3, #8]
+ 252:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 253:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 254:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #if defined (STM32F10X_HD) || (defined STM32F10X_XL) || (defined STM32F10X_HD_VL)
+ 255:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   #ifdef DATA_IN_ExtSRAM
+ 256:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     SystemInit_ExtMemCtl(); 
+ 257:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   #endif /* DATA_IN_ExtSRAM */
+ 258:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif 
+ 259:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 260:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Configure the System clock frequency, HCLK, PCLK2 and PCLK1 prescalers */
+ 261:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Configure the Flash Latency cycles and enable prefetch buffer */
+ 262:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   SetSysClock();
+ 102              		.loc 1 262 0
+ 103 004c FFF7FEFF 		bl	SetSysClock
+ 263:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifdef VECT_TAB_SRAM
+ 264:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   SCB->VTOR = SRAM_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal SRAM. */
+ 265:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #else
+ 266:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   SCB->VTOR = FLASH_BASE | VECT_TAB_OFFSET; /* Vector Table Relocation in Internal FLASH. */
+ 104              		.loc 1 266 0
+ 105 0050 044B     		ldr	r3, .L3+8
+ 106 0052 4FF00062 		mov	r2, #134217728
+ 107 0056 9A60     		str	r2, [r3, #8]
+ 267:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif 
+ 268:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** return;
+ 108              		.loc 1 268 0
+ 109 0058 00BF     		nop
+ 269:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** }
+ 110              		.loc 1 269 0
+ 111 005a 80BD     		pop	{r7, pc}
+ 112              	.L4:
+ 113              		.align	2
+ 114              	.L3:
+ 115 005c 00100240 		.word	1073876992
+ 116 0060 0000FFF8 		.word	-117506048
+ 117 0064 00ED00E0 		.word	-536810240
+ 118              		.cfi_endproc
+ 119              	.LFE29:
+ 121              		.section	.text.SystemCoreClockUpdate,"ax",%progbits
+ 122              		.align	2
+ 123              		.global	SystemCoreClockUpdate
+ 124              		.thumb
+ 125              		.thumb_func
+ 127              	SystemCoreClockUpdate:
+ 128              	.LFB30:
+ 270:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 271:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 272:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @brief  Update SystemCoreClock variable according to Clock Register Values.
+ 273:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         The SystemCoreClock variable contains the core clock (HCLK), it can
+ 274:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         be used by the user application to setup the SysTick timer or configure
+ 275:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         other parameters.
+ 276:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *           
+ 277:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @note   Each time the core clock (HCLK) changes, this function must be called
+ 278:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         to update SystemCoreClock variable value. Otherwise, any configuration
+ 279:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         based on this variable will be incorrect.         
+ 280:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *     
+ 281:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @note   - The system frequency computed by this function is not the real 
+ 282:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *           frequency in the chip. It is calculated based on the predefined 
+ 283:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *           constant and the selected clock source:
+ 284:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *             
+ 285:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *           - If SYSCLK source is HSI, SystemCoreClock will contain the HSI_VALUE(*)
+ 286:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *                                              
+ 287:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *           - If SYSCLK source is HSE, SystemCoreClock will contain the HSE_VALUE(**)
+ 288:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *                          
+ 289:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *           - If SYSCLK source is PLL, SystemCoreClock will contain the HSE_VALUE(**) 
+ 290:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *             or HSI_VALUE(*) multiplied by the PLL factors.
+ 291:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         
+ 292:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         (*) HSI_VALUE is a constant defined in stm32f1xx.h file (default value
+ 293:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *             8 MHz) but the real value may vary depending on the variations
+ 294:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *             in voltage and temperature.   
+ 295:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *    
+ 296:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         (**) HSE_VALUE is a constant defined in stm32f1xx.h file (default value
+ 297:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *              8 MHz or 25 MHz, depedning on the product used), user has to ensure
+ 298:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *              that HSE_VALUE is same as the real frequency of the crystal used.
+ 299:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *              Otherwise, this function may have wrong result.
+ 300:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *                
+ 301:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         - The result of this function could be not correct when using fractional
+ 302:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *           value for HSE crystal.
+ 303:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @param  None
+ 304:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @retval None
+ 305:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 306:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** void SystemCoreClockUpdate (void)
+ 307:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** {
+ 129              		.loc 1 307 0
+ 130              		.cfi_startproc
+ 131              		@ args = 0, pretend = 0, frame = 16
+ 132              		@ frame_needed = 1, uses_anonymous_args = 0
+ 133              		@ link register save eliminated.
+ 134 0000 80B4     		push	{r7}
+ 135              		.cfi_def_cfa_offset 4
+ 136              		.cfi_offset 7, -4
+ 137 0002 85B0     		sub	sp, sp, #20
+ 138              		.cfi_def_cfa_offset 24
+ 139 0004 00AF     		add	r7, sp, #0
+ 140              		.cfi_def_cfa_register 7
+ 308:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   uint32_t tmp = 0, pllmull = 0, pllsource = 0;
+ 141              		.loc 1 308 0
+ 142 0006 0023     		movs	r3, #0
+ 143 0008 FB60     		str	r3, [r7, #12]
+ 144 000a 0023     		movs	r3, #0
+ 145 000c BB60     		str	r3, [r7, #8]
+ 146 000e 0023     		movs	r3, #0
+ 147 0010 7B60     		str	r3, [r7, #4]
+ 309:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 310:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifdef  STM32F10X_CL
+ 311:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   uint32_t prediv1source = 0, prediv1factor = 0, prediv2factor = 0, pll2mull = 0;
+ 312:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 313:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 314:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || (defined STM32F10X_HD_VL)
+ 315:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   uint32_t prediv1factor = 0;
+ 316:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif /* STM32F10X_LD_VL or STM32F10X_MD_VL or STM32F10X_HD_VL */
+ 317:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 318:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Get SYSCLK source -------------------------------------------------------*/
+ 319:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   tmp = RCC->CFGR & RCC_CFGR_SWS;
+ 148              		.loc 1 319 0
+ 149 0012 2D4B     		ldr	r3, .L15
+ 150 0014 5B68     		ldr	r3, [r3, #4]
+ 151 0016 03F00C03 		and	r3, r3, #12
+ 152 001a FB60     		str	r3, [r7, #12]
+ 320:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 321:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   switch (tmp)
+ 153              		.loc 1 321 0
+ 154 001c FB68     		ldr	r3, [r7, #12]
+ 155 001e 042B     		cmp	r3, #4
+ 156 0020 07D0     		beq	.L7
+ 157 0022 082B     		cmp	r3, #8
+ 158 0024 09D0     		beq	.L8
+ 159 0026 002B     		cmp	r3, #0
+ 160 0028 34D1     		bne	.L14
+ 322:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 323:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     case 0x00:  /* HSI used as system clock */
+ 324:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       SystemCoreClock = HSI_VALUE;
+ 161              		.loc 1 324 0
+ 162 002a 284B     		ldr	r3, .L15+4
+ 163 002c 284A     		ldr	r2, .L15+8
+ 164 002e 1A60     		str	r2, [r3]
+ 325:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       break;
+ 165              		.loc 1 325 0
+ 166 0030 34E0     		b	.L10
+ 167              	.L7:
+ 326:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     case 0x04:  /* HSE used as system clock */
+ 327:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       SystemCoreClock = HSE_VALUE;
+ 168              		.loc 1 327 0
+ 169 0032 264B     		ldr	r3, .L15+4
+ 170 0034 264A     		ldr	r2, .L15+8
+ 171 0036 1A60     		str	r2, [r3]
+ 328:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       break;
+ 172              		.loc 1 328 0
+ 173 0038 30E0     		b	.L10
+ 174              	.L8:
+ 329:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     case 0x08:  /* PLL used as system clock */
+ 330:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 331:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       /* Get PLL clock source and multiplication factor ----------------------*/
+ 332:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       pllmull = RCC->CFGR & RCC_CFGR_PLLMULL;
+ 175              		.loc 1 332 0
+ 176 003a 234B     		ldr	r3, .L15
+ 177 003c 5B68     		ldr	r3, [r3, #4]
+ 178 003e 03F47013 		and	r3, r3, #3932160
+ 179 0042 BB60     		str	r3, [r7, #8]
+ 333:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       pllsource = RCC->CFGR & RCC_CFGR_PLLSRC;
+ 180              		.loc 1 333 0
+ 181 0044 204B     		ldr	r3, .L15
+ 182 0046 5B68     		ldr	r3, [r3, #4]
+ 183 0048 03F48033 		and	r3, r3, #65536
+ 184 004c 7B60     		str	r3, [r7, #4]
+ 334:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       
+ 335:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifndef STM32F10X_CL      
+ 336:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       pllmull = ( pllmull >> 18) + 2;
+ 185              		.loc 1 336 0
+ 186 004e BB68     		ldr	r3, [r7, #8]
+ 187 0050 9B0C     		lsrs	r3, r3, #18
+ 188 0052 0233     		adds	r3, r3, #2
+ 189 0054 BB60     		str	r3, [r7, #8]
+ 337:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       
+ 338:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       if (pllsource == 0x00)
+ 190              		.loc 1 338 0
+ 191 0056 7B68     		ldr	r3, [r7, #4]
+ 192 0058 002B     		cmp	r3, #0
+ 193 005a 06D1     		bne	.L11
+ 339:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       {
+ 340:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         /* HSI oscillator clock divided by 2 selected as PLL clock entry */
+ 341:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         SystemCoreClock = (HSI_VALUE >> 1) * pllmull;
+ 194              		.loc 1 341 0
+ 195 005c BB68     		ldr	r3, [r7, #8]
+ 196 005e 1D4A     		ldr	r2, .L15+12
+ 197 0060 02FB03F3 		mul	r3, r2, r3
+ 198 0064 194A     		ldr	r2, .L15+4
+ 199 0066 1360     		str	r3, [r2]
+ 200 0068 13E0     		b	.L12
+ 201              	.L11:
+ 342:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       }
+ 343:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       else
+ 344:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       {
+ 345:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  #if defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || (defined STM32F10X_HD_VL)
+ 346:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****        prediv1factor = (RCC->CFGR2 & RCC_CFGR2_PREDIV1) + 1;
+ 347:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****        /* HSE oscillator clock selected as PREDIV1 clock entry */
+ 348:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****        SystemCoreClock = (HSE_VALUE / prediv1factor) * pllmull; 
+ 349:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  #else
+ 350:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         /* HSE selected as PLL clock entry */
+ 351:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         if ((RCC->CFGR & RCC_CFGR_PLLXTPRE) != (uint32_t)RESET)
+ 202              		.loc 1 351 0
+ 203 006a 174B     		ldr	r3, .L15
+ 204 006c 5B68     		ldr	r3, [r3, #4]
+ 205 006e 03F40033 		and	r3, r3, #131072
+ 206 0072 002B     		cmp	r3, #0
+ 207 0074 06D0     		beq	.L13
+ 352:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         {/* HSE oscillator clock divided by 2 */
+ 353:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****           SystemCoreClock = (HSE_VALUE >> 1) * pllmull;
+ 208              		.loc 1 353 0
+ 209 0076 BB68     		ldr	r3, [r7, #8]
+ 210 0078 164A     		ldr	r2, .L15+12
+ 211 007a 02FB03F3 		mul	r3, r2, r3
+ 212 007e 134A     		ldr	r2, .L15+4
+ 213 0080 1360     		str	r3, [r2]
+ 214 0082 06E0     		b	.L12
+ 215              	.L13:
+ 354:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         }
+ 355:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         else
+ 356:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         {
+ 357:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****           SystemCoreClock = HSE_VALUE * pllmull;
+ 216              		.loc 1 357 0
+ 217 0084 BB68     		ldr	r3, [r7, #8]
+ 218 0086 124A     		ldr	r2, .L15+8
+ 219 0088 02FB03F3 		mul	r3, r2, r3
+ 220 008c 0F4A     		ldr	r2, .L15+4
+ 221 008e 1360     		str	r3, [r2]
+ 358:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         }
+ 359:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  #endif
+ 360:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       }
+ 361:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #else
+ 362:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       pllmull = pllmull >> 18;
+ 363:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       
+ 364:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       if (pllmull != 0x0D)
+ 365:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       {
+ 366:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****          pllmull += 2;
+ 367:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       }
+ 368:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       else
+ 369:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       { /* PLL multiplication factor = PLL input clock * 6.5 */
+ 370:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         pllmull = 13 / 2; 
+ 371:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       }
+ 372:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****             
+ 373:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       if (pllsource == 0x00)
+ 374:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       {
+ 375:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         /* HSI oscillator clock divided by 2 selected as PLL clock entry */
+ 376:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         SystemCoreClock = (HSI_VALUE >> 1) * pllmull;
+ 377:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       }
+ 378:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       else
+ 379:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       {/* PREDIV1 selected as PLL clock entry */
+ 380:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         
+ 381:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         /* Get PREDIV1 clock source and division factor */
+ 382:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         prediv1source = RCC->CFGR2 & RCC_CFGR2_PREDIV1SRC;
+ 383:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         prediv1factor = (RCC->CFGR2 & RCC_CFGR2_PREDIV1) + 1;
+ 384:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         
+ 385:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         if (prediv1source == 0)
+ 386:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         { 
+ 387:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****           /* HSE oscillator clock selected as PREDIV1 clock entry */
+ 388:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****           SystemCoreClock = (HSE_VALUE / prediv1factor) * pllmull;          
+ 389:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         }
+ 390:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         else
+ 391:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         {/* PLL2 clock selected as PREDIV1 clock entry */
+ 392:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****           
+ 393:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****           /* Get PREDIV2 division factor and PLL2 multiplication factor */
+ 394:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****           prediv2factor = ((RCC->CFGR2 & RCC_CFGR2_PREDIV2) >> 4) + 1;
+ 395:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****           pll2mull = ((RCC->CFGR2 & RCC_CFGR2_PLL2MUL) >> 8 ) + 2; 
+ 396:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****           SystemCoreClock = (((HSE_VALUE / prediv2factor) * pll2mull) / prediv1factor) * pllmull;  
+ 397:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         }
+ 398:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       }
+ 399:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif /* STM32F10X_CL */ 
+ 400:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       break;
+ 222              		.loc 1 400 0
+ 223 0090 04E0     		b	.L10
+ 224              	.L12:
+ 225 0092 03E0     		b	.L10
+ 226              	.L14:
+ 401:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 402:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     default:
+ 403:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       SystemCoreClock = HSI_VALUE;
+ 227              		.loc 1 403 0
+ 228 0094 0D4B     		ldr	r3, .L15+4
+ 229 0096 0E4A     		ldr	r2, .L15+8
+ 230 0098 1A60     		str	r2, [r3]
+ 404:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       break;
+ 231              		.loc 1 404 0
+ 232 009a 00BF     		nop
+ 233              	.L10:
+ 405:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }
+ 406:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 407:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Compute HCLK clock frequency ----------------*/
+ 408:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Get HCLK prescaler */
+ 409:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   tmp = AHBPrescTable[((RCC->CFGR & RCC_CFGR_HPRE) >> 4)];
+ 234              		.loc 1 409 0
+ 235 009c 0A4B     		ldr	r3, .L15
+ 236 009e 5B68     		ldr	r3, [r3, #4]
+ 237 00a0 03F0F003 		and	r3, r3, #240
+ 238 00a4 1B09     		lsrs	r3, r3, #4
+ 239 00a6 0C4A     		ldr	r2, .L15+16
+ 240 00a8 D35C     		ldrb	r3, [r2, r3]
+ 241 00aa DBB2     		uxtb	r3, r3
+ 242 00ac FB60     		str	r3, [r7, #12]
+ 410:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* HCLK clock frequency */
+ 411:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   SystemCoreClock >>= tmp;  
+ 243              		.loc 1 411 0
+ 244 00ae 074B     		ldr	r3, .L15+4
+ 245 00b0 1A68     		ldr	r2, [r3]
+ 246 00b2 FB68     		ldr	r3, [r7, #12]
+ 247 00b4 22FA03F3 		lsr	r3, r2, r3
+ 248 00b8 044A     		ldr	r2, .L15+4
+ 249 00ba 1360     		str	r3, [r2]
+ 412:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** }
+ 250              		.loc 1 412 0
+ 251 00bc 1437     		adds	r7, r7, #20
+ 252              		.cfi_def_cfa_offset 4
+ 253 00be BD46     		mov	sp, r7
+ 254              		.cfi_def_cfa_register 13
+ 255              		@ sp needed
+ 256 00c0 5DF8047B 		ldr	r7, [sp], #4
+ 257              		.cfi_restore 7
+ 258              		.cfi_def_cfa_offset 0
+ 259 00c4 7047     		bx	lr
+ 260              	.L16:
+ 261 00c6 00BF     		.align	2
+ 262              	.L15:
+ 263 00c8 00100240 		.word	1073876992
+ 264 00cc 00000000 		.word	SystemCoreClock
+ 265 00d0 00127A00 		.word	8000000
+ 266 00d4 00093D00 		.word	4000000
+ 267 00d8 00000000 		.word	AHBPrescTable
+ 268              		.cfi_endproc
+ 269              	.LFE30:
+ 271              		.section	.text.SetSysClock,"ax",%progbits
+ 272              		.align	2
+ 273              		.thumb
+ 274              		.thumb_func
+ 276              	SetSysClock:
+ 277              	.LFB31:
+ 413:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 414:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 415:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @brief  Configures the System clock frequency, HCLK, PCLK2 and PCLK1 prescalers.
+ 416:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @param  None
+ 417:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @retval None
+ 418:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 419:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** static void SetSysClock(void)
+ 420:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** {
+ 278              		.loc 1 420 0
+ 279              		.cfi_startproc
+ 280              		@ args = 0, pretend = 0, frame = 0
+ 281              		@ frame_needed = 1, uses_anonymous_args = 0
+ 282 0000 80B5     		push	{r7, lr}
+ 283              		.cfi_def_cfa_offset 8
+ 284              		.cfi_offset 7, -8
+ 285              		.cfi_offset 14, -4
+ 286 0002 00AF     		add	r7, sp, #0
+ 287              		.cfi_def_cfa_register 7
+ 421:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 422:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifdef SYSCLK_FREQ_HSE
+ 423:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   SetSysClockToHSE();
+ 424:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_24MHz
+ 425:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   SetSysClockTo24();
+ 426:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_36MHz
+ 427:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   SetSysClockTo36();
+ 428:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_48MHz
+ 429:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   SetSysClockTo48();
+ 430:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_56MHz
+ 431:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   SetSysClockTo56();  
+ 432:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_72MHz
+ 433:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   SetSysClockTo72();
+ 288              		.loc 1 433 0
+ 289 0004 FFF7FEFF 		bl	SetSysClockTo72
+ 434:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif
+ 435:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 436:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  /* If none of the define above is enabled, the HSI is used as System clock
+ 437:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     source (default after reset) */ 
+ 438:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** }
+ 290              		.loc 1 438 0
+ 291 0008 80BD     		pop	{r7, pc}
+ 292              		.cfi_endproc
+ 293              	.LFE31:
+ 295 000a 00BF     		.section	.text.SetSysClockTo72,"ax",%progbits
+ 296              		.align	2
+ 297              		.thumb
+ 298              		.thumb_func
+ 300              	SetSysClockTo72:
+ 301              	.LFB32:
+ 439:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 440:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 441:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @brief  Setup the external memory controller. Called in startup_stm32f10x.s 
+ 442:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *          before jump to __main
+ 443:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @param  None
+ 444:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @retval None
+ 445:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */ 
+ 446:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifdef DATA_IN_ExtSRAM
+ 447:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 448:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @brief  Setup the external memory controller. 
+ 449:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         Called in startup_stm32f10x_xx.s/.c before jump to main.
+ 450:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * 	      This function configures the external SRAM mounted on STM3210E-EVAL
+ 451:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         board (STM32 High density devices). This SRAM will be used as program
+ 452:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         data memory (including heap and stack).
+ 453:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @param  None
+ 454:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @retval None
+ 455:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */ 
+ 456:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** void SystemInit_ExtMemCtl(void) 
+ 457:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** {
+ 458:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /*!< FSMC Bank1 NOR/SRAM3 is used for the STM3210E-EVAL, if another Bank is 
+ 459:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   required, then adjust the Register Addresses */
+ 460:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 461:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Enable FSMC clock */
+ 462:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->AHBENR = 0x00000114;
+ 463:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 464:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Enable GPIOD, GPIOE, GPIOF and GPIOG clocks */  
+ 465:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->APB2ENR = 0x000001E0;
+ 466:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 467:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /* ---------------  SRAM Data lines, NOE and NWE configuration ---------------*/
+ 468:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /*----------------  SRAM Address lines configuration -------------------------*/
+ 469:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /*----------------  NOE and NWE configuration --------------------------------*/  
+ 470:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /*----------------  NE3 configuration ----------------------------------------*/
+ 471:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /*----------------  NBL0, NBL1 configuration ---------------------------------*/
+ 472:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 473:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   GPIOD->CRL = 0x44BB44BB;  
+ 474:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   GPIOD->CRH = 0xBBBBBBBB;
+ 475:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 476:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   GPIOE->CRL = 0xB44444BB;  
+ 477:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   GPIOE->CRH = 0xBBBBBBBB;
+ 478:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 479:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   GPIOF->CRL = 0x44BBBBBB;  
+ 480:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   GPIOF->CRH = 0xBBBB4444;
+ 481:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 482:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   GPIOG->CRL = 0x44BBBBBB;  
+ 483:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   GPIOG->CRH = 0x44444B44;
+ 484:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****    
+ 485:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /*----------------  FSMC Configuration ---------------------------------------*/  
+ 486:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /*----------------  Enable FSMC Bank1_SRAM Bank ------------------------------*/
+ 487:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 488:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   FSMC_Bank1->BTCR[4] = 0x00001011;
+ 489:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   FSMC_Bank1->BTCR[5] = 0x00000200;
+ 490:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** }
+ 491:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif /* DATA_IN_ExtSRAM */
+ 492:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 493:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifdef SYSCLK_FREQ_HSE
+ 494:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 495:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @brief  Selects HSE as System clock source and configure HCLK, PCLK2
+ 496:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         and PCLK1 prescalers.
+ 497:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 498:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @param  None
+ 499:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @retval None
+ 500:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 501:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** static void SetSysClockToHSE(void)
+ 502:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** {
+ 503:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 504:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 505:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 506:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Enable HSE */    
+ 507:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 508:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  
+ 509:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 510:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   do
+ 511:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 512:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 513:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     StartUpCounter++;  
+ 514:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 515:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 516:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 517:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 518:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 519:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }
+ 520:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   else
+ 521:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 522:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 523:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }  
+ 524:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 525:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 526:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 527:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 528:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #if !defined STM32F10X_LD_VL && !defined STM32F10X_MD_VL && !defined STM32F10X_HD_VL
+ 529:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 530:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 531:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 532:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Flash 0 wait state */
+ 533:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 534:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 535:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifndef STM32F10X_CL
+ 536:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;
+ 537:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #else
+ 538:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     if (HSE_VALUE <= 24000000)
+ 539:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 	{
+ 540:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;
+ 541:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 	}
+ 542:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 	else
+ 543:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 	{
+ 544:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;
+ 545:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 	}
+ 546:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 547:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif
+ 548:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  
+ 549:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 550:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 551:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       
+ 552:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 553:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 554:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 555:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 556:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV1;
+ 557:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 558:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Select HSE as system clock source */
+ 559:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 560:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_HSE;    
+ 561:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 562:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till HSE is used as system clock source */
+ 563:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x04)
+ 564:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+ 565:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+ 566:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }
+ 567:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   else
+ 568:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 569:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 570:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }  
+ 571:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** }
+ 572:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_24MHz
+ 573:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 574:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 24MHz and configure HCLK, PCLK2 
+ 575:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         and PCLK1 prescalers.
+ 576:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 577:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @param  None
+ 578:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @retval None
+ 579:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 580:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** static void SetSysClockTo24(void)
+ 581:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** {
+ 582:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 583:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 584:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 585:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Enable HSE */    
+ 586:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 587:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  
+ 588:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 589:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   do
+ 590:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 591:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 592:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     StartUpCounter++;  
+ 593:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 594:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 595:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 596:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 597:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 598:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }
+ 599:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   else
+ 600:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 601:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 602:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }  
+ 603:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 604:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 605:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 606:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #if !defined STM32F10X_LD_VL && !defined STM32F10X_MD_VL && !defined STM32F10X_HD_VL 
+ 607:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 608:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 609:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 610:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Flash 0 wait state */
+ 611:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 612:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_0;    
+ 613:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif
+ 614:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  
+ 615:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 616:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 617:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       
+ 618:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 619:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 620:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 621:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 622:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV1;
+ 623:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 624:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 625:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+ 626:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 6 = 24 MHz */ 
+ 627:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+ 628:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+ 629:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL6); 
+ 630:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 631:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+ 632:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 10 = 4 MHz */       
+ 633:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+ 634:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+ 635:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+ 636:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV10);
+ 637:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 638:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable PLL2 */
+ 639:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+ 640:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+ 641:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+ 642:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+ 643:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }   
+ 644:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined (STM32F10X_LD_VL) || defined (STM32F10X_MD_VL) || defined (STM32F10X_HD_VL)
+ 645:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /*  PLL configuration:  = (HSE / 2) * 6 = 24 MHz */
+ 646:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 647:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_PREDIV1 | RCC_CFGR_PLLXTPRE_PREDIV1_Div2 | RCC_CFGR_PLL
+ 648:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #else    
+ 649:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /*  PLL configuration:  = (HSE / 2) * 6 = 24 MHz */
+ 650:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 651:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLXTPRE_HSE_Div2 | RCC_CFGR_PLLMULL6);
+ 652:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 653:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 654:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable PLL */
+ 655:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+ 656:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 657:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL is ready */
+ 658:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 659:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+ 660:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+ 661:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 662:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Select PLL as system clock source */
+ 663:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 664:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 665:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 666:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+ 667:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+ 668:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+ 669:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+ 670:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }
+ 671:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   else
+ 672:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 673:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 674:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   } 
+ 675:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** }
+ 676:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_36MHz
+ 677:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 678:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 36MHz and configure HCLK, PCLK2 
+ 679:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         and PCLK1 prescalers. 
+ 680:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 681:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @param  None
+ 682:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @retval None
+ 683:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 684:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** static void SetSysClockTo36(void)
+ 685:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** {
+ 686:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 687:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 688:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 689:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Enable HSE */    
+ 690:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 691:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  
+ 692:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 693:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   do
+ 694:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 695:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 696:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     StartUpCounter++;  
+ 697:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 698:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 699:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 700:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 701:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 702:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }
+ 703:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   else
+ 704:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 705:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 706:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }  
+ 707:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 708:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 709:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 710:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 711:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 712:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 713:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Flash 1 wait state */
+ 714:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 715:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;    
+ 716:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  
+ 717:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 718:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 719:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       
+ 720:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 721:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 722:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 723:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 724:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV1;
+ 725:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 726:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 727:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+ 728:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 729:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 9 = 36 MHz */ 
+ 730:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+ 731:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+ 732:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL9); 
+ 733:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 734:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 	/*!< PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+ 735:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 10 = 4 MHz */
+ 736:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         
+ 737:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+ 738:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+ 739:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+ 740:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV10);
+ 741:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 742:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable PLL2 */
+ 743:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+ 744:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+ 745:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+ 746:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+ 747:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+ 748:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 749:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #else    
+ 750:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /*  PLL configuration: PLLCLK = (HSE / 2) * 9 = 36 MHz */
+ 751:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 752:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLXTPRE_HSE_Div2 | RCC_CFGR_PLLMULL9);
+ 753:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 754:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 755:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable PLL */
+ 756:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+ 757:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 758:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL is ready */
+ 759:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 760:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+ 761:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+ 762:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 763:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Select PLL as system clock source */
+ 764:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 765:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 766:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 767:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+ 768:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+ 769:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+ 770:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+ 771:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }
+ 772:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   else
+ 773:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 774:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 775:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   } 
+ 776:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** }
+ 777:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_48MHz
+ 778:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 779:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 48MHz and configure HCLK, PCLK2 
+ 780:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         and PCLK1 prescalers. 
+ 781:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 782:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @param  None
+ 783:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @retval None
+ 784:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 785:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** static void SetSysClockTo48(void)
+ 786:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** {
+ 787:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 788:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 789:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 790:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Enable HSE */    
+ 791:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 792:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  
+ 793:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 794:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   do
+ 795:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 796:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 797:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     StartUpCounter++;  
+ 798:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 799:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 800:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 801:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 802:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 803:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }
+ 804:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   else
+ 805:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 806:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 807:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }  
+ 808:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 809:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 810:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 811:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 812:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 813:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 814:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Flash 1 wait state */
+ 815:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 816:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_1;    
+ 817:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  
+ 818:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 819:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 820:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       
+ 821:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 822:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 823:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 824:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 825:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV2;
+ 826:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 827:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 828:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+ 829:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+ 830:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 5 = 8 MHz */
+ 831:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         
+ 832:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+ 833:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+ 834:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+ 835:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV5);
+ 836:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 837:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable PLL2 */
+ 838:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+ 839:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+ 840:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+ 841:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+ 842:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+ 843:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 844:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****    
+ 845:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 6 = 48 MHz */ 
+ 846:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+ 847:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+ 848:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL6); 
+ 849:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #else    
+ 850:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /*  PLL configuration: PLLCLK = HSE * 6 = 48 MHz */
+ 851:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 852:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLMULL6);
+ 853:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 854:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 855:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable PLL */
+ 856:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+ 857:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 858:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL is ready */
+ 859:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 860:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+ 861:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+ 862:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 863:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Select PLL as system clock source */
+ 864:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 865:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 866:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 867:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+ 868:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+ 869:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+ 870:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+ 871:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }
+ 872:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   else
+ 873:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 874:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 875:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   } 
+ 876:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** }
+ 877:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 878:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_56MHz
+ 879:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 880:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 56MHz and configure HCLK, PCLK2 
+ 881:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         and PCLK1 prescalers. 
+ 882:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 883:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @param  None
+ 884:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @retval None
+ 885:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 886:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** static void SetSysClockTo56(void)
+ 887:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** {
+ 888:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 889:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 890:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/   
+ 891:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Enable HSE */    
+ 892:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 893:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  
+ 894:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 895:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   do
+ 896:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 897:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 898:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     StartUpCounter++;  
+ 899:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 900:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 901:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 902:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 903:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 904:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }
+ 905:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   else
+ 906:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 907:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 908:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }  
+ 909:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 910:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 911:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 912:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+ 913:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 914:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 915:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Flash 2 wait state */
+ 916:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 917:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;    
+ 918:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  
+ 919:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+ 920:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 921:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       
+ 922:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+ 923:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 924:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 925:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+ 926:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV2;
+ 927:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 928:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifdef STM32F10X_CL
+ 929:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+ 930:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+ 931:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 5 = 8 MHz */
+ 932:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         
+ 933:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+ 934:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+ 935:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+ 936:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV5);
+ 937:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 938:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable PLL2 */
+ 939:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+ 940:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+ 941:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+ 942:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+ 943:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+ 944:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+ 945:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****    
+ 946:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 7 = 56 MHz */ 
+ 947:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+ 948:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+ 949:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL7); 
+ 950:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #else     
+ 951:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = HSE * 7 = 56 MHz */
+ 952:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLMULL));
+ 953:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLMULL7);
+ 954:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 955:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+ 956:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 957:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable PLL */
+ 958:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+ 959:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 960:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL is ready */
+ 961:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 962:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+ 963:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+ 964:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 965:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Select PLL as system clock source */
+ 966:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 967:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 968:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 969:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+ 970:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+ 971:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+ 972:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+ 973:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }
+ 974:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   else
+ 975:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+ 976:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+ 977:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   } 
+ 978:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** }
+ 979:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+ 980:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #elif defined SYSCLK_FREQ_72MHz
+ 981:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** /**
+ 982:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @brief  Sets System clock frequency to 72MHz and configure HCLK, PCLK2 
+ 983:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   *         and PCLK1 prescalers. 
+ 984:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @note   This function should be used only after reset.
+ 985:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @param  None
+ 986:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   * @retval None
+ 987:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   */
+ 988:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** static void SetSysClockTo72(void)
+ 989:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** {
+ 302              		.loc 1 989 0
+ 303              		.cfi_startproc
+ 304              		@ args = 0, pretend = 0, frame = 8
+ 305              		@ frame_needed = 1, uses_anonymous_args = 0
+ 306              		@ link register save eliminated.
+ 307 0000 80B4     		push	{r7}
+ 308              		.cfi_def_cfa_offset 4
+ 309              		.cfi_offset 7, -4
+ 310 0002 83B0     		sub	sp, sp, #12
+ 311              		.cfi_def_cfa_offset 16
+ 312 0004 00AF     		add	r7, sp, #0
+ 313              		.cfi_def_cfa_register 7
+ 990:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   __IO uint32_t StartUpCounter = 0, HSEStatus = 0;
+ 314              		.loc 1 990 0
+ 315 0006 0023     		movs	r3, #0
+ 316 0008 7B60     		str	r3, [r7, #4]
+ 317 000a 0023     		movs	r3, #0
+ 318 000c 3B60     		str	r3, [r7]
+ 991:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 992:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* SYSCLK, HCLK, PCLK2 and PCLK1 configuration ---------------------------*/    
+ 993:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Enable HSE */    
+ 994:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   RCC->CR |= ((uint32_t)RCC_CR_HSEON);
+ 319              		.loc 1 994 0
+ 320 000e 3A4A     		ldr	r2, .L26
+ 321 0010 394B     		ldr	r3, .L26
+ 322 0012 1B68     		ldr	r3, [r3]
+ 323 0014 43F48033 		orr	r3, r3, #65536
+ 324 0018 1360     		str	r3, [r2]
+ 325              	.L20:
+ 995:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+ 996:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   /* Wait till HSE is ready and if Time out is reached exit */
+ 997:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   do
+ 998:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+ 999:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = RCC->CR & RCC_CR_HSERDY;
+ 326              		.loc 1 999 0 discriminator 2
+ 327 001a 374B     		ldr	r3, .L26
+ 328 001c 1B68     		ldr	r3, [r3]
+ 329 001e 03F40033 		and	r3, r3, #131072
+ 330 0022 3B60     		str	r3, [r7]
+1000:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     StartUpCounter++;  
+ 331              		.loc 1 1000 0 discriminator 2
+ 332 0024 7B68     		ldr	r3, [r7, #4]
+ 333 0026 0133     		adds	r3, r3, #1
+ 334 0028 7B60     		str	r3, [r7, #4]
+1001:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   } while((HSEStatus == 0) && (StartUpCounter != HSE_STARTUP_TIMEOUT));
+ 335              		.loc 1 1001 0 discriminator 2
+ 336 002a 3B68     		ldr	r3, [r7]
+ 337 002c 002B     		cmp	r3, #0
+ 338 002e 03D1     		bne	.L19
+ 339              		.loc 1 1001 0 is_stmt 0 discriminator 1
+ 340 0030 7B68     		ldr	r3, [r7, #4]
+ 341 0032 B3F5A06F 		cmp	r3, #1280
+ 342 0036 F0D1     		bne	.L20
+ 343              	.L19:
+1002:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+1003:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   if ((RCC->CR & RCC_CR_HSERDY) != RESET)
+ 344              		.loc 1 1003 0 is_stmt 1
+ 345 0038 2F4B     		ldr	r3, .L26
+ 346 003a 1B68     		ldr	r3, [r3]
+ 347 003c 03F40033 		and	r3, r3, #131072
+ 348 0040 002B     		cmp	r3, #0
+ 349 0042 02D0     		beq	.L21
+1004:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+1005:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x01;
+ 350              		.loc 1 1005 0
+ 351 0044 0123     		movs	r3, #1
+ 352 0046 3B60     		str	r3, [r7]
+ 353 0048 01E0     		b	.L22
+ 354              	.L21:
+1006:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }
+1007:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   else
+1008:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+1009:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     HSEStatus = (uint32_t)0x00;
+ 355              		.loc 1 1009 0
+ 356 004a 0023     		movs	r3, #0
+ 357 004c 3B60     		str	r3, [r7]
+ 358              	.L22:
+1010:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }  
+1011:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+1012:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   if (HSEStatus == (uint32_t)0x01)
+ 359              		.loc 1 1012 0
+ 360 004e 3B68     		ldr	r3, [r7]
+ 361 0050 012B     		cmp	r3, #1
+ 362 0052 4BD1     		bne	.L18
+1013:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   {
+1014:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable Prefetch Buffer */
+1015:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR |= FLASH_ACR_PRFTBE;
+ 363              		.loc 1 1015 0
+ 364 0054 294A     		ldr	r2, .L26+4
+ 365 0056 294B     		ldr	r3, .L26+4
+ 366 0058 1B68     		ldr	r3, [r3]
+ 367 005a 43F01003 		orr	r3, r3, #16
+ 368 005e 1360     		str	r3, [r2]
+1016:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+1017:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Flash 2 wait state */
+1018:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR &= (uint32_t)((uint32_t)~FLASH_ACR_LATENCY);
+ 369              		.loc 1 1018 0
+ 370 0060 264A     		ldr	r2, .L26+4
+ 371 0062 264B     		ldr	r3, .L26+4
+ 372 0064 1B68     		ldr	r3, [r3]
+ 373 0066 23F00303 		bic	r3, r3, #3
+ 374 006a 1360     		str	r3, [r2]
+1019:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     FLASH->ACR |= (uint32_t)FLASH_ACR_LATENCY_2;    
+ 375              		.loc 1 1019 0
+ 376 006c 234A     		ldr	r2, .L26+4
+ 377 006e 234B     		ldr	r3, .L26+4
+ 378 0070 1B68     		ldr	r3, [r3]
+ 379 0072 43F00203 		orr	r3, r3, #2
+ 380 0076 1360     		str	r3, [r2]
+1020:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+1021:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****  
+1022:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* HCLK = SYSCLK */
+1023:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_HPRE_DIV1;
+ 381              		.loc 1 1023 0
+ 382 0078 1F4A     		ldr	r2, .L26
+ 383 007a 1F4B     		ldr	r3, .L26
+ 384 007c 5B68     		ldr	r3, [r3, #4]
+ 385 007e 5360     		str	r3, [r2, #4]
+1024:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****       
+1025:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PCLK2 = HCLK */
+1026:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE2_DIV1;
+ 386              		.loc 1 1026 0
+ 387 0080 1D4A     		ldr	r2, .L26
+ 388 0082 1D4B     		ldr	r3, .L26
+ 389 0084 5B68     		ldr	r3, [r3, #4]
+ 390 0086 5360     		str	r3, [r2, #4]
+1027:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+1028:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PCLK1 = HCLK */
+1029:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_PPRE1_DIV2;
+ 391              		.loc 1 1029 0
+ 392 0088 1B4A     		ldr	r2, .L26
+ 393 008a 1B4B     		ldr	r3, .L26
+ 394 008c 5B68     		ldr	r3, [r3, #4]
+ 395 008e 43F48063 		orr	r3, r3, #1024
+ 396 0092 5360     		str	r3, [r2, #4]
+1030:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+1031:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #ifdef STM32F10X_CL
+1032:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Configure PLLs ------------------------------------------------------*/
+1033:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PLL2 configuration: PLL2CLK = (HSE / 5) * 8 = 40 MHz */
+1034:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PREDIV1 configuration: PREDIV1CLK = PLL2 / 5 = 8 MHz */
+1035:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****         
+1036:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR2 &= (uint32_t)~(RCC_CFGR2_PREDIV2 | RCC_CFGR2_PLL2MUL |
+1037:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                               RCC_CFGR2_PREDIV1 | RCC_CFGR2_PREDIV1SRC);
+1038:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR2 |= (uint32_t)(RCC_CFGR2_PREDIV2_DIV5 | RCC_CFGR2_PLL2MUL8 |
+1039:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                              RCC_CFGR2_PREDIV1SRC_PLL2 | RCC_CFGR2_PREDIV1_DIV5);
+1040:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+1041:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable PLL2 */
+1042:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLL2ON;
+1043:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL2 is ready */
+1044:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLL2RDY) == 0)
+1045:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+1046:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+1047:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+1048:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****    
+1049:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* PLL configuration: PLLCLK = PREDIV1 * 9 = 72 MHz */ 
+1050:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)~(RCC_CFGR_PLLXTPRE | RCC_CFGR_PLLSRC | RCC_CFGR_PLLMULL);
+1051:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLXTPRE_PREDIV1 | RCC_CFGR_PLLSRC_PREDIV1 | 
+1052:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                             RCC_CFGR_PLLMULL9); 
+1053:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #else    
+1054:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /*  PLL configuration: PLLCLK = HSE * 9 = 72 MHz */
+1055:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_PLLSRC | RCC_CFGR_PLLXTPRE |
+ 397              		.loc 1 1055 0
+ 398 0094 184A     		ldr	r2, .L26
+ 399 0096 184B     		ldr	r3, .L26
+ 400 0098 5B68     		ldr	r3, [r3, #4]
+ 401 009a 23F47C13 		bic	r3, r3, #4128768
+ 402 009e 5360     		str	r3, [r2, #4]
+1056:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****                                         RCC_CFGR_PLLMULL));
+1057:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)(RCC_CFGR_PLLSRC_HSE | RCC_CFGR_PLLMULL9);
+ 403              		.loc 1 1057 0
+ 404 00a0 154A     		ldr	r2, .L26
+ 405 00a2 154B     		ldr	r3, .L26
+ 406 00a4 5B68     		ldr	r3, [r3, #4]
+ 407 00a6 43F4E813 		orr	r3, r3, #1900544
+ 408 00aa 5360     		str	r3, [r2, #4]
+1058:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** #endif /* STM32F10X_CL */
+1059:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+1060:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+1061:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Enable PLL */
+1062:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CR |= RCC_CR_PLLON;
+ 409              		.loc 1 1062 0
+ 410 00ac 124A     		ldr	r2, .L26
+ 411 00ae 124B     		ldr	r3, .L26
+ 412 00b0 1B68     		ldr	r3, [r3]
+ 413 00b2 43F08073 		orr	r3, r3, #16777216
+ 414 00b6 1360     		str	r3, [r2]
+1063:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+1064:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL is ready */
+1065:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while((RCC->CR & RCC_CR_PLLRDY) == 0)
+ 415              		.loc 1 1065 0
+ 416 00b8 00BF     		nop
+ 417              	.L24:
+ 418              		.loc 1 1065 0 is_stmt 0 discriminator 1
+ 419 00ba 0F4B     		ldr	r3, .L26
+ 420 00bc 1B68     		ldr	r3, [r3]
+ 421 00be 03F00073 		and	r3, r3, #33554432
+ 422 00c2 002B     		cmp	r3, #0
+ 423 00c4 F9D0     		beq	.L24
+1066:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+1067:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+1068:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     
+1069:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Select PLL as system clock source */
+1070:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR &= (uint32_t)((uint32_t)~(RCC_CFGR_SW));
+ 424              		.loc 1 1070 0 is_stmt 1
+ 425 00c6 0C4A     		ldr	r2, .L26
+ 426 00c8 0B4B     		ldr	r3, .L26
+ 427 00ca 5B68     		ldr	r3, [r3, #4]
+ 428 00cc 23F00303 		bic	r3, r3, #3
+ 429 00d0 5360     		str	r3, [r2, #4]
+1071:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     RCC->CFGR |= (uint32_t)RCC_CFGR_SW_PLL;    
+ 430              		.loc 1 1071 0
+ 431 00d2 094A     		ldr	r2, .L26
+ 432 00d4 084B     		ldr	r3, .L26
+ 433 00d6 5B68     		ldr	r3, [r3, #4]
+ 434 00d8 43F00203 		orr	r3, r3, #2
+ 435 00dc 5360     		str	r3, [r2, #4]
+1072:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** 
+1073:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     /* Wait till PLL is used as system clock source */
+1074:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     while ((RCC->CFGR & (uint32_t)RCC_CFGR_SWS) != (uint32_t)0x08)
+ 436              		.loc 1 1074 0
+ 437 00de 00BF     		nop
+ 438              	.L25:
+ 439              		.loc 1 1074 0 is_stmt 0 discriminator 1
+ 440 00e0 054B     		ldr	r3, .L26
+ 441 00e2 5B68     		ldr	r3, [r3, #4]
+ 442 00e4 03F00C03 		and	r3, r3, #12
+ 443 00e8 082B     		cmp	r3, #8
+ 444 00ea F9D1     		bne	.L25
+ 445              	.L18:
+1075:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     {
+1076:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****     }
+1077:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }
+1078:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   else
+1079:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   { /* If HSE fails to start-up, the application will have wrong clock 
+1080:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****          configuration. User can add here some code to deal with this error */
+1081:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   }
+1082:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c ****   
+1083:/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c **** }
+ 446              		.loc 1 1083 0 is_stmt 1
+ 447 00ec 0C37     		adds	r7, r7, #12
+ 448              		.cfi_def_cfa_offset 4
+ 449 00ee BD46     		mov	sp, r7
+ 450              		.cfi_def_cfa_register 13
+ 451              		@ sp needed
+ 452 00f0 5DF8047B 		ldr	r7, [sp], #4
+ 453              		.cfi_restore 7
+ 454              		.cfi_def_cfa_offset 0
+ 455 00f4 7047     		bx	lr
+ 456              	.L27:
+ 457 00f6 00BF     		.align	2
+ 458              	.L26:
+ 459 00f8 00100240 		.word	1073876992
+ 460 00fc 00200240 		.word	1073881088
+ 461              		.cfi_endproc
+ 462              	.LFE32:
+ 464              		.text
+ 465              	.Letext0:
+ 466              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 467              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 468              		.file 4 "/home/virusv/TDSAST_IOT/CMSIS/CM3/CoreSupport/core_cm3.h"
+ 469              		.file 5 "/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 system_stm32f10x.c
+     /tmp/cctunhC8.s:23     .data.SystemCoreClock:0000000000000000 SystemCoreClock
+     /tmp/cctunhC8.s:20     .data.SystemCoreClock:0000000000000000 $d
+     /tmp/cctunhC8.s:30     .data.AHBPrescTable:0000000000000000 AHBPrescTable
+     /tmp/cctunhC8.s:27     .data.AHBPrescTable:0000000000000000 $d
+     /tmp/cctunhC8.s:48     .text.SystemInit:0000000000000000 $t
+     /tmp/cctunhC8.s:53     .text.SystemInit:0000000000000000 SystemInit
+     /tmp/cctunhC8.s:276    .text.SetSysClock:0000000000000000 SetSysClock
+     /tmp/cctunhC8.s:115    .text.SystemInit:000000000000005c $d
+     /tmp/cctunhC8.s:122    .text.SystemCoreClockUpdate:0000000000000000 $t
+     /tmp/cctunhC8.s:127    .text.SystemCoreClockUpdate:0000000000000000 SystemCoreClockUpdate
+     /tmp/cctunhC8.s:263    .text.SystemCoreClockUpdate:00000000000000c8 $d
+     /tmp/cctunhC8.s:272    .text.SetSysClock:0000000000000000 $t
+     /tmp/cctunhC8.s:300    .text.SetSysClockTo72:0000000000000000 SetSysClockTo72
+     /tmp/cctunhC8.s:296    .text.SetSysClockTo72:0000000000000000 $t
+     /tmp/cctunhC8.s:459    .text.SetSysClockTo72:00000000000000f8 $d
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS

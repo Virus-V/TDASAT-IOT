@@ -1,0 +1,591 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32f10x_wwdg.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.WWDG_DeInit,"ax",%progbits
+  19              		.align	2
+  20              		.global	WWDG_DeInit
+  21              		.thumb
+  22              		.thumb_func
+  24              	WWDG_DeInit:
+  25              	.LFB29:
+  26              		.file 1 "/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c"
+   1:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /**
+   2:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   ******************************************************************************
+   3:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @file    stm32f10x_wwdg.c
+   4:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @author  MCD Application Team
+   5:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @version V3.5.0
+   6:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @date    11-March-2011
+   7:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @brief   This file provides all the WWDG firmware functions.
+   8:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   ******************************************************************************
+   9:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @attention
+  10:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   *
+  11:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   *
+  18:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  19:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   ******************************************************************************
+  20:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+  21:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  22:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /* Includes ------------------------------------------------------------------*/
+  23:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** #include "stm32f10x_wwdg.h"
+  24:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** #include "stm32f10x_rcc.h"
+  25:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  26:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /** @addtogroup STM32F10x_StdPeriph_Driver
+  27:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @{
+  28:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+  29:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  30:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /** @defgroup WWDG 
+  31:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @brief WWDG driver modules
+  32:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @{
+  33:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+  34:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  35:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /** @defgroup WWDG_Private_TypesDefinitions
+  36:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @{
+  37:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+  38:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  39:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /**
+  40:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @}
+  41:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+  42:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  43:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /** @defgroup WWDG_Private_Defines
+  44:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @{
+  45:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+  46:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  47:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /* ----------- WWDG registers bit address in the alias region ----------- */
+  48:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** #define WWDG_OFFSET       (WWDG_BASE - PERIPH_BASE)
+  49:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  50:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /* Alias word address of EWI bit */
+  51:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** #define CFR_OFFSET        (WWDG_OFFSET + 0x04)
+  52:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** #define EWI_BitNumber     0x09
+  53:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** #define CFR_EWI_BB        (PERIPH_BB_BASE + (CFR_OFFSET * 32) + (EWI_BitNumber * 4))
+  54:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  55:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /* --------------------- WWDG registers bit mask ------------------------ */
+  56:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  57:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /* CR register bit mask */
+  58:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** #define CR_WDGA_Set       ((uint32_t)0x00000080)
+  59:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  60:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /* CFR register bit mask */
+  61:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** #define CFR_WDGTB_Mask    ((uint32_t)0xFFFFFE7F)
+  62:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** #define CFR_W_Mask        ((uint32_t)0xFFFFFF80)
+  63:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** #define BIT_Mask          ((uint8_t)0x7F)
+  64:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  65:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /**
+  66:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @}
+  67:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+  68:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  69:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /** @defgroup WWDG_Private_Macros
+  70:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @{
+  71:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+  72:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  73:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /**
+  74:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @}
+  75:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+  76:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  77:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /** @defgroup WWDG_Private_Variables
+  78:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @{
+  79:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+  80:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  81:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /**
+  82:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @}
+  83:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+  84:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  85:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /** @defgroup WWDG_Private_FunctionPrototypes
+  86:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @{
+  87:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+  88:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  89:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /**
+  90:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @}
+  91:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+  92:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  93:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /** @defgroup WWDG_Private_Functions
+  94:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @{
+  95:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+  96:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+  97:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /**
+  98:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @brief  Deinitializes the WWDG peripheral registers to their default reset values.
+  99:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @param  None
+ 100:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @retval None
+ 101:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+ 102:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** void WWDG_DeInit(void)
+ 103:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** {
+  27              		.loc 1 103 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31 0000 80B5     		push	{r7, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 7, -8
+  34              		.cfi_offset 14, -4
+  35 0002 00AF     		add	r7, sp, #0
+  36              		.cfi_def_cfa_register 7
+ 104:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_WWDG, ENABLE);
+  37              		.loc 1 104 0
+  38 0004 4FF40060 		mov	r0, #2048
+  39 0008 0121     		movs	r1, #1
+  40 000a FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+ 105:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   RCC_APB1PeriphResetCmd(RCC_APB1Periph_WWDG, DISABLE);
+  41              		.loc 1 105 0
+  42 000e 4FF40060 		mov	r0, #2048
+  43 0012 0021     		movs	r1, #0
+  44 0014 FFF7FEFF 		bl	RCC_APB1PeriphResetCmd
+ 106:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** }
+  45              		.loc 1 106 0
+  46 0018 80BD     		pop	{r7, pc}
+  47              		.cfi_endproc
+  48              	.LFE29:
+  50 001a 00BF     		.section	.text.WWDG_SetPrescaler,"ax",%progbits
+  51              		.align	2
+  52              		.global	WWDG_SetPrescaler
+  53              		.thumb
+  54              		.thumb_func
+  56              	WWDG_SetPrescaler:
+  57              	.LFB30:
+ 107:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+ 108:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /**
+ 109:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @brief  Sets the WWDG Prescaler.
+ 110:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @param  WWDG_Prescaler: specifies the WWDG Prescaler.
+ 111:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   *   This parameter can be one of the following values:
+ 112:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   *     @arg WWDG_Prescaler_1: WWDG counter clock = (PCLK1/4096)/1
+ 113:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   *     @arg WWDG_Prescaler_2: WWDG counter clock = (PCLK1/4096)/2
+ 114:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   *     @arg WWDG_Prescaler_4: WWDG counter clock = (PCLK1/4096)/4
+ 115:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   *     @arg WWDG_Prescaler_8: WWDG counter clock = (PCLK1/4096)/8
+ 116:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @retval None
+ 117:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+ 118:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** void WWDG_SetPrescaler(uint32_t WWDG_Prescaler)
+ 119:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** {
+  58              		.loc 1 119 0
+  59              		.cfi_startproc
+  60              		@ args = 0, pretend = 0, frame = 16
+  61              		@ frame_needed = 1, uses_anonymous_args = 0
+  62              		@ link register save eliminated.
+  63 0000 80B4     		push	{r7}
+  64              		.cfi_def_cfa_offset 4
+  65              		.cfi_offset 7, -4
+  66 0002 85B0     		sub	sp, sp, #20
+  67              		.cfi_def_cfa_offset 24
+  68 0004 00AF     		add	r7, sp, #0
+  69              		.cfi_def_cfa_register 7
+  70 0006 7860     		str	r0, [r7, #4]
+ 120:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   uint32_t tmpreg = 0;
+  71              		.loc 1 120 0
+  72 0008 0023     		movs	r3, #0
+  73 000a FB60     		str	r3, [r7, #12]
+ 121:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   /* Check the parameters */
+ 122:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   assert_param(IS_WWDG_PRESCALER(WWDG_Prescaler));
+ 123:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   /* Clear WDGTB[1:0] bits */
+ 124:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   tmpreg = WWDG->CFR & CFR_WDGTB_Mask;
+  74              		.loc 1 124 0
+  75 000c 084B     		ldr	r3, .L3
+  76 000e 5B68     		ldr	r3, [r3, #4]
+  77 0010 23F4C073 		bic	r3, r3, #384
+  78 0014 FB60     		str	r3, [r7, #12]
+ 125:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   /* Set WDGTB[1:0] bits according to WWDG_Prescaler value */
+ 126:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   tmpreg |= WWDG_Prescaler;
+  79              		.loc 1 126 0
+  80 0016 FA68     		ldr	r2, [r7, #12]
+  81 0018 7B68     		ldr	r3, [r7, #4]
+  82 001a 1343     		orrs	r3, r3, r2
+  83 001c FB60     		str	r3, [r7, #12]
+ 127:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   /* Store the new value */
+ 128:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   WWDG->CFR = tmpreg;
+  84              		.loc 1 128 0
+  85 001e 044A     		ldr	r2, .L3
+  86 0020 FB68     		ldr	r3, [r7, #12]
+  87 0022 5360     		str	r3, [r2, #4]
+ 129:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** }
+  88              		.loc 1 129 0
+  89 0024 1437     		adds	r7, r7, #20
+  90              		.cfi_def_cfa_offset 4
+  91 0026 BD46     		mov	sp, r7
+  92              		.cfi_def_cfa_register 13
+  93              		@ sp needed
+  94 0028 5DF8047B 		ldr	r7, [sp], #4
+  95              		.cfi_restore 7
+  96              		.cfi_def_cfa_offset 0
+  97 002c 7047     		bx	lr
+  98              	.L4:
+  99 002e 00BF     		.align	2
+ 100              	.L3:
+ 101 0030 002C0040 		.word	1073753088
+ 102              		.cfi_endproc
+ 103              	.LFE30:
+ 105              		.section	.text.WWDG_SetWindowValue,"ax",%progbits
+ 106              		.align	2
+ 107              		.global	WWDG_SetWindowValue
+ 108              		.thumb
+ 109              		.thumb_func
+ 111              	WWDG_SetWindowValue:
+ 112              	.LFB31:
+ 130:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+ 131:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /**
+ 132:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @brief  Sets the WWDG window value.
+ 133:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @param  WindowValue: specifies the window value to be compared to the downcounter.
+ 134:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   *   This parameter value must be lower than 0x80.
+ 135:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @retval None
+ 136:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+ 137:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** void WWDG_SetWindowValue(uint8_t WindowValue)
+ 138:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** {
+ 113              		.loc 1 138 0
+ 114              		.cfi_startproc
+ 115              		@ args = 0, pretend = 0, frame = 16
+ 116              		@ frame_needed = 1, uses_anonymous_args = 0
+ 117              		@ link register save eliminated.
+ 118 0000 80B4     		push	{r7}
+ 119              		.cfi_def_cfa_offset 4
+ 120              		.cfi_offset 7, -4
+ 121 0002 85B0     		sub	sp, sp, #20
+ 122              		.cfi_def_cfa_offset 24
+ 123 0004 00AF     		add	r7, sp, #0
+ 124              		.cfi_def_cfa_register 7
+ 125 0006 0346     		mov	r3, r0
+ 126 0008 FB71     		strb	r3, [r7, #7]
+ 139:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   __IO uint32_t tmpreg = 0;
+ 127              		.loc 1 139 0
+ 128 000a 0023     		movs	r3, #0
+ 129 000c FB60     		str	r3, [r7, #12]
+ 140:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+ 141:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   /* Check the parameters */
+ 142:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   assert_param(IS_WWDG_WINDOW_VALUE(WindowValue));
+ 143:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   /* Clear W[6:0] bits */
+ 144:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+ 145:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   tmpreg = WWDG->CFR & CFR_W_Mask;
+ 130              		.loc 1 145 0
+ 131 000e 094B     		ldr	r3, .L6
+ 132 0010 5B68     		ldr	r3, [r3, #4]
+ 133 0012 23F07F03 		bic	r3, r3, #127
+ 134 0016 FB60     		str	r3, [r7, #12]
+ 146:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+ 147:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   /* Set W[6:0] bits according to WindowValue value */
+ 148:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   tmpreg |= WindowValue & (uint32_t) BIT_Mask;
+ 135              		.loc 1 148 0
+ 136 0018 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 137 001a 03F07F02 		and	r2, r3, #127
+ 138 001e FB68     		ldr	r3, [r7, #12]
+ 139 0020 1343     		orrs	r3, r3, r2
+ 140 0022 FB60     		str	r3, [r7, #12]
+ 149:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+ 150:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   /* Store the new value */
+ 151:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   WWDG->CFR = tmpreg;
+ 141              		.loc 1 151 0
+ 142 0024 034A     		ldr	r2, .L6
+ 143 0026 FB68     		ldr	r3, [r7, #12]
+ 144 0028 5360     		str	r3, [r2, #4]
+ 152:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** }
+ 145              		.loc 1 152 0
+ 146 002a 1437     		adds	r7, r7, #20
+ 147              		.cfi_def_cfa_offset 4
+ 148 002c BD46     		mov	sp, r7
+ 149              		.cfi_def_cfa_register 13
+ 150              		@ sp needed
+ 151 002e 5DF8047B 		ldr	r7, [sp], #4
+ 152              		.cfi_restore 7
+ 153              		.cfi_def_cfa_offset 0
+ 154 0032 7047     		bx	lr
+ 155              	.L7:
+ 156              		.align	2
+ 157              	.L6:
+ 158 0034 002C0040 		.word	1073753088
+ 159              		.cfi_endproc
+ 160              	.LFE31:
+ 162              		.section	.text.WWDG_EnableIT,"ax",%progbits
+ 163              		.align	2
+ 164              		.global	WWDG_EnableIT
+ 165              		.thumb
+ 166              		.thumb_func
+ 168              	WWDG_EnableIT:
+ 169              	.LFB32:
+ 153:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+ 154:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /**
+ 155:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @brief  Enables the WWDG Early Wakeup interrupt(EWI).
+ 156:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @param  None
+ 157:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @retval None
+ 158:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+ 159:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** void WWDG_EnableIT(void)
+ 160:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** {
+ 170              		.loc 1 160 0
+ 171              		.cfi_startproc
+ 172              		@ args = 0, pretend = 0, frame = 0
+ 173              		@ frame_needed = 1, uses_anonymous_args = 0
+ 174              		@ link register save eliminated.
+ 175 0000 80B4     		push	{r7}
+ 176              		.cfi_def_cfa_offset 4
+ 177              		.cfi_offset 7, -4
+ 178 0002 00AF     		add	r7, sp, #0
+ 179              		.cfi_def_cfa_register 7
+ 161:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   *(__IO uint32_t *) CFR_EWI_BB = (uint32_t)ENABLE;
+ 180              		.loc 1 161 0
+ 181 0004 034B     		ldr	r3, .L9
+ 182 0006 0122     		movs	r2, #1
+ 183 0008 1A60     		str	r2, [r3]
+ 162:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** }
+ 184              		.loc 1 162 0
+ 185 000a BD46     		mov	sp, r7
+ 186              		.cfi_def_cfa_register 13
+ 187              		@ sp needed
+ 188 000c 5DF8047B 		ldr	r7, [sp], #4
+ 189              		.cfi_restore 7
+ 190              		.cfi_def_cfa_offset 0
+ 191 0010 7047     		bx	lr
+ 192              	.L10:
+ 193 0012 00BF     		.align	2
+ 194              	.L9:
+ 195 0014 A4800542 		.word	1107656868
+ 196              		.cfi_endproc
+ 197              	.LFE32:
+ 199              		.section	.text.WWDG_SetCounter,"ax",%progbits
+ 200              		.align	2
+ 201              		.global	WWDG_SetCounter
+ 202              		.thumb
+ 203              		.thumb_func
+ 205              	WWDG_SetCounter:
+ 206              	.LFB33:
+ 163:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+ 164:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /**
+ 165:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @brief  Sets the WWDG counter value.
+ 166:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @param  Counter: specifies the watchdog counter value.
+ 167:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   *   This parameter must be a number between 0x40 and 0x7F.
+ 168:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @retval None
+ 169:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+ 170:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** void WWDG_SetCounter(uint8_t Counter)
+ 171:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** {
+ 207              		.loc 1 171 0
+ 208              		.cfi_startproc
+ 209              		@ args = 0, pretend = 0, frame = 8
+ 210              		@ frame_needed = 1, uses_anonymous_args = 0
+ 211              		@ link register save eliminated.
+ 212 0000 80B4     		push	{r7}
+ 213              		.cfi_def_cfa_offset 4
+ 214              		.cfi_offset 7, -4
+ 215 0002 83B0     		sub	sp, sp, #12
+ 216              		.cfi_def_cfa_offset 16
+ 217 0004 00AF     		add	r7, sp, #0
+ 218              		.cfi_def_cfa_register 7
+ 219 0006 0346     		mov	r3, r0
+ 220 0008 FB71     		strb	r3, [r7, #7]
+ 172:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   /* Check the parameters */
+ 173:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   assert_param(IS_WWDG_COUNTER(Counter));
+ 174:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   /* Write to T[6:0] bits to configure the counter value, no need to do
+ 175:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****      a read-modify-write; writing a 0 to WDGA bit does nothing */
+ 176:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   WWDG->CR = Counter & BIT_Mask;
+ 221              		.loc 1 176 0
+ 222 000a 054A     		ldr	r2, .L12
+ 223 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 224 000e 03F07F03 		and	r3, r3, #127
+ 225 0012 1360     		str	r3, [r2]
+ 177:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** }
+ 226              		.loc 1 177 0
+ 227 0014 0C37     		adds	r7, r7, #12
+ 228              		.cfi_def_cfa_offset 4
+ 229 0016 BD46     		mov	sp, r7
+ 230              		.cfi_def_cfa_register 13
+ 231              		@ sp needed
+ 232 0018 5DF8047B 		ldr	r7, [sp], #4
+ 233              		.cfi_restore 7
+ 234              		.cfi_def_cfa_offset 0
+ 235 001c 7047     		bx	lr
+ 236              	.L13:
+ 237 001e 00BF     		.align	2
+ 238              	.L12:
+ 239 0020 002C0040 		.word	1073753088
+ 240              		.cfi_endproc
+ 241              	.LFE33:
+ 243              		.section	.text.WWDG_Enable,"ax",%progbits
+ 244              		.align	2
+ 245              		.global	WWDG_Enable
+ 246              		.thumb
+ 247              		.thumb_func
+ 249              	WWDG_Enable:
+ 250              	.LFB34:
+ 178:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+ 179:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /**
+ 180:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @brief  Enables WWDG and load the counter value.                  
+ 181:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @param  Counter: specifies the watchdog counter value.
+ 182:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   *   This parameter must be a number between 0x40 and 0x7F.
+ 183:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @retval None
+ 184:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+ 185:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** void WWDG_Enable(uint8_t Counter)
+ 186:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** {
+ 251              		.loc 1 186 0
+ 252              		.cfi_startproc
+ 253              		@ args = 0, pretend = 0, frame = 8
+ 254              		@ frame_needed = 1, uses_anonymous_args = 0
+ 255              		@ link register save eliminated.
+ 256 0000 80B4     		push	{r7}
+ 257              		.cfi_def_cfa_offset 4
+ 258              		.cfi_offset 7, -4
+ 259 0002 83B0     		sub	sp, sp, #12
+ 260              		.cfi_def_cfa_offset 16
+ 261 0004 00AF     		add	r7, sp, #0
+ 262              		.cfi_def_cfa_register 7
+ 263 0006 0346     		mov	r3, r0
+ 264 0008 FB71     		strb	r3, [r7, #7]
+ 187:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   /* Check the parameters */
+ 188:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   assert_param(IS_WWDG_COUNTER(Counter));
+ 189:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   WWDG->CR = CR_WDGA_Set | Counter;
+ 265              		.loc 1 189 0
+ 266 000a 054A     		ldr	r2, .L15
+ 267 000c FB79     		ldrb	r3, [r7, #7]
+ 268 000e 63F07F03 		orn	r3, r3, #127
+ 269 0012 DBB2     		uxtb	r3, r3
+ 270 0014 1360     		str	r3, [r2]
+ 190:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** }
+ 271              		.loc 1 190 0
+ 272 0016 0C37     		adds	r7, r7, #12
+ 273              		.cfi_def_cfa_offset 4
+ 274 0018 BD46     		mov	sp, r7
+ 275              		.cfi_def_cfa_register 13
+ 276              		@ sp needed
+ 277 001a 5DF8047B 		ldr	r7, [sp], #4
+ 278              		.cfi_restore 7
+ 279              		.cfi_def_cfa_offset 0
+ 280 001e 7047     		bx	lr
+ 281              	.L16:
+ 282              		.align	2
+ 283              	.L15:
+ 284 0020 002C0040 		.word	1073753088
+ 285              		.cfi_endproc
+ 286              	.LFE34:
+ 288              		.section	.text.WWDG_GetFlagStatus,"ax",%progbits
+ 289              		.align	2
+ 290              		.global	WWDG_GetFlagStatus
+ 291              		.thumb
+ 292              		.thumb_func
+ 294              	WWDG_GetFlagStatus:
+ 295              	.LFB35:
+ 191:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+ 192:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /**
+ 193:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @brief  Checks whether the Early Wakeup interrupt flag is set or not.
+ 194:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @param  None
+ 195:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @retval The new state of the Early Wakeup interrupt flag (SET or RESET)
+ 196:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+ 197:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** FlagStatus WWDG_GetFlagStatus(void)
+ 198:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** {
+ 296              		.loc 1 198 0
+ 297              		.cfi_startproc
+ 298              		@ args = 0, pretend = 0, frame = 0
+ 299              		@ frame_needed = 1, uses_anonymous_args = 0
+ 300              		@ link register save eliminated.
+ 301 0000 80B4     		push	{r7}
+ 302              		.cfi_def_cfa_offset 4
+ 303              		.cfi_offset 7, -4
+ 304 0002 00AF     		add	r7, sp, #0
+ 305              		.cfi_def_cfa_register 7
+ 199:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   return (FlagStatus)(WWDG->SR);
+ 306              		.loc 1 199 0
+ 307 0004 034B     		ldr	r3, .L19
+ 308 0006 9B68     		ldr	r3, [r3, #8]
+ 309 0008 DBB2     		uxtb	r3, r3
+ 200:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** }
+ 310              		.loc 1 200 0
+ 311 000a 1846     		mov	r0, r3
+ 312 000c BD46     		mov	sp, r7
+ 313              		.cfi_def_cfa_register 13
+ 314              		@ sp needed
+ 315 000e 5DF8047B 		ldr	r7, [sp], #4
+ 316              		.cfi_restore 7
+ 317              		.cfi_def_cfa_offset 0
+ 318 0012 7047     		bx	lr
+ 319              	.L20:
+ 320              		.align	2
+ 321              	.L19:
+ 322 0014 002C0040 		.word	1073753088
+ 323              		.cfi_endproc
+ 324              	.LFE35:
+ 326              		.section	.text.WWDG_ClearFlag,"ax",%progbits
+ 327              		.align	2
+ 328              		.global	WWDG_ClearFlag
+ 329              		.thumb
+ 330              		.thumb_func
+ 332              	WWDG_ClearFlag:
+ 333              	.LFB36:
+ 201:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** 
+ 202:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** /**
+ 203:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @brief  Clears Early Wakeup interrupt flag.
+ 204:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @param  None
+ 205:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   * @retval None
+ 206:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   */
+ 207:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** void WWDG_ClearFlag(void)
+ 208:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** {
+ 334              		.loc 1 208 0
+ 335              		.cfi_startproc
+ 336              		@ args = 0, pretend = 0, frame = 0
+ 337              		@ frame_needed = 1, uses_anonymous_args = 0
+ 338              		@ link register save eliminated.
+ 339 0000 80B4     		push	{r7}
+ 340              		.cfi_def_cfa_offset 4
+ 341              		.cfi_offset 7, -4
+ 342 0002 00AF     		add	r7, sp, #0
+ 343              		.cfi_def_cfa_register 7
+ 209:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c ****   WWDG->SR = (uint32_t)RESET;
+ 344              		.loc 1 209 0
+ 345 0004 034B     		ldr	r3, .L22
+ 346 0006 0022     		movs	r2, #0
+ 347 0008 9A60     		str	r2, [r3, #8]
+ 210:/home/virusv/usart/Libraries/src/stm32f10x_wwdg.c **** }
+ 348              		.loc 1 210 0
+ 349 000a BD46     		mov	sp, r7
+ 350              		.cfi_def_cfa_register 13
+ 351              		@ sp needed
+ 352 000c 5DF8047B 		ldr	r7, [sp], #4
+ 353              		.cfi_restore 7
+ 354              		.cfi_def_cfa_offset 0
+ 355 0010 7047     		bx	lr
+ 356              	.L23:
+ 357 0012 00BF     		.align	2
+ 358              	.L22:
+ 359 0014 002C0040 		.word	1073753088
+ 360              		.cfi_endproc
+ 361              	.LFE36:
+ 363              		.text
+ 364              	.Letext0:
+ 365              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 366              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 367              		.file 4 "/home/virusv/usart/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h"
+ 368              		.file 5 "/home/virusv/usart/CMSIS/CM3/CoreSupport/core_cm3.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f10x_wwdg.c
+     /tmp/cciHLkI4.s:19     .text.WWDG_DeInit:0000000000000000 $t
+     /tmp/cciHLkI4.s:24     .text.WWDG_DeInit:0000000000000000 WWDG_DeInit
+     /tmp/cciHLkI4.s:51     .text.WWDG_SetPrescaler:0000000000000000 $t
+     /tmp/cciHLkI4.s:56     .text.WWDG_SetPrescaler:0000000000000000 WWDG_SetPrescaler
+     /tmp/cciHLkI4.s:101    .text.WWDG_SetPrescaler:0000000000000030 $d
+     /tmp/cciHLkI4.s:106    .text.WWDG_SetWindowValue:0000000000000000 $t
+     /tmp/cciHLkI4.s:111    .text.WWDG_SetWindowValue:0000000000000000 WWDG_SetWindowValue
+     /tmp/cciHLkI4.s:158    .text.WWDG_SetWindowValue:0000000000000034 $d
+     /tmp/cciHLkI4.s:163    .text.WWDG_EnableIT:0000000000000000 $t
+     /tmp/cciHLkI4.s:168    .text.WWDG_EnableIT:0000000000000000 WWDG_EnableIT
+     /tmp/cciHLkI4.s:195    .text.WWDG_EnableIT:0000000000000014 $d
+     /tmp/cciHLkI4.s:200    .text.WWDG_SetCounter:0000000000000000 $t
+     /tmp/cciHLkI4.s:205    .text.WWDG_SetCounter:0000000000000000 WWDG_SetCounter
+     /tmp/cciHLkI4.s:239    .text.WWDG_SetCounter:0000000000000020 $d
+     /tmp/cciHLkI4.s:244    .text.WWDG_Enable:0000000000000000 $t
+     /tmp/cciHLkI4.s:249    .text.WWDG_Enable:0000000000000000 WWDG_Enable
+     /tmp/cciHLkI4.s:284    .text.WWDG_Enable:0000000000000020 $d
+     /tmp/cciHLkI4.s:289    .text.WWDG_GetFlagStatus:0000000000000000 $t
+     /tmp/cciHLkI4.s:294    .text.WWDG_GetFlagStatus:0000000000000000 WWDG_GetFlagStatus
+     /tmp/cciHLkI4.s:322    .text.WWDG_GetFlagStatus:0000000000000014 $d
+     /tmp/cciHLkI4.s:327    .text.WWDG_ClearFlag:0000000000000000 $t
+     /tmp/cciHLkI4.s:332    .text.WWDG_ClearFlag:0000000000000000 WWDG_ClearFlag
+     /tmp/cciHLkI4.s:359    .text.WWDG_ClearFlag:0000000000000014 $d
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphResetCmd

@@ -1,0 +1,453 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32f10x_crc.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.CRC_ResetDR,"ax",%progbits
+  19              		.align	2
+  20              		.global	CRC_ResetDR
+  21              		.thumb
+  22              		.thumb_func
+  24              	CRC_ResetDR:
+  25              	.LFB29:
+  26              		.file 1 "/home/virusv/usart/Libraries/src/stm32f10x_crc.c"
+   1:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /**
+   2:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   ******************************************************************************
+   3:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @file    stm32f10x_crc.c
+   4:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @author  MCD Application Team
+   5:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @version V3.5.0
+   6:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @date    11-March-2011
+   7:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @brief   This file provides all the CRC firmware functions.
+   8:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   ******************************************************************************
+   9:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @attention
+  10:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   *
+  11:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   *
+  18:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  19:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   ******************************************************************************
+  20:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  21:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  22:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /* Includes ------------------------------------------------------------------*/
+  23:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** #include "stm32f10x_crc.h"
+  24:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  25:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /** @addtogroup STM32F10x_StdPeriph_Driver
+  26:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @{
+  27:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  28:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  29:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /** @defgroup CRC 
+  30:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @brief CRC driver modules
+  31:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @{
+  32:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  33:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  34:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /** @defgroup CRC_Private_TypesDefinitions
+  35:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @{
+  36:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  37:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  38:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /**
+  39:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @}
+  40:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  41:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  42:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /** @defgroup CRC_Private_Defines
+  43:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @{
+  44:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  45:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  46:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /**
+  47:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @}
+  48:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  49:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  50:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /** @defgroup CRC_Private_Macros
+  51:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @{
+  52:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  53:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  54:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /**
+  55:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @}
+  56:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  57:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  58:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /** @defgroup CRC_Private_Variables
+  59:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @{
+  60:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  61:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  62:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /**
+  63:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @}
+  64:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  65:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  66:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /** @defgroup CRC_Private_FunctionPrototypes
+  67:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @{
+  68:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  69:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  70:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /**
+  71:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @}
+  72:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  73:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  74:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /** @defgroup CRC_Private_Functions
+  75:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @{
+  76:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  77:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  78:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /**
+  79:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @brief  Resets the CRC Data register (DR).
+  80:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @param  None
+  81:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @retval None
+  82:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  83:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** void CRC_ResetDR(void)
+  84:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** {
+  27              		.loc 1 84 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32 0000 80B4     		push	{r7}
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 7, -4
+  35 0002 00AF     		add	r7, sp, #0
+  36              		.cfi_def_cfa_register 7
+  85:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   /* Reset CRC generator */
+  86:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   CRC->CR = CRC_CR_RESET;
+  37              		.loc 1 86 0
+  38 0004 034B     		ldr	r3, .L2
+  39 0006 0122     		movs	r2, #1
+  40 0008 9A60     		str	r2, [r3, #8]
+  87:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** }
+  41              		.loc 1 87 0
+  42 000a BD46     		mov	sp, r7
+  43              		.cfi_def_cfa_register 13
+  44              		@ sp needed
+  45 000c 5DF8047B 		ldr	r7, [sp], #4
+  46              		.cfi_restore 7
+  47              		.cfi_def_cfa_offset 0
+  48 0010 7047     		bx	lr
+  49              	.L3:
+  50 0012 00BF     		.align	2
+  51              	.L2:
+  52 0014 00300240 		.word	1073885184
+  53              		.cfi_endproc
+  54              	.LFE29:
+  56              		.section	.text.CRC_CalcCRC,"ax",%progbits
+  57              		.align	2
+  58              		.global	CRC_CalcCRC
+  59              		.thumb
+  60              		.thumb_func
+  62              	CRC_CalcCRC:
+  63              	.LFB30:
+  88:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+  89:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /**
+  90:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @brief  Computes the 32-bit CRC of a given data word(32-bit).
+  91:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @param  Data: data word(32-bit) to compute its CRC
+  92:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @retval 32-bit CRC
+  93:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+  94:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** uint32_t CRC_CalcCRC(uint32_t Data)
+  95:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** {
+  64              		.loc 1 95 0
+  65              		.cfi_startproc
+  66              		@ args = 0, pretend = 0, frame = 8
+  67              		@ frame_needed = 1, uses_anonymous_args = 0
+  68              		@ link register save eliminated.
+  69 0000 80B4     		push	{r7}
+  70              		.cfi_def_cfa_offset 4
+  71              		.cfi_offset 7, -4
+  72 0002 83B0     		sub	sp, sp, #12
+  73              		.cfi_def_cfa_offset 16
+  74 0004 00AF     		add	r7, sp, #0
+  75              		.cfi_def_cfa_register 7
+  76 0006 7860     		str	r0, [r7, #4]
+  96:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   CRC->DR = Data;
+  77              		.loc 1 96 0
+  78 0008 054A     		ldr	r2, .L6
+  79 000a 7B68     		ldr	r3, [r7, #4]
+  80 000c 1360     		str	r3, [r2]
+  97:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   
+  98:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   return (CRC->DR);
+  81              		.loc 1 98 0
+  82 000e 044B     		ldr	r3, .L6
+  83 0010 1B68     		ldr	r3, [r3]
+  99:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** }
+  84              		.loc 1 99 0
+  85 0012 1846     		mov	r0, r3
+  86 0014 0C37     		adds	r7, r7, #12
+  87              		.cfi_def_cfa_offset 4
+  88 0016 BD46     		mov	sp, r7
+  89              		.cfi_def_cfa_register 13
+  90              		@ sp needed
+  91 0018 5DF8047B 		ldr	r7, [sp], #4
+  92              		.cfi_restore 7
+  93              		.cfi_def_cfa_offset 0
+  94 001c 7047     		bx	lr
+  95              	.L7:
+  96 001e 00BF     		.align	2
+  97              	.L6:
+  98 0020 00300240 		.word	1073885184
+  99              		.cfi_endproc
+ 100              	.LFE30:
+ 102              		.section	.text.CRC_CalcBlockCRC,"ax",%progbits
+ 103              		.align	2
+ 104              		.global	CRC_CalcBlockCRC
+ 105              		.thumb
+ 106              		.thumb_func
+ 108              	CRC_CalcBlockCRC:
+ 109              	.LFB31:
+ 100:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+ 101:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /**
+ 102:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @brief  Computes the 32-bit CRC of a given buffer of data word(32-bit).
+ 103:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @param  pBuffer: pointer to the buffer containing the data to be computed
+ 104:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @param  BufferLength: length of the buffer to be computed					
+ 105:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @retval 32-bit CRC
+ 106:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+ 107:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** uint32_t CRC_CalcBlockCRC(uint32_t pBuffer[], uint32_t BufferLength)
+ 108:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** {
+ 110              		.loc 1 108 0
+ 111              		.cfi_startproc
+ 112              		@ args = 0, pretend = 0, frame = 16
+ 113              		@ frame_needed = 1, uses_anonymous_args = 0
+ 114              		@ link register save eliminated.
+ 115 0000 80B4     		push	{r7}
+ 116              		.cfi_def_cfa_offset 4
+ 117              		.cfi_offset 7, -4
+ 118 0002 85B0     		sub	sp, sp, #20
+ 119              		.cfi_def_cfa_offset 24
+ 120 0004 00AF     		add	r7, sp, #0
+ 121              		.cfi_def_cfa_register 7
+ 122 0006 7860     		str	r0, [r7, #4]
+ 123 0008 3960     		str	r1, [r7]
+ 109:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   uint32_t index = 0;
+ 124              		.loc 1 109 0
+ 125 000a 0023     		movs	r3, #0
+ 126 000c FB60     		str	r3, [r7, #12]
+ 110:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   
+ 111:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   for(index = 0; index < BufferLength; index++)
+ 127              		.loc 1 111 0
+ 128 000e 0023     		movs	r3, #0
+ 129 0010 FB60     		str	r3, [r7, #12]
+ 130 0012 09E0     		b	.L9
+ 131              	.L10:
+ 112:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   {
+ 113:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****     CRC->DR = pBuffer[index];
+ 132              		.loc 1 113 0 discriminator 3
+ 133 0014 0A49     		ldr	r1, .L12
+ 134 0016 FB68     		ldr	r3, [r7, #12]
+ 135 0018 9B00     		lsls	r3, r3, #2
+ 136 001a 7A68     		ldr	r2, [r7, #4]
+ 137 001c 1344     		add	r3, r3, r2
+ 138 001e 1B68     		ldr	r3, [r3]
+ 139 0020 0B60     		str	r3, [r1]
+ 111:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   {
+ 140              		.loc 1 111 0 discriminator 3
+ 141 0022 FB68     		ldr	r3, [r7, #12]
+ 142 0024 0133     		adds	r3, r3, #1
+ 143 0026 FB60     		str	r3, [r7, #12]
+ 144              	.L9:
+ 111:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   {
+ 145              		.loc 1 111 0 is_stmt 0 discriminator 1
+ 146 0028 FA68     		ldr	r2, [r7, #12]
+ 147 002a 3B68     		ldr	r3, [r7]
+ 148 002c 9A42     		cmp	r2, r3
+ 149 002e F1D3     		bcc	.L10
+ 114:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   }
+ 115:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   return (CRC->DR);
+ 150              		.loc 1 115 0 is_stmt 1
+ 151 0030 034B     		ldr	r3, .L12
+ 152 0032 1B68     		ldr	r3, [r3]
+ 116:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** }
+ 153              		.loc 1 116 0
+ 154 0034 1846     		mov	r0, r3
+ 155 0036 1437     		adds	r7, r7, #20
+ 156              		.cfi_def_cfa_offset 4
+ 157 0038 BD46     		mov	sp, r7
+ 158              		.cfi_def_cfa_register 13
+ 159              		@ sp needed
+ 160 003a 5DF8047B 		ldr	r7, [sp], #4
+ 161              		.cfi_restore 7
+ 162              		.cfi_def_cfa_offset 0
+ 163 003e 7047     		bx	lr
+ 164              	.L13:
+ 165              		.align	2
+ 166              	.L12:
+ 167 0040 00300240 		.word	1073885184
+ 168              		.cfi_endproc
+ 169              	.LFE31:
+ 171              		.section	.text.CRC_GetCRC,"ax",%progbits
+ 172              		.align	2
+ 173              		.global	CRC_GetCRC
+ 174              		.thumb
+ 175              		.thumb_func
+ 177              	CRC_GetCRC:
+ 178              	.LFB32:
+ 117:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+ 118:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /**
+ 119:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @brief  Returns the current CRC value.
+ 120:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @param  None
+ 121:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @retval 32-bit CRC
+ 122:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+ 123:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** uint32_t CRC_GetCRC(void)
+ 124:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** {
+ 179              		.loc 1 124 0
+ 180              		.cfi_startproc
+ 181              		@ args = 0, pretend = 0, frame = 0
+ 182              		@ frame_needed = 1, uses_anonymous_args = 0
+ 183              		@ link register save eliminated.
+ 184 0000 80B4     		push	{r7}
+ 185              		.cfi_def_cfa_offset 4
+ 186              		.cfi_offset 7, -4
+ 187 0002 00AF     		add	r7, sp, #0
+ 188              		.cfi_def_cfa_register 7
+ 125:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   return (CRC->DR);
+ 189              		.loc 1 125 0
+ 190 0004 034B     		ldr	r3, .L16
+ 191 0006 1B68     		ldr	r3, [r3]
+ 126:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** }
+ 192              		.loc 1 126 0
+ 193 0008 1846     		mov	r0, r3
+ 194 000a BD46     		mov	sp, r7
+ 195              		.cfi_def_cfa_register 13
+ 196              		@ sp needed
+ 197 000c 5DF8047B 		ldr	r7, [sp], #4
+ 198              		.cfi_restore 7
+ 199              		.cfi_def_cfa_offset 0
+ 200 0010 7047     		bx	lr
+ 201              	.L17:
+ 202 0012 00BF     		.align	2
+ 203              	.L16:
+ 204 0014 00300240 		.word	1073885184
+ 205              		.cfi_endproc
+ 206              	.LFE32:
+ 208              		.section	.text.CRC_SetIDRegister,"ax",%progbits
+ 209              		.align	2
+ 210              		.global	CRC_SetIDRegister
+ 211              		.thumb
+ 212              		.thumb_func
+ 214              	CRC_SetIDRegister:
+ 215              	.LFB33:
+ 127:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+ 128:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /**
+ 129:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @brief  Stores a 8-bit data in the Independent Data(ID) register.
+ 130:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @param  IDValue: 8-bit value to be stored in the ID register 					
+ 131:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @retval None
+ 132:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+ 133:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** void CRC_SetIDRegister(uint8_t IDValue)
+ 134:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** {
+ 216              		.loc 1 134 0
+ 217              		.cfi_startproc
+ 218              		@ args = 0, pretend = 0, frame = 8
+ 219              		@ frame_needed = 1, uses_anonymous_args = 0
+ 220              		@ link register save eliminated.
+ 221 0000 80B4     		push	{r7}
+ 222              		.cfi_def_cfa_offset 4
+ 223              		.cfi_offset 7, -4
+ 224 0002 83B0     		sub	sp, sp, #12
+ 225              		.cfi_def_cfa_offset 16
+ 226 0004 00AF     		add	r7, sp, #0
+ 227              		.cfi_def_cfa_register 7
+ 228 0006 0346     		mov	r3, r0
+ 229 0008 FB71     		strb	r3, [r7, #7]
+ 135:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   CRC->IDR = IDValue;
+ 230              		.loc 1 135 0
+ 231 000a 044A     		ldr	r2, .L19
+ 232 000c FB79     		ldrb	r3, [r7, #7]
+ 233 000e 1371     		strb	r3, [r2, #4]
+ 136:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** }
+ 234              		.loc 1 136 0
+ 235 0010 0C37     		adds	r7, r7, #12
+ 236              		.cfi_def_cfa_offset 4
+ 237 0012 BD46     		mov	sp, r7
+ 238              		.cfi_def_cfa_register 13
+ 239              		@ sp needed
+ 240 0014 5DF8047B 		ldr	r7, [sp], #4
+ 241              		.cfi_restore 7
+ 242              		.cfi_def_cfa_offset 0
+ 243 0018 7047     		bx	lr
+ 244              	.L20:
+ 245 001a 00BF     		.align	2
+ 246              	.L19:
+ 247 001c 00300240 		.word	1073885184
+ 248              		.cfi_endproc
+ 249              	.LFE33:
+ 251              		.section	.text.CRC_GetIDRegister,"ax",%progbits
+ 252              		.align	2
+ 253              		.global	CRC_GetIDRegister
+ 254              		.thumb
+ 255              		.thumb_func
+ 257              	CRC_GetIDRegister:
+ 258              	.LFB34:
+ 137:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** 
+ 138:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** /**
+ 139:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @brief  Returns the 8-bit data stored in the Independent Data(ID) register
+ 140:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @param  None
+ 141:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   * @retval 8-bit value of the ID register 
+ 142:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   */
+ 143:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** uint8_t CRC_GetIDRegister(void)
+ 144:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** {
+ 259              		.loc 1 144 0
+ 260              		.cfi_startproc
+ 261              		@ args = 0, pretend = 0, frame = 0
+ 262              		@ frame_needed = 1, uses_anonymous_args = 0
+ 263              		@ link register save eliminated.
+ 264 0000 80B4     		push	{r7}
+ 265              		.cfi_def_cfa_offset 4
+ 266              		.cfi_offset 7, -4
+ 267 0002 00AF     		add	r7, sp, #0
+ 268              		.cfi_def_cfa_register 7
+ 145:/home/virusv/usart/Libraries/src/stm32f10x_crc.c ****   return (CRC->IDR);
+ 269              		.loc 1 145 0
+ 270 0004 034B     		ldr	r3, .L23
+ 271 0006 1B79     		ldrb	r3, [r3, #4]
+ 272 0008 DBB2     		uxtb	r3, r3
+ 146:/home/virusv/usart/Libraries/src/stm32f10x_crc.c **** }
+ 273              		.loc 1 146 0
+ 274 000a 1846     		mov	r0, r3
+ 275 000c BD46     		mov	sp, r7
+ 276              		.cfi_def_cfa_register 13
+ 277              		@ sp needed
+ 278 000e 5DF8047B 		ldr	r7, [sp], #4
+ 279              		.cfi_restore 7
+ 280              		.cfi_def_cfa_offset 0
+ 281 0012 7047     		bx	lr
+ 282              	.L24:
+ 283              		.align	2
+ 284              	.L23:
+ 285 0014 00300240 		.word	1073885184
+ 286              		.cfi_endproc
+ 287              	.LFE34:
+ 289              		.text
+ 290              	.Letext0:
+ 291              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 292              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 293              		.file 4 "/home/virusv/usart/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h"
+ 294              		.file 5 "/home/virusv/usart/CMSIS/CM3/CoreSupport/core_cm3.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f10x_crc.c
+     /tmp/ccEJsGu7.s:19     .text.CRC_ResetDR:0000000000000000 $t
+     /tmp/ccEJsGu7.s:24     .text.CRC_ResetDR:0000000000000000 CRC_ResetDR
+     /tmp/ccEJsGu7.s:52     .text.CRC_ResetDR:0000000000000014 $d
+     /tmp/ccEJsGu7.s:57     .text.CRC_CalcCRC:0000000000000000 $t
+     /tmp/ccEJsGu7.s:62     .text.CRC_CalcCRC:0000000000000000 CRC_CalcCRC
+     /tmp/ccEJsGu7.s:98     .text.CRC_CalcCRC:0000000000000020 $d
+     /tmp/ccEJsGu7.s:103    .text.CRC_CalcBlockCRC:0000000000000000 $t
+     /tmp/ccEJsGu7.s:108    .text.CRC_CalcBlockCRC:0000000000000000 CRC_CalcBlockCRC
+     /tmp/ccEJsGu7.s:167    .text.CRC_CalcBlockCRC:0000000000000040 $d
+     /tmp/ccEJsGu7.s:172    .text.CRC_GetCRC:0000000000000000 $t
+     /tmp/ccEJsGu7.s:177    .text.CRC_GetCRC:0000000000000000 CRC_GetCRC
+     /tmp/ccEJsGu7.s:204    .text.CRC_GetCRC:0000000000000014 $d
+     /tmp/ccEJsGu7.s:209    .text.CRC_SetIDRegister:0000000000000000 $t
+     /tmp/ccEJsGu7.s:214    .text.CRC_SetIDRegister:0000000000000000 CRC_SetIDRegister
+     /tmp/ccEJsGu7.s:247    .text.CRC_SetIDRegister:000000000000001c $d
+     /tmp/ccEJsGu7.s:252    .text.CRC_GetIDRegister:0000000000000000 $t
+     /tmp/ccEJsGu7.s:257    .text.CRC_GetIDRegister:0000000000000000 CRC_GetIDRegister
+     /tmp/ccEJsGu7.s:285    .text.CRC_GetIDRegister:0000000000000014 $d
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS

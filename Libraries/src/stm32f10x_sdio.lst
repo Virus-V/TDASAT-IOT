@@ -1,0 +1,2357 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"stm32f10x_sdio.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.SDIO_DeInit,"ax",%progbits
+  19              		.align	2
+  20              		.global	SDIO_DeInit
+  21              		.thumb
+  22              		.thumb_func
+  24              	SDIO_DeInit:
+  25              	.LFB29:
+  26              		.file 1 "/home/virusv/usart/Libraries/src/stm32f10x_sdio.c"
+   1:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+   2:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   ******************************************************************************
+   3:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @file    stm32f10x_sdio.c
+   4:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @author  MCD Application Team
+   5:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @version V3.5.0
+   6:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @date    11-March-2011
+   7:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief   This file provides all the SDIO firmware functions.
+   8:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   ******************************************************************************
+   9:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @attention
+  10:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *
+  11:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  12:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  13:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  14:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  15:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  16:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  17:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *
+  18:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * <h2><center>&copy; COPYRIGHT 2011 STMicroelectronics</center></h2>
+  19:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   ******************************************************************************
+  20:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+  21:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  22:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* Includes ------------------------------------------------------------------*/
+  23:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #include "stm32f10x_sdio.h"
+  24:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #include "stm32f10x_rcc.h"
+  25:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  26:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /** @addtogroup STM32F10x_StdPeriph_Driver
+  27:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @{
+  28:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+  29:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  30:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /** @defgroup SDIO 
+  31:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief SDIO driver modules
+  32:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @{
+  33:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */ 
+  34:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  35:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /** @defgroup SDIO_Private_TypesDefinitions
+  36:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @{
+  37:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */ 
+  38:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  39:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* ------------ SDIO registers bit address in the alias region ----------- */
+  40:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define SDIO_OFFSET                (SDIO_BASE - PERIPH_BASE)
+  41:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  42:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* --- CLKCR Register ---*/
+  43:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  44:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* Alias word address of CLKEN bit */
+  45:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define CLKCR_OFFSET              (SDIO_OFFSET + 0x04)
+  46:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define CLKEN_BitNumber           0x08
+  47:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define CLKCR_CLKEN_BB            (PERIPH_BB_BASE + (CLKCR_OFFSET * 32) + (CLKEN_BitNumber * 4))
+  48:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  49:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* --- CMD Register ---*/
+  50:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  51:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* Alias word address of SDIOSUSPEND bit */
+  52:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define CMD_OFFSET                (SDIO_OFFSET + 0x0C)
+  53:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define SDIOSUSPEND_BitNumber     0x0B
+  54:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define CMD_SDIOSUSPEND_BB        (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (SDIOSUSPEND_BitNumber * 4)
+  55:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  56:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* Alias word address of ENCMDCOMPL bit */
+  57:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define ENCMDCOMPL_BitNumber      0x0C
+  58:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define CMD_ENCMDCOMPL_BB         (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (ENCMDCOMPL_BitNumber * 4))
+  59:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  60:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* Alias word address of NIEN bit */
+  61:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define NIEN_BitNumber            0x0D
+  62:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define CMD_NIEN_BB               (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (NIEN_BitNumber * 4))
+  63:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  64:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* Alias word address of ATACMD bit */
+  65:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define ATACMD_BitNumber          0x0E
+  66:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define CMD_ATACMD_BB             (PERIPH_BB_BASE + (CMD_OFFSET * 32) + (ATACMD_BitNumber * 4))
+  67:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  68:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* --- DCTRL Register ---*/
+  69:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  70:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* Alias word address of DMAEN bit */
+  71:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define DCTRL_OFFSET              (SDIO_OFFSET + 0x2C)
+  72:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define DMAEN_BitNumber           0x03
+  73:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define DCTRL_DMAEN_BB            (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (DMAEN_BitNumber * 4))
+  74:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  75:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* Alias word address of RWSTART bit */
+  76:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define RWSTART_BitNumber         0x08
+  77:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define DCTRL_RWSTART_BB          (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (RWSTART_BitNumber * 4))
+  78:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  79:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* Alias word address of RWSTOP bit */
+  80:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define RWSTOP_BitNumber          0x09
+  81:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define DCTRL_RWSTOP_BB           (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (RWSTOP_BitNumber * 4))
+  82:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  83:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* Alias word address of RWMOD bit */
+  84:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define RWMOD_BitNumber           0x0A
+  85:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define DCTRL_RWMOD_BB            (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (RWMOD_BitNumber * 4))
+  86:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  87:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* Alias word address of SDIOEN bit */
+  88:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define SDIOEN_BitNumber          0x0B
+  89:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define DCTRL_SDIOEN_BB           (PERIPH_BB_BASE + (DCTRL_OFFSET * 32) + (SDIOEN_BitNumber * 4))
+  90:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  91:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* ---------------------- SDIO registers bit mask ------------------------ */
+  92:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  93:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* --- CLKCR Register ---*/
+  94:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  95:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* CLKCR register clear mask */
+  96:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define CLKCR_CLEAR_MASK         ((uint32_t)0xFFFF8100) 
+  97:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+  98:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* --- PWRCTRL Register ---*/
+  99:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 100:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* SDIO PWRCTRL Mask */
+ 101:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define PWR_PWRCTRL_MASK         ((uint32_t)0xFFFFFFFC)
+ 102:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 103:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* --- DCTRL Register ---*/
+ 104:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 105:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* SDIO DCTRL Clear Mask */
+ 106:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define DCTRL_CLEAR_MASK         ((uint32_t)0xFFFFFF08)
+ 107:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 108:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* --- CMD Register ---*/
+ 109:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 110:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* CMD Register clear mask */
+ 111:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define CMD_CLEAR_MASK           ((uint32_t)0xFFFFF800)
+ 112:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 113:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /* SDIO RESP Registers Address */
+ 114:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** #define SDIO_RESP_ADDR           ((uint32_t)(SDIO_BASE + 0x14))
+ 115:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 116:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 117:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @}
+ 118:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 119:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 120:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /** @defgroup SDIO_Private_Defines
+ 121:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @{
+ 122:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 123:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 124:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 125:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @}
+ 126:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 127:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 128:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /** @defgroup SDIO_Private_Macros
+ 129:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @{
+ 130:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 131:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 132:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 133:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @}
+ 134:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 135:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 136:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /** @defgroup SDIO_Private_Variables
+ 137:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @{
+ 138:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 139:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 140:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 141:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @}
+ 142:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 143:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 144:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /** @defgroup SDIO_Private_FunctionPrototypes
+ 145:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @{
+ 146:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 147:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 148:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 149:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @}
+ 150:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 151:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 152:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /** @defgroup SDIO_Private_Functions
+ 153:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @{
+ 154:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 155:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 156:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 157:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Deinitializes the SDIO peripheral registers to their default reset values.
+ 158:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  None
+ 159:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 160:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 161:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_DeInit(void)
+ 162:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+  27              		.loc 1 162 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32 0000 80B4     		push	{r7}
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 7, -4
+  35 0002 00AF     		add	r7, sp, #0
+  36              		.cfi_def_cfa_register 7
+ 163:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->POWER = 0x00000000;
+  37              		.loc 1 163 0
+  38 0004 0F4B     		ldr	r3, .L2
+  39 0006 0022     		movs	r2, #0
+  40 0008 1A60     		str	r2, [r3]
+ 164:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->CLKCR = 0x00000000;
+  41              		.loc 1 164 0
+  42 000a 0E4B     		ldr	r3, .L2
+  43 000c 0022     		movs	r2, #0
+  44 000e 5A60     		str	r2, [r3, #4]
+ 165:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->ARG = 0x00000000;
+  45              		.loc 1 165 0
+  46 0010 0C4B     		ldr	r3, .L2
+  47 0012 0022     		movs	r2, #0
+  48 0014 9A60     		str	r2, [r3, #8]
+ 166:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->CMD = 0x00000000;
+  49              		.loc 1 166 0
+  50 0016 0B4B     		ldr	r3, .L2
+  51 0018 0022     		movs	r2, #0
+  52 001a DA60     		str	r2, [r3, #12]
+ 167:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->DTIMER = 0x00000000;
+  53              		.loc 1 167 0
+  54 001c 094B     		ldr	r3, .L2
+  55 001e 0022     		movs	r2, #0
+  56 0020 5A62     		str	r2, [r3, #36]
+ 168:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->DLEN = 0x00000000;
+  57              		.loc 1 168 0
+  58 0022 084B     		ldr	r3, .L2
+  59 0024 0022     		movs	r2, #0
+  60 0026 9A62     		str	r2, [r3, #40]
+ 169:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->DCTRL = 0x00000000;
+  61              		.loc 1 169 0
+  62 0028 064B     		ldr	r3, .L2
+  63 002a 0022     		movs	r2, #0
+  64 002c DA62     		str	r2, [r3, #44]
+ 170:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->ICR = 0x00C007FF;
+  65              		.loc 1 170 0
+  66 002e 054B     		ldr	r3, .L2
+  67 0030 054A     		ldr	r2, .L2+4
+  68 0032 9A63     		str	r2, [r3, #56]
+ 171:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->MASK = 0x00000000;
+  69              		.loc 1 171 0
+  70 0034 034B     		ldr	r3, .L2
+  71 0036 0022     		movs	r2, #0
+  72 0038 DA63     		str	r2, [r3, #60]
+ 172:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+  73              		.loc 1 172 0
+  74 003a BD46     		mov	sp, r7
+  75              		.cfi_def_cfa_register 13
+  76              		@ sp needed
+  77 003c 5DF8047B 		ldr	r7, [sp], #4
+  78              		.cfi_restore 7
+  79              		.cfi_def_cfa_offset 0
+  80 0040 7047     		bx	lr
+  81              	.L3:
+  82 0042 00BF     		.align	2
+  83              	.L2:
+  84 0044 00800140 		.word	1073840128
+  85 0048 FF07C000 		.word	12584959
+  86              		.cfi_endproc
+  87              	.LFE29:
+  89              		.section	.text.SDIO_Init,"ax",%progbits
+  90              		.align	2
+  91              		.global	SDIO_Init
+  92              		.thumb
+  93              		.thumb_func
+  95              	SDIO_Init:
+  96              	.LFB30:
+ 173:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 174:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 175:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Initializes the SDIO peripheral according to the specified 
+ 176:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *         parameters in the SDIO_InitStruct.
+ 177:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  SDIO_InitStruct : pointer to a SDIO_InitTypeDef structure 
+ 178:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *         that contains the configuration information for the SDIO peripheral.
+ 179:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 180:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 181:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_Init(SDIO_InitTypeDef* SDIO_InitStruct)
+ 182:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+  97              		.loc 1 182 0
+  98              		.cfi_startproc
+  99              		@ args = 0, pretend = 0, frame = 16
+ 100              		@ frame_needed = 1, uses_anonymous_args = 0
+ 101              		@ link register save eliminated.
+ 102 0000 80B4     		push	{r7}
+ 103              		.cfi_def_cfa_offset 4
+ 104              		.cfi_offset 7, -4
+ 105 0002 85B0     		sub	sp, sp, #20
+ 106              		.cfi_def_cfa_offset 24
+ 107 0004 00AF     		add	r7, sp, #0
+ 108              		.cfi_def_cfa_register 7
+ 109 0006 7860     		str	r0, [r7, #4]
+ 183:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   uint32_t tmpreg = 0;
+ 110              		.loc 1 183 0
+ 111 0008 0023     		movs	r3, #0
+ 112 000a FB60     		str	r3, [r7, #12]
+ 184:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****     
+ 185:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 186:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_CLOCK_EDGE(SDIO_InitStruct->SDIO_ClockEdge));
+ 187:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_CLOCK_BYPASS(SDIO_InitStruct->SDIO_ClockBypass));
+ 188:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_CLOCK_POWER_SAVE(SDIO_InitStruct->SDIO_ClockPowerSave));
+ 189:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_BUS_WIDE(SDIO_InitStruct->SDIO_BusWide));
+ 190:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_HARDWARE_FLOW_CONTROL(SDIO_InitStruct->SDIO_HardwareFlowControl)); 
+ 191:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****    
+ 192:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /*---------------------------- SDIO CLKCR Configuration ------------------------*/  
+ 193:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Get the SDIO CLKCR value */
+ 194:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   tmpreg = SDIO->CLKCR;
+ 113              		.loc 1 194 0
+ 114 000c 124B     		ldr	r3, .L5
+ 115 000e 5B68     		ldr	r3, [r3, #4]
+ 116 0010 FB60     		str	r3, [r7, #12]
+ 195:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 196:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Clear CLKDIV, PWRSAV, BYPASS, WIDBUS, NEGEDGE, HWFC_EN bits */
+ 197:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   tmpreg &= CLKCR_CLEAR_MASK;
+ 117              		.loc 1 197 0
+ 118 0012 FB68     		ldr	r3, [r7, #12]
+ 119 0014 23F4FD43 		bic	r3, r3, #32384
+ 120 0018 23F07F03 		bic	r3, r3, #127
+ 121 001c FB60     		str	r3, [r7, #12]
+ 198:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 199:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set CLKDIV bits according to SDIO_ClockDiv value */
+ 200:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set PWRSAV bit according to SDIO_ClockPowerSave value */
+ 201:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set BYPASS bit according to SDIO_ClockBypass value */
+ 202:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set WIDBUS bits according to SDIO_BusWide value */
+ 203:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set NEGEDGE bits according to SDIO_ClockEdge value */
+ 204:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set HWFC_EN bits according to SDIO_HardwareFlowControl value */
+ 205:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   tmpreg |= (SDIO_InitStruct->SDIO_ClockDiv  | SDIO_InitStruct->SDIO_ClockPowerSave |
+ 122              		.loc 1 205 0
+ 123 001e 7B68     		ldr	r3, [r7, #4]
+ 124 0020 1B7D     		ldrb	r3, [r3, #20]	@ zero_extendqisi2
+ 125 0022 1A46     		mov	r2, r3
+ 126 0024 7B68     		ldr	r3, [r7, #4]
+ 127 0026 9B68     		ldr	r3, [r3, #8]
+ 128 0028 1A43     		orrs	r2, r2, r3
+ 206:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****              SDIO_InitStruct->SDIO_ClockBypass | SDIO_InitStruct->SDIO_BusWide |
+ 129              		.loc 1 206 0
+ 130 002a 7B68     		ldr	r3, [r7, #4]
+ 131 002c 5B68     		ldr	r3, [r3, #4]
+ 205:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****              SDIO_InitStruct->SDIO_ClockBypass | SDIO_InitStruct->SDIO_BusWide |
+ 132              		.loc 1 205 0
+ 133 002e 1A43     		orrs	r2, r2, r3
+ 134              		.loc 1 206 0
+ 135 0030 7B68     		ldr	r3, [r7, #4]
+ 136 0032 DB68     		ldr	r3, [r3, #12]
+ 137 0034 1A43     		orrs	r2, r2, r3
+ 207:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****              SDIO_InitStruct->SDIO_ClockEdge | SDIO_InitStruct->SDIO_HardwareFlowControl); 
+ 138              		.loc 1 207 0
+ 139 0036 7B68     		ldr	r3, [r7, #4]
+ 140 0038 1B68     		ldr	r3, [r3]
+ 206:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****              SDIO_InitStruct->SDIO_ClockBypass | SDIO_InitStruct->SDIO_BusWide |
+ 141              		.loc 1 206 0
+ 142 003a 1A43     		orrs	r2, r2, r3
+ 143              		.loc 1 207 0
+ 144 003c 7B68     		ldr	r3, [r7, #4]
+ 145 003e 1B69     		ldr	r3, [r3, #16]
+ 146 0040 1343     		orrs	r3, r3, r2
+ 205:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****              SDIO_InitStruct->SDIO_ClockBypass | SDIO_InitStruct->SDIO_BusWide |
+ 147              		.loc 1 205 0
+ 148 0042 FA68     		ldr	r2, [r7, #12]
+ 149 0044 1343     		orrs	r3, r3, r2
+ 150 0046 FB60     		str	r3, [r7, #12]
+ 208:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 209:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Write to SDIO CLKCR */
+ 210:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->CLKCR = tmpreg;
+ 151              		.loc 1 210 0
+ 152 0048 034A     		ldr	r2, .L5
+ 153 004a FB68     		ldr	r3, [r7, #12]
+ 154 004c 5360     		str	r3, [r2, #4]
+ 211:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 155              		.loc 1 211 0
+ 156 004e 1437     		adds	r7, r7, #20
+ 157              		.cfi_def_cfa_offset 4
+ 158 0050 BD46     		mov	sp, r7
+ 159              		.cfi_def_cfa_register 13
+ 160              		@ sp needed
+ 161 0052 5DF8047B 		ldr	r7, [sp], #4
+ 162              		.cfi_restore 7
+ 163              		.cfi_def_cfa_offset 0
+ 164 0056 7047     		bx	lr
+ 165              	.L6:
+ 166              		.align	2
+ 167              	.L5:
+ 168 0058 00800140 		.word	1073840128
+ 169              		.cfi_endproc
+ 170              	.LFE30:
+ 172              		.section	.text.SDIO_StructInit,"ax",%progbits
+ 173              		.align	2
+ 174              		.global	SDIO_StructInit
+ 175              		.thumb
+ 176              		.thumb_func
+ 178              	SDIO_StructInit:
+ 179              	.LFB31:
+ 212:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 213:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 214:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Fills each SDIO_InitStruct member with its default value.
+ 215:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  SDIO_InitStruct: pointer to an SDIO_InitTypeDef structure which 
+ 216:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   will be initialized.
+ 217:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 218:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 219:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_StructInit(SDIO_InitTypeDef* SDIO_InitStruct)
+ 220:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+ 180              		.loc 1 220 0
+ 181              		.cfi_startproc
+ 182              		@ args = 0, pretend = 0, frame = 8
+ 183              		@ frame_needed = 1, uses_anonymous_args = 0
+ 184              		@ link register save eliminated.
+ 185 0000 80B4     		push	{r7}
+ 186              		.cfi_def_cfa_offset 4
+ 187              		.cfi_offset 7, -4
+ 188 0002 83B0     		sub	sp, sp, #12
+ 189              		.cfi_def_cfa_offset 16
+ 190 0004 00AF     		add	r7, sp, #0
+ 191              		.cfi_def_cfa_register 7
+ 192 0006 7860     		str	r0, [r7, #4]
+ 221:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* SDIO_InitStruct members default value */
+ 222:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_InitStruct->SDIO_ClockDiv = 0x00;
+ 193              		.loc 1 222 0
+ 194 0008 7B68     		ldr	r3, [r7, #4]
+ 195 000a 0022     		movs	r2, #0
+ 196 000c 1A75     		strb	r2, [r3, #20]
+ 223:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_InitStruct->SDIO_ClockEdge = SDIO_ClockEdge_Rising;
+ 197              		.loc 1 223 0
+ 198 000e 7B68     		ldr	r3, [r7, #4]
+ 199 0010 0022     		movs	r2, #0
+ 200 0012 1A60     		str	r2, [r3]
+ 224:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_InitStruct->SDIO_ClockBypass = SDIO_ClockBypass_Disable;
+ 201              		.loc 1 224 0
+ 202 0014 7B68     		ldr	r3, [r7, #4]
+ 203 0016 0022     		movs	r2, #0
+ 204 0018 5A60     		str	r2, [r3, #4]
+ 225:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_InitStruct->SDIO_ClockPowerSave = SDIO_ClockPowerSave_Disable;
+ 205              		.loc 1 225 0
+ 206 001a 7B68     		ldr	r3, [r7, #4]
+ 207 001c 0022     		movs	r2, #0
+ 208 001e 9A60     		str	r2, [r3, #8]
+ 226:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_InitStruct->SDIO_BusWide = SDIO_BusWide_1b;
+ 209              		.loc 1 226 0
+ 210 0020 7B68     		ldr	r3, [r7, #4]
+ 211 0022 0022     		movs	r2, #0
+ 212 0024 DA60     		str	r2, [r3, #12]
+ 227:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_InitStruct->SDIO_HardwareFlowControl = SDIO_HardwareFlowControl_Disable;
+ 213              		.loc 1 227 0
+ 214 0026 7B68     		ldr	r3, [r7, #4]
+ 215 0028 0022     		movs	r2, #0
+ 216 002a 1A61     		str	r2, [r3, #16]
+ 228:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 217              		.loc 1 228 0
+ 218 002c 0C37     		adds	r7, r7, #12
+ 219              		.cfi_def_cfa_offset 4
+ 220 002e BD46     		mov	sp, r7
+ 221              		.cfi_def_cfa_register 13
+ 222              		@ sp needed
+ 223 0030 5DF8047B 		ldr	r7, [sp], #4
+ 224              		.cfi_restore 7
+ 225              		.cfi_def_cfa_offset 0
+ 226 0034 7047     		bx	lr
+ 227              		.cfi_endproc
+ 228              	.LFE31:
+ 230 0036 00BF     		.section	.text.SDIO_ClockCmd,"ax",%progbits
+ 231              		.align	2
+ 232              		.global	SDIO_ClockCmd
+ 233              		.thumb
+ 234              		.thumb_func
+ 236              	SDIO_ClockCmd:
+ 237              	.LFB32:
+ 229:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 230:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 231:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Enables or disables the SDIO Clock.
+ 232:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  NewState: new state of the SDIO Clock. This parameter can be: ENABLE or DISABLE.
+ 233:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 234:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 235:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_ClockCmd(FunctionalState NewState)
+ 236:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+ 238              		.loc 1 236 0
+ 239              		.cfi_startproc
+ 240              		@ args = 0, pretend = 0, frame = 8
+ 241              		@ frame_needed = 1, uses_anonymous_args = 0
+ 242              		@ link register save eliminated.
+ 243 0000 80B4     		push	{r7}
+ 244              		.cfi_def_cfa_offset 4
+ 245              		.cfi_offset 7, -4
+ 246 0002 83B0     		sub	sp, sp, #12
+ 247              		.cfi_def_cfa_offset 16
+ 248 0004 00AF     		add	r7, sp, #0
+ 249              		.cfi_def_cfa_register 7
+ 250 0006 0346     		mov	r3, r0
+ 251 0008 FB71     		strb	r3, [r7, #7]
+ 237:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 238:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 239:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 240:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *(__IO uint32_t *) CLKCR_CLKEN_BB = (uint32_t)NewState;
+ 252              		.loc 1 240 0
+ 253 000a 044A     		ldr	r2, .L9
+ 254 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 255 000e 1360     		str	r3, [r2]
+ 241:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 256              		.loc 1 241 0
+ 257 0010 0C37     		adds	r7, r7, #12
+ 258              		.cfi_def_cfa_offset 4
+ 259 0012 BD46     		mov	sp, r7
+ 260              		.cfi_def_cfa_register 13
+ 261              		@ sp needed
+ 262 0014 5DF8047B 		ldr	r7, [sp], #4
+ 263              		.cfi_restore 7
+ 264              		.cfi_def_cfa_offset 0
+ 265 0018 7047     		bx	lr
+ 266              	.L10:
+ 267 001a 00BF     		.align	2
+ 268              	.L9:
+ 269 001c A0003042 		.word	1110442144
+ 270              		.cfi_endproc
+ 271              	.LFE32:
+ 273              		.section	.text.SDIO_SetPowerState,"ax",%progbits
+ 274              		.align	2
+ 275              		.global	SDIO_SetPowerState
+ 276              		.thumb
+ 277              		.thumb_func
+ 279              	SDIO_SetPowerState:
+ 280              	.LFB33:
+ 242:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 243:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 244:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Sets the power status of the controller.
+ 245:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  SDIO_PowerState: new state of the Power state. 
+ 246:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be one of the following values:
+ 247:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_PowerState_OFF
+ 248:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_PowerState_ON
+ 249:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 250:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 251:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_SetPowerState(uint32_t SDIO_PowerState)
+ 252:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+ 281              		.loc 1 252 0
+ 282              		.cfi_startproc
+ 283              		@ args = 0, pretend = 0, frame = 8
+ 284              		@ frame_needed = 1, uses_anonymous_args = 0
+ 285              		@ link register save eliminated.
+ 286 0000 80B4     		push	{r7}
+ 287              		.cfi_def_cfa_offset 4
+ 288              		.cfi_offset 7, -4
+ 289 0002 83B0     		sub	sp, sp, #12
+ 290              		.cfi_def_cfa_offset 16
+ 291 0004 00AF     		add	r7, sp, #0
+ 292              		.cfi_def_cfa_register 7
+ 293 0006 7860     		str	r0, [r7, #4]
+ 253:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 254:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_POWER_STATE(SDIO_PowerState));
+ 255:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 256:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->POWER &= PWR_PWRCTRL_MASK;
+ 294              		.loc 1 256 0
+ 295 0008 084A     		ldr	r2, .L12
+ 296 000a 084B     		ldr	r3, .L12
+ 297 000c 1B68     		ldr	r3, [r3]
+ 298 000e 23F00303 		bic	r3, r3, #3
+ 299 0012 1360     		str	r3, [r2]
+ 257:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->POWER |= SDIO_PowerState;
+ 300              		.loc 1 257 0
+ 301 0014 0549     		ldr	r1, .L12
+ 302 0016 054B     		ldr	r3, .L12
+ 303 0018 1A68     		ldr	r2, [r3]
+ 304 001a 7B68     		ldr	r3, [r7, #4]
+ 305 001c 1343     		orrs	r3, r3, r2
+ 306 001e 0B60     		str	r3, [r1]
+ 258:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 307              		.loc 1 258 0
+ 308 0020 0C37     		adds	r7, r7, #12
+ 309              		.cfi_def_cfa_offset 4
+ 310 0022 BD46     		mov	sp, r7
+ 311              		.cfi_def_cfa_register 13
+ 312              		@ sp needed
+ 313 0024 5DF8047B 		ldr	r7, [sp], #4
+ 314              		.cfi_restore 7
+ 315              		.cfi_def_cfa_offset 0
+ 316 0028 7047     		bx	lr
+ 317              	.L13:
+ 318 002a 00BF     		.align	2
+ 319              	.L12:
+ 320 002c 00800140 		.word	1073840128
+ 321              		.cfi_endproc
+ 322              	.LFE33:
+ 324              		.section	.text.SDIO_GetPowerState,"ax",%progbits
+ 325              		.align	2
+ 326              		.global	SDIO_GetPowerState
+ 327              		.thumb
+ 328              		.thumb_func
+ 330              	SDIO_GetPowerState:
+ 331              	.LFB34:
+ 259:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 260:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 261:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Gets the power status of the controller.
+ 262:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  None
+ 263:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval Power status of the controller. The returned value can
+ 264:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   be one of the following:
+ 265:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * - 0x00: Power OFF
+ 266:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * - 0x02: Power UP
+ 267:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * - 0x03: Power ON 
+ 268:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 269:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** uint32_t SDIO_GetPowerState(void)
+ 270:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+ 332              		.loc 1 270 0
+ 333              		.cfi_startproc
+ 334              		@ args = 0, pretend = 0, frame = 0
+ 335              		@ frame_needed = 1, uses_anonymous_args = 0
+ 336              		@ link register save eliminated.
+ 337 0000 80B4     		push	{r7}
+ 338              		.cfi_def_cfa_offset 4
+ 339              		.cfi_offset 7, -4
+ 340 0002 00AF     		add	r7, sp, #0
+ 341              		.cfi_def_cfa_register 7
+ 271:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   return (SDIO->POWER & (~PWR_PWRCTRL_MASK));
+ 342              		.loc 1 271 0
+ 343 0004 044B     		ldr	r3, .L16
+ 344 0006 1B68     		ldr	r3, [r3]
+ 345 0008 03F00303 		and	r3, r3, #3
+ 272:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 346              		.loc 1 272 0
+ 347 000c 1846     		mov	r0, r3
+ 348 000e BD46     		mov	sp, r7
+ 349              		.cfi_def_cfa_register 13
+ 350              		@ sp needed
+ 351 0010 5DF8047B 		ldr	r7, [sp], #4
+ 352              		.cfi_restore 7
+ 353              		.cfi_def_cfa_offset 0
+ 354 0014 7047     		bx	lr
+ 355              	.L17:
+ 356 0016 00BF     		.align	2
+ 357              	.L16:
+ 358 0018 00800140 		.word	1073840128
+ 359              		.cfi_endproc
+ 360              	.LFE34:
+ 362              		.section	.text.SDIO_ITConfig,"ax",%progbits
+ 363              		.align	2
+ 364              		.global	SDIO_ITConfig
+ 365              		.thumb
+ 366              		.thumb_func
+ 368              	SDIO_ITConfig:
+ 369              	.LFB35:
+ 273:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 274:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 275:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Enables or disables the SDIO interrupts.
+ 276:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  SDIO_IT: specifies the SDIO interrupt sources to be enabled or disabled.
+ 277:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be one or a combination of the following values:
+ 278:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CCRCFAIL: Command response received (CRC check failed) interrupt
+ 279:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_DCRCFAIL: Data block sent/received (CRC check failed) interrupt
+ 280:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CTIMEOUT: Command response timeout interrupt
+ 281:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_DTIMEOUT: Data timeout interrupt
+ 282:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_TXUNDERR: Transmit FIFO underrun error interrupt
+ 283:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_RXOVERR:  Received FIFO overrun error interrupt
+ 284:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CMDREND:  Command response received (CRC check passed) interrupt
+ 285:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CMDSENT:  Command sent (no response required) interrupt
+ 286:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_DATAEND:  Data end (data counter, SDIDCOUNT, is zero) interrupt
+ 287:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_STBITERR: Start bit not detected on all data signals in wide 
+ 288:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *                            bus mode interrupt
+ 289:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_DBCKEND:  Data block sent/received (CRC check passed) interrupt
+ 290:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CMDACT:   Command transfer in progress interrupt
+ 291:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_TXACT:    Data transmit in progress interrupt
+ 292:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_RXACT:    Data receive in progress interrupt
+ 293:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_TXFIFOHE: Transmit FIFO Half Empty interrupt
+ 294:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_RXFIFOHF: Receive FIFO Half Full interrupt
+ 295:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_TXFIFOF:  Transmit FIFO full interrupt
+ 296:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_RXFIFOF:  Receive FIFO full interrupt
+ 297:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_TXFIFOE:  Transmit FIFO empty interrupt
+ 298:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_RXFIFOE:  Receive FIFO empty interrupt
+ 299:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_TXDAVL:   Data available in transmit FIFO interrupt
+ 300:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_RXDAVL:   Data available in receive FIFO interrupt
+ 301:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_SDIOIT:   SD I/O interrupt received interrupt
+ 302:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CEATAEND: CE-ATA command completion signal received for CMD61 interrupt
+ 303:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  NewState: new state of the specified SDIO interrupts.
+ 304:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 305:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None 
+ 306:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 307:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_ITConfig(uint32_t SDIO_IT, FunctionalState NewState)
+ 308:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+ 370              		.loc 1 308 0
+ 371              		.cfi_startproc
+ 372              		@ args = 0, pretend = 0, frame = 8
+ 373              		@ frame_needed = 1, uses_anonymous_args = 0
+ 374              		@ link register save eliminated.
+ 375 0000 80B4     		push	{r7}
+ 376              		.cfi_def_cfa_offset 4
+ 377              		.cfi_offset 7, -4
+ 378 0002 83B0     		sub	sp, sp, #12
+ 379              		.cfi_def_cfa_offset 16
+ 380 0004 00AF     		add	r7, sp, #0
+ 381              		.cfi_def_cfa_register 7
+ 382 0006 7860     		str	r0, [r7, #4]
+ 383 0008 0B46     		mov	r3, r1
+ 384 000a FB70     		strb	r3, [r7, #3]
+ 309:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 310:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_IT(SDIO_IT));
+ 311:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 312:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 313:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   if (NewState != DISABLE)
+ 385              		.loc 1 313 0
+ 386 000c FB78     		ldrb	r3, [r7, #3]	@ zero_extendqisi2
+ 387 000e 002B     		cmp	r3, #0
+ 388 0010 06D0     		beq	.L19
+ 314:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   {
+ 315:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****     /* Enable the SDIO interrupts */
+ 316:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****     SDIO->MASK |= SDIO_IT;
+ 389              		.loc 1 316 0
+ 390 0012 0949     		ldr	r1, .L21
+ 391 0014 084B     		ldr	r3, .L21
+ 392 0016 DA6B     		ldr	r2, [r3, #60]
+ 393 0018 7B68     		ldr	r3, [r7, #4]
+ 394 001a 1343     		orrs	r3, r3, r2
+ 395 001c CB63     		str	r3, [r1, #60]
+ 396 001e 06E0     		b	.L18
+ 397              	.L19:
+ 317:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   }
+ 318:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   else
+ 319:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   {
+ 320:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****     /* Disable the SDIO interrupts */
+ 321:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****     SDIO->MASK &= ~SDIO_IT;
+ 398              		.loc 1 321 0
+ 399 0020 0549     		ldr	r1, .L21
+ 400 0022 054B     		ldr	r3, .L21
+ 401 0024 DA6B     		ldr	r2, [r3, #60]
+ 402 0026 7B68     		ldr	r3, [r7, #4]
+ 403 0028 DB43     		mvns	r3, r3
+ 404 002a 1340     		ands	r3, r3, r2
+ 405 002c CB63     		str	r3, [r1, #60]
+ 406              	.L18:
+ 322:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   } 
+ 323:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 407              		.loc 1 323 0
+ 408 002e 0C37     		adds	r7, r7, #12
+ 409              		.cfi_def_cfa_offset 4
+ 410 0030 BD46     		mov	sp, r7
+ 411              		.cfi_def_cfa_register 13
+ 412              		@ sp needed
+ 413 0032 5DF8047B 		ldr	r7, [sp], #4
+ 414              		.cfi_restore 7
+ 415              		.cfi_def_cfa_offset 0
+ 416 0036 7047     		bx	lr
+ 417              	.L22:
+ 418              		.align	2
+ 419              	.L21:
+ 420 0038 00800140 		.word	1073840128
+ 421              		.cfi_endproc
+ 422              	.LFE35:
+ 424              		.section	.text.SDIO_DMACmd,"ax",%progbits
+ 425              		.align	2
+ 426              		.global	SDIO_DMACmd
+ 427              		.thumb
+ 428              		.thumb_func
+ 430              	SDIO_DMACmd:
+ 431              	.LFB36:
+ 324:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 325:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 326:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Enables or disables the SDIO DMA request.
+ 327:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  NewState: new state of the selected SDIO DMA request.
+ 328:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 329:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 330:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 331:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_DMACmd(FunctionalState NewState)
+ 332:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+ 432              		.loc 1 332 0
+ 433              		.cfi_startproc
+ 434              		@ args = 0, pretend = 0, frame = 8
+ 435              		@ frame_needed = 1, uses_anonymous_args = 0
+ 436              		@ link register save eliminated.
+ 437 0000 80B4     		push	{r7}
+ 438              		.cfi_def_cfa_offset 4
+ 439              		.cfi_offset 7, -4
+ 440 0002 83B0     		sub	sp, sp, #12
+ 441              		.cfi_def_cfa_offset 16
+ 442 0004 00AF     		add	r7, sp, #0
+ 443              		.cfi_def_cfa_register 7
+ 444 0006 0346     		mov	r3, r0
+ 445 0008 FB71     		strb	r3, [r7, #7]
+ 333:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 334:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 335:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 336:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *(__IO uint32_t *) DCTRL_DMAEN_BB = (uint32_t)NewState;
+ 446              		.loc 1 336 0
+ 447 000a 044A     		ldr	r2, .L24
+ 448 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 449 000e 1360     		str	r3, [r2]
+ 337:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 450              		.loc 1 337 0
+ 451 0010 0C37     		adds	r7, r7, #12
+ 452              		.cfi_def_cfa_offset 4
+ 453 0012 BD46     		mov	sp, r7
+ 454              		.cfi_def_cfa_register 13
+ 455              		@ sp needed
+ 456 0014 5DF8047B 		ldr	r7, [sp], #4
+ 457              		.cfi_restore 7
+ 458              		.cfi_def_cfa_offset 0
+ 459 0018 7047     		bx	lr
+ 460              	.L25:
+ 461 001a 00BF     		.align	2
+ 462              	.L24:
+ 463 001c 8C053042 		.word	1110443404
+ 464              		.cfi_endproc
+ 465              	.LFE36:
+ 467              		.section	.text.SDIO_SendCommand,"ax",%progbits
+ 468              		.align	2
+ 469              		.global	SDIO_SendCommand
+ 470              		.thumb
+ 471              		.thumb_func
+ 473              	SDIO_SendCommand:
+ 474              	.LFB37:
+ 338:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 339:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 340:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Initializes the SDIO Command according to the specified 
+ 341:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *         parameters in the SDIO_CmdInitStruct and send the command.
+ 342:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  SDIO_CmdInitStruct : pointer to a SDIO_CmdInitTypeDef 
+ 343:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *         structure that contains the configuration information for the SDIO command.
+ 344:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 345:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 346:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_SendCommand(SDIO_CmdInitTypeDef *SDIO_CmdInitStruct)
+ 347:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+ 475              		.loc 1 347 0
+ 476              		.cfi_startproc
+ 477              		@ args = 0, pretend = 0, frame = 16
+ 478              		@ frame_needed = 1, uses_anonymous_args = 0
+ 479              		@ link register save eliminated.
+ 480 0000 80B4     		push	{r7}
+ 481              		.cfi_def_cfa_offset 4
+ 482              		.cfi_offset 7, -4
+ 483 0002 85B0     		sub	sp, sp, #20
+ 484              		.cfi_def_cfa_offset 24
+ 485 0004 00AF     		add	r7, sp, #0
+ 486              		.cfi_def_cfa_register 7
+ 487 0006 7860     		str	r0, [r7, #4]
+ 348:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   uint32_t tmpreg = 0;
+ 488              		.loc 1 348 0
+ 489 0008 0023     		movs	r3, #0
+ 490 000a FB60     		str	r3, [r7, #12]
+ 349:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 350:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 351:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_CMD_INDEX(SDIO_CmdInitStruct->SDIO_CmdIndex));
+ 352:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_RESPONSE(SDIO_CmdInitStruct->SDIO_Response));
+ 353:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_WAIT(SDIO_CmdInitStruct->SDIO_Wait));
+ 354:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_CPSM(SDIO_CmdInitStruct->SDIO_CPSM));
+ 355:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 356:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /*---------------------------- SDIO ARG Configuration ------------------------*/
+ 357:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set the SDIO Argument value */
+ 358:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->ARG = SDIO_CmdInitStruct->SDIO_Argument;
+ 491              		.loc 1 358 0
+ 492 000c 114A     		ldr	r2, .L27
+ 493 000e 7B68     		ldr	r3, [r7, #4]
+ 494 0010 1B68     		ldr	r3, [r3]
+ 495 0012 9360     		str	r3, [r2, #8]
+ 359:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 360:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /*---------------------------- SDIO CMD Configuration ------------------------*/  
+ 361:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Get the SDIO CMD value */
+ 362:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   tmpreg = SDIO->CMD;
+ 496              		.loc 1 362 0
+ 497 0014 0F4B     		ldr	r3, .L27
+ 498 0016 DB68     		ldr	r3, [r3, #12]
+ 499 0018 FB60     		str	r3, [r7, #12]
+ 363:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Clear CMDINDEX, WAITRESP, WAITINT, WAITPEND, CPSMEN bits */
+ 364:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   tmpreg &= CMD_CLEAR_MASK;
+ 500              		.loc 1 364 0
+ 501 001a FB68     		ldr	r3, [r7, #12]
+ 502 001c 23F4FF63 		bic	r3, r3, #2040
+ 503 0020 23F00703 		bic	r3, r3, #7
+ 504 0024 FB60     		str	r3, [r7, #12]
+ 365:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set CMDINDEX bits according to SDIO_CmdIndex value */
+ 366:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set WAITRESP bits according to SDIO_Response value */
+ 367:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set WAITINT and WAITPEND bits according to SDIO_Wait value */
+ 368:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set CPSMEN bits according to SDIO_CPSM value */
+ 369:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   tmpreg |= (uint32_t)SDIO_CmdInitStruct->SDIO_CmdIndex | SDIO_CmdInitStruct->SDIO_Response
+ 505              		.loc 1 369 0
+ 506 0026 7B68     		ldr	r3, [r7, #4]
+ 507 0028 5A68     		ldr	r2, [r3, #4]
+ 508 002a 7B68     		ldr	r3, [r7, #4]
+ 509 002c 9B68     		ldr	r3, [r3, #8]
+ 510 002e 1A43     		orrs	r2, r2, r3
+ 370:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****            | SDIO_CmdInitStruct->SDIO_Wait | SDIO_CmdInitStruct->SDIO_CPSM;
+ 511              		.loc 1 370 0
+ 512 0030 7B68     		ldr	r3, [r7, #4]
+ 513 0032 DB68     		ldr	r3, [r3, #12]
+ 514 0034 1A43     		orrs	r2, r2, r3
+ 515 0036 7B68     		ldr	r3, [r7, #4]
+ 516 0038 1B69     		ldr	r3, [r3, #16]
+ 517 003a 1343     		orrs	r3, r3, r2
+ 369:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****            | SDIO_CmdInitStruct->SDIO_Wait | SDIO_CmdInitStruct->SDIO_CPSM;
+ 518              		.loc 1 369 0
+ 519 003c FA68     		ldr	r2, [r7, #12]
+ 520 003e 1343     		orrs	r3, r3, r2
+ 521 0040 FB60     		str	r3, [r7, #12]
+ 371:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 372:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Write to SDIO CMD */
+ 373:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->CMD = tmpreg;
+ 522              		.loc 1 373 0
+ 523 0042 044A     		ldr	r2, .L27
+ 524 0044 FB68     		ldr	r3, [r7, #12]
+ 525 0046 D360     		str	r3, [r2, #12]
+ 374:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 526              		.loc 1 374 0
+ 527 0048 1437     		adds	r7, r7, #20
+ 528              		.cfi_def_cfa_offset 4
+ 529 004a BD46     		mov	sp, r7
+ 530              		.cfi_def_cfa_register 13
+ 531              		@ sp needed
+ 532 004c 5DF8047B 		ldr	r7, [sp], #4
+ 533              		.cfi_restore 7
+ 534              		.cfi_def_cfa_offset 0
+ 535 0050 7047     		bx	lr
+ 536              	.L28:
+ 537 0052 00BF     		.align	2
+ 538              	.L27:
+ 539 0054 00800140 		.word	1073840128
+ 540              		.cfi_endproc
+ 541              	.LFE37:
+ 543              		.section	.text.SDIO_CmdStructInit,"ax",%progbits
+ 544              		.align	2
+ 545              		.global	SDIO_CmdStructInit
+ 546              		.thumb
+ 547              		.thumb_func
+ 549              	SDIO_CmdStructInit:
+ 550              	.LFB38:
+ 375:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 376:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 377:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Fills each SDIO_CmdInitStruct member with its default value.
+ 378:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  SDIO_CmdInitStruct: pointer to an SDIO_CmdInitTypeDef 
+ 379:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *         structure which will be initialized.
+ 380:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 381:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 382:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_CmdStructInit(SDIO_CmdInitTypeDef* SDIO_CmdInitStruct)
+ 383:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+ 551              		.loc 1 383 0
+ 552              		.cfi_startproc
+ 553              		@ args = 0, pretend = 0, frame = 8
+ 554              		@ frame_needed = 1, uses_anonymous_args = 0
+ 555              		@ link register save eliminated.
+ 556 0000 80B4     		push	{r7}
+ 557              		.cfi_def_cfa_offset 4
+ 558              		.cfi_offset 7, -4
+ 559 0002 83B0     		sub	sp, sp, #12
+ 560              		.cfi_def_cfa_offset 16
+ 561 0004 00AF     		add	r7, sp, #0
+ 562              		.cfi_def_cfa_register 7
+ 563 0006 7860     		str	r0, [r7, #4]
+ 384:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* SDIO_CmdInitStruct members default value */
+ 385:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_CmdInitStruct->SDIO_Argument = 0x00;
+ 564              		.loc 1 385 0
+ 565 0008 7B68     		ldr	r3, [r7, #4]
+ 566 000a 0022     		movs	r2, #0
+ 567 000c 1A60     		str	r2, [r3]
+ 386:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_CmdInitStruct->SDIO_CmdIndex = 0x00;
+ 568              		.loc 1 386 0
+ 569 000e 7B68     		ldr	r3, [r7, #4]
+ 570 0010 0022     		movs	r2, #0
+ 571 0012 5A60     		str	r2, [r3, #4]
+ 387:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_CmdInitStruct->SDIO_Response = SDIO_Response_No;
+ 572              		.loc 1 387 0
+ 573 0014 7B68     		ldr	r3, [r7, #4]
+ 574 0016 0022     		movs	r2, #0
+ 575 0018 9A60     		str	r2, [r3, #8]
+ 388:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_CmdInitStruct->SDIO_Wait = SDIO_Wait_No;
+ 576              		.loc 1 388 0
+ 577 001a 7B68     		ldr	r3, [r7, #4]
+ 578 001c 0022     		movs	r2, #0
+ 579 001e DA60     		str	r2, [r3, #12]
+ 389:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_CmdInitStruct->SDIO_CPSM = SDIO_CPSM_Disable;
+ 580              		.loc 1 389 0
+ 581 0020 7B68     		ldr	r3, [r7, #4]
+ 582 0022 0022     		movs	r2, #0
+ 583 0024 1A61     		str	r2, [r3, #16]
+ 390:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 584              		.loc 1 390 0
+ 585 0026 0C37     		adds	r7, r7, #12
+ 586              		.cfi_def_cfa_offset 4
+ 587 0028 BD46     		mov	sp, r7
+ 588              		.cfi_def_cfa_register 13
+ 589              		@ sp needed
+ 590 002a 5DF8047B 		ldr	r7, [sp], #4
+ 591              		.cfi_restore 7
+ 592              		.cfi_def_cfa_offset 0
+ 593 002e 7047     		bx	lr
+ 594              		.cfi_endproc
+ 595              	.LFE38:
+ 597              		.section	.text.SDIO_GetCommandResponse,"ax",%progbits
+ 598              		.align	2
+ 599              		.global	SDIO_GetCommandResponse
+ 600              		.thumb
+ 601              		.thumb_func
+ 603              	SDIO_GetCommandResponse:
+ 604              	.LFB39:
+ 391:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 392:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 393:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Returns command index of last command for which response received.
+ 394:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  None
+ 395:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval Returns the command index of the last command response received.
+ 396:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 397:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** uint8_t SDIO_GetCommandResponse(void)
+ 398:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+ 605              		.loc 1 398 0
+ 606              		.cfi_startproc
+ 607              		@ args = 0, pretend = 0, frame = 0
+ 608              		@ frame_needed = 1, uses_anonymous_args = 0
+ 609              		@ link register save eliminated.
+ 610 0000 80B4     		push	{r7}
+ 611              		.cfi_def_cfa_offset 4
+ 612              		.cfi_offset 7, -4
+ 613 0002 00AF     		add	r7, sp, #0
+ 614              		.cfi_def_cfa_register 7
+ 399:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   return (uint8_t)(SDIO->RESPCMD);
+ 615              		.loc 1 399 0
+ 616 0004 034B     		ldr	r3, .L32
+ 617 0006 1B69     		ldr	r3, [r3, #16]
+ 618 0008 DBB2     		uxtb	r3, r3
+ 400:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 619              		.loc 1 400 0
+ 620 000a 1846     		mov	r0, r3
+ 621 000c BD46     		mov	sp, r7
+ 622              		.cfi_def_cfa_register 13
+ 623              		@ sp needed
+ 624 000e 5DF8047B 		ldr	r7, [sp], #4
+ 625              		.cfi_restore 7
+ 626              		.cfi_def_cfa_offset 0
+ 627 0012 7047     		bx	lr
+ 628              	.L33:
+ 629              		.align	2
+ 630              	.L32:
+ 631 0014 00800140 		.word	1073840128
+ 632              		.cfi_endproc
+ 633              	.LFE39:
+ 635              		.section	.text.SDIO_GetResponse,"ax",%progbits
+ 636              		.align	2
+ 637              		.global	SDIO_GetResponse
+ 638              		.thumb
+ 639              		.thumb_func
+ 641              	SDIO_GetResponse:
+ 642              	.LFB40:
+ 401:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 402:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 403:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Returns response received from the card for the last command.
+ 404:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  SDIO_RESP: Specifies the SDIO response register. 
+ 405:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be one of the following values:
+ 406:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_RESP1: Response Register 1
+ 407:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_RESP2: Response Register 2
+ 408:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_RESP3: Response Register 3
+ 409:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_RESP4: Response Register 4
+ 410:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval The Corresponding response register value.
+ 411:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 412:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** uint32_t SDIO_GetResponse(uint32_t SDIO_RESP)
+ 413:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+ 643              		.loc 1 413 0
+ 644              		.cfi_startproc
+ 645              		@ args = 0, pretend = 0, frame = 16
+ 646              		@ frame_needed = 1, uses_anonymous_args = 0
+ 647              		@ link register save eliminated.
+ 648 0000 80B4     		push	{r7}
+ 649              		.cfi_def_cfa_offset 4
+ 650              		.cfi_offset 7, -4
+ 651 0002 85B0     		sub	sp, sp, #20
+ 652              		.cfi_def_cfa_offset 24
+ 653 0004 00AF     		add	r7, sp, #0
+ 654              		.cfi_def_cfa_register 7
+ 655 0006 7860     		str	r0, [r7, #4]
+ 414:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   __IO uint32_t tmp = 0;
+ 656              		.loc 1 414 0
+ 657 0008 0023     		movs	r3, #0
+ 658 000a FB60     		str	r3, [r7, #12]
+ 415:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 416:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 417:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_RESP(SDIO_RESP));
+ 418:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 419:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   tmp = SDIO_RESP_ADDR + SDIO_RESP;
+ 659              		.loc 1 419 0
+ 660 000c 7A68     		ldr	r2, [r7, #4]
+ 661 000e 054B     		ldr	r3, .L36
+ 662 0010 1344     		add	r3, r3, r2
+ 663 0012 FB60     		str	r3, [r7, #12]
+ 420:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 421:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   return (*(__IO uint32_t *) tmp); 
+ 664              		.loc 1 421 0
+ 665 0014 FB68     		ldr	r3, [r7, #12]
+ 666 0016 1B68     		ldr	r3, [r3]
+ 422:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 667              		.loc 1 422 0
+ 668 0018 1846     		mov	r0, r3
+ 669 001a 1437     		adds	r7, r7, #20
+ 670              		.cfi_def_cfa_offset 4
+ 671 001c BD46     		mov	sp, r7
+ 672              		.cfi_def_cfa_register 13
+ 673              		@ sp needed
+ 674 001e 5DF8047B 		ldr	r7, [sp], #4
+ 675              		.cfi_restore 7
+ 676              		.cfi_def_cfa_offset 0
+ 677 0022 7047     		bx	lr
+ 678              	.L37:
+ 679              		.align	2
+ 680              	.L36:
+ 681 0024 14800140 		.word	1073840148
+ 682              		.cfi_endproc
+ 683              	.LFE40:
+ 685              		.section	.text.SDIO_DataConfig,"ax",%progbits
+ 686              		.align	2
+ 687              		.global	SDIO_DataConfig
+ 688              		.thumb
+ 689              		.thumb_func
+ 691              	SDIO_DataConfig:
+ 692              	.LFB41:
+ 423:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 424:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 425:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Initializes the SDIO data path according to the specified 
+ 426:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   parameters in the SDIO_DataInitStruct.
+ 427:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  SDIO_DataInitStruct : pointer to a SDIO_DataInitTypeDef structure that
+ 428:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   contains the configuration information for the SDIO command.
+ 429:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 430:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 431:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_DataConfig(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
+ 432:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+ 693              		.loc 1 432 0
+ 694              		.cfi_startproc
+ 695              		@ args = 0, pretend = 0, frame = 16
+ 696              		@ frame_needed = 1, uses_anonymous_args = 0
+ 697              		@ link register save eliminated.
+ 698 0000 80B4     		push	{r7}
+ 699              		.cfi_def_cfa_offset 4
+ 700              		.cfi_offset 7, -4
+ 701 0002 85B0     		sub	sp, sp, #20
+ 702              		.cfi_def_cfa_offset 24
+ 703 0004 00AF     		add	r7, sp, #0
+ 704              		.cfi_def_cfa_register 7
+ 705 0006 7860     		str	r0, [r7, #4]
+ 433:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   uint32_t tmpreg = 0;
+ 706              		.loc 1 433 0
+ 707 0008 0023     		movs	r3, #0
+ 708 000a FB60     		str	r3, [r7, #12]
+ 434:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 435:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 436:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_DATA_LENGTH(SDIO_DataInitStruct->SDIO_DataLength));
+ 437:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_BLOCK_SIZE(SDIO_DataInitStruct->SDIO_DataBlockSize));
+ 438:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_TRANSFER_DIR(SDIO_DataInitStruct->SDIO_TransferDir));
+ 439:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_TRANSFER_MODE(SDIO_DataInitStruct->SDIO_TransferMode));
+ 440:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_DPSM(SDIO_DataInitStruct->SDIO_DPSM));
+ 441:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 442:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /*---------------------------- SDIO DTIMER Configuration ---------------------*/
+ 443:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set the SDIO Data TimeOut value */
+ 444:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->DTIMER = SDIO_DataInitStruct->SDIO_DataTimeOut;
+ 709              		.loc 1 444 0
+ 710 000c 124A     		ldr	r2, .L39
+ 711 000e 7B68     		ldr	r3, [r7, #4]
+ 712 0010 1B68     		ldr	r3, [r3]
+ 713 0012 5362     		str	r3, [r2, #36]
+ 445:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 446:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /*---------------------------- SDIO DLEN Configuration -----------------------*/
+ 447:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set the SDIO DataLength value */
+ 448:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->DLEN = SDIO_DataInitStruct->SDIO_DataLength;
+ 714              		.loc 1 448 0
+ 715 0014 104A     		ldr	r2, .L39
+ 716 0016 7B68     		ldr	r3, [r7, #4]
+ 717 0018 5B68     		ldr	r3, [r3, #4]
+ 718 001a 9362     		str	r3, [r2, #40]
+ 449:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 450:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /*---------------------------- SDIO DCTRL Configuration ----------------------*/  
+ 451:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Get the SDIO DCTRL value */
+ 452:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   tmpreg = SDIO->DCTRL;
+ 719              		.loc 1 452 0
+ 720 001c 0E4B     		ldr	r3, .L39
+ 721 001e DB6A     		ldr	r3, [r3, #44]
+ 722 0020 FB60     		str	r3, [r7, #12]
+ 453:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Clear DEN, DTMODE, DTDIR and DBCKSIZE bits */
+ 454:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   tmpreg &= DCTRL_CLEAR_MASK;
+ 723              		.loc 1 454 0
+ 724 0022 FB68     		ldr	r3, [r7, #12]
+ 725 0024 23F0F703 		bic	r3, r3, #247
+ 726 0028 FB60     		str	r3, [r7, #12]
+ 455:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set DEN bit according to SDIO_DPSM value */
+ 456:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set DTMODE bit according to SDIO_TransferMode value */
+ 457:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set DTDIR bit according to SDIO_TransferDir value */
+ 458:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Set DBCKSIZE bits according to SDIO_DataBlockSize value */
+ 459:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   tmpreg |= (uint32_t)SDIO_DataInitStruct->SDIO_DataBlockSize | SDIO_DataInitStruct->SDIO_TransferD
+ 727              		.loc 1 459 0
+ 728 002a 7B68     		ldr	r3, [r7, #4]
+ 729 002c 9A68     		ldr	r2, [r3, #8]
+ 730 002e 7B68     		ldr	r3, [r7, #4]
+ 731 0030 DB68     		ldr	r3, [r3, #12]
+ 732 0032 1A43     		orrs	r2, r2, r3
+ 460:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****            | SDIO_DataInitStruct->SDIO_TransferMode | SDIO_DataInitStruct->SDIO_DPSM;
+ 733              		.loc 1 460 0
+ 734 0034 7B68     		ldr	r3, [r7, #4]
+ 735 0036 1B69     		ldr	r3, [r3, #16]
+ 736 0038 1A43     		orrs	r2, r2, r3
+ 737 003a 7B68     		ldr	r3, [r7, #4]
+ 738 003c 5B69     		ldr	r3, [r3, #20]
+ 739 003e 1343     		orrs	r3, r3, r2
+ 459:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****            | SDIO_DataInitStruct->SDIO_TransferMode | SDIO_DataInitStruct->SDIO_DPSM;
+ 740              		.loc 1 459 0
+ 741 0040 FA68     		ldr	r2, [r7, #12]
+ 742 0042 1343     		orrs	r3, r3, r2
+ 743 0044 FB60     		str	r3, [r7, #12]
+ 461:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 462:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Write to SDIO DCTRL */
+ 463:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->DCTRL = tmpreg;
+ 744              		.loc 1 463 0
+ 745 0046 044A     		ldr	r2, .L39
+ 746 0048 FB68     		ldr	r3, [r7, #12]
+ 747 004a D362     		str	r3, [r2, #44]
+ 464:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 748              		.loc 1 464 0
+ 749 004c 1437     		adds	r7, r7, #20
+ 750              		.cfi_def_cfa_offset 4
+ 751 004e BD46     		mov	sp, r7
+ 752              		.cfi_def_cfa_register 13
+ 753              		@ sp needed
+ 754 0050 5DF8047B 		ldr	r7, [sp], #4
+ 755              		.cfi_restore 7
+ 756              		.cfi_def_cfa_offset 0
+ 757 0054 7047     		bx	lr
+ 758              	.L40:
+ 759 0056 00BF     		.align	2
+ 760              	.L39:
+ 761 0058 00800140 		.word	1073840128
+ 762              		.cfi_endproc
+ 763              	.LFE41:
+ 765              		.section	.text.SDIO_DataStructInit,"ax",%progbits
+ 766              		.align	2
+ 767              		.global	SDIO_DataStructInit
+ 768              		.thumb
+ 769              		.thumb_func
+ 771              	SDIO_DataStructInit:
+ 772              	.LFB42:
+ 465:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 466:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 467:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Fills each SDIO_DataInitStruct member with its default value.
+ 468:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  SDIO_DataInitStruct: pointer to an SDIO_DataInitTypeDef structure which
+ 469:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *         will be initialized.
+ 470:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 471:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 472:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_DataStructInit(SDIO_DataInitTypeDef* SDIO_DataInitStruct)
+ 473:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+ 773              		.loc 1 473 0
+ 774              		.cfi_startproc
+ 775              		@ args = 0, pretend = 0, frame = 8
+ 776              		@ frame_needed = 1, uses_anonymous_args = 0
+ 777              		@ link register save eliminated.
+ 778 0000 80B4     		push	{r7}
+ 779              		.cfi_def_cfa_offset 4
+ 780              		.cfi_offset 7, -4
+ 781 0002 83B0     		sub	sp, sp, #12
+ 782              		.cfi_def_cfa_offset 16
+ 783 0004 00AF     		add	r7, sp, #0
+ 784              		.cfi_def_cfa_register 7
+ 785 0006 7860     		str	r0, [r7, #4]
+ 474:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* SDIO_DataInitStruct members default value */
+ 475:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_DataInitStruct->SDIO_DataTimeOut = 0xFFFFFFFF;
+ 786              		.loc 1 475 0
+ 787 0008 7B68     		ldr	r3, [r7, #4]
+ 788 000a 4FF0FF32 		mov	r2, #-1
+ 789 000e 1A60     		str	r2, [r3]
+ 476:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_DataInitStruct->SDIO_DataLength = 0x00;
+ 790              		.loc 1 476 0
+ 791 0010 7B68     		ldr	r3, [r7, #4]
+ 792 0012 0022     		movs	r2, #0
+ 793 0014 5A60     		str	r2, [r3, #4]
+ 477:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_DataInitStruct->SDIO_DataBlockSize = SDIO_DataBlockSize_1b;
+ 794              		.loc 1 477 0
+ 795 0016 7B68     		ldr	r3, [r7, #4]
+ 796 0018 0022     		movs	r2, #0
+ 797 001a 9A60     		str	r2, [r3, #8]
+ 478:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_DataInitStruct->SDIO_TransferDir = SDIO_TransferDir_ToCard;
+ 798              		.loc 1 478 0
+ 799 001c 7B68     		ldr	r3, [r7, #4]
+ 800 001e 0022     		movs	r2, #0
+ 801 0020 DA60     		str	r2, [r3, #12]
+ 479:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_DataInitStruct->SDIO_TransferMode = SDIO_TransferMode_Block;  
+ 802              		.loc 1 479 0
+ 803 0022 7B68     		ldr	r3, [r7, #4]
+ 804 0024 0022     		movs	r2, #0
+ 805 0026 1A61     		str	r2, [r3, #16]
+ 480:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO_DataInitStruct->SDIO_DPSM = SDIO_DPSM_Disable;
+ 806              		.loc 1 480 0
+ 807 0028 7B68     		ldr	r3, [r7, #4]
+ 808 002a 0022     		movs	r2, #0
+ 809 002c 5A61     		str	r2, [r3, #20]
+ 481:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 810              		.loc 1 481 0
+ 811 002e 0C37     		adds	r7, r7, #12
+ 812              		.cfi_def_cfa_offset 4
+ 813 0030 BD46     		mov	sp, r7
+ 814              		.cfi_def_cfa_register 13
+ 815              		@ sp needed
+ 816 0032 5DF8047B 		ldr	r7, [sp], #4
+ 817              		.cfi_restore 7
+ 818              		.cfi_def_cfa_offset 0
+ 819 0036 7047     		bx	lr
+ 820              		.cfi_endproc
+ 821              	.LFE42:
+ 823              		.section	.text.SDIO_GetDataCounter,"ax",%progbits
+ 824              		.align	2
+ 825              		.global	SDIO_GetDataCounter
+ 826              		.thumb
+ 827              		.thumb_func
+ 829              	SDIO_GetDataCounter:
+ 830              	.LFB43:
+ 482:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 483:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 484:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Returns number of remaining data bytes to be transferred.
+ 485:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  None
+ 486:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval Number of remaining data bytes to be transferred
+ 487:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 488:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** uint32_t SDIO_GetDataCounter(void)
+ 489:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 831              		.loc 1 489 0
+ 832              		.cfi_startproc
+ 833              		@ args = 0, pretend = 0, frame = 0
+ 834              		@ frame_needed = 1, uses_anonymous_args = 0
+ 835              		@ link register save eliminated.
+ 836 0000 80B4     		push	{r7}
+ 837              		.cfi_def_cfa_offset 4
+ 838              		.cfi_offset 7, -4
+ 839 0002 00AF     		add	r7, sp, #0
+ 840              		.cfi_def_cfa_register 7
+ 490:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   return SDIO->DCOUNT;
+ 841              		.loc 1 490 0
+ 842 0004 034B     		ldr	r3, .L44
+ 843 0006 1B6B     		ldr	r3, [r3, #48]
+ 491:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 844              		.loc 1 491 0
+ 845 0008 1846     		mov	r0, r3
+ 846 000a BD46     		mov	sp, r7
+ 847              		.cfi_def_cfa_register 13
+ 848              		@ sp needed
+ 849 000c 5DF8047B 		ldr	r7, [sp], #4
+ 850              		.cfi_restore 7
+ 851              		.cfi_def_cfa_offset 0
+ 852 0010 7047     		bx	lr
+ 853              	.L45:
+ 854 0012 00BF     		.align	2
+ 855              	.L44:
+ 856 0014 00800140 		.word	1073840128
+ 857              		.cfi_endproc
+ 858              	.LFE43:
+ 860              		.section	.text.SDIO_ReadData,"ax",%progbits
+ 861              		.align	2
+ 862              		.global	SDIO_ReadData
+ 863              		.thumb
+ 864              		.thumb_func
+ 866              	SDIO_ReadData:
+ 867              	.LFB44:
+ 492:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 493:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 494:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Read one data word from Rx FIFO.
+ 495:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  None
+ 496:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval Data received
+ 497:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 498:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** uint32_t SDIO_ReadData(void)
+ 499:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 868              		.loc 1 499 0
+ 869              		.cfi_startproc
+ 870              		@ args = 0, pretend = 0, frame = 0
+ 871              		@ frame_needed = 1, uses_anonymous_args = 0
+ 872              		@ link register save eliminated.
+ 873 0000 80B4     		push	{r7}
+ 874              		.cfi_def_cfa_offset 4
+ 875              		.cfi_offset 7, -4
+ 876 0002 00AF     		add	r7, sp, #0
+ 877              		.cfi_def_cfa_register 7
+ 500:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   return SDIO->FIFO;
+ 878              		.loc 1 500 0
+ 879 0004 034B     		ldr	r3, .L48
+ 880 0006 D3F88030 		ldr	r3, [r3, #128]
+ 501:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 881              		.loc 1 501 0
+ 882 000a 1846     		mov	r0, r3
+ 883 000c BD46     		mov	sp, r7
+ 884              		.cfi_def_cfa_register 13
+ 885              		@ sp needed
+ 886 000e 5DF8047B 		ldr	r7, [sp], #4
+ 887              		.cfi_restore 7
+ 888              		.cfi_def_cfa_offset 0
+ 889 0012 7047     		bx	lr
+ 890              	.L49:
+ 891              		.align	2
+ 892              	.L48:
+ 893 0014 00800140 		.word	1073840128
+ 894              		.cfi_endproc
+ 895              	.LFE44:
+ 897              		.section	.text.SDIO_WriteData,"ax",%progbits
+ 898              		.align	2
+ 899              		.global	SDIO_WriteData
+ 900              		.thumb
+ 901              		.thumb_func
+ 903              	SDIO_WriteData:
+ 904              	.LFB45:
+ 502:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 503:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 504:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Write one data word to Tx FIFO.
+ 505:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  Data: 32-bit data word to write.
+ 506:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 507:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 508:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_WriteData(uint32_t Data)
+ 509:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 905              		.loc 1 509 0
+ 906              		.cfi_startproc
+ 907              		@ args = 0, pretend = 0, frame = 8
+ 908              		@ frame_needed = 1, uses_anonymous_args = 0
+ 909              		@ link register save eliminated.
+ 910 0000 80B4     		push	{r7}
+ 911              		.cfi_def_cfa_offset 4
+ 912              		.cfi_offset 7, -4
+ 913 0002 83B0     		sub	sp, sp, #12
+ 914              		.cfi_def_cfa_offset 16
+ 915 0004 00AF     		add	r7, sp, #0
+ 916              		.cfi_def_cfa_register 7
+ 917 0006 7860     		str	r0, [r7, #4]
+ 510:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->FIFO = Data;
+ 918              		.loc 1 510 0
+ 919 0008 044A     		ldr	r2, .L51
+ 920 000a 7B68     		ldr	r3, [r7, #4]
+ 921 000c C2F88030 		str	r3, [r2, #128]
+ 511:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 922              		.loc 1 511 0
+ 923 0010 0C37     		adds	r7, r7, #12
+ 924              		.cfi_def_cfa_offset 4
+ 925 0012 BD46     		mov	sp, r7
+ 926              		.cfi_def_cfa_register 13
+ 927              		@ sp needed
+ 928 0014 5DF8047B 		ldr	r7, [sp], #4
+ 929              		.cfi_restore 7
+ 930              		.cfi_def_cfa_offset 0
+ 931 0018 7047     		bx	lr
+ 932              	.L52:
+ 933 001a 00BF     		.align	2
+ 934              	.L51:
+ 935 001c 00800140 		.word	1073840128
+ 936              		.cfi_endproc
+ 937              	.LFE45:
+ 939              		.section	.text.SDIO_GetFIFOCount,"ax",%progbits
+ 940              		.align	2
+ 941              		.global	SDIO_GetFIFOCount
+ 942              		.thumb
+ 943              		.thumb_func
+ 945              	SDIO_GetFIFOCount:
+ 946              	.LFB46:
+ 512:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 513:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 514:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Returns the number of words left to be written to or read from FIFO.	
+ 515:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  None
+ 516:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval Remaining number of words.
+ 517:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 518:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** uint32_t SDIO_GetFIFOCount(void)
+ 519:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 947              		.loc 1 519 0
+ 948              		.cfi_startproc
+ 949              		@ args = 0, pretend = 0, frame = 0
+ 950              		@ frame_needed = 1, uses_anonymous_args = 0
+ 951              		@ link register save eliminated.
+ 952 0000 80B4     		push	{r7}
+ 953              		.cfi_def_cfa_offset 4
+ 954              		.cfi_offset 7, -4
+ 955 0002 00AF     		add	r7, sp, #0
+ 956              		.cfi_def_cfa_register 7
+ 520:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   return SDIO->FIFOCNT;
+ 957              		.loc 1 520 0
+ 958 0004 034B     		ldr	r3, .L55
+ 959 0006 9B6C     		ldr	r3, [r3, #72]
+ 521:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 960              		.loc 1 521 0
+ 961 0008 1846     		mov	r0, r3
+ 962 000a BD46     		mov	sp, r7
+ 963              		.cfi_def_cfa_register 13
+ 964              		@ sp needed
+ 965 000c 5DF8047B 		ldr	r7, [sp], #4
+ 966              		.cfi_restore 7
+ 967              		.cfi_def_cfa_offset 0
+ 968 0010 7047     		bx	lr
+ 969              	.L56:
+ 970 0012 00BF     		.align	2
+ 971              	.L55:
+ 972 0014 00800140 		.word	1073840128
+ 973              		.cfi_endproc
+ 974              	.LFE46:
+ 976              		.section	.text.SDIO_StartSDIOReadWait,"ax",%progbits
+ 977              		.align	2
+ 978              		.global	SDIO_StartSDIOReadWait
+ 979              		.thumb
+ 980              		.thumb_func
+ 982              	SDIO_StartSDIOReadWait:
+ 983              	.LFB47:
+ 522:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 523:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 524:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Starts the SD I/O Read Wait operation.	
+ 525:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  NewState: new state of the Start SDIO Read Wait operation. 
+ 526:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 527:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 528:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 529:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_StartSDIOReadWait(FunctionalState NewState)
+ 530:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 984              		.loc 1 530 0
+ 985              		.cfi_startproc
+ 986              		@ args = 0, pretend = 0, frame = 8
+ 987              		@ frame_needed = 1, uses_anonymous_args = 0
+ 988              		@ link register save eliminated.
+ 989 0000 80B4     		push	{r7}
+ 990              		.cfi_def_cfa_offset 4
+ 991              		.cfi_offset 7, -4
+ 992 0002 83B0     		sub	sp, sp, #12
+ 993              		.cfi_def_cfa_offset 16
+ 994 0004 00AF     		add	r7, sp, #0
+ 995              		.cfi_def_cfa_register 7
+ 996 0006 0346     		mov	r3, r0
+ 997 0008 FB71     		strb	r3, [r7, #7]
+ 531:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 532:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 533:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 534:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *(__IO uint32_t *) DCTRL_RWSTART_BB = (uint32_t) NewState;
+ 998              		.loc 1 534 0
+ 999 000a 044A     		ldr	r2, .L58
+ 1000 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1001 000e 1360     		str	r3, [r2]
+ 535:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 1002              		.loc 1 535 0
+ 1003 0010 0C37     		adds	r7, r7, #12
+ 1004              		.cfi_def_cfa_offset 4
+ 1005 0012 BD46     		mov	sp, r7
+ 1006              		.cfi_def_cfa_register 13
+ 1007              		@ sp needed
+ 1008 0014 5DF8047B 		ldr	r7, [sp], #4
+ 1009              		.cfi_restore 7
+ 1010              		.cfi_def_cfa_offset 0
+ 1011 0018 7047     		bx	lr
+ 1012              	.L59:
+ 1013 001a 00BF     		.align	2
+ 1014              	.L58:
+ 1015 001c A0053042 		.word	1110443424
+ 1016              		.cfi_endproc
+ 1017              	.LFE47:
+ 1019              		.section	.text.SDIO_StopSDIOReadWait,"ax",%progbits
+ 1020              		.align	2
+ 1021              		.global	SDIO_StopSDIOReadWait
+ 1022              		.thumb
+ 1023              		.thumb_func
+ 1025              	SDIO_StopSDIOReadWait:
+ 1026              	.LFB48:
+ 536:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 537:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 538:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Stops the SD I/O Read Wait operation.	
+ 539:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  NewState: new state of the Stop SDIO Read Wait operation. 
+ 540:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 541:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 542:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 543:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_StopSDIOReadWait(FunctionalState NewState)
+ 544:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 1027              		.loc 1 544 0
+ 1028              		.cfi_startproc
+ 1029              		@ args = 0, pretend = 0, frame = 8
+ 1030              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1031              		@ link register save eliminated.
+ 1032 0000 80B4     		push	{r7}
+ 1033              		.cfi_def_cfa_offset 4
+ 1034              		.cfi_offset 7, -4
+ 1035 0002 83B0     		sub	sp, sp, #12
+ 1036              		.cfi_def_cfa_offset 16
+ 1037 0004 00AF     		add	r7, sp, #0
+ 1038              		.cfi_def_cfa_register 7
+ 1039 0006 0346     		mov	r3, r0
+ 1040 0008 FB71     		strb	r3, [r7, #7]
+ 545:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 546:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 547:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 548:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *(__IO uint32_t *) DCTRL_RWSTOP_BB = (uint32_t) NewState;
+ 1041              		.loc 1 548 0
+ 1042 000a 044A     		ldr	r2, .L61
+ 1043 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1044 000e 1360     		str	r3, [r2]
+ 549:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 1045              		.loc 1 549 0
+ 1046 0010 0C37     		adds	r7, r7, #12
+ 1047              		.cfi_def_cfa_offset 4
+ 1048 0012 BD46     		mov	sp, r7
+ 1049              		.cfi_def_cfa_register 13
+ 1050              		@ sp needed
+ 1051 0014 5DF8047B 		ldr	r7, [sp], #4
+ 1052              		.cfi_restore 7
+ 1053              		.cfi_def_cfa_offset 0
+ 1054 0018 7047     		bx	lr
+ 1055              	.L62:
+ 1056 001a 00BF     		.align	2
+ 1057              	.L61:
+ 1058 001c A4053042 		.word	1110443428
+ 1059              		.cfi_endproc
+ 1060              	.LFE48:
+ 1062              		.section	.text.SDIO_SetSDIOReadWaitMode,"ax",%progbits
+ 1063              		.align	2
+ 1064              		.global	SDIO_SetSDIOReadWaitMode
+ 1065              		.thumb
+ 1066              		.thumb_func
+ 1068              	SDIO_SetSDIOReadWaitMode:
+ 1069              	.LFB49:
+ 550:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 551:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 552:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Sets one of the two options of inserting read wait interval.
+ 553:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  SDIO_ReadWaitMode: SD I/O Read Wait operation mode.
+ 554:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be:
+ 555:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_ReadWaitMode_CLK: Read Wait control by stopping SDIOCLK
+ 556:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_ReadWaitMode_DATA2: Read Wait control using SDIO_DATA2
+ 557:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 558:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 559:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_SetSDIOReadWaitMode(uint32_t SDIO_ReadWaitMode)
+ 560:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** {
+ 1070              		.loc 1 560 0
+ 1071              		.cfi_startproc
+ 1072              		@ args = 0, pretend = 0, frame = 8
+ 1073              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1074              		@ link register save eliminated.
+ 1075 0000 80B4     		push	{r7}
+ 1076              		.cfi_def_cfa_offset 4
+ 1077              		.cfi_offset 7, -4
+ 1078 0002 83B0     		sub	sp, sp, #12
+ 1079              		.cfi_def_cfa_offset 16
+ 1080 0004 00AF     		add	r7, sp, #0
+ 1081              		.cfi_def_cfa_register 7
+ 1082 0006 7860     		str	r0, [r7, #4]
+ 561:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 562:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_READWAIT_MODE(SDIO_ReadWaitMode));
+ 563:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 564:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *(__IO uint32_t *) DCTRL_RWMOD_BB = SDIO_ReadWaitMode;
+ 1083              		.loc 1 564 0
+ 1084 0008 034A     		ldr	r2, .L64
+ 1085 000a 7B68     		ldr	r3, [r7, #4]
+ 1086 000c 1360     		str	r3, [r2]
+ 565:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 1087              		.loc 1 565 0
+ 1088 000e 0C37     		adds	r7, r7, #12
+ 1089              		.cfi_def_cfa_offset 4
+ 1090 0010 BD46     		mov	sp, r7
+ 1091              		.cfi_def_cfa_register 13
+ 1092              		@ sp needed
+ 1093 0012 5DF8047B 		ldr	r7, [sp], #4
+ 1094              		.cfi_restore 7
+ 1095              		.cfi_def_cfa_offset 0
+ 1096 0016 7047     		bx	lr
+ 1097              	.L65:
+ 1098              		.align	2
+ 1099              	.L64:
+ 1100 0018 A8053042 		.word	1110443432
+ 1101              		.cfi_endproc
+ 1102              	.LFE49:
+ 1104              		.section	.text.SDIO_SetSDIOOperation,"ax",%progbits
+ 1105              		.align	2
+ 1106              		.global	SDIO_SetSDIOOperation
+ 1107              		.thumb
+ 1108              		.thumb_func
+ 1110              	SDIO_SetSDIOOperation:
+ 1111              	.LFB50:
+ 566:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 567:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 568:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Enables or disables the SD I/O Mode Operation.
+ 569:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  NewState: new state of SDIO specific operation. 
+ 570:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 571:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 572:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 573:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_SetSDIOOperation(FunctionalState NewState)
+ 574:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 1112              		.loc 1 574 0
+ 1113              		.cfi_startproc
+ 1114              		@ args = 0, pretend = 0, frame = 8
+ 1115              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1116              		@ link register save eliminated.
+ 1117 0000 80B4     		push	{r7}
+ 1118              		.cfi_def_cfa_offset 4
+ 1119              		.cfi_offset 7, -4
+ 1120 0002 83B0     		sub	sp, sp, #12
+ 1121              		.cfi_def_cfa_offset 16
+ 1122 0004 00AF     		add	r7, sp, #0
+ 1123              		.cfi_def_cfa_register 7
+ 1124 0006 0346     		mov	r3, r0
+ 1125 0008 FB71     		strb	r3, [r7, #7]
+ 575:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 576:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 577:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 578:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *(__IO uint32_t *) DCTRL_SDIOEN_BB = (uint32_t)NewState;
+ 1126              		.loc 1 578 0
+ 1127 000a 044A     		ldr	r2, .L67
+ 1128 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1129 000e 1360     		str	r3, [r2]
+ 579:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 1130              		.loc 1 579 0
+ 1131 0010 0C37     		adds	r7, r7, #12
+ 1132              		.cfi_def_cfa_offset 4
+ 1133 0012 BD46     		mov	sp, r7
+ 1134              		.cfi_def_cfa_register 13
+ 1135              		@ sp needed
+ 1136 0014 5DF8047B 		ldr	r7, [sp], #4
+ 1137              		.cfi_restore 7
+ 1138              		.cfi_def_cfa_offset 0
+ 1139 0018 7047     		bx	lr
+ 1140              	.L68:
+ 1141 001a 00BF     		.align	2
+ 1142              	.L67:
+ 1143 001c AC053042 		.word	1110443436
+ 1144              		.cfi_endproc
+ 1145              	.LFE50:
+ 1147              		.section	.text.SDIO_SendSDIOSuspendCmd,"ax",%progbits
+ 1148              		.align	2
+ 1149              		.global	SDIO_SendSDIOSuspendCmd
+ 1150              		.thumb
+ 1151              		.thumb_func
+ 1153              	SDIO_SendSDIOSuspendCmd:
+ 1154              	.LFB51:
+ 580:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 581:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 582:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Enables or disables the SD I/O Mode suspend command sending.
+ 583:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  NewState: new state of the SD I/O Mode suspend command.
+ 584:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 585:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 586:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 587:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_SendSDIOSuspendCmd(FunctionalState NewState)
+ 588:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 1155              		.loc 1 588 0
+ 1156              		.cfi_startproc
+ 1157              		@ args = 0, pretend = 0, frame = 8
+ 1158              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1159              		@ link register save eliminated.
+ 1160 0000 80B4     		push	{r7}
+ 1161              		.cfi_def_cfa_offset 4
+ 1162              		.cfi_offset 7, -4
+ 1163 0002 83B0     		sub	sp, sp, #12
+ 1164              		.cfi_def_cfa_offset 16
+ 1165 0004 00AF     		add	r7, sp, #0
+ 1166              		.cfi_def_cfa_register 7
+ 1167 0006 0346     		mov	r3, r0
+ 1168 0008 FB71     		strb	r3, [r7, #7]
+ 589:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 590:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 591:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 592:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *(__IO uint32_t *) CMD_SDIOSUSPEND_BB = (uint32_t)NewState;
+ 1169              		.loc 1 592 0
+ 1170 000a 044A     		ldr	r2, .L70
+ 1171 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1172 000e 1360     		str	r3, [r2]
+ 593:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 1173              		.loc 1 593 0
+ 1174 0010 0C37     		adds	r7, r7, #12
+ 1175              		.cfi_def_cfa_offset 4
+ 1176 0012 BD46     		mov	sp, r7
+ 1177              		.cfi_def_cfa_register 13
+ 1178              		@ sp needed
+ 1179 0014 5DF8047B 		ldr	r7, [sp], #4
+ 1180              		.cfi_restore 7
+ 1181              		.cfi_def_cfa_offset 0
+ 1182 0018 7047     		bx	lr
+ 1183              	.L71:
+ 1184 001a 00BF     		.align	2
+ 1185              	.L70:
+ 1186 001c AC013042 		.word	1110442412
+ 1187              		.cfi_endproc
+ 1188              	.LFE51:
+ 1190              		.section	.text.SDIO_CommandCompletionCmd,"ax",%progbits
+ 1191              		.align	2
+ 1192              		.global	SDIO_CommandCompletionCmd
+ 1193              		.thumb
+ 1194              		.thumb_func
+ 1196              	SDIO_CommandCompletionCmd:
+ 1197              	.LFB52:
+ 594:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 595:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 596:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Enables or disables the command completion signal.
+ 597:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  NewState: new state of command completion signal. 
+ 598:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be: ENABLE or DISABLE.
+ 599:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 600:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 601:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_CommandCompletionCmd(FunctionalState NewState)
+ 602:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 1198              		.loc 1 602 0
+ 1199              		.cfi_startproc
+ 1200              		@ args = 0, pretend = 0, frame = 8
+ 1201              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1202              		@ link register save eliminated.
+ 1203 0000 80B4     		push	{r7}
+ 1204              		.cfi_def_cfa_offset 4
+ 1205              		.cfi_offset 7, -4
+ 1206 0002 83B0     		sub	sp, sp, #12
+ 1207              		.cfi_def_cfa_offset 16
+ 1208 0004 00AF     		add	r7, sp, #0
+ 1209              		.cfi_def_cfa_register 7
+ 1210 0006 0346     		mov	r3, r0
+ 1211 0008 FB71     		strb	r3, [r7, #7]
+ 603:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 604:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 605:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 606:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *(__IO uint32_t *) CMD_ENCMDCOMPL_BB = (uint32_t)NewState;
+ 1212              		.loc 1 606 0
+ 1213 000a 044A     		ldr	r2, .L73
+ 1214 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1215 000e 1360     		str	r3, [r2]
+ 607:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 1216              		.loc 1 607 0
+ 1217 0010 0C37     		adds	r7, r7, #12
+ 1218              		.cfi_def_cfa_offset 4
+ 1219 0012 BD46     		mov	sp, r7
+ 1220              		.cfi_def_cfa_register 13
+ 1221              		@ sp needed
+ 1222 0014 5DF8047B 		ldr	r7, [sp], #4
+ 1223              		.cfi_restore 7
+ 1224              		.cfi_def_cfa_offset 0
+ 1225 0018 7047     		bx	lr
+ 1226              	.L74:
+ 1227 001a 00BF     		.align	2
+ 1228              	.L73:
+ 1229 001c B0013042 		.word	1110442416
+ 1230              		.cfi_endproc
+ 1231              	.LFE52:
+ 1233              		.section	.text.SDIO_CEATAITCmd,"ax",%progbits
+ 1234              		.align	2
+ 1235              		.global	SDIO_CEATAITCmd
+ 1236              		.thumb
+ 1237              		.thumb_func
+ 1239              	SDIO_CEATAITCmd:
+ 1240              	.LFB53:
+ 608:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 609:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 610:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Enables or disables the CE-ATA interrupt.
+ 611:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  NewState: new state of CE-ATA interrupt. This parameter can be: ENABLE or DISABLE.
+ 612:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 613:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 614:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_CEATAITCmd(FunctionalState NewState)
+ 615:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 1241              		.loc 1 615 0
+ 1242              		.cfi_startproc
+ 1243              		@ args = 0, pretend = 0, frame = 8
+ 1244              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1245              		@ link register save eliminated.
+ 1246 0000 80B4     		push	{r7}
+ 1247              		.cfi_def_cfa_offset 4
+ 1248              		.cfi_offset 7, -4
+ 1249 0002 83B0     		sub	sp, sp, #12
+ 1250              		.cfi_def_cfa_offset 16
+ 1251 0004 00AF     		add	r7, sp, #0
+ 1252              		.cfi_def_cfa_register 7
+ 1253 0006 0346     		mov	r3, r0
+ 1254 0008 FB71     		strb	r3, [r7, #7]
+ 616:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 617:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 618:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 619:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *(__IO uint32_t *) CMD_NIEN_BB = (uint32_t)((~((uint32_t)NewState)) & ((uint32_t)0x1));
+ 1255              		.loc 1 619 0
+ 1256 000a 074A     		ldr	r2, .L76
+ 1257 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1258 000e 03F00103 		and	r3, r3, #1
+ 1259 0012 002B     		cmp	r3, #0
+ 1260 0014 0CBF     		ite	eq
+ 1261 0016 0123     		moveq	r3, #1
+ 1262 0018 0023     		movne	r3, #0
+ 1263 001a DBB2     		uxtb	r3, r3
+ 1264 001c 1360     		str	r3, [r2]
+ 620:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 1265              		.loc 1 620 0
+ 1266 001e 0C37     		adds	r7, r7, #12
+ 1267              		.cfi_def_cfa_offset 4
+ 1268 0020 BD46     		mov	sp, r7
+ 1269              		.cfi_def_cfa_register 13
+ 1270              		@ sp needed
+ 1271 0022 5DF8047B 		ldr	r7, [sp], #4
+ 1272              		.cfi_restore 7
+ 1273              		.cfi_def_cfa_offset 0
+ 1274 0026 7047     		bx	lr
+ 1275              	.L77:
+ 1276              		.align	2
+ 1277              	.L76:
+ 1278 0028 B4013042 		.word	1110442420
+ 1279              		.cfi_endproc
+ 1280              	.LFE53:
+ 1282              		.section	.text.SDIO_SendCEATACmd,"ax",%progbits
+ 1283              		.align	2
+ 1284              		.global	SDIO_SendCEATACmd
+ 1285              		.thumb
+ 1286              		.thumb_func
+ 1288              	SDIO_SendCEATACmd:
+ 1289              	.LFB54:
+ 621:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 622:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 623:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Sends CE-ATA command (CMD61).
+ 624:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  NewState: new state of CE-ATA command. This parameter can be: ENABLE or DISABLE.
+ 625:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 626:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 627:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_SendCEATACmd(FunctionalState NewState)
+ 628:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 1290              		.loc 1 628 0
+ 1291              		.cfi_startproc
+ 1292              		@ args = 0, pretend = 0, frame = 8
+ 1293              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1294              		@ link register save eliminated.
+ 1295 0000 80B4     		push	{r7}
+ 1296              		.cfi_def_cfa_offset 4
+ 1297              		.cfi_offset 7, -4
+ 1298 0002 83B0     		sub	sp, sp, #12
+ 1299              		.cfi_def_cfa_offset 16
+ 1300 0004 00AF     		add	r7, sp, #0
+ 1301              		.cfi_def_cfa_register 7
+ 1302 0006 0346     		mov	r3, r0
+ 1303 0008 FB71     		strb	r3, [r7, #7]
+ 629:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 630:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_FUNCTIONAL_STATE(NewState));
+ 631:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 632:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *(__IO uint32_t *) CMD_ATACMD_BB = (uint32_t)NewState;
+ 1304              		.loc 1 632 0
+ 1305 000a 044A     		ldr	r2, .L79
+ 1306 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1307 000e 1360     		str	r3, [r2]
+ 633:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 1308              		.loc 1 633 0
+ 1309 0010 0C37     		adds	r7, r7, #12
+ 1310              		.cfi_def_cfa_offset 4
+ 1311 0012 BD46     		mov	sp, r7
+ 1312              		.cfi_def_cfa_register 13
+ 1313              		@ sp needed
+ 1314 0014 5DF8047B 		ldr	r7, [sp], #4
+ 1315              		.cfi_restore 7
+ 1316              		.cfi_def_cfa_offset 0
+ 1317 0018 7047     		bx	lr
+ 1318              	.L80:
+ 1319 001a 00BF     		.align	2
+ 1320              	.L79:
+ 1321 001c B8013042 		.word	1110442424
+ 1322              		.cfi_endproc
+ 1323              	.LFE54:
+ 1325              		.section	.text.SDIO_GetFlagStatus,"ax",%progbits
+ 1326              		.align	2
+ 1327              		.global	SDIO_GetFlagStatus
+ 1328              		.thumb
+ 1329              		.thumb_func
+ 1331              	SDIO_GetFlagStatus:
+ 1332              	.LFB55:
+ 634:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 635:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 636:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Checks whether the specified SDIO flag is set or not.
+ 637:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  SDIO_FLAG: specifies the flag to check. 
+ 638:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be one of the following values:
+ 639:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_CCRCFAIL: Command response received (CRC check failed)
+ 640:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_DCRCFAIL: Data block sent/received (CRC check failed)
+ 641:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_CTIMEOUT: Command response timeout
+ 642:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_DTIMEOUT: Data timeout
+ 643:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_TXUNDERR: Transmit FIFO underrun error
+ 644:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_RXOVERR:  Received FIFO overrun error
+ 645:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_CMDREND:  Command response received (CRC check passed)
+ 646:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_CMDSENT:  Command sent (no response required)
+ 647:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_DATAEND:  Data end (data counter, SDIDCOUNT, is zero)
+ 648:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_STBITERR: Start bit not detected on all data signals in wide 
+ 649:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *                              bus mode.
+ 650:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_DBCKEND:  Data block sent/received (CRC check passed)
+ 651:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_CMDACT:   Command transfer in progress
+ 652:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_TXACT:    Data transmit in progress
+ 653:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_RXACT:    Data receive in progress
+ 654:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_TXFIFOHE: Transmit FIFO Half Empty
+ 655:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_RXFIFOHF: Receive FIFO Half Full
+ 656:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_TXFIFOF:  Transmit FIFO full
+ 657:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_RXFIFOF:  Receive FIFO full
+ 658:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_TXFIFOE:  Transmit FIFO empty
+ 659:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_RXFIFOE:  Receive FIFO empty
+ 660:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_TXDAVL:   Data available in transmit FIFO
+ 661:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_RXDAVL:   Data available in receive FIFO
+ 662:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_SDIOIT:   SD I/O interrupt received
+ 663:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_CEATAEND: CE-ATA command completion signal received for CMD61
+ 664:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval The new state of SDIO_FLAG (SET or RESET).
+ 665:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 666:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** FlagStatus SDIO_GetFlagStatus(uint32_t SDIO_FLAG)
+ 667:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 1333              		.loc 1 667 0
+ 1334              		.cfi_startproc
+ 1335              		@ args = 0, pretend = 0, frame = 16
+ 1336              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1337              		@ link register save eliminated.
+ 1338 0000 80B4     		push	{r7}
+ 1339              		.cfi_def_cfa_offset 4
+ 1340              		.cfi_offset 7, -4
+ 1341 0002 85B0     		sub	sp, sp, #20
+ 1342              		.cfi_def_cfa_offset 24
+ 1343 0004 00AF     		add	r7, sp, #0
+ 1344              		.cfi_def_cfa_register 7
+ 1345 0006 7860     		str	r0, [r7, #4]
+ 668:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   FlagStatus bitstatus = RESET;
+ 1346              		.loc 1 668 0
+ 1347 0008 0023     		movs	r3, #0
+ 1348 000a FB73     		strb	r3, [r7, #15]
+ 669:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 670:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 671:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_FLAG(SDIO_FLAG));
+ 672:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 673:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   if ((SDIO->STA & SDIO_FLAG) != (uint32_t)RESET)
+ 1349              		.loc 1 673 0
+ 1350 000c 084B     		ldr	r3, .L85
+ 1351 000e 5A6B     		ldr	r2, [r3, #52]
+ 1352 0010 7B68     		ldr	r3, [r7, #4]
+ 1353 0012 1340     		ands	r3, r3, r2
+ 1354 0014 002B     		cmp	r3, #0
+ 1355 0016 02D0     		beq	.L82
+ 674:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   {
+ 675:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****     bitstatus = SET;
+ 1356              		.loc 1 675 0
+ 1357 0018 0123     		movs	r3, #1
+ 1358 001a FB73     		strb	r3, [r7, #15]
+ 1359 001c 01E0     		b	.L83
+ 1360              	.L82:
+ 676:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   }
+ 677:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   else
+ 678:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   {
+ 679:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****     bitstatus = RESET;
+ 1361              		.loc 1 679 0
+ 1362 001e 0023     		movs	r3, #0
+ 1363 0020 FB73     		strb	r3, [r7, #15]
+ 1364              	.L83:
+ 680:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   }
+ 681:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   return bitstatus;
+ 1365              		.loc 1 681 0
+ 1366 0022 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 682:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 1367              		.loc 1 682 0
+ 1368 0024 1846     		mov	r0, r3
+ 1369 0026 1437     		adds	r7, r7, #20
+ 1370              		.cfi_def_cfa_offset 4
+ 1371 0028 BD46     		mov	sp, r7
+ 1372              		.cfi_def_cfa_register 13
+ 1373              		@ sp needed
+ 1374 002a 5DF8047B 		ldr	r7, [sp], #4
+ 1375              		.cfi_restore 7
+ 1376              		.cfi_def_cfa_offset 0
+ 1377 002e 7047     		bx	lr
+ 1378              	.L86:
+ 1379              		.align	2
+ 1380              	.L85:
+ 1381 0030 00800140 		.word	1073840128
+ 1382              		.cfi_endproc
+ 1383              	.LFE55:
+ 1385              		.section	.text.SDIO_ClearFlag,"ax",%progbits
+ 1386              		.align	2
+ 1387              		.global	SDIO_ClearFlag
+ 1388              		.thumb
+ 1389              		.thumb_func
+ 1391              	SDIO_ClearFlag:
+ 1392              	.LFB56:
+ 683:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 684:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 685:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Clears the SDIO's pending flags.
+ 686:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  SDIO_FLAG: specifies the flag to clear.  
+ 687:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be one or a combination of the following values:
+ 688:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_CCRCFAIL: Command response received (CRC check failed)
+ 689:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_DCRCFAIL: Data block sent/received (CRC check failed)
+ 690:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_CTIMEOUT: Command response timeout
+ 691:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_DTIMEOUT: Data timeout
+ 692:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_TXUNDERR: Transmit FIFO underrun error
+ 693:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_RXOVERR:  Received FIFO overrun error
+ 694:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_CMDREND:  Command response received (CRC check passed)
+ 695:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_CMDSENT:  Command sent (no response required)
+ 696:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_DATAEND:  Data end (data counter, SDIDCOUNT, is zero)
+ 697:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_STBITERR: Start bit not detected on all data signals in wide 
+ 698:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *                              bus mode
+ 699:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_DBCKEND:  Data block sent/received (CRC check passed)
+ 700:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_SDIOIT:   SD I/O interrupt received
+ 701:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_FLAG_CEATAEND: CE-ATA command completion signal received for CMD61
+ 702:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 703:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 704:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_ClearFlag(uint32_t SDIO_FLAG)
+ 705:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 1393              		.loc 1 705 0
+ 1394              		.cfi_startproc
+ 1395              		@ args = 0, pretend = 0, frame = 8
+ 1396              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1397              		@ link register save eliminated.
+ 1398 0000 80B4     		push	{r7}
+ 1399              		.cfi_def_cfa_offset 4
+ 1400              		.cfi_offset 7, -4
+ 1401 0002 83B0     		sub	sp, sp, #12
+ 1402              		.cfi_def_cfa_offset 16
+ 1403 0004 00AF     		add	r7, sp, #0
+ 1404              		.cfi_def_cfa_register 7
+ 1405 0006 7860     		str	r0, [r7, #4]
+ 706:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 707:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_CLEAR_FLAG(SDIO_FLAG));
+ 708:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****    
+ 709:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->ICR = SDIO_FLAG;
+ 1406              		.loc 1 709 0
+ 1407 0008 034A     		ldr	r2, .L88
+ 1408 000a 7B68     		ldr	r3, [r7, #4]
+ 1409 000c 9363     		str	r3, [r2, #56]
+ 710:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 1410              		.loc 1 710 0
+ 1411 000e 0C37     		adds	r7, r7, #12
+ 1412              		.cfi_def_cfa_offset 4
+ 1413 0010 BD46     		mov	sp, r7
+ 1414              		.cfi_def_cfa_register 13
+ 1415              		@ sp needed
+ 1416 0012 5DF8047B 		ldr	r7, [sp], #4
+ 1417              		.cfi_restore 7
+ 1418              		.cfi_def_cfa_offset 0
+ 1419 0016 7047     		bx	lr
+ 1420              	.L89:
+ 1421              		.align	2
+ 1422              	.L88:
+ 1423 0018 00800140 		.word	1073840128
+ 1424              		.cfi_endproc
+ 1425              	.LFE56:
+ 1427              		.section	.text.SDIO_GetITStatus,"ax",%progbits
+ 1428              		.align	2
+ 1429              		.global	SDIO_GetITStatus
+ 1430              		.thumb
+ 1431              		.thumb_func
+ 1433              	SDIO_GetITStatus:
+ 1434              	.LFB57:
+ 711:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 712:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 713:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Checks whether the specified SDIO interrupt has occurred or not.
+ 714:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  SDIO_IT: specifies the SDIO interrupt source to check. 
+ 715:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be one of the following values:
+ 716:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CCRCFAIL: Command response received (CRC check failed) interrupt
+ 717:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_DCRCFAIL: Data block sent/received (CRC check failed) interrupt
+ 718:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CTIMEOUT: Command response timeout interrupt
+ 719:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_DTIMEOUT: Data timeout interrupt
+ 720:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_TXUNDERR: Transmit FIFO underrun error interrupt
+ 721:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_RXOVERR:  Received FIFO overrun error interrupt
+ 722:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CMDREND:  Command response received (CRC check passed) interrupt
+ 723:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CMDSENT:  Command sent (no response required) interrupt
+ 724:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_DATAEND:  Data end (data counter, SDIDCOUNT, is zero) interrupt
+ 725:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_STBITERR: Start bit not detected on all data signals in wide 
+ 726:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *                            bus mode interrupt
+ 727:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_DBCKEND:  Data block sent/received (CRC check passed) interrupt
+ 728:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CMDACT:   Command transfer in progress interrupt
+ 729:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_TXACT:    Data transmit in progress interrupt
+ 730:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_RXACT:    Data receive in progress interrupt
+ 731:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_TXFIFOHE: Transmit FIFO Half Empty interrupt
+ 732:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_RXFIFOHF: Receive FIFO Half Full interrupt
+ 733:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_TXFIFOF:  Transmit FIFO full interrupt
+ 734:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_RXFIFOF:  Receive FIFO full interrupt
+ 735:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_TXFIFOE:  Transmit FIFO empty interrupt
+ 736:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_RXFIFOE:  Receive FIFO empty interrupt
+ 737:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_TXDAVL:   Data available in transmit FIFO interrupt
+ 738:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_RXDAVL:   Data available in receive FIFO interrupt
+ 739:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_SDIOIT:   SD I/O interrupt received interrupt
+ 740:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CEATAEND: CE-ATA command completion signal received for CMD61 interrupt
+ 741:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval The new state of SDIO_IT (SET or RESET).
+ 742:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 743:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** ITStatus SDIO_GetITStatus(uint32_t SDIO_IT)
+ 744:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 1435              		.loc 1 744 0
+ 1436              		.cfi_startproc
+ 1437              		@ args = 0, pretend = 0, frame = 16
+ 1438              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1439              		@ link register save eliminated.
+ 1440 0000 80B4     		push	{r7}
+ 1441              		.cfi_def_cfa_offset 4
+ 1442              		.cfi_offset 7, -4
+ 1443 0002 85B0     		sub	sp, sp, #20
+ 1444              		.cfi_def_cfa_offset 24
+ 1445 0004 00AF     		add	r7, sp, #0
+ 1446              		.cfi_def_cfa_register 7
+ 1447 0006 7860     		str	r0, [r7, #4]
+ 745:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   ITStatus bitstatus = RESET;
+ 1448              		.loc 1 745 0
+ 1449 0008 0023     		movs	r3, #0
+ 1450 000a FB73     		strb	r3, [r7, #15]
+ 746:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   
+ 747:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 748:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_GET_IT(SDIO_IT));
+ 749:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   if ((SDIO->STA & SDIO_IT) != (uint32_t)RESET)  
+ 1451              		.loc 1 749 0
+ 1452 000c 084B     		ldr	r3, .L94
+ 1453 000e 5A6B     		ldr	r2, [r3, #52]
+ 1454 0010 7B68     		ldr	r3, [r7, #4]
+ 1455 0012 1340     		ands	r3, r3, r2
+ 1456 0014 002B     		cmp	r3, #0
+ 1457 0016 02D0     		beq	.L91
+ 750:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   {
+ 751:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****     bitstatus = SET;
+ 1458              		.loc 1 751 0
+ 1459 0018 0123     		movs	r3, #1
+ 1460 001a FB73     		strb	r3, [r7, #15]
+ 1461 001c 01E0     		b	.L92
+ 1462              	.L91:
+ 752:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   }
+ 753:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   else
+ 754:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   {
+ 755:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****     bitstatus = RESET;
+ 1463              		.loc 1 755 0
+ 1464 001e 0023     		movs	r3, #0
+ 1465 0020 FB73     		strb	r3, [r7, #15]
+ 1466              	.L92:
+ 756:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   }
+ 757:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   return bitstatus;
+ 1467              		.loc 1 757 0
+ 1468 0022 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 758:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 1469              		.loc 1 758 0
+ 1470 0024 1846     		mov	r0, r3
+ 1471 0026 1437     		adds	r7, r7, #20
+ 1472              		.cfi_def_cfa_offset 4
+ 1473 0028 BD46     		mov	sp, r7
+ 1474              		.cfi_def_cfa_register 13
+ 1475              		@ sp needed
+ 1476 002a 5DF8047B 		ldr	r7, [sp], #4
+ 1477              		.cfi_restore 7
+ 1478              		.cfi_def_cfa_offset 0
+ 1479 002e 7047     		bx	lr
+ 1480              	.L95:
+ 1481              		.align	2
+ 1482              	.L94:
+ 1483 0030 00800140 		.word	1073840128
+ 1484              		.cfi_endproc
+ 1485              	.LFE57:
+ 1487              		.section	.text.SDIO_ClearITPendingBit,"ax",%progbits
+ 1488              		.align	2
+ 1489              		.global	SDIO_ClearITPendingBit
+ 1490              		.thumb
+ 1491              		.thumb_func
+ 1493              	SDIO_ClearITPendingBit:
+ 1494              	.LFB58:
+ 759:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** 
+ 760:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** /**
+ 761:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @brief  Clears the SDIO's interrupt pending bits.
+ 762:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @param  SDIO_IT: specifies the interrupt pending bit to clear. 
+ 763:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *   This parameter can be one or a combination of the following values:
+ 764:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CCRCFAIL: Command response received (CRC check failed) interrupt
+ 765:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_DCRCFAIL: Data block sent/received (CRC check failed) interrupt
+ 766:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CTIMEOUT: Command response timeout interrupt
+ 767:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_DTIMEOUT: Data timeout interrupt
+ 768:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_TXUNDERR: Transmit FIFO underrun error interrupt
+ 769:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_RXOVERR:  Received FIFO overrun error interrupt
+ 770:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CMDREND:  Command response received (CRC check passed) interrupt
+ 771:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CMDSENT:  Command sent (no response required) interrupt
+ 772:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_DATAEND:  Data end (data counter, SDIDCOUNT, is zero) interrupt
+ 773:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_STBITERR: Start bit not detected on all data signals in wide 
+ 774:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *                            bus mode interrupt
+ 775:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_SDIOIT:   SD I/O interrupt received interrupt
+ 776:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   *     @arg SDIO_IT_CEATAEND: CE-ATA command completion signal received for CMD61
+ 777:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   * @retval None
+ 778:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   */
+ 779:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** void SDIO_ClearITPendingBit(uint32_t SDIO_IT)
+ 780:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** { 
+ 1495              		.loc 1 780 0
+ 1496              		.cfi_startproc
+ 1497              		@ args = 0, pretend = 0, frame = 8
+ 1498              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1499              		@ link register save eliminated.
+ 1500 0000 80B4     		push	{r7}
+ 1501              		.cfi_def_cfa_offset 4
+ 1502              		.cfi_offset 7, -4
+ 1503 0002 83B0     		sub	sp, sp, #12
+ 1504              		.cfi_def_cfa_offset 16
+ 1505 0004 00AF     		add	r7, sp, #0
+ 1506              		.cfi_def_cfa_register 7
+ 1507 0006 7860     		str	r0, [r7, #4]
+ 781:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   /* Check the parameters */
+ 782:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   assert_param(IS_SDIO_CLEAR_IT(SDIO_IT));
+ 783:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****    
+ 784:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c ****   SDIO->ICR = SDIO_IT;
+ 1508              		.loc 1 784 0
+ 1509 0008 034A     		ldr	r2, .L97
+ 1510 000a 7B68     		ldr	r3, [r7, #4]
+ 1511 000c 9363     		str	r3, [r2, #56]
+ 785:/home/virusv/usart/Libraries/src/stm32f10x_sdio.c **** }
+ 1512              		.loc 1 785 0
+ 1513 000e 0C37     		adds	r7, r7, #12
+ 1514              		.cfi_def_cfa_offset 4
+ 1515 0010 BD46     		mov	sp, r7
+ 1516              		.cfi_def_cfa_register 13
+ 1517              		@ sp needed
+ 1518 0012 5DF8047B 		ldr	r7, [sp], #4
+ 1519              		.cfi_restore 7
+ 1520              		.cfi_def_cfa_offset 0
+ 1521 0016 7047     		bx	lr
+ 1522              	.L98:
+ 1523              		.align	2
+ 1524              	.L97:
+ 1525 0018 00800140 		.word	1073840128
+ 1526              		.cfi_endproc
+ 1527              	.LFE58:
+ 1529              		.text
+ 1530              	.Letext0:
+ 1531              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 1532              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 1533              		.file 4 "/home/virusv/usart/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h"
+ 1534              		.file 5 "/home/virusv/usart/Libraries/inc/stm32f10x_sdio.h"
+ 1535              		.file 6 "/home/virusv/usart/CMSIS/CM3/CoreSupport/core_cm3.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 stm32f10x_sdio.c
+     /tmp/ccI44UtN.s:19     .text.SDIO_DeInit:0000000000000000 $t
+     /tmp/ccI44UtN.s:24     .text.SDIO_DeInit:0000000000000000 SDIO_DeInit
+     /tmp/ccI44UtN.s:84     .text.SDIO_DeInit:0000000000000044 $d
+     /tmp/ccI44UtN.s:90     .text.SDIO_Init:0000000000000000 $t
+     /tmp/ccI44UtN.s:95     .text.SDIO_Init:0000000000000000 SDIO_Init
+     /tmp/ccI44UtN.s:168    .text.SDIO_Init:0000000000000058 $d
+     /tmp/ccI44UtN.s:173    .text.SDIO_StructInit:0000000000000000 $t
+     /tmp/ccI44UtN.s:178    .text.SDIO_StructInit:0000000000000000 SDIO_StructInit
+     /tmp/ccI44UtN.s:231    .text.SDIO_ClockCmd:0000000000000000 $t
+     /tmp/ccI44UtN.s:236    .text.SDIO_ClockCmd:0000000000000000 SDIO_ClockCmd
+     /tmp/ccI44UtN.s:269    .text.SDIO_ClockCmd:000000000000001c $d
+     /tmp/ccI44UtN.s:274    .text.SDIO_SetPowerState:0000000000000000 $t
+     /tmp/ccI44UtN.s:279    .text.SDIO_SetPowerState:0000000000000000 SDIO_SetPowerState
+     /tmp/ccI44UtN.s:320    .text.SDIO_SetPowerState:000000000000002c $d
+     /tmp/ccI44UtN.s:325    .text.SDIO_GetPowerState:0000000000000000 $t
+     /tmp/ccI44UtN.s:330    .text.SDIO_GetPowerState:0000000000000000 SDIO_GetPowerState
+     /tmp/ccI44UtN.s:358    .text.SDIO_GetPowerState:0000000000000018 $d
+     /tmp/ccI44UtN.s:363    .text.SDIO_ITConfig:0000000000000000 $t
+     /tmp/ccI44UtN.s:368    .text.SDIO_ITConfig:0000000000000000 SDIO_ITConfig
+     /tmp/ccI44UtN.s:420    .text.SDIO_ITConfig:0000000000000038 $d
+     /tmp/ccI44UtN.s:425    .text.SDIO_DMACmd:0000000000000000 $t
+     /tmp/ccI44UtN.s:430    .text.SDIO_DMACmd:0000000000000000 SDIO_DMACmd
+     /tmp/ccI44UtN.s:463    .text.SDIO_DMACmd:000000000000001c $d
+     /tmp/ccI44UtN.s:468    .text.SDIO_SendCommand:0000000000000000 $t
+     /tmp/ccI44UtN.s:473    .text.SDIO_SendCommand:0000000000000000 SDIO_SendCommand
+     /tmp/ccI44UtN.s:539    .text.SDIO_SendCommand:0000000000000054 $d
+     /tmp/ccI44UtN.s:544    .text.SDIO_CmdStructInit:0000000000000000 $t
+     /tmp/ccI44UtN.s:549    .text.SDIO_CmdStructInit:0000000000000000 SDIO_CmdStructInit
+     /tmp/ccI44UtN.s:598    .text.SDIO_GetCommandResponse:0000000000000000 $t
+     /tmp/ccI44UtN.s:603    .text.SDIO_GetCommandResponse:0000000000000000 SDIO_GetCommandResponse
+     /tmp/ccI44UtN.s:631    .text.SDIO_GetCommandResponse:0000000000000014 $d
+     /tmp/ccI44UtN.s:636    .text.SDIO_GetResponse:0000000000000000 $t
+     /tmp/ccI44UtN.s:641    .text.SDIO_GetResponse:0000000000000000 SDIO_GetResponse
+     /tmp/ccI44UtN.s:681    .text.SDIO_GetResponse:0000000000000024 $d
+     /tmp/ccI44UtN.s:686    .text.SDIO_DataConfig:0000000000000000 $t
+     /tmp/ccI44UtN.s:691    .text.SDIO_DataConfig:0000000000000000 SDIO_DataConfig
+     /tmp/ccI44UtN.s:761    .text.SDIO_DataConfig:0000000000000058 $d
+     /tmp/ccI44UtN.s:766    .text.SDIO_DataStructInit:0000000000000000 $t
+     /tmp/ccI44UtN.s:771    .text.SDIO_DataStructInit:0000000000000000 SDIO_DataStructInit
+     /tmp/ccI44UtN.s:824    .text.SDIO_GetDataCounter:0000000000000000 $t
+     /tmp/ccI44UtN.s:829    .text.SDIO_GetDataCounter:0000000000000000 SDIO_GetDataCounter
+     /tmp/ccI44UtN.s:856    .text.SDIO_GetDataCounter:0000000000000014 $d
+     /tmp/ccI44UtN.s:861    .text.SDIO_ReadData:0000000000000000 $t
+     /tmp/ccI44UtN.s:866    .text.SDIO_ReadData:0000000000000000 SDIO_ReadData
+     /tmp/ccI44UtN.s:893    .text.SDIO_ReadData:0000000000000014 $d
+     /tmp/ccI44UtN.s:898    .text.SDIO_WriteData:0000000000000000 $t
+     /tmp/ccI44UtN.s:903    .text.SDIO_WriteData:0000000000000000 SDIO_WriteData
+     /tmp/ccI44UtN.s:935    .text.SDIO_WriteData:000000000000001c $d
+     /tmp/ccI44UtN.s:940    .text.SDIO_GetFIFOCount:0000000000000000 $t
+     /tmp/ccI44UtN.s:945    .text.SDIO_GetFIFOCount:0000000000000000 SDIO_GetFIFOCount
+     /tmp/ccI44UtN.s:972    .text.SDIO_GetFIFOCount:0000000000000014 $d
+     /tmp/ccI44UtN.s:977    .text.SDIO_StartSDIOReadWait:0000000000000000 $t
+     /tmp/ccI44UtN.s:982    .text.SDIO_StartSDIOReadWait:0000000000000000 SDIO_StartSDIOReadWait
+     /tmp/ccI44UtN.s:1015   .text.SDIO_StartSDIOReadWait:000000000000001c $d
+     /tmp/ccI44UtN.s:1020   .text.SDIO_StopSDIOReadWait:0000000000000000 $t
+     /tmp/ccI44UtN.s:1025   .text.SDIO_StopSDIOReadWait:0000000000000000 SDIO_StopSDIOReadWait
+     /tmp/ccI44UtN.s:1058   .text.SDIO_StopSDIOReadWait:000000000000001c $d
+     /tmp/ccI44UtN.s:1063   .text.SDIO_SetSDIOReadWaitMode:0000000000000000 $t
+     /tmp/ccI44UtN.s:1068   .text.SDIO_SetSDIOReadWaitMode:0000000000000000 SDIO_SetSDIOReadWaitMode
+     /tmp/ccI44UtN.s:1100   .text.SDIO_SetSDIOReadWaitMode:0000000000000018 $d
+     /tmp/ccI44UtN.s:1105   .text.SDIO_SetSDIOOperation:0000000000000000 $t
+     /tmp/ccI44UtN.s:1110   .text.SDIO_SetSDIOOperation:0000000000000000 SDIO_SetSDIOOperation
+     /tmp/ccI44UtN.s:1143   .text.SDIO_SetSDIOOperation:000000000000001c $d
+     /tmp/ccI44UtN.s:1148   .text.SDIO_SendSDIOSuspendCmd:0000000000000000 $t
+     /tmp/ccI44UtN.s:1153   .text.SDIO_SendSDIOSuspendCmd:0000000000000000 SDIO_SendSDIOSuspendCmd
+     /tmp/ccI44UtN.s:1186   .text.SDIO_SendSDIOSuspendCmd:000000000000001c $d
+     /tmp/ccI44UtN.s:1191   .text.SDIO_CommandCompletionCmd:0000000000000000 $t
+     /tmp/ccI44UtN.s:1196   .text.SDIO_CommandCompletionCmd:0000000000000000 SDIO_CommandCompletionCmd
+     /tmp/ccI44UtN.s:1229   .text.SDIO_CommandCompletionCmd:000000000000001c $d
+     /tmp/ccI44UtN.s:1234   .text.SDIO_CEATAITCmd:0000000000000000 $t
+     /tmp/ccI44UtN.s:1239   .text.SDIO_CEATAITCmd:0000000000000000 SDIO_CEATAITCmd
+     /tmp/ccI44UtN.s:1278   .text.SDIO_CEATAITCmd:0000000000000028 $d
+     /tmp/ccI44UtN.s:1283   .text.SDIO_SendCEATACmd:0000000000000000 $t
+     /tmp/ccI44UtN.s:1288   .text.SDIO_SendCEATACmd:0000000000000000 SDIO_SendCEATACmd
+     /tmp/ccI44UtN.s:1321   .text.SDIO_SendCEATACmd:000000000000001c $d
+     /tmp/ccI44UtN.s:1326   .text.SDIO_GetFlagStatus:0000000000000000 $t
+     /tmp/ccI44UtN.s:1331   .text.SDIO_GetFlagStatus:0000000000000000 SDIO_GetFlagStatus
+     /tmp/ccI44UtN.s:1381   .text.SDIO_GetFlagStatus:0000000000000030 $d
+     /tmp/ccI44UtN.s:1386   .text.SDIO_ClearFlag:0000000000000000 $t
+     /tmp/ccI44UtN.s:1391   .text.SDIO_ClearFlag:0000000000000000 SDIO_ClearFlag
+     /tmp/ccI44UtN.s:1423   .text.SDIO_ClearFlag:0000000000000018 $d
+     /tmp/ccI44UtN.s:1428   .text.SDIO_GetITStatus:0000000000000000 $t
+     /tmp/ccI44UtN.s:1433   .text.SDIO_GetITStatus:0000000000000000 SDIO_GetITStatus
+     /tmp/ccI44UtN.s:1483   .text.SDIO_GetITStatus:0000000000000030 $d
+     /tmp/ccI44UtN.s:1488   .text.SDIO_ClearITPendingBit:0000000000000000 $t
+     /tmp/ccI44UtN.s:1493   .text.SDIO_ClearITPendingBit:0000000000000000 SDIO_ClearITPendingBit
+     /tmp/ccI44UtN.s:1525   .text.SDIO_ClearITPendingBit:0000000000000018 $d
+                     .debug_frame:0000000000000010 $d
+
+NO UNDEFINED SYMBOLS

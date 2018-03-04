@@ -1,0 +1,149 @@
+   1              	# 1 "/home/virusv/TDSAST_IOT/Misc/c_only_startup_user.s"
+   1              	/**
+   0              	
+   0              	
+   2              	 ******************************************************************************
+   3              	 * @file      startup_stm32f10x_md.s
+   4              	 * @author    MCD Application Team
+   5              	 * @version   V3.1.0
+   6              	 * @date      06/19/2009
+   7              	 * @brief     STM32F10x Medium Density Devices vector table for RIDE7 toolchain.
+   8              	 *            This module performs:
+   9              	 *                - Set the initial SP
+  10              	 *                - Set the initial PC == Reset_Handler,
+  11              	 *                - Set the vector table entries with the exceptions ISR address
+  12              	 *                - Branches to main in the C library (which eventually
+  13              	 *                  calls main()).
+  14              	 *            After Reset the Cortex-M3 processor is in Thread mode,
+  15              	 *            priority is Privileged, and the Stack is set to Main.
+  16              	 *******************************************************************************
+  17              	 * @copy
+  18              	 *
+  19              	 * THE PRESENT FIRMWARE WHICH IS FOR GUIDANCE ONLY AIMS AT PROVIDING CUSTOMERS
+  20              	 * WITH CODING INFORMATION REGARDING THEIR PRODUCTS IN ORDER FOR THEM TO SAVE
+  21              	 * TIME. AS A RESULT, STMICROELECTRONICS SHALL NOT BE HELD LIABLE FOR ANY
+  22              	 * DIRECT, INDIRECT OR CONSEQUENTIAL DAMAGES WITH RESPECT TO ANY CLAIMS ARISING
+  23              	 * FROM THE CONTENT OF SUCH FIRMWARE AND/OR THE USE MADE BY CUSTOMERS OF THE
+  24              	 * CODING INFORMATION CONTAINED HEREIN IN CONNECTION WITH THEIR PRODUCTS.
+  25              	 *
+  26              	 * <h2><center>&copy; COPYRIGHT 2009 STMicroelectronics</center></h2>
+  27              	 */
+  28              	
+  29              	  .syntax unified
+  30              		.cpu cortex-m3
+  31              		.fpu softvfp
+  32              		.thumb
+  33              	
+  34              	.global	g_pfnVectors
+  35              	.global	SystemInit_ExtMemCtl_Dummy
+  36              	.global	Default_Handler
+  37              	
+  38              	/* start address for the initialization values of the .data section.
+  39              	defined in linker script */
+  40 0000 00000000 	.word	_sidata
+  41              	/* start address for the .data section. defined in linker script */
+  42 0004 00000000 	.word	_sdata
+  43              	/* end address for the .data section. defined in linker script */
+  44 0008 00000000 	.word	_edata
+  45              	/* start address for the .bss section. defined in linker script */
+  46 000c 00000000 	.word	_sbss
+  47              	/* end address for the .bss section. defined in linker script */
+  48 0010 00000000 	.word	_ebss
+  49 0014 00000000 	.word _magicRate
+  50              	
+  51              	.equ  BootRAM, 0xF108F85F
+  52              	/**
+  53              	 * @brief  This is the code that gets called when the processor first
+  54              	 *          starts execution following a reset event. Only the absolutely
+  55              	 *          necessary set is performed, after which the application
+  56              	 *          supplied main() routine is called.
+  57              	 * @param  None
+  58              	 * @retval : None
+  59              	*/
+  60              	
+  61              	    .section	.text.Reset_Handler
+  62              		.weak	Reset_Handler
+  64              	Reset_Handler:
+  65              	
+  66              	/* Copy the data segment initializers from flash to SRAM */
+  67 0000 0021     	  movs	r1, #0
+  68 0002 03E0     	  b	LoopCopyDataInit
+  69              	
+  70              	CopyDataInit:
+  71 0004 094B     		ldr	r3, =_sidata
+  72 0006 5B58     		ldr	r3, [r3, r1]
+  73 0008 4350     		str	r3, [r0, r1]
+  74 000a 0431     		adds	r1, r1, #4
+  75              	
+  76              	LoopCopyDataInit:
+  77 000c 0848     		ldr	r0, =_sdata
+  78 000e 094B     		ldr	r3, =_edata
+  79 0010 4218     		adds	r2, r0, r1
+  80 0012 9A42     		cmp	r2, r3
+  81 0014 F6D3     		bcc	CopyDataInit
+  82 0016 084A     		ldr	r2, =_sbss
+  83 0018 02E0     		b	LoopFillZerobss
+  84              	/* Zero fill the bss segment. */
+  85              	FillZerobss:
+  86 001a 0023     		movs	r3, #0
+  87 001c 42F8043B 		str	r3, [r2], #4
+  88              	
+  89              	LoopFillZerobss:
+  90 0020 064B     		ldr	r3, = _ebss
+  91 0022 9A42     		cmp	r2, r3
+  92 0024 F9D3     		bcc	FillZerobss
+  93              	/* Call the application's entry point.*/
+  94 0026 FFF7FEFF 		bl	main
+  95 002a 7047     		bx	lr
+  97              	
+  98              	/**
+  99              	 * @brief  This is the code that gets called when the processor receives an
+ 100              	 *         unexpected interrupt.  This simply enters an infinite loop, preserving
+ 101              	 *         the system state for examination by a debugger.
+ 102              	 *
+ 103              	 * @param  None
+ 104              	 * @retval : None
+ 105              	*/
+ 106              	    .section	.text.Default_Handler,"ax",%progbits
+ 107              	Default_Handler:
+ 108              	Infinite_Loop:
+ 109 0000 FEE7     		b	Infinite_Loop
+ 111              	/******************************************************************************
+ 112              	*
+ 113              	* The minimal vector table for a Cortex M3.  Note that the proper constructs
+ 114              	* must be placed on this to ensure that it ends up at physical address
+ 115              	* 0x0000.0000.
+ 116              	*
+ 117              	******************************************************************************/
+ 118              	 	.section	.isr_vector,"a",%progbits
+ 121              	
+ 122              	
+ 123              	g_pfnVectors:
+ 124 0000 00000000 		.word	_estack
+ 125 0004 00000000 		.word	Reset_Handler
+ 126 0008 00000000 		.word   _magicRate
+DEFINED SYMBOLS
+/home/virusv/TDSAST_IOT/Misc/c_only_startup_user.s:123    .isr_vector:0000000000000000 g_pfnVectors
+/home/virusv/TDSAST_IOT/Misc/c_only_startup_user.s:107    .text.Default_Handler:0000000000000000 Default_Handler
+/home/virusv/TDSAST_IOT/Misc/c_only_startup_user.s:51     *ABS*:00000000f108f85f BootRAM
+/home/virusv/TDSAST_IOT/Misc/c_only_startup_user.s:64     .text.Reset_Handler:0000000000000000 Reset_Handler
+/home/virusv/TDSAST_IOT/Misc/c_only_startup_user.s:67     .text.Reset_Handler:0000000000000000 $t
+/home/virusv/TDSAST_IOT/Misc/c_only_startup_user.s:76     .text.Reset_Handler:000000000000000c LoopCopyDataInit
+/home/virusv/TDSAST_IOT/Misc/c_only_startup_user.s:70     .text.Reset_Handler:0000000000000004 CopyDataInit
+/home/virusv/TDSAST_IOT/Misc/c_only_startup_user.s:89     .text.Reset_Handler:0000000000000020 LoopFillZerobss
+/home/virusv/TDSAST_IOT/Misc/c_only_startup_user.s:85     .text.Reset_Handler:000000000000001a FillZerobss
+/home/virusv/TDSAST_IOT/Misc/c_only_startup_user.s:108    .text.Default_Handler:0000000000000000 Infinite_Loop
+/home/virusv/TDSAST_IOT/Misc/c_only_startup_user.s:109    .text.Default_Handler:0000000000000000 $t
+/home/virusv/TDSAST_IOT/Misc/c_only_startup_user.s:126    .text.Reset_Handler:000000000000002c $d
+                            .text:0000000000000000 $d
+
+UNDEFINED SYMBOLS
+SystemInit_ExtMemCtl_Dummy
+_sidata
+_sdata
+_edata
+_sbss
+_ebss
+_magicRate
+main
+_estack

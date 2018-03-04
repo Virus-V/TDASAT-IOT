@@ -1,0 +1,3047 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"wizchip_conf.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.wizchip_cris_enter,"ax",%progbits
+  19              		.align	2
+  20              		.global	wizchip_cris_enter
+  21              		.thumb
+  22              		.thumb_func
+  24              	wizchip_cris_enter:
+  25              	.LFB0:
+  26              		.file 1 "/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c"
+   1:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //****************************************************************************/ 
+   2:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //!
+   3:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! \file wizchip_conf.c
+   4:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! \brief WIZCHIP Config Header File.
+   5:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! \version 1.0.0
+   6:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! \date 2013/10/21
+   7:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! \par  Revision history
+   8:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //!       <2013/10/21> 1st Release
+   9:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! \author MidnightCow
+  10:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! \copyright
+  11:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //!
+  12:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! Copyright (c)  2013, WIZnet Co., LTD.
+  13:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! All rights reserved.
+  14:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! 
+  15:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! Redistribution and use in source and binary forms, with or without 
+  16:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! modification, are permitted provided that the following conditions 
+  17:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! are met: 
+  18:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! 
+  19:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //!     * Redistributions of source code must retain the above copyright 
+  20:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! notice, this list of conditions and the following disclaimer. 
+  21:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //!     * Redistributions in binary form must reproduce the above copyright
+  22:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! notice, this list of conditions and the following disclaimer in the
+  23:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! documentation and/or other materials provided with the distribution. 
+  24:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //!     * Neither the name of the <ORGANIZATION> nor the names of its 
+  25:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! contributors may be used to endorse or promote products derived 
+  26:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! from this software without specific prior written permission. 
+  27:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! 
+  28:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  29:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+  30:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  31:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+  32:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+  33:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+  34:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  35:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+  36:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  37:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+  38:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //! THE POSSIBILITY OF SUCH DAMAGE.
+  39:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //
+  40:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //*****************************************************************************/
+  41:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #include "wizchip_conf.h"
+  42:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** /**
+  43:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @brief Default function to enable interrupt.
+  44:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+  45:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * null function is called.
+  46:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  */
+  47:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void 	  wizchip_cris_enter(void)           {};
+  27              		.loc 1 47 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 0
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31              		@ link register save eliminated.
+  32 0000 80B4     		push	{r7}
+  33              		.cfi_def_cfa_offset 4
+  34              		.cfi_offset 7, -4
+  35 0002 00AF     		add	r7, sp, #0
+  36              		.cfi_def_cfa_register 7
+  37              		.loc 1 47 0
+  38 0004 BD46     		mov	sp, r7
+  39              		.cfi_def_cfa_register 13
+  40              		@ sp needed
+  41 0006 5DF8047B 		ldr	r7, [sp], #4
+  42              		.cfi_restore 7
+  43              		.cfi_def_cfa_offset 0
+  44 000a 7047     		bx	lr
+  45              		.cfi_endproc
+  46              	.LFE0:
+  48              		.section	.text.wizchip_cris_exit,"ax",%progbits
+  49              		.align	2
+  50              		.global	wizchip_cris_exit
+  51              		.thumb
+  52              		.thumb_func
+  54              	wizchip_cris_exit:
+  55              	.LFB1:
+  48:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** /**
+  49:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @brief Default function to disable interrupt.
+  50:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+  51:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * null function is called.
+  52:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  */
+  53:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void 	  wizchip_cris_exit(void)          {};
+  56              		.loc 1 53 0
+  57              		.cfi_startproc
+  58              		@ args = 0, pretend = 0, frame = 0
+  59              		@ frame_needed = 1, uses_anonymous_args = 0
+  60              		@ link register save eliminated.
+  61 0000 80B4     		push	{r7}
+  62              		.cfi_def_cfa_offset 4
+  63              		.cfi_offset 7, -4
+  64 0002 00AF     		add	r7, sp, #0
+  65              		.cfi_def_cfa_register 7
+  66              		.loc 1 53 0
+  67 0004 BD46     		mov	sp, r7
+  68              		.cfi_def_cfa_register 13
+  69              		@ sp needed
+  70 0006 5DF8047B 		ldr	r7, [sp], #4
+  71              		.cfi_restore 7
+  72              		.cfi_def_cfa_offset 0
+  73 000a 7047     		bx	lr
+  74              		.cfi_endproc
+  75              	.LFE1:
+  77              		.section	.text.wizchip_cs_select,"ax",%progbits
+  78              		.align	2
+  79              		.global	wizchip_cs_select
+  80              		.thumb
+  81              		.thumb_func
+  83              	wizchip_cs_select:
+  84              	.LFB2:
+  54:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** /**
+  55:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @brief Default function to select chip.
+  56:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+  57:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * null function is called.
+  58:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  */
+  59:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void 	wizchip_cs_select(void)            {};
+  85              		.loc 1 59 0
+  86              		.cfi_startproc
+  87              		@ args = 0, pretend = 0, frame = 0
+  88              		@ frame_needed = 1, uses_anonymous_args = 0
+  89              		@ link register save eliminated.
+  90 0000 80B4     		push	{r7}
+  91              		.cfi_def_cfa_offset 4
+  92              		.cfi_offset 7, -4
+  93 0002 00AF     		add	r7, sp, #0
+  94              		.cfi_def_cfa_register 7
+  95              		.loc 1 59 0
+  96 0004 BD46     		mov	sp, r7
+  97              		.cfi_def_cfa_register 13
+  98              		@ sp needed
+  99 0006 5DF8047B 		ldr	r7, [sp], #4
+ 100              		.cfi_restore 7
+ 101              		.cfi_def_cfa_offset 0
+ 102 000a 7047     		bx	lr
+ 103              		.cfi_endproc
+ 104              	.LFE2:
+ 106              		.section	.text.wizchip_cs_deselect,"ax",%progbits
+ 107              		.align	2
+ 108              		.global	wizchip_cs_deselect
+ 109              		.thumb
+ 110              		.thumb_func
+ 112              	wizchip_cs_deselect:
+ 113              	.LFB3:
+  60:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** /**
+  61:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @brief Default function to deselect chip.
+  62:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+  63:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * null function is called.
+  64:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  */
+  65:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void 	wizchip_cs_deselect(void)          {};
+ 114              		.loc 1 65 0
+ 115              		.cfi_startproc
+ 116              		@ args = 0, pretend = 0, frame = 0
+ 117              		@ frame_needed = 1, uses_anonymous_args = 0
+ 118              		@ link register save eliminated.
+ 119 0000 80B4     		push	{r7}
+ 120              		.cfi_def_cfa_offset 4
+ 121              		.cfi_offset 7, -4
+ 122 0002 00AF     		add	r7, sp, #0
+ 123              		.cfi_def_cfa_register 7
+ 124              		.loc 1 65 0
+ 125 0004 BD46     		mov	sp, r7
+ 126              		.cfi_def_cfa_register 13
+ 127              		@ sp needed
+ 128 0006 5DF8047B 		ldr	r7, [sp], #4
+ 129              		.cfi_restore 7
+ 130              		.cfi_def_cfa_offset 0
+ 131 000a 7047     		bx	lr
+ 132              		.cfi_endproc
+ 133              	.LFE3:
+ 135              		.section	.text.wizchip_bus_readbyte,"ax",%progbits
+ 136              		.align	2
+ 137              		.global	wizchip_bus_readbyte
+ 138              		.thumb
+ 139              		.thumb_func
+ 141              	wizchip_bus_readbyte:
+ 142              	.LFB4:
+  66:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** /**
+  67:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @brief Default function to read in direct or indirect interface.
+  68:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+  69:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * null function is called.
+  70:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  */
+  71:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** uint8_t wizchip_bus_readbyte(uint32_t AddrSel) { return * ((volatile uint8_t *) AddrSel); };
+ 143              		.loc 1 71 0
+ 144              		.cfi_startproc
+ 145              		@ args = 0, pretend = 0, frame = 8
+ 146              		@ frame_needed = 1, uses_anonymous_args = 0
+ 147              		@ link register save eliminated.
+ 148 0000 80B4     		push	{r7}
+ 149              		.cfi_def_cfa_offset 4
+ 150              		.cfi_offset 7, -4
+ 151 0002 83B0     		sub	sp, sp, #12
+ 152              		.cfi_def_cfa_offset 16
+ 153 0004 00AF     		add	r7, sp, #0
+ 154              		.cfi_def_cfa_register 7
+ 155 0006 7860     		str	r0, [r7, #4]
+ 156              		.loc 1 71 0
+ 157 0008 7B68     		ldr	r3, [r7, #4]
+ 158 000a 1B78     		ldrb	r3, [r3]
+ 159 000c DBB2     		uxtb	r3, r3
+ 160 000e 1846     		mov	r0, r3
+ 161 0010 0C37     		adds	r7, r7, #12
+ 162              		.cfi_def_cfa_offset 4
+ 163 0012 BD46     		mov	sp, r7
+ 164              		.cfi_def_cfa_register 13
+ 165              		@ sp needed
+ 166 0014 5DF8047B 		ldr	r7, [sp], #4
+ 167              		.cfi_restore 7
+ 168              		.cfi_def_cfa_offset 0
+ 169 0018 7047     		bx	lr
+ 170              		.cfi_endproc
+ 171              	.LFE4:
+ 173 001a 00BF     		.section	.text.wizchip_bus_writebyte,"ax",%progbits
+ 174              		.align	2
+ 175              		.global	wizchip_bus_writebyte
+ 176              		.thumb
+ 177              		.thumb_func
+ 179              	wizchip_bus_writebyte:
+ 180              	.LFB5:
+  72:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** /**
+  73:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @brief Default function to write in direct or indirect interface.
+  74:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+  75:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * null function is called.
+  76:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  */
+  77:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  
+  78:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void 	wizchip_bus_writebyte(uint32_t AddrSel, uint8_t wb)  { *((volatile uint8_t*)AddrSel) = wb; };
+ 181              		.loc 1 78 0
+ 182              		.cfi_startproc
+ 183              		@ args = 0, pretend = 0, frame = 8
+ 184              		@ frame_needed = 1, uses_anonymous_args = 0
+ 185              		@ link register save eliminated.
+ 186 0000 80B4     		push	{r7}
+ 187              		.cfi_def_cfa_offset 4
+ 188              		.cfi_offset 7, -4
+ 189 0002 83B0     		sub	sp, sp, #12
+ 190              		.cfi_def_cfa_offset 16
+ 191 0004 00AF     		add	r7, sp, #0
+ 192              		.cfi_def_cfa_register 7
+ 193 0006 7860     		str	r0, [r7, #4]
+ 194 0008 0B46     		mov	r3, r1
+ 195 000a FB70     		strb	r3, [r7, #3]
+ 196              		.loc 1 78 0
+ 197 000c 7B68     		ldr	r3, [r7, #4]
+ 198 000e FA78     		ldrb	r2, [r7, #3]
+ 199 0010 1A70     		strb	r2, [r3]
+ 200 0012 0C37     		adds	r7, r7, #12
+ 201              		.cfi_def_cfa_offset 4
+ 202 0014 BD46     		mov	sp, r7
+ 203              		.cfi_def_cfa_register 13
+ 204              		@ sp needed
+ 205 0016 5DF8047B 		ldr	r7, [sp], #4
+ 206              		.cfi_restore 7
+ 207              		.cfi_def_cfa_offset 0
+ 208 001a 7047     		bx	lr
+ 209              		.cfi_endproc
+ 210              	.LFE5:
+ 212              		.section	.text.wizchip_spi_readbyte,"ax",%progbits
+ 213              		.align	2
+ 214              		.global	wizchip_spi_readbyte
+ 215              		.thumb
+ 216              		.thumb_func
+ 218              	wizchip_spi_readbyte:
+ 219              	.LFB6:
+  79:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** /**
+  80:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @brief Default function to read in SPI interface.
+  81:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+  82:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * null function is called.
+  83:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  */
+  84:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** uint8_t wizchip_spi_readbyte(void)        {return 0;};
+ 220              		.loc 1 84 0
+ 221              		.cfi_startproc
+ 222              		@ args = 0, pretend = 0, frame = 0
+ 223              		@ frame_needed = 1, uses_anonymous_args = 0
+ 224              		@ link register save eliminated.
+ 225 0000 80B4     		push	{r7}
+ 226              		.cfi_def_cfa_offset 4
+ 227              		.cfi_offset 7, -4
+ 228 0002 00AF     		add	r7, sp, #0
+ 229              		.cfi_def_cfa_register 7
+ 230              		.loc 1 84 0
+ 231 0004 0023     		movs	r3, #0
+ 232 0006 1846     		mov	r0, r3
+ 233 0008 BD46     		mov	sp, r7
+ 234              		.cfi_def_cfa_register 13
+ 235              		@ sp needed
+ 236 000a 5DF8047B 		ldr	r7, [sp], #4
+ 237              		.cfi_restore 7
+ 238              		.cfi_def_cfa_offset 0
+ 239 000e 7047     		bx	lr
+ 240              		.cfi_endproc
+ 241              	.LFE6:
+ 243              		.section	.text.wizchip_spi_writebyte,"ax",%progbits
+ 244              		.align	2
+ 245              		.global	wizchip_spi_writebyte
+ 246              		.thumb
+ 247              		.thumb_func
+ 249              	wizchip_spi_writebyte:
+ 250              	.LFB7:
+  85:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** /**
+  86:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @brief Default function to write in SPI interface.
+  87:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @note This function help not to access wrong address. If you do not describe this function or re
+  88:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * null function is called.
+  89:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  */
+  90:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void 	wizchip_spi_writebyte(uint8_t wb) {};
+ 251              		.loc 1 90 0
+ 252              		.cfi_startproc
+ 253              		@ args = 0, pretend = 0, frame = 8
+ 254              		@ frame_needed = 1, uses_anonymous_args = 0
+ 255              		@ link register save eliminated.
+ 256 0000 80B4     		push	{r7}
+ 257              		.cfi_def_cfa_offset 4
+ 258              		.cfi_offset 7, -4
+ 259 0002 83B0     		sub	sp, sp, #12
+ 260              		.cfi_def_cfa_offset 16
+ 261 0004 00AF     		add	r7, sp, #0
+ 262              		.cfi_def_cfa_register 7
+ 263 0006 0346     		mov	r3, r0
+ 264 0008 FB71     		strb	r3, [r7, #7]
+ 265              		.loc 1 90 0
+ 266 000a 0C37     		adds	r7, r7, #12
+ 267              		.cfi_def_cfa_offset 4
+ 268 000c BD46     		mov	sp, r7
+ 269              		.cfi_def_cfa_register 13
+ 270              		@ sp needed
+ 271 000e 5DF8047B 		ldr	r7, [sp], #4
+ 272              		.cfi_restore 7
+ 273              		.cfi_def_cfa_offset 0
+ 274 0012 7047     		bx	lr
+ 275              		.cfi_endproc
+ 276              	.LFE7:
+ 278              		.global	WIZCHIP
+ 279              		.section	.data.WIZCHIP,"aw",%progbits
+ 280              		.align	2
+ 283              	WIZCHIP:
+ 284 0000 0102     		.short	513
+ 285 0002 57353530 		.ascii	"W5500\000"
+ 285      3000
+ 286 0008 00000000 		.word	wizchip_cris_enter
+ 287 000c 00000000 		.word	wizchip_cris_exit
+ 288 0010 00000000 		.word	wizchip_cs_select
+ 289 0014 00000000 		.word	wizchip_cs_deselect
+ 290 0018 00000000 		.word	wizchip_bus_readbyte
+ 291 001c 00000000 		.word	wizchip_bus_writebyte
+ 292              		.section	.bss._DNS_,"aw",%nobits
+ 293              		.align	2
+ 296              	_DNS_:
+ 297 0000 00000000 		.space	4
+ 298              		.section	.bss._DHCP_,"aw",%nobits
+ 301              	_DHCP_:
+ 302 0000 00       		.space	1
+ 303              		.section	.text.reg_wizchip_cris_cbfunc,"ax",%progbits
+ 304              		.align	2
+ 305              		.global	reg_wizchip_cris_cbfunc
+ 306              		.thumb
+ 307              		.thumb_func
+ 309              	reg_wizchip_cris_cbfunc:
+ 310              	.LFB8:
+  91:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+  92:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** /**
+  93:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  * @\ref _WIZCHIP instance
+  94:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****  */
+  95:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** _WIZCHIP  WIZCHIP =
+  96:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       {
+  97:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       .id                  = _WIZCHIP_ID_,
+  98:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       .if_mode             = _WIZCHIP_IO_MODE_,
+  99:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       .CRIS._enter         = wizchip_cris_enter,
+ 100:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       .CRIS._exit          = wizchip_cris_exit,
+ 101:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       .CS._select          = wizchip_cs_select,
+ 102:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       .CS._deselect        = wizchip_cs_deselect,
+ 103:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       .IF.BUS._read_byte   = wizchip_bus_readbyte,
+ 104:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       .IF.BUS._write_byte  = wizchip_bus_writebyte
+ 105:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //    .IF.SPI._read_byte   = wizchip_spi_readbyte,
+ 106:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** //    .IF.SPI._write_byte  = wizchip_spi_writebyte
+ 107:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       };
+ 108:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 109:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** static uint8_t    _DNS_[4];      // DNS server ip address
+ 110:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** static dhcp_mode  _DHCP_;        // DHCP mode
+ 111:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 112:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void reg_wizchip_cris_cbfunc(void(*cris_en)(void), void(*cris_ex)(void))
+ 113:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 311              		.loc 1 113 0
+ 312              		.cfi_startproc
+ 313              		@ args = 0, pretend = 0, frame = 8
+ 314              		@ frame_needed = 1, uses_anonymous_args = 0
+ 315              		@ link register save eliminated.
+ 316 0000 80B4     		push	{r7}
+ 317              		.cfi_def_cfa_offset 4
+ 318              		.cfi_offset 7, -4
+ 319 0002 83B0     		sub	sp, sp, #12
+ 320              		.cfi_def_cfa_offset 16
+ 321 0004 00AF     		add	r7, sp, #0
+ 322              		.cfi_def_cfa_register 7
+ 323 0006 7860     		str	r0, [r7, #4]
+ 324 0008 3960     		str	r1, [r7]
+ 114:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if(!cris_en || !cris_ex)
+ 325              		.loc 1 114 0
+ 326 000a 7B68     		ldr	r3, [r7, #4]
+ 327 000c 002B     		cmp	r3, #0
+ 328 000e 02D0     		beq	.L12
+ 329              		.loc 1 114 0 is_stmt 0 discriminator 1
+ 330 0010 3B68     		ldr	r3, [r7]
+ 331 0012 002B     		cmp	r3, #0
+ 332 0014 06D1     		bne	.L13
+ 333              	.L12:
+ 115:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 116:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.CRIS._enter = wizchip_cris_enter;
+ 334              		.loc 1 116 0 is_stmt 1
+ 335 0016 094B     		ldr	r3, .L15
+ 336 0018 094A     		ldr	r2, .L15+4
+ 337 001a 9A60     		str	r2, [r3, #8]
+ 117:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.CRIS._exit  = wizchip_cris_exit;
+ 338              		.loc 1 117 0
+ 339 001c 074B     		ldr	r3, .L15
+ 340 001e 094A     		ldr	r2, .L15+8
+ 341 0020 DA60     		str	r2, [r3, #12]
+ 342 0022 05E0     		b	.L11
+ 343              	.L13:
+ 118:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 119:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    else
+ 120:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 121:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.CRIS._enter = cris_en;
+ 344              		.loc 1 121 0
+ 345 0024 054A     		ldr	r2, .L15
+ 346 0026 7B68     		ldr	r3, [r7, #4]
+ 347 0028 9360     		str	r3, [r2, #8]
+ 122:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.CRIS._exit  = cris_ex;
+ 348              		.loc 1 122 0
+ 349 002a 044A     		ldr	r2, .L15
+ 350 002c 3B68     		ldr	r3, [r7]
+ 351 002e D360     		str	r3, [r2, #12]
+ 352              	.L11:
+ 123:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 124:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 353              		.loc 1 124 0
+ 354 0030 0C37     		adds	r7, r7, #12
+ 355              		.cfi_def_cfa_offset 4
+ 356 0032 BD46     		mov	sp, r7
+ 357              		.cfi_def_cfa_register 13
+ 358              		@ sp needed
+ 359 0034 5DF8047B 		ldr	r7, [sp], #4
+ 360              		.cfi_restore 7
+ 361              		.cfi_def_cfa_offset 0
+ 362 0038 7047     		bx	lr
+ 363              	.L16:
+ 364 003a 00BF     		.align	2
+ 365              	.L15:
+ 366 003c 00000000 		.word	WIZCHIP
+ 367 0040 00000000 		.word	wizchip_cris_enter
+ 368 0044 00000000 		.word	wizchip_cris_exit
+ 369              		.cfi_endproc
+ 370              	.LFE8:
+ 372              		.section	.text.reg_wizchip_cs_cbfunc,"ax",%progbits
+ 373              		.align	2
+ 374              		.global	reg_wizchip_cs_cbfunc
+ 375              		.thumb
+ 376              		.thumb_func
+ 378              	reg_wizchip_cs_cbfunc:
+ 379              	.LFB9:
+ 125:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 126:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void reg_wizchip_cs_cbfunc(void(*cs_sel)(void), void(*cs_desel)(void))
+ 127:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 380              		.loc 1 127 0
+ 381              		.cfi_startproc
+ 382              		@ args = 0, pretend = 0, frame = 8
+ 383              		@ frame_needed = 1, uses_anonymous_args = 0
+ 384              		@ link register save eliminated.
+ 385 0000 80B4     		push	{r7}
+ 386              		.cfi_def_cfa_offset 4
+ 387              		.cfi_offset 7, -4
+ 388 0002 83B0     		sub	sp, sp, #12
+ 389              		.cfi_def_cfa_offset 16
+ 390 0004 00AF     		add	r7, sp, #0
+ 391              		.cfi_def_cfa_register 7
+ 392 0006 7860     		str	r0, [r7, #4]
+ 393 0008 3960     		str	r1, [r7]
+ 128:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if(!cs_sel || !cs_desel)
+ 394              		.loc 1 128 0
+ 395 000a 7B68     		ldr	r3, [r7, #4]
+ 396 000c 002B     		cmp	r3, #0
+ 397 000e 02D0     		beq	.L18
+ 398              		.loc 1 128 0 is_stmt 0 discriminator 1
+ 399 0010 3B68     		ldr	r3, [r7]
+ 400 0012 002B     		cmp	r3, #0
+ 401 0014 06D1     		bne	.L19
+ 402              	.L18:
+ 129:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 130:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.CS._select   = wizchip_cs_select;
+ 403              		.loc 1 130 0 is_stmt 1
+ 404 0016 094B     		ldr	r3, .L21
+ 405 0018 094A     		ldr	r2, .L21+4
+ 406 001a 1A61     		str	r2, [r3, #16]
+ 131:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.CS._deselect = wizchip_cs_deselect;
+ 407              		.loc 1 131 0
+ 408 001c 074B     		ldr	r3, .L21
+ 409 001e 094A     		ldr	r2, .L21+8
+ 410 0020 5A61     		str	r2, [r3, #20]
+ 411 0022 05E0     		b	.L17
+ 412              	.L19:
+ 132:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 133:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    else
+ 134:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 135:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.CS._select   = cs_sel;
+ 413              		.loc 1 135 0
+ 414 0024 054A     		ldr	r2, .L21
+ 415 0026 7B68     		ldr	r3, [r7, #4]
+ 416 0028 1361     		str	r3, [r2, #16]
+ 136:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.CS._deselect = cs_desel;
+ 417              		.loc 1 136 0
+ 418 002a 044A     		ldr	r2, .L21
+ 419 002c 3B68     		ldr	r3, [r7]
+ 420 002e 5361     		str	r3, [r2, #20]
+ 421              	.L17:
+ 137:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 138:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 422              		.loc 1 138 0
+ 423 0030 0C37     		adds	r7, r7, #12
+ 424              		.cfi_def_cfa_offset 4
+ 425 0032 BD46     		mov	sp, r7
+ 426              		.cfi_def_cfa_register 13
+ 427              		@ sp needed
+ 428 0034 5DF8047B 		ldr	r7, [sp], #4
+ 429              		.cfi_restore 7
+ 430              		.cfi_def_cfa_offset 0
+ 431 0038 7047     		bx	lr
+ 432              	.L22:
+ 433 003a 00BF     		.align	2
+ 434              	.L21:
+ 435 003c 00000000 		.word	WIZCHIP
+ 436 0040 00000000 		.word	wizchip_cs_select
+ 437 0044 00000000 		.word	wizchip_cs_deselect
+ 438              		.cfi_endproc
+ 439              	.LFE9:
+ 441              		.section	.text.reg_wizchip_bus_cbfunc,"ax",%progbits
+ 442              		.align	2
+ 443              		.global	reg_wizchip_bus_cbfunc
+ 444              		.thumb
+ 445              		.thumb_func
+ 447              	reg_wizchip_bus_cbfunc:
+ 448              	.LFB10:
+ 139:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 140:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void reg_wizchip_bus_cbfunc(uint8_t(*bus_rb)(uint32_t addr), void (*bus_wb)(uint32_t addr, uint8_t 
+ 141:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 449              		.loc 1 141 0
+ 450              		.cfi_startproc
+ 451              		@ args = 0, pretend = 0, frame = 8
+ 452              		@ frame_needed = 1, uses_anonymous_args = 0
+ 453              		@ link register save eliminated.
+ 454 0000 80B4     		push	{r7}
+ 455              		.cfi_def_cfa_offset 4
+ 456              		.cfi_offset 7, -4
+ 457 0002 83B0     		sub	sp, sp, #12
+ 458              		.cfi_def_cfa_offset 16
+ 459 0004 00AF     		add	r7, sp, #0
+ 460              		.cfi_def_cfa_register 7
+ 461 0006 7860     		str	r0, [r7, #4]
+ 462 0008 3960     		str	r1, [r7]
+ 142:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    while(!(WIZCHIP.if_mode & _WIZCHIP_IO_MODE_BUS_));
+ 463              		.loc 1 142 0
+ 464 000a 00BF     		nop
+ 465              	.L24:
+ 466              		.loc 1 142 0 is_stmt 0 discriminator 1
+ 467 000c 0E4B     		ldr	r3, .L28
+ 468 000e 1B88     		ldrh	r3, [r3]
+ 469 0010 03F48073 		and	r3, r3, #256
+ 470 0014 002B     		cmp	r3, #0
+ 471 0016 F9D0     		beq	.L24
+ 143:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    
+ 144:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if(!bus_rb || !bus_wb)
+ 472              		.loc 1 144 0 is_stmt 1
+ 473 0018 7B68     		ldr	r3, [r7, #4]
+ 474 001a 002B     		cmp	r3, #0
+ 475 001c 02D0     		beq	.L25
+ 476              		.loc 1 144 0 is_stmt 0 discriminator 1
+ 477 001e 3B68     		ldr	r3, [r7]
+ 478 0020 002B     		cmp	r3, #0
+ 479 0022 06D1     		bne	.L26
+ 480              	.L25:
+ 145:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 146:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.IF.BUS._read_byte   = wizchip_bus_readbyte;
+ 481              		.loc 1 146 0 is_stmt 1
+ 482 0024 084B     		ldr	r3, .L28
+ 483 0026 094A     		ldr	r2, .L28+4
+ 484 0028 9A61     		str	r2, [r3, #24]
+ 147:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.IF.BUS._write_byte  = wizchip_bus_writebyte;
+ 485              		.loc 1 147 0
+ 486 002a 074B     		ldr	r3, .L28
+ 487 002c 084A     		ldr	r2, .L28+8
+ 488 002e DA61     		str	r2, [r3, #28]
+ 489 0030 05E0     		b	.L23
+ 490              	.L26:
+ 148:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 149:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    else
+ 150:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 151:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.IF.BUS._read_byte   = bus_rb;
+ 491              		.loc 1 151 0
+ 492 0032 054A     		ldr	r2, .L28
+ 493 0034 7B68     		ldr	r3, [r7, #4]
+ 494 0036 9361     		str	r3, [r2, #24]
+ 152:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.IF.BUS._write_byte  = bus_wb;
+ 495              		.loc 1 152 0
+ 496 0038 034A     		ldr	r2, .L28
+ 497 003a 3B68     		ldr	r3, [r7]
+ 498 003c D361     		str	r3, [r2, #28]
+ 499              	.L23:
+ 153:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 154:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 500              		.loc 1 154 0
+ 501 003e 0C37     		adds	r7, r7, #12
+ 502              		.cfi_def_cfa_offset 4
+ 503 0040 BD46     		mov	sp, r7
+ 504              		.cfi_def_cfa_register 13
+ 505              		@ sp needed
+ 506 0042 5DF8047B 		ldr	r7, [sp], #4
+ 507              		.cfi_restore 7
+ 508              		.cfi_def_cfa_offset 0
+ 509 0046 7047     		bx	lr
+ 510              	.L29:
+ 511              		.align	2
+ 512              	.L28:
+ 513 0048 00000000 		.word	WIZCHIP
+ 514 004c 00000000 		.word	wizchip_bus_readbyte
+ 515 0050 00000000 		.word	wizchip_bus_writebyte
+ 516              		.cfi_endproc
+ 517              	.LFE10:
+ 519              		.section	.text.reg_wizchip_spi_cbfunc,"ax",%progbits
+ 520              		.align	2
+ 521              		.global	reg_wizchip_spi_cbfunc
+ 522              		.thumb
+ 523              		.thumb_func
+ 525              	reg_wizchip_spi_cbfunc:
+ 526              	.LFB11:
+ 155:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 156:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void reg_wizchip_spi_cbfunc(uint8_t (*spi_rb)(void), void (*spi_wb)(uint8_t wb))
+ 157:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 527              		.loc 1 157 0
+ 528              		.cfi_startproc
+ 529              		@ args = 0, pretend = 0, frame = 8
+ 530              		@ frame_needed = 1, uses_anonymous_args = 0
+ 531              		@ link register save eliminated.
+ 532 0000 80B4     		push	{r7}
+ 533              		.cfi_def_cfa_offset 4
+ 534              		.cfi_offset 7, -4
+ 535 0002 83B0     		sub	sp, sp, #12
+ 536              		.cfi_def_cfa_offset 16
+ 537 0004 00AF     		add	r7, sp, #0
+ 538              		.cfi_def_cfa_register 7
+ 539 0006 7860     		str	r0, [r7, #4]
+ 540 0008 3960     		str	r1, [r7]
+ 158:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    while(!(WIZCHIP.if_mode & _WIZCHIP_IO_MODE_SPI_));
+ 541              		.loc 1 158 0
+ 542 000a 00BF     		nop
+ 543              	.L31:
+ 544              		.loc 1 158 0 is_stmt 0 discriminator 1
+ 545 000c 0E4B     		ldr	r3, .L35
+ 546 000e 1B88     		ldrh	r3, [r3]
+ 547 0010 03F40073 		and	r3, r3, #512
+ 548 0014 002B     		cmp	r3, #0
+ 549 0016 F9D0     		beq	.L31
+ 159:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    
+ 160:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if(!spi_rb || !spi_wb)
+ 550              		.loc 1 160 0 is_stmt 1
+ 551 0018 7B68     		ldr	r3, [r7, #4]
+ 552 001a 002B     		cmp	r3, #0
+ 553 001c 02D0     		beq	.L32
+ 554              		.loc 1 160 0 is_stmt 0 discriminator 1
+ 555 001e 3B68     		ldr	r3, [r7]
+ 556 0020 002B     		cmp	r3, #0
+ 557 0022 06D1     		bne	.L33
+ 558              	.L32:
+ 161:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 162:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.IF.SPI._read_byte   = wizchip_spi_readbyte;
+ 559              		.loc 1 162 0 is_stmt 1
+ 560 0024 084B     		ldr	r3, .L35
+ 561 0026 094A     		ldr	r2, .L35+4
+ 562 0028 9A61     		str	r2, [r3, #24]
+ 163:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.IF.SPI._write_byte  = wizchip_spi_writebyte;
+ 563              		.loc 1 163 0
+ 564 002a 074B     		ldr	r3, .L35
+ 565 002c 084A     		ldr	r2, .L35+8
+ 566 002e DA61     		str	r2, [r3, #28]
+ 567 0030 05E0     		b	.L30
+ 568              	.L33:
+ 164:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 165:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    else
+ 166:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 167:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.IF.SPI._read_byte   = spi_rb;
+ 569              		.loc 1 167 0
+ 570 0032 054A     		ldr	r2, .L35
+ 571 0034 7B68     		ldr	r3, [r7, #4]
+ 572 0036 9361     		str	r3, [r2, #24]
+ 168:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       WIZCHIP.IF.SPI._write_byte  = spi_wb;
+ 573              		.loc 1 168 0
+ 574 0038 034A     		ldr	r2, .L35
+ 575 003a 3B68     		ldr	r3, [r7]
+ 576 003c D361     		str	r3, [r2, #28]
+ 577              	.L30:
+ 169:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 170:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 578              		.loc 1 170 0
+ 579 003e 0C37     		adds	r7, r7, #12
+ 580              		.cfi_def_cfa_offset 4
+ 581 0040 BD46     		mov	sp, r7
+ 582              		.cfi_def_cfa_register 13
+ 583              		@ sp needed
+ 584 0042 5DF8047B 		ldr	r7, [sp], #4
+ 585              		.cfi_restore 7
+ 586              		.cfi_def_cfa_offset 0
+ 587 0046 7047     		bx	lr
+ 588              	.L36:
+ 589              		.align	2
+ 590              	.L35:
+ 591 0048 00000000 		.word	WIZCHIP
+ 592 004c 00000000 		.word	wizchip_spi_readbyte
+ 593 0050 00000000 		.word	wizchip_spi_writebyte
+ 594              		.cfi_endproc
+ 595              	.LFE11:
+ 597              		.section	.text.ctlwizchip,"ax",%progbits
+ 598              		.align	2
+ 599              		.global	ctlwizchip
+ 600              		.thumb
+ 601              		.thumb_func
+ 603              	ctlwizchip:
+ 604              	.LFB12:
+ 171:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 172:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** int8_t ctlwizchip(ctlwizchip_type cwtype, void* arg)
+ 173:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 605              		.loc 1 173 0
+ 606              		.cfi_startproc
+ 607              		@ args = 0, pretend = 0, frame = 24
+ 608              		@ frame_needed = 1, uses_anonymous_args = 0
+ 609 0000 90B5     		push	{r4, r7, lr}
+ 610              		.cfi_def_cfa_offset 12
+ 611              		.cfi_offset 4, -12
+ 612              		.cfi_offset 7, -8
+ 613              		.cfi_offset 14, -4
+ 614 0002 87B0     		sub	sp, sp, #28
+ 615              		.cfi_def_cfa_offset 40
+ 616 0004 00AF     		add	r7, sp, #0
+ 617              		.cfi_def_cfa_register 7
+ 618 0006 0346     		mov	r3, r0
+ 619 0008 3960     		str	r1, [r7]
+ 620 000a FB71     		strb	r3, [r7, #7]
+ 174:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t tmp = 0;
+ 621              		.loc 1 174 0
+ 622 000c 0023     		movs	r3, #0
+ 623 000e FB75     		strb	r3, [r7, #23]
+ 175:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t* ptmp[2] = {0,0};
+ 624              		.loc 1 175 0
+ 625 0010 0023     		movs	r3, #0
+ 626 0012 FB60     		str	r3, [r7, #12]
+ 627 0014 0023     		movs	r3, #0
+ 628 0016 3B61     		str	r3, [r7, #16]
+ 176:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    switch(cwtype)
+ 629              		.loc 1 176 0
+ 630 0018 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 631 001a 0F2B     		cmp	r3, #15
+ 632 001c 00F2C080 		bhi	.L38
+ 633 0020 01A2     		adr	r2, .L40
+ 634 0022 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 635 0026 00BF     		.p2align 2
+ 636              	.L40:
+ 637 0028 69000000 		.word	.L39+1
+ 638 002c 6F000000 		.word	.L41+1
+ 639 0030 9B000000 		.word	.L42+1
+ 640 0034 8F000000 		.word	.L43+1
+ 641 0038 A9000000 		.word	.L44+1
+ 642 003c B5000000 		.word	.L45+1
+ 643 0040 C3000000 		.word	.L46+1
+ 644 0044 E9000000 		.word	.L47+1
+ 645 0048 0F010000 		.word	.L48+1
+ 646 004c 49010000 		.word	.L49+1
+ 647 0050 4F010000 		.word	.L50+1
+ 648 0054 57010000 		.word	.L51+1
+ 649 0058 A5010000 		.word	.L62+1
+ 650 005c 5F010000 		.word	.L53+1
+ 651 0060 6D010000 		.word	.L54+1
+ 652 0064 87010000 		.word	.L55+1
+ 653              		.p2align 1
+ 654              	.L39:
+ 177:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 178:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_RESET_WIZCHIP:
+ 179:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          wizchip_sw_reset();
+ 655              		.loc 1 179 0
+ 656 0068 FFF7FEFF 		bl	wizchip_sw_reset
+ 180:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 657              		.loc 1 180 0
+ 658 006c 9BE0     		b	.L56
+ 659              	.L41:
+ 181:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_INIT_WIZCHIP:
+ 182:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          if(arg != 0) 
+ 660              		.loc 1 182 0
+ 661 006e 3B68     		ldr	r3, [r7]
+ 662 0070 002B     		cmp	r3, #0
+ 663 0072 04D0     		beq	.L57
+ 183:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          {
+ 184:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****             ptmp[0] = (uint8_t*)arg;
+ 664              		.loc 1 184 0
+ 665 0074 3B68     		ldr	r3, [r7]
+ 666 0076 FB60     		str	r3, [r7, #12]
+ 185:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****             ptmp[1] = ptmp[0] + _WIZCHIP_SOCK_NUM_;
+ 667              		.loc 1 185 0
+ 668 0078 FB68     		ldr	r3, [r7, #12]
+ 669 007a 0833     		adds	r3, r3, #8
+ 670 007c 3B61     		str	r3, [r7, #16]
+ 671              	.L57:
+ 186:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          }
+ 187:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          return wizchip_init(ptmp[0], ptmp[1]);;
+ 672              		.loc 1 187 0
+ 673 007e FA68     		ldr	r2, [r7, #12]
+ 674 0080 3B69     		ldr	r3, [r7, #16]
+ 675 0082 1046     		mov	r0, r2
+ 676 0084 1946     		mov	r1, r3
+ 677 0086 FFF7FEFF 		bl	wizchip_init
+ 678 008a 0346     		mov	r3, r0
+ 679 008c 8CE0     		b	.L61
+ 680              	.L43:
+ 188:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_CLR_INTERRUPT:
+ 189:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          wizchip_clrinterrupt(*((intr_kind*)arg));
+ 681              		.loc 1 189 0
+ 682 008e 3B68     		ldr	r3, [r7]
+ 683 0090 1B88     		ldrh	r3, [r3]
+ 684 0092 1846     		mov	r0, r3
+ 685 0094 FFF7FEFF 		bl	wizchip_clrinterrupt
+ 190:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 686              		.loc 1 190 0
+ 687 0098 85E0     		b	.L56
+ 688              	.L42:
+ 191:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_GET_INTERRUPT:
+ 192:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****         *((intr_kind*)arg) = wizchip_getinterrupt();
+ 689              		.loc 1 192 0
+ 690 009a FFF7FEFF 		bl	wizchip_getinterrupt
+ 691 009e 0346     		mov	r3, r0
+ 692 00a0 1A46     		mov	r2, r3
+ 693 00a2 3B68     		ldr	r3, [r7]
+ 694 00a4 1A80     		strh	r2, [r3]	@ movhi
+ 193:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 695              		.loc 1 193 0
+ 696 00a6 7EE0     		b	.L56
+ 697              	.L44:
+ 194:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_SET_INTRMASK:
+ 195:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          wizchip_setinterruptmask(*((intr_kind*)arg));
+ 698              		.loc 1 195 0
+ 699 00a8 3B68     		ldr	r3, [r7]
+ 700 00aa 1B88     		ldrh	r3, [r3]
+ 701 00ac 1846     		mov	r0, r3
+ 702 00ae FFF7FEFF 		bl	wizchip_setinterruptmask
+ 196:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;         
+ 703              		.loc 1 196 0
+ 704 00b2 78E0     		b	.L56
+ 705              	.L45:
+ 197:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_GET_INTRMASK:
+ 198:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          *((intr_kind*)arg) = wizchip_getinterruptmask();
+ 706              		.loc 1 198 0
+ 707 00b4 FFF7FEFF 		bl	wizchip_getinterruptmask
+ 708 00b8 0346     		mov	r3, r0
+ 709 00ba 1A46     		mov	r2, r3
+ 710 00bc 3B68     		ldr	r3, [r7]
+ 711 00be 1A80     		strh	r2, [r3]	@ movhi
+ 199:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 712              		.loc 1 199 0
+ 713 00c0 71E0     		b	.L56
+ 714              	.L46:
+ 200:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    #if _WIZCHIP_ > 5100
+ 201:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_SET_INTRTIME:
+ 202:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          setINTLEVEL(*(uint16_t*)arg);
+ 715              		.loc 1 202 0
+ 716 00c2 3B68     		ldr	r3, [r7]
+ 717 00c4 1B88     		ldrh	r3, [r3]
+ 718 00c6 1B0A     		lsrs	r3, r3, #8
+ 719 00c8 9BB2     		uxth	r3, r3
+ 720 00ca DBB2     		uxtb	r3, r3
+ 721 00cc 4FF49850 		mov	r0, #4864
+ 722 00d0 1946     		mov	r1, r3
+ 723 00d2 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 724 00d6 3B68     		ldr	r3, [r7]
+ 725 00d8 1B88     		ldrh	r3, [r3]
+ 726 00da DBB2     		uxtb	r3, r3
+ 727 00dc 4FF4A050 		mov	r0, #5120
+ 728 00e0 1946     		mov	r1, r3
+ 729 00e2 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 203:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 730              		.loc 1 203 0
+ 731 00e6 5EE0     		b	.L56
+ 732              	.L47:
+ 204:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_GET_INTRTIME:
+ 205:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          *(uint16_t*)arg = getINTLEVEL();
+ 733              		.loc 1 205 0
+ 734 00e8 4FF49850 		mov	r0, #4864
+ 735 00ec FFF7FEFF 		bl	WIZCHIP_READ
+ 736 00f0 0346     		mov	r3, r0
+ 737 00f2 9BB2     		uxth	r3, r3
+ 738 00f4 1B02     		lsls	r3, r3, #8
+ 739 00f6 9CB2     		uxth	r4, r3
+ 740 00f8 4FF4A050 		mov	r0, #5120
+ 741 00fc FFF7FEFF 		bl	WIZCHIP_READ
+ 742 0100 0346     		mov	r3, r0
+ 743 0102 9BB2     		uxth	r3, r3
+ 744 0104 2344     		add	r3, r3, r4
+ 745 0106 9AB2     		uxth	r2, r3
+ 746 0108 3B68     		ldr	r3, [r7]
+ 747 010a 1A80     		strh	r2, [r3]	@ movhi
+ 206:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 748              		.loc 1 206 0
+ 749 010c 4BE0     		b	.L56
+ 750              	.L48:
+ 207:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    #endif
+ 208:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_GET_ID:
+ 209:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          ((uint8_t*)arg)[0] = WIZCHIP.id[0];
+ 751              		.loc 1 209 0
+ 752 010e 294B     		ldr	r3, .L63
+ 753 0110 9A78     		ldrb	r2, [r3, #2]	@ zero_extendqisi2
+ 754 0112 3B68     		ldr	r3, [r7]
+ 755 0114 1A70     		strb	r2, [r3]
+ 210:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          ((uint8_t*)arg)[1] = WIZCHIP.id[1];
+ 756              		.loc 1 210 0
+ 757 0116 3B68     		ldr	r3, [r7]
+ 758 0118 0133     		adds	r3, r3, #1
+ 759 011a 264A     		ldr	r2, .L63
+ 760 011c D278     		ldrb	r2, [r2, #3]	@ zero_extendqisi2
+ 761 011e 1A70     		strb	r2, [r3]
+ 211:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          ((uint8_t*)arg)[2] = WIZCHIP.id[2];
+ 762              		.loc 1 211 0
+ 763 0120 3B68     		ldr	r3, [r7]
+ 764 0122 0233     		adds	r3, r3, #2
+ 765 0124 234A     		ldr	r2, .L63
+ 766 0126 1279     		ldrb	r2, [r2, #4]	@ zero_extendqisi2
+ 767 0128 1A70     		strb	r2, [r3]
+ 212:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          ((uint8_t*)arg)[3] = WIZCHIP.id[3];
+ 768              		.loc 1 212 0
+ 769 012a 3B68     		ldr	r3, [r7]
+ 770 012c 0333     		adds	r3, r3, #3
+ 771 012e 214A     		ldr	r2, .L63
+ 772 0130 5279     		ldrb	r2, [r2, #5]	@ zero_extendqisi2
+ 773 0132 1A70     		strb	r2, [r3]
+ 213:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          ((uint8_t*)arg)[4] = WIZCHIP.id[4];
+ 774              		.loc 1 213 0
+ 775 0134 3B68     		ldr	r3, [r7]
+ 776 0136 0433     		adds	r3, r3, #4
+ 777 0138 1E4A     		ldr	r2, .L63
+ 778 013a 9279     		ldrb	r2, [r2, #6]	@ zero_extendqisi2
+ 779 013c 1A70     		strb	r2, [r3]
+ 214:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          ((uint8_t*)arg)[5] = 0;
+ 780              		.loc 1 214 0
+ 781 013e 3B68     		ldr	r3, [r7]
+ 782 0140 0533     		adds	r3, r3, #5
+ 783 0142 0022     		movs	r2, #0
+ 784 0144 1A70     		strb	r2, [r3]
+ 215:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 785              		.loc 1 215 0
+ 786 0146 2EE0     		b	.L56
+ 787              	.L49:
+ 216:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    #if _WIZCHIP_ ==  5500
+ 217:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_RESET_PHY:
+ 218:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          wizphy_reset();
+ 788              		.loc 1 218 0
+ 789 0148 FFF7FEFF 		bl	wizphy_reset
+ 219:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 790              		.loc 1 219 0
+ 791 014c 2BE0     		b	.L56
+ 792              	.L50:
+ 220:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_SET_PHYCONF:
+ 221:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          wizphy_setphyconf((wiz_PhyConf*)arg);
+ 793              		.loc 1 221 0
+ 794 014e 3868     		ldr	r0, [r7]
+ 795 0150 FFF7FEFF 		bl	wizphy_setphyconf
+ 222:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 796              		.loc 1 222 0
+ 797 0154 27E0     		b	.L56
+ 798              	.L51:
+ 223:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_GET_PHYCONF:
+ 224:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          wizphy_getphyconf((wiz_PhyConf*)arg);
+ 799              		.loc 1 224 0
+ 800 0156 3868     		ldr	r0, [r7]
+ 801 0158 FFF7FEFF 		bl	wizphy_getphyconf
+ 225:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 802              		.loc 1 225 0
+ 803 015c 23E0     		b	.L56
+ 804              	.L53:
+ 226:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_GET_PHYSTATUS:
+ 227:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 228:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_SET_PHYPOWMODE:
+ 229:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          return wizphy_setphypmode(*(uint8_t*)arg);
+ 805              		.loc 1 229 0
+ 806 015e 3B68     		ldr	r3, [r7]
+ 807 0160 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 808 0162 1846     		mov	r0, r3
+ 809 0164 FFF7FEFF 		bl	wizphy_setphypmode
+ 810 0168 0346     		mov	r3, r0
+ 811 016a 1DE0     		b	.L61
+ 812              	.L54:
+ 230:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    #endif
+ 231:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_GET_PHYPOWMODE:
+ 232:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          tmp = wizphy_getphypmode();
+ 813              		.loc 1 232 0
+ 814 016c FFF7FEFF 		bl	wizphy_getphypmode
+ 815 0170 0346     		mov	r3, r0
+ 816 0172 FB75     		strb	r3, [r7, #23]
+ 233:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          if((int8_t)tmp == -1) return -1;
+ 817              		.loc 1 233 0
+ 818 0174 FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 819 0176 FF2B     		cmp	r3, #255
+ 820 0178 01D1     		bne	.L59
+ 821              		.loc 1 233 0 is_stmt 0 discriminator 1
+ 822 017a FF23     		movs	r3, #255
+ 823 017c 14E0     		b	.L61
+ 824              	.L59:
+ 234:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          *(uint8_t*)arg = tmp;
+ 825              		.loc 1 234 0 is_stmt 1
+ 826 017e 3B68     		ldr	r3, [r7]
+ 827 0180 FA7D     		ldrb	r2, [r7, #23]
+ 828 0182 1A70     		strb	r2, [r3]
+ 235:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 829              		.loc 1 235 0
+ 830 0184 0FE0     		b	.L56
+ 831              	.L55:
+ 236:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_GET_PHYLINK:
+ 237:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          tmp = wizphy_getphylink();
+ 832              		.loc 1 237 0
+ 833 0186 FFF7FEFF 		bl	wizphy_getphylink
+ 834 018a 0346     		mov	r3, r0
+ 835 018c FB75     		strb	r3, [r7, #23]
+ 238:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          if((int8_t)tmp == -1) return -1;
+ 836              		.loc 1 238 0
+ 837 018e FB7D     		ldrb	r3, [r7, #23]	@ zero_extendqisi2
+ 838 0190 FF2B     		cmp	r3, #255
+ 839 0192 01D1     		bne	.L60
+ 840              		.loc 1 238 0 is_stmt 0 discriminator 1
+ 841 0194 FF23     		movs	r3, #255
+ 842 0196 07E0     		b	.L61
+ 843              	.L60:
+ 239:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          *(uint8_t*)arg = tmp;
+ 844              		.loc 1 239 0 is_stmt 1
+ 845 0198 3B68     		ldr	r3, [r7]
+ 846 019a FA7D     		ldrb	r2, [r7, #23]
+ 847 019c 1A70     		strb	r2, [r3]
+ 240:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 848              		.loc 1 240 0
+ 849 019e 02E0     		b	.L56
+ 850              	.L38:
+ 241:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       default:
+ 242:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          return -1;
+ 851              		.loc 1 242 0
+ 852 01a0 FF23     		movs	r3, #255
+ 853 01a2 01E0     		b	.L61
+ 854              	.L62:
+ 227:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CW_SET_PHYPOWMODE:
+ 855              		.loc 1 227 0
+ 856 01a4 00BF     		nop
+ 857              	.L56:
+ 243:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 244:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    return 0;
+ 858              		.loc 1 244 0
+ 859 01a6 0023     		movs	r3, #0
+ 860              	.L61:
+ 861 01a8 5BB2     		sxtb	r3, r3
+ 245:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 862              		.loc 1 245 0 discriminator 1
+ 863 01aa 1846     		mov	r0, r3
+ 864 01ac 1C37     		adds	r7, r7, #28
+ 865              		.cfi_def_cfa_offset 12
+ 866 01ae BD46     		mov	sp, r7
+ 867              		.cfi_def_cfa_register 13
+ 868              		@ sp needed
+ 869 01b0 90BD     		pop	{r4, r7, pc}
+ 870              	.L64:
+ 871 01b2 00BF     		.align	2
+ 872              	.L63:
+ 873 01b4 00000000 		.word	WIZCHIP
+ 874              		.cfi_endproc
+ 875              	.LFE12:
+ 877              		.section	.text.ctlnetwork,"ax",%progbits
+ 878              		.align	2
+ 879              		.global	ctlnetwork
+ 880              		.thumb
+ 881              		.thumb_func
+ 883              	ctlnetwork:
+ 884              	.LFB13:
+ 246:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 247:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 248:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** int8_t ctlnetwork(ctlnetwork_type cntype, void* arg)
+ 249:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 885              		.loc 1 249 0
+ 886              		.cfi_startproc
+ 887              		@ args = 0, pretend = 0, frame = 8
+ 888              		@ frame_needed = 1, uses_anonymous_args = 0
+ 889 0000 80B5     		push	{r7, lr}
+ 890              		.cfi_def_cfa_offset 8
+ 891              		.cfi_offset 7, -8
+ 892              		.cfi_offset 14, -4
+ 893 0002 82B0     		sub	sp, sp, #8
+ 894              		.cfi_def_cfa_offset 16
+ 895 0004 00AF     		add	r7, sp, #0
+ 896              		.cfi_def_cfa_register 7
+ 897 0006 0346     		mov	r3, r0
+ 898 0008 3960     		str	r1, [r7]
+ 899 000a FB71     		strb	r3, [r7, #7]
+ 250:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    
+ 251:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    switch(cntype)
+ 900              		.loc 1 251 0
+ 901 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 902 000e 052B     		cmp	r3, #5
+ 903 0010 2CD8     		bhi	.L66
+ 904 0012 01A2     		adr	r2, .L68
+ 905 0014 52F823F0 		ldr	pc, [r2, r3, lsl #2]
+ 906              		.p2align 2
+ 907              	.L68:
+ 908 0018 31000000 		.word	.L67+1
+ 909 001c 39000000 		.word	.L69+1
+ 910 0020 41000000 		.word	.L70+1
+ 911 0024 4F000000 		.word	.L71+1
+ 912 0028 5D000000 		.word	.L72+1
+ 913 002c 65000000 		.word	.L73+1
+ 914              		.p2align 1
+ 915              	.L67:
+ 252:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 253:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CN_SET_NETINFO:
+ 254:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          wizchip_setnetinfo((wiz_NetInfo*)arg);
+ 916              		.loc 1 254 0
+ 917 0030 3868     		ldr	r0, [r7]
+ 918 0032 FFF7FEFF 		bl	wizchip_setnetinfo
+ 255:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 919              		.loc 1 255 0
+ 920 0036 1BE0     		b	.L74
+ 921              	.L69:
+ 256:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CN_GET_NETINFO:
+ 257:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          wizchip_getnetinfo((wiz_NetInfo*)arg);
+ 922              		.loc 1 257 0
+ 923 0038 3868     		ldr	r0, [r7]
+ 924 003a FFF7FEFF 		bl	wizchip_getnetinfo
+ 258:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 925              		.loc 1 258 0
+ 926 003e 17E0     		b	.L74
+ 927              	.L70:
+ 259:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CN_SET_NETMODE:
+ 260:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          return wizchip_setnetmode(*(netmode_type*)arg);
+ 928              		.loc 1 260 0
+ 929 0040 3B68     		ldr	r3, [r7]
+ 930 0042 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 931 0044 1846     		mov	r0, r3
+ 932 0046 FFF7FEFF 		bl	wizchip_setnetmode
+ 933 004a 0346     		mov	r3, r0
+ 934 004c 11E0     		b	.L75
+ 935              	.L71:
+ 261:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CN_GET_NETMODE:
+ 262:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          *(netmode_type*)arg = wizchip_getnetmode();
+ 936              		.loc 1 262 0
+ 937 004e FFF7FEFF 		bl	wizchip_getnetmode
+ 938 0052 0346     		mov	r3, r0
+ 939 0054 1A46     		mov	r2, r3
+ 940 0056 3B68     		ldr	r3, [r7]
+ 941 0058 1A70     		strb	r2, [r3]
+ 263:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 942              		.loc 1 263 0
+ 943 005a 09E0     		b	.L74
+ 944              	.L72:
+ 264:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CN_SET_TIMEOUT:
+ 265:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          wizchip_settimeout((wiz_NetTimeout*)arg);
+ 945              		.loc 1 265 0
+ 946 005c 3868     		ldr	r0, [r7]
+ 947 005e FFF7FEFF 		bl	wizchip_settimeout
+ 266:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 948              		.loc 1 266 0
+ 949 0062 05E0     		b	.L74
+ 950              	.L73:
+ 267:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case CN_GET_TIMEOUT:
+ 268:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          wizchip_gettimeout((wiz_NetTimeout*)arg);
+ 951              		.loc 1 268 0
+ 952 0064 3868     		ldr	r0, [r7]
+ 953 0066 FFF7FEFF 		bl	wizchip_gettimeout
+ 269:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 954              		.loc 1 269 0
+ 955 006a 01E0     		b	.L74
+ 956              	.L66:
+ 270:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       default:
+ 271:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          return -1;
+ 957              		.loc 1 271 0
+ 958 006c FF23     		movs	r3, #255
+ 959 006e 00E0     		b	.L75
+ 960              	.L74:
+ 272:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 273:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    return 0;
+ 961              		.loc 1 273 0
+ 962 0070 0023     		movs	r3, #0
+ 963              	.L75:
+ 964 0072 5BB2     		sxtb	r3, r3
+ 274:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 965              		.loc 1 274 0
+ 966 0074 1846     		mov	r0, r3
+ 967 0076 0837     		adds	r7, r7, #8
+ 968              		.cfi_def_cfa_offset 8
+ 969 0078 BD46     		mov	sp, r7
+ 970              		.cfi_def_cfa_register 13
+ 971              		@ sp needed
+ 972 007a 80BD     		pop	{r7, pc}
+ 973              		.cfi_endproc
+ 974              	.LFE13:
+ 976              		.section	.text.wizchip_sw_reset,"ax",%progbits
+ 977              		.align	2
+ 978              		.global	wizchip_sw_reset
+ 979              		.thumb
+ 980              		.thumb_func
+ 982              	wizchip_sw_reset:
+ 983              	.LFB14:
+ 275:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 276:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void wizchip_sw_reset(void)
+ 277:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 984              		.loc 1 277 0
+ 985              		.cfi_startproc
+ 986              		@ args = 0, pretend = 0, frame = 24
+ 987              		@ frame_needed = 1, uses_anonymous_args = 0
+ 988 0000 80B5     		push	{r7, lr}
+ 989              		.cfi_def_cfa_offset 8
+ 990              		.cfi_offset 7, -8
+ 991              		.cfi_offset 14, -4
+ 992 0002 86B0     		sub	sp, sp, #24
+ 993              		.cfi_def_cfa_offset 32
+ 994 0004 00AF     		add	r7, sp, #0
+ 995              		.cfi_def_cfa_register 7
+ 278:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t gw[4], sn[4], sip[4];
+ 279:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t mac[6];
+ 280:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    getSHAR(mac);
+ 996              		.loc 1 280 0
+ 997 0006 3B1D     		adds	r3, r7, #4
+ 998 0008 4FF41060 		mov	r0, #2304
+ 999 000c 1946     		mov	r1, r3
+ 1000 000e 0622     		movs	r2, #6
+ 1001 0010 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 281:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    getGAR(gw);  getSUBR(sn);  getSIPR(sip);
+ 1002              		.loc 1 281 0
+ 1003 0014 07F11403 		add	r3, r7, #20
+ 1004 0018 4FF48070 		mov	r0, #256
+ 1005 001c 1946     		mov	r1, r3
+ 1006 001e 0422     		movs	r2, #4
+ 1007 0020 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 1008 0024 07F11003 		add	r3, r7, #16
+ 1009 0028 4FF4A060 		mov	r0, #1280
+ 1010 002c 1946     		mov	r1, r3
+ 1011 002e 0422     		movs	r2, #4
+ 1012 0030 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 1013 0034 07F10C03 		add	r3, r7, #12
+ 1014 0038 4FF47060 		mov	r0, #3840
+ 1015 003c 1946     		mov	r1, r3
+ 1016 003e 0422     		movs	r2, #4
+ 1017 0040 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 282:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setMR(MR_RST);
+ 1018              		.loc 1 282 0
+ 1019 0044 0020     		movs	r0, #0
+ 1020 0046 8021     		movs	r1, #128
+ 1021 0048 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 283:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    getMR(); // for delay
+ 1022              		.loc 1 283 0
+ 1023 004c 0020     		movs	r0, #0
+ 1024 004e FFF7FEFF 		bl	WIZCHIP_READ
+ 284:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setSHAR(mac);
+ 1025              		.loc 1 284 0
+ 1026 0052 3B1D     		adds	r3, r7, #4
+ 1027 0054 4FF41060 		mov	r0, #2304
+ 1028 0058 1946     		mov	r1, r3
+ 1029 005a 0622     		movs	r2, #6
+ 1030 005c FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 285:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setGAR(gw);
+ 1031              		.loc 1 285 0
+ 1032 0060 07F11403 		add	r3, r7, #20
+ 1033 0064 4FF48070 		mov	r0, #256
+ 1034 0068 1946     		mov	r1, r3
+ 1035 006a 0422     		movs	r2, #4
+ 1036 006c FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 286:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setSUBR(sn);
+ 1037              		.loc 1 286 0
+ 1038 0070 07F11003 		add	r3, r7, #16
+ 1039 0074 4FF4A060 		mov	r0, #1280
+ 1040 0078 1946     		mov	r1, r3
+ 1041 007a 0422     		movs	r2, #4
+ 1042 007c FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 287:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setSIPR(sip);
+ 1043              		.loc 1 287 0
+ 1044 0080 07F10C03 		add	r3, r7, #12
+ 1045 0084 4FF47060 		mov	r0, #3840
+ 1046 0088 1946     		mov	r1, r3
+ 1047 008a 0422     		movs	r2, #4
+ 1048 008c FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 288:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 1049              		.loc 1 288 0
+ 1050 0090 1837     		adds	r7, r7, #24
+ 1051              		.cfi_def_cfa_offset 8
+ 1052 0092 BD46     		mov	sp, r7
+ 1053              		.cfi_def_cfa_register 13
+ 1054              		@ sp needed
+ 1055 0094 80BD     		pop	{r7, pc}
+ 1056              		.cfi_endproc
+ 1057              	.LFE14:
+ 1059 0096 00BF     		.section	.text.wizchip_init,"ax",%progbits
+ 1060              		.align	2
+ 1061              		.global	wizchip_init
+ 1062              		.thumb
+ 1063              		.thumb_func
+ 1065              	wizchip_init:
+ 1066              	.LFB15:
+ 289:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 290:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** int8_t wizchip_init(uint8_t* txsize, uint8_t* rxsize)
+ 291:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 1067              		.loc 1 291 0
+ 1068              		.cfi_startproc
+ 1069              		@ args = 0, pretend = 0, frame = 16
+ 1070              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1071 0000 80B5     		push	{r7, lr}
+ 1072              		.cfi_def_cfa_offset 8
+ 1073              		.cfi_offset 7, -8
+ 1074              		.cfi_offset 14, -4
+ 1075 0002 84B0     		sub	sp, sp, #16
+ 1076              		.cfi_def_cfa_offset 24
+ 1077 0004 00AF     		add	r7, sp, #0
+ 1078              		.cfi_def_cfa_register 7
+ 1079 0006 7860     		str	r0, [r7, #4]
+ 1080 0008 3960     		str	r1, [r7]
+ 292:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    int8_t i;
+ 293:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    int8_t tmp = 0;
+ 1081              		.loc 1 293 0
+ 1082 000a 0023     		movs	r3, #0
+ 1083 000c BB73     		strb	r3, [r7, #14]
+ 294:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    wizchip_sw_reset();
+ 1084              		.loc 1 294 0
+ 1085 000e FFF7FEFF 		bl	wizchip_sw_reset
+ 295:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if(txsize)
+ 1086              		.loc 1 295 0
+ 1087 0012 7B68     		ldr	r3, [r7, #4]
+ 1088 0014 002B     		cmp	r3, #0
+ 1089 0016 39D0     		beq	.L78
+ 296:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 297:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       tmp = 0;
+ 1090              		.loc 1 297 0
+ 1091 0018 0023     		movs	r3, #0
+ 1092 001a BB73     		strb	r3, [r7, #14]
+ 298:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1093              		.loc 1 298 0
+ 1094 001c 0023     		movs	r3, #0
+ 1095 001e FB73     		strb	r3, [r7, #15]
+ 1096 0020 0DE0     		b	.L79
+ 1097              	.L80:
+ 299:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          tmp += txsize[i];
+ 1098              		.loc 1 299 0 discriminator 3
+ 1099 0022 97F90F30 		ldrsb	r3, [r7, #15]
+ 1100 0026 7A68     		ldr	r2, [r7, #4]
+ 1101 0028 1344     		add	r3, r3, r2
+ 1102 002a 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 1103 002c BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 1104 002e 1344     		add	r3, r3, r2
+ 1105 0030 DBB2     		uxtb	r3, r3
+ 1106 0032 BB73     		strb	r3, [r7, #14]
+ 298:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1107              		.loc 1 298 0 discriminator 3
+ 1108 0034 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1109 0036 DBB2     		uxtb	r3, r3
+ 1110 0038 0133     		adds	r3, r3, #1
+ 1111 003a DBB2     		uxtb	r3, r3
+ 1112 003c FB73     		strb	r3, [r7, #15]
+ 1113              	.L79:
+ 298:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1114              		.loc 1 298 0 is_stmt 0 discriminator 1
+ 1115 003e 97F90F30 		ldrsb	r3, [r7, #15]
+ 1116 0042 072B     		cmp	r3, #7
+ 1117 0044 EDDD     		ble	.L80
+ 300:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       if(tmp > 16) return -1;
+ 1118              		.loc 1 300 0 is_stmt 1
+ 1119 0046 97F90E30 		ldrsb	r3, [r7, #14]
+ 1120 004a 102B     		cmp	r3, #16
+ 1121 004c 01DD     		ble	.L81
+ 1122              		.loc 1 300 0 is_stmt 0 discriminator 1
+ 1123 004e FF23     		movs	r3, #255
+ 1124 0050 5AE0     		b	.L82
+ 1125              	.L81:
+ 301:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1126              		.loc 1 301 0 is_stmt 1
+ 1127 0052 0023     		movs	r3, #0
+ 1128 0054 FB73     		strb	r3, [r7, #15]
+ 1129 0056 15E0     		b	.L83
+ 1130              	.L84:
+ 302:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          setSn_TXBUF_SIZE(i, txsize[i]);
+ 1131              		.loc 1 302 0 discriminator 3
+ 1132 0058 97F90F30 		ldrsb	r3, [r7, #15]
+ 1133 005c 9B00     		lsls	r3, r3, #2
+ 1134 005e 0133     		adds	r3, r3, #1
+ 1135 0060 DB00     		lsls	r3, r3, #3
+ 1136 0062 03F5F853 		add	r3, r3, #7936
+ 1137 0066 1946     		mov	r1, r3
+ 1138 0068 97F90F30 		ldrsb	r3, [r7, #15]
+ 1139 006c 7A68     		ldr	r2, [r7, #4]
+ 1140 006e 1344     		add	r3, r3, r2
+ 1141 0070 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1142 0072 0846     		mov	r0, r1
+ 1143 0074 1946     		mov	r1, r3
+ 1144 0076 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 301:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1145              		.loc 1 301 0 discriminator 3
+ 1146 007a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1147 007c DBB2     		uxtb	r3, r3
+ 1148 007e 0133     		adds	r3, r3, #1
+ 1149 0080 DBB2     		uxtb	r3, r3
+ 1150 0082 FB73     		strb	r3, [r7, #15]
+ 1151              	.L83:
+ 301:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1152              		.loc 1 301 0 is_stmt 0 discriminator 1
+ 1153 0084 97F90F30 		ldrsb	r3, [r7, #15]
+ 1154 0088 072B     		cmp	r3, #7
+ 1155 008a E5DD     		ble	.L84
+ 1156              	.L78:
+ 303:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 304:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if(rxsize)
+ 1157              		.loc 1 304 0 is_stmt 1
+ 1158 008c 3B68     		ldr	r3, [r7]
+ 1159 008e 002B     		cmp	r3, #0
+ 1160 0090 39D0     		beq	.L85
+ 305:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 306:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       tmp = 0;
+ 1161              		.loc 1 306 0
+ 1162 0092 0023     		movs	r3, #0
+ 1163 0094 BB73     		strb	r3, [r7, #14]
+ 307:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1164              		.loc 1 307 0
+ 1165 0096 0023     		movs	r3, #0
+ 1166 0098 FB73     		strb	r3, [r7, #15]
+ 1167 009a 0DE0     		b	.L86
+ 1168              	.L87:
+ 308:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          tmp += rxsize[i];
+ 1169              		.loc 1 308 0 discriminator 3
+ 1170 009c 97F90F30 		ldrsb	r3, [r7, #15]
+ 1171 00a0 3A68     		ldr	r2, [r7]
+ 1172 00a2 1344     		add	r3, r3, r2
+ 1173 00a4 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 1174 00a6 BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 1175 00a8 1344     		add	r3, r3, r2
+ 1176 00aa DBB2     		uxtb	r3, r3
+ 1177 00ac BB73     		strb	r3, [r7, #14]
+ 307:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1178              		.loc 1 307 0 discriminator 3
+ 1179 00ae FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1180 00b0 DBB2     		uxtb	r3, r3
+ 1181 00b2 0133     		adds	r3, r3, #1
+ 1182 00b4 DBB2     		uxtb	r3, r3
+ 1183 00b6 FB73     		strb	r3, [r7, #15]
+ 1184              	.L86:
+ 307:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1185              		.loc 1 307 0 is_stmt 0 discriminator 1
+ 1186 00b8 97F90F30 		ldrsb	r3, [r7, #15]
+ 1187 00bc 072B     		cmp	r3, #7
+ 1188 00be EDDD     		ble	.L87
+ 309:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       if(tmp > 16) return -1;
+ 1189              		.loc 1 309 0 is_stmt 1
+ 1190 00c0 97F90E30 		ldrsb	r3, [r7, #14]
+ 1191 00c4 102B     		cmp	r3, #16
+ 1192 00c6 01DD     		ble	.L88
+ 1193              		.loc 1 309 0 is_stmt 0 discriminator 1
+ 1194 00c8 FF23     		movs	r3, #255
+ 1195 00ca 1DE0     		b	.L82
+ 1196              	.L88:
+ 310:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1197              		.loc 1 310 0 is_stmt 1
+ 1198 00cc 0023     		movs	r3, #0
+ 1199 00ce FB73     		strb	r3, [r7, #15]
+ 1200 00d0 15E0     		b	.L89
+ 1201              	.L90:
+ 311:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          setSn_RXBUF_SIZE(i, rxsize[i]);
+ 1202              		.loc 1 311 0 discriminator 3
+ 1203 00d2 97F90F30 		ldrsb	r3, [r7, #15]
+ 1204 00d6 9B00     		lsls	r3, r3, #2
+ 1205 00d8 0133     		adds	r3, r3, #1
+ 1206 00da DB00     		lsls	r3, r3, #3
+ 1207 00dc 03F5F053 		add	r3, r3, #7680
+ 1208 00e0 1946     		mov	r1, r3
+ 1209 00e2 97F90F30 		ldrsb	r3, [r7, #15]
+ 1210 00e6 3A68     		ldr	r2, [r7]
+ 1211 00e8 1344     		add	r3, r3, r2
+ 1212 00ea 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1213 00ec 0846     		mov	r0, r1
+ 1214 00ee 1946     		mov	r1, r3
+ 1215 00f0 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 310:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1216              		.loc 1 310 0 discriminator 3
+ 1217 00f4 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1218 00f6 DBB2     		uxtb	r3, r3
+ 1219 00f8 0133     		adds	r3, r3, #1
+ 1220 00fa DBB2     		uxtb	r3, r3
+ 1221 00fc FB73     		strb	r3, [r7, #15]
+ 1222              	.L89:
+ 310:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       for(i = 0 ; i < _WIZCHIP_SOCK_NUM_; i++)
+ 1223              		.loc 1 310 0 is_stmt 0 discriminator 1
+ 1224 00fe 97F90F30 		ldrsb	r3, [r7, #15]
+ 1225 0102 072B     		cmp	r3, #7
+ 1226 0104 E5DD     		ble	.L90
+ 1227              	.L85:
+ 312:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 313:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    return 0;
+ 1228              		.loc 1 313 0 is_stmt 1
+ 1229 0106 0023     		movs	r3, #0
+ 1230              	.L82:
+ 1231 0108 5BB2     		sxtb	r3, r3
+ 314:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 1232              		.loc 1 314 0
+ 1233 010a 1846     		mov	r0, r3
+ 1234 010c 1037     		adds	r7, r7, #16
+ 1235              		.cfi_def_cfa_offset 8
+ 1236 010e BD46     		mov	sp, r7
+ 1237              		.cfi_def_cfa_register 13
+ 1238              		@ sp needed
+ 1239 0110 80BD     		pop	{r7, pc}
+ 1240              		.cfi_endproc
+ 1241              	.LFE15:
+ 1243 0112 00BF     		.section	.text.wizchip_clrinterrupt,"ax",%progbits
+ 1244              		.align	2
+ 1245              		.global	wizchip_clrinterrupt
+ 1246              		.thumb
+ 1247              		.thumb_func
+ 1249              	wizchip_clrinterrupt:
+ 1250              	.LFB16:
+ 315:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 316:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void wizchip_clrinterrupt(intr_kind intr)
+ 317:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 1251              		.loc 1 317 0
+ 1252              		.cfi_startproc
+ 1253              		@ args = 0, pretend = 0, frame = 16
+ 1254              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1255 0000 80B5     		push	{r7, lr}
+ 1256              		.cfi_def_cfa_offset 8
+ 1257              		.cfi_offset 7, -8
+ 1258              		.cfi_offset 14, -4
+ 1259 0002 84B0     		sub	sp, sp, #16
+ 1260              		.cfi_def_cfa_offset 24
+ 1261 0004 00AF     		add	r7, sp, #0
+ 1262              		.cfi_def_cfa_register 7
+ 1263 0006 0346     		mov	r3, r0
+ 1264 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 318:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t ir  = (uint8_t)intr;
+ 1265              		.loc 1 318 0
+ 1266 000a FB88     		ldrh	r3, [r7, #6]	@ movhi
+ 1267 000c FB73     		strb	r3, [r7, #15]
+ 319:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t sir = (uint8_t)((uint16_t)intr >> 8);
+ 1268              		.loc 1 319 0
+ 1269 000e FB88     		ldrh	r3, [r7, #6]
+ 1270 0010 1B0A     		lsrs	r3, r3, #8
+ 1271 0012 9BB2     		uxth	r3, r3
+ 1272 0014 BB73     		strb	r3, [r7, #14]
+ 320:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ < 5500
+ 321:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    ir |= (1<<4); // IK_WOL
+ 322:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif
+ 323:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ == 5200
+ 324:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    ir |= (1 << 6);
+ 325:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif
+ 326:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    
+ 327:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ < 5200
+ 328:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    sir &= 0x0F;
+ 329:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif
+ 330:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 331:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ == 5100
+ 332:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    ir |= sir;
+ 333:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setIR(ir);
+ 334:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #else
+ 335:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setIR(ir);
+ 1273              		.loc 1 335 0
+ 1274 0016 FB7B     		ldrb	r3, [r7, #15]
+ 1275 0018 23F00F03 		bic	r3, r3, #15
+ 1276 001c DBB2     		uxtb	r3, r3
+ 1277 001e 4FF4A850 		mov	r0, #5376
+ 1278 0022 1946     		mov	r1, r3
+ 1279 0024 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 336:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setSIR(sir);
+ 1280              		.loc 1 336 0
+ 1281 0028 BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 1282 002a 4FF4B850 		mov	r0, #5888
+ 1283 002e 1946     		mov	r1, r3
+ 1284 0030 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 337:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif   
+ 338:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 1285              		.loc 1 338 0
+ 1286 0034 1037     		adds	r7, r7, #16
+ 1287              		.cfi_def_cfa_offset 8
+ 1288 0036 BD46     		mov	sp, r7
+ 1289              		.cfi_def_cfa_register 13
+ 1290              		@ sp needed
+ 1291 0038 80BD     		pop	{r7, pc}
+ 1292              		.cfi_endproc
+ 1293              	.LFE16:
+ 1295 003a 00BF     		.section	.text.wizchip_getinterrupt,"ax",%progbits
+ 1296              		.align	2
+ 1297              		.global	wizchip_getinterrupt
+ 1298              		.thumb
+ 1299              		.thumb_func
+ 1301              	wizchip_getinterrupt:
+ 1302              	.LFB17:
+ 339:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 340:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** intr_kind wizchip_getinterrupt(void)
+ 341:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 1303              		.loc 1 341 0
+ 1304              		.cfi_startproc
+ 1305              		@ args = 0, pretend = 0, frame = 8
+ 1306              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1307 0000 80B5     		push	{r7, lr}
+ 1308              		.cfi_def_cfa_offset 8
+ 1309              		.cfi_offset 7, -8
+ 1310              		.cfi_offset 14, -4
+ 1311 0002 82B0     		sub	sp, sp, #8
+ 1312              		.cfi_def_cfa_offset 16
+ 1313 0004 00AF     		add	r7, sp, #0
+ 1314              		.cfi_def_cfa_register 7
+ 342:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t ir  = 0;
+ 1315              		.loc 1 342 0
+ 1316 0006 0023     		movs	r3, #0
+ 1317 0008 FB71     		strb	r3, [r7, #7]
+ 343:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t sir = 0;
+ 1318              		.loc 1 343 0
+ 1319 000a 0023     		movs	r3, #0
+ 1320 000c BB71     		strb	r3, [r7, #6]
+ 344:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint16_t ret = 0;
+ 1321              		.loc 1 344 0
+ 1322 000e 0023     		movs	r3, #0
+ 1323 0010 BB80     		strh	r3, [r7, #4]	@ movhi
+ 345:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ == 5100
+ 346:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    ir = getIR();
+ 347:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    sir = ir 0x0F;
+ 348:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #else
+ 349:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    ir  = getIR();
+ 1324              		.loc 1 349 0
+ 1325 0012 4FF4A850 		mov	r0, #5376
+ 1326 0016 FFF7FEFF 		bl	WIZCHIP_READ
+ 1327 001a 0346     		mov	r3, r0
+ 1328 001c 23F00F03 		bic	r3, r3, #15
+ 1329 0020 FB71     		strb	r3, [r7, #7]
+ 350:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    sir = getSIR();
+ 1330              		.loc 1 350 0
+ 1331 0022 4FF4B850 		mov	r0, #5888
+ 1332 0026 FFF7FEFF 		bl	WIZCHIP_READ
+ 1333 002a 0346     		mov	r3, r0
+ 1334 002c BB71     		strb	r3, [r7, #6]
+ 351:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif         
+ 352:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 353:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ < 5500
+ 354:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    ir &= ~(1<<4); // IK_WOL
+ 355:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif
+ 356:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ == 5200
+ 357:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    ir &= ~(1 << 6);
+ 358:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif
+ 359:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****   ret = sir;
+ 1335              		.loc 1 359 0
+ 1336 002e BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1337 0030 BB80     		strh	r3, [r7, #4]	@ movhi
+ 360:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****   ret = (ret << 8) + ir;
+ 1338              		.loc 1 360 0
+ 1339 0032 BB88     		ldrh	r3, [r7, #4]	@ movhi
+ 1340 0034 1B02     		lsls	r3, r3, #8
+ 1341 0036 9AB2     		uxth	r2, r3
+ 1342 0038 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1343 003a 9BB2     		uxth	r3, r3
+ 1344 003c 1344     		add	r3, r3, r2
+ 1345 003e BB80     		strh	r3, [r7, #4]	@ movhi
+ 361:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****   return (intr_kind)ret;
+ 1346              		.loc 1 361 0
+ 1347 0040 BB88     		ldrh	r3, [r7, #4]
+ 362:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 1348              		.loc 1 362 0
+ 1349 0042 1846     		mov	r0, r3
+ 1350 0044 0837     		adds	r7, r7, #8
+ 1351              		.cfi_def_cfa_offset 8
+ 1352 0046 BD46     		mov	sp, r7
+ 1353              		.cfi_def_cfa_register 13
+ 1354              		@ sp needed
+ 1355 0048 80BD     		pop	{r7, pc}
+ 1356              		.cfi_endproc
+ 1357              	.LFE17:
+ 1359 004a 00BF     		.section	.text.wizchip_setinterruptmask,"ax",%progbits
+ 1360              		.align	2
+ 1361              		.global	wizchip_setinterruptmask
+ 1362              		.thumb
+ 1363              		.thumb_func
+ 1365              	wizchip_setinterruptmask:
+ 1366              	.LFB18:
+ 363:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 364:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void wizchip_setinterruptmask(intr_kind intr)
+ 365:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 1367              		.loc 1 365 0
+ 1368              		.cfi_startproc
+ 1369              		@ args = 0, pretend = 0, frame = 16
+ 1370              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1371 0000 80B5     		push	{r7, lr}
+ 1372              		.cfi_def_cfa_offset 8
+ 1373              		.cfi_offset 7, -8
+ 1374              		.cfi_offset 14, -4
+ 1375 0002 84B0     		sub	sp, sp, #16
+ 1376              		.cfi_def_cfa_offset 24
+ 1377 0004 00AF     		add	r7, sp, #0
+ 1378              		.cfi_def_cfa_register 7
+ 1379 0006 0346     		mov	r3, r0
+ 1380 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 366:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t imr  = (uint8_t)intr;
+ 1381              		.loc 1 366 0
+ 1382 000a FB88     		ldrh	r3, [r7, #6]	@ movhi
+ 1383 000c FB73     		strb	r3, [r7, #15]
+ 367:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t simr = (uint8_t)((uint16_t)intr >> 8);
+ 1384              		.loc 1 367 0
+ 1385 000e FB88     		ldrh	r3, [r7, #6]
+ 1386 0010 1B0A     		lsrs	r3, r3, #8
+ 1387 0012 9BB2     		uxth	r3, r3
+ 1388 0014 BB73     		strb	r3, [r7, #14]
+ 368:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ < 5500
+ 369:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    imr &= ~(1<<4); // IK_WOL
+ 370:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif
+ 371:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ == 5200
+ 372:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    imr &= ~(1 << 6);
+ 373:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif
+ 374:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    
+ 375:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ < 5200
+ 376:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    simr &= 0x0F;
+ 377:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif
+ 378:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 379:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ == 5100
+ 380:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    imr |= simr;
+ 381:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setIMR(imr);
+ 382:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #else
+ 383:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setIMR(imr);
+ 1389              		.loc 1 383 0
+ 1390 0016 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1391 0018 4FF4B050 		mov	r0, #5632
+ 1392 001c 1946     		mov	r1, r3
+ 1393 001e FFF7FEFF 		bl	WIZCHIP_WRITE
+ 384:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setSIMR(simr);
+ 1394              		.loc 1 384 0
+ 1395 0022 BB7B     		ldrb	r3, [r7, #14]	@ zero_extendqisi2
+ 1396 0024 4FF4C050 		mov	r0, #6144
+ 1397 0028 1946     		mov	r1, r3
+ 1398 002a FFF7FEFF 		bl	WIZCHIP_WRITE
+ 385:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif   
+ 386:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 1399              		.loc 1 386 0
+ 1400 002e 1037     		adds	r7, r7, #16
+ 1401              		.cfi_def_cfa_offset 8
+ 1402 0030 BD46     		mov	sp, r7
+ 1403              		.cfi_def_cfa_register 13
+ 1404              		@ sp needed
+ 1405 0032 80BD     		pop	{r7, pc}
+ 1406              		.cfi_endproc
+ 1407              	.LFE18:
+ 1409              		.section	.text.wizchip_getinterruptmask,"ax",%progbits
+ 1410              		.align	2
+ 1411              		.global	wizchip_getinterruptmask
+ 1412              		.thumb
+ 1413              		.thumb_func
+ 1415              	wizchip_getinterruptmask:
+ 1416              	.LFB19:
+ 387:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 388:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** intr_kind wizchip_getinterruptmask(void)
+ 389:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 1417              		.loc 1 389 0
+ 1418              		.cfi_startproc
+ 1419              		@ args = 0, pretend = 0, frame = 8
+ 1420              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1421 0000 80B5     		push	{r7, lr}
+ 1422              		.cfi_def_cfa_offset 8
+ 1423              		.cfi_offset 7, -8
+ 1424              		.cfi_offset 14, -4
+ 1425 0002 82B0     		sub	sp, sp, #8
+ 1426              		.cfi_def_cfa_offset 16
+ 1427 0004 00AF     		add	r7, sp, #0
+ 1428              		.cfi_def_cfa_register 7
+ 390:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t imr  = 0;
+ 1429              		.loc 1 390 0
+ 1430 0006 0023     		movs	r3, #0
+ 1431 0008 FB71     		strb	r3, [r7, #7]
+ 391:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t simr = 0;
+ 1432              		.loc 1 391 0
+ 1433 000a 0023     		movs	r3, #0
+ 1434 000c BB71     		strb	r3, [r7, #6]
+ 392:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint16_t ret = 0;
+ 1435              		.loc 1 392 0
+ 1436 000e 0023     		movs	r3, #0
+ 1437 0010 BB80     		strh	r3, [r7, #4]	@ movhi
+ 393:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ == 5100
+ 394:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    imr  = getIMR();
+ 395:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    simr = imr 0x0F;
+ 396:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #else
+ 397:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    imr  = getIMR();
+ 1438              		.loc 1 397 0
+ 1439 0012 4FF4B050 		mov	r0, #5632
+ 1440 0016 FFF7FEFF 		bl	WIZCHIP_READ
+ 1441 001a 0346     		mov	r3, r0
+ 1442 001c FB71     		strb	r3, [r7, #7]
+ 398:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    simr = getSIMR();
+ 1443              		.loc 1 398 0
+ 1444 001e 4FF4C050 		mov	r0, #6144
+ 1445 0022 FFF7FEFF 		bl	WIZCHIP_READ
+ 1446 0026 0346     		mov	r3, r0
+ 1447 0028 BB71     		strb	r3, [r7, #6]
+ 399:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif         
+ 400:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 401:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ < 5500
+ 402:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    imr &= ~(1<<4); // IK_WOL
+ 403:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif
+ 404:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ == 5200
+ 405:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    imr &= ~(1 << 6);  // IK_DEST_UNREACH
+ 406:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif
+ 407:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****   ret = simr;
+ 1448              		.loc 1 407 0
+ 1449 002a BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 1450 002c BB80     		strh	r3, [r7, #4]	@ movhi
+ 408:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****   ret = (ret << 8) + imr;
+ 1451              		.loc 1 408 0
+ 1452 002e BB88     		ldrh	r3, [r7, #4]	@ movhi
+ 1453 0030 1B02     		lsls	r3, r3, #8
+ 1454 0032 9AB2     		uxth	r2, r3
+ 1455 0034 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1456 0036 9BB2     		uxth	r3, r3
+ 1457 0038 1344     		add	r3, r3, r2
+ 1458 003a BB80     		strh	r3, [r7, #4]	@ movhi
+ 409:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****   return (intr_kind)ret;
+ 1459              		.loc 1 409 0
+ 1460 003c BB88     		ldrh	r3, [r7, #4]
+ 410:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 1461              		.loc 1 410 0
+ 1462 003e 1846     		mov	r0, r3
+ 1463 0040 0837     		adds	r7, r7, #8
+ 1464              		.cfi_def_cfa_offset 8
+ 1465 0042 BD46     		mov	sp, r7
+ 1466              		.cfi_def_cfa_register 13
+ 1467              		@ sp needed
+ 1468 0044 80BD     		pop	{r7, pc}
+ 1469              		.cfi_endproc
+ 1470              	.LFE19:
+ 1472 0046 00BF     		.section	.text.wizphy_getphylink,"ax",%progbits
+ 1473              		.align	2
+ 1474              		.global	wizphy_getphylink
+ 1475              		.thumb
+ 1476              		.thumb_func
+ 1478              	wizphy_getphylink:
+ 1479              	.LFB20:
+ 411:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 412:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** int8_t wizphy_getphylink(void)
+ 413:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 1480              		.loc 1 413 0
+ 1481              		.cfi_startproc
+ 1482              		@ args = 0, pretend = 0, frame = 8
+ 1483              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1484 0000 80B5     		push	{r7, lr}
+ 1485              		.cfi_def_cfa_offset 8
+ 1486              		.cfi_offset 7, -8
+ 1487              		.cfi_offset 14, -4
+ 1488 0002 82B0     		sub	sp, sp, #8
+ 1489              		.cfi_def_cfa_offset 16
+ 1490 0004 00AF     		add	r7, sp, #0
+ 1491              		.cfi_def_cfa_register 7
+ 414:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    int8_t tmp;
+ 415:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if   _WIZCHIP_ == 5200
+ 416:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if(getPHYSTATUS() & PHYSTATUS_LINK)
+ 417:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       tmp = PHY_LINK_ON;
+ 418:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    else
+ 419:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       tmp = PHY_LINK_OFF;
+ 420:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #elif _WIZCHIP_ == 5500
+ 421:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if(getPHYCFGR() & PHYCFGR_LNK_ON)
+ 1492              		.loc 1 421 0
+ 1493 0006 4FF43850 		mov	r0, #11776
+ 1494 000a FFF7FEFF 		bl	WIZCHIP_READ
+ 1495 000e 0346     		mov	r3, r0
+ 1496 0010 03F00103 		and	r3, r3, #1
+ 1497 0014 002B     		cmp	r3, #0
+ 1498 0016 02D0     		beq	.L98
+ 422:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       tmp = PHY_LINK_ON;
+ 1499              		.loc 1 422 0
+ 1500 0018 0123     		movs	r3, #1
+ 1501 001a FB71     		strb	r3, [r7, #7]
+ 1502 001c 01E0     		b	.L99
+ 1503              	.L98:
+ 423:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    else
+ 424:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       tmp = PHY_LINK_OFF;
+ 1504              		.loc 1 424 0
+ 1505 001e 0023     		movs	r3, #0
+ 1506 0020 FB71     		strb	r3, [r7, #7]
+ 1507              	.L99:
+ 425:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #else
+ 426:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    tmp = -1;
+ 427:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif
+ 428:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    return tmp;
+ 1508              		.loc 1 428 0
+ 1509 0022 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1510 0024 5BB2     		sxtb	r3, r3
+ 429:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 1511              		.loc 1 429 0
+ 1512 0026 1846     		mov	r0, r3
+ 1513 0028 0837     		adds	r7, r7, #8
+ 1514              		.cfi_def_cfa_offset 8
+ 1515 002a BD46     		mov	sp, r7
+ 1516              		.cfi_def_cfa_register 13
+ 1517              		@ sp needed
+ 1518 002c 80BD     		pop	{r7, pc}
+ 1519              		.cfi_endproc
+ 1520              	.LFE20:
+ 1522 002e 00BF     		.section	.text.wizphy_getphypmode,"ax",%progbits
+ 1523              		.align	2
+ 1524              		.global	wizphy_getphypmode
+ 1525              		.thumb
+ 1526              		.thumb_func
+ 1528              	wizphy_getphypmode:
+ 1529              	.LFB21:
+ 430:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 431:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ > 5100
+ 432:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 433:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** int8_t wizphy_getphypmode(void)
+ 434:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 1530              		.loc 1 434 0
+ 1531              		.cfi_startproc
+ 1532              		@ args = 0, pretend = 0, frame = 8
+ 1533              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1534 0000 80B5     		push	{r7, lr}
+ 1535              		.cfi_def_cfa_offset 8
+ 1536              		.cfi_offset 7, -8
+ 1537              		.cfi_offset 14, -4
+ 1538 0002 82B0     		sub	sp, sp, #8
+ 1539              		.cfi_def_cfa_offset 16
+ 1540 0004 00AF     		add	r7, sp, #0
+ 1541              		.cfi_def_cfa_register 7
+ 435:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    int8_t tmp = 0;
+ 1542              		.loc 1 435 0
+ 1543 0006 0023     		movs	r3, #0
+ 1544 0008 FB71     		strb	r3, [r7, #7]
+ 436:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    #if   _WIZCHIP_ == 5200
+ 437:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       if(getPHYSTATUS() & PHYSTATUS_POWERDOWN)
+ 438:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          tmp = PHY_POWER_DOWN;
+ 439:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       else          
+ 440:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          tmp = PHY_POWER_NORM;
+ 441:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    #elif _WIZCHIP_ == 5500
+ 442:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       if(getPHYCFGR() & PHYCFGR_OPMDC_PDOWN)
+ 1545              		.loc 1 442 0
+ 1546 000a 4FF43850 		mov	r0, #11776
+ 1547 000e FFF7FEFF 		bl	WIZCHIP_READ
+ 1548 0012 0346     		mov	r3, r0
+ 1549 0014 03F03003 		and	r3, r3, #48
+ 1550 0018 002B     		cmp	r3, #0
+ 1551 001a 02D0     		beq	.L102
+ 443:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          tmp = PHY_POWER_DOWN;
+ 1552              		.loc 1 443 0
+ 1553 001c 0123     		movs	r3, #1
+ 1554 001e FB71     		strb	r3, [r7, #7]
+ 1555 0020 01E0     		b	.L103
+ 1556              	.L102:
+ 444:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       else 
+ 445:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          tmp = PHY_POWER_NORM;
+ 1557              		.loc 1 445 0
+ 1558 0022 0023     		movs	r3, #0
+ 1559 0024 FB71     		strb	r3, [r7, #7]
+ 1560              	.L103:
+ 446:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    #else
+ 447:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       tmp = -1;
+ 448:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    #endif
+ 449:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    return tmp;
+ 1561              		.loc 1 449 0
+ 1562 0026 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1563 0028 5BB2     		sxtb	r3, r3
+ 450:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 1564              		.loc 1 450 0
+ 1565 002a 1846     		mov	r0, r3
+ 1566 002c 0837     		adds	r7, r7, #8
+ 1567              		.cfi_def_cfa_offset 8
+ 1568 002e BD46     		mov	sp, r7
+ 1569              		.cfi_def_cfa_register 13
+ 1570              		@ sp needed
+ 1571 0030 80BD     		pop	{r7, pc}
+ 1572              		.cfi_endproc
+ 1573              	.LFE21:
+ 1575 0032 00BF     		.section	.text.wizphy_reset,"ax",%progbits
+ 1576              		.align	2
+ 1577              		.global	wizphy_reset
+ 1578              		.thumb
+ 1579              		.thumb_func
+ 1581              	wizphy_reset:
+ 1582              	.LFB22:
+ 451:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif
+ 452:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 453:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ == 5500
+ 454:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void wizphy_reset(void)
+ 455:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 1583              		.loc 1 455 0
+ 1584              		.cfi_startproc
+ 1585              		@ args = 0, pretend = 0, frame = 8
+ 1586              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1587 0000 80B5     		push	{r7, lr}
+ 1588              		.cfi_def_cfa_offset 8
+ 1589              		.cfi_offset 7, -8
+ 1590              		.cfi_offset 14, -4
+ 1591 0002 82B0     		sub	sp, sp, #8
+ 1592              		.cfi_def_cfa_offset 16
+ 1593 0004 00AF     		add	r7, sp, #0
+ 1594              		.cfi_def_cfa_register 7
+ 456:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t tmp = getPHYCFGR();
+ 1595              		.loc 1 456 0
+ 1596 0006 4FF43850 		mov	r0, #11776
+ 1597 000a FFF7FEFF 		bl	WIZCHIP_READ
+ 1598 000e 0346     		mov	r3, r0
+ 1599 0010 FB71     		strb	r3, [r7, #7]
+ 457:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    tmp &= PHYCFGR_RST;
+ 1600              		.loc 1 457 0
+ 1601 0012 FB79     		ldrb	r3, [r7, #7]
+ 1602 0014 03F07F03 		and	r3, r3, #127
+ 1603 0018 FB71     		strb	r3, [r7, #7]
+ 458:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setPHYCFGR(tmp);
+ 1604              		.loc 1 458 0
+ 1605 001a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1606 001c 4FF43850 		mov	r0, #11776
+ 1607 0020 1946     		mov	r1, r3
+ 1608 0022 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 459:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    tmp = getPHYCFGR(); 
+ 1609              		.loc 1 459 0
+ 1610 0026 4FF43850 		mov	r0, #11776
+ 1611 002a FFF7FEFF 		bl	WIZCHIP_READ
+ 1612 002e 0346     		mov	r3, r0
+ 1613 0030 FB71     		strb	r3, [r7, #7]
+ 460:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    tmp |= ~PHYCFGR_RST;
+ 1614              		.loc 1 460 0
+ 1615 0032 FB79     		ldrb	r3, [r7, #7]
+ 1616 0034 63F07F03 		orn	r3, r3, #127
+ 1617 0038 FB71     		strb	r3, [r7, #7]
+ 461:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setPHYCFGR(tmp);
+ 1618              		.loc 1 461 0
+ 1619 003a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1620 003c 4FF43850 		mov	r0, #11776
+ 1621 0040 1946     		mov	r1, r3
+ 1622 0042 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 462:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 1623              		.loc 1 462 0
+ 1624 0046 0837     		adds	r7, r7, #8
+ 1625              		.cfi_def_cfa_offset 8
+ 1626 0048 BD46     		mov	sp, r7
+ 1627              		.cfi_def_cfa_register 13
+ 1628              		@ sp needed
+ 1629 004a 80BD     		pop	{r7, pc}
+ 1630              		.cfi_endproc
+ 1631              	.LFE22:
+ 1633              		.section	.text.wizphy_setphyconf,"ax",%progbits
+ 1634              		.align	2
+ 1635              		.global	wizphy_setphyconf
+ 1636              		.thumb
+ 1637              		.thumb_func
+ 1639              	wizphy_setphyconf:
+ 1640              	.LFB23:
+ 463:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 464:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void wizphy_setphyconf(wiz_PhyConf* phyconf)
+ 465:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 1641              		.loc 1 465 0
+ 1642              		.cfi_startproc
+ 1643              		@ args = 0, pretend = 0, frame = 16
+ 1644              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1645 0000 80B5     		push	{r7, lr}
+ 1646              		.cfi_def_cfa_offset 8
+ 1647              		.cfi_offset 7, -8
+ 1648              		.cfi_offset 14, -4
+ 1649 0002 84B0     		sub	sp, sp, #16
+ 1650              		.cfi_def_cfa_offset 24
+ 1651 0004 00AF     		add	r7, sp, #0
+ 1652              		.cfi_def_cfa_register 7
+ 1653 0006 7860     		str	r0, [r7, #4]
+ 466:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t tmp = 0;
+ 1654              		.loc 1 466 0
+ 1655 0008 0023     		movs	r3, #0
+ 1656 000a FB73     		strb	r3, [r7, #15]
+ 467:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if(phyconf->by == PHY_CONFBY_SW)
+ 1657              		.loc 1 467 0
+ 1658 000c 7B68     		ldr	r3, [r7, #4]
+ 1659 000e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1660 0010 012B     		cmp	r3, #1
+ 1661 0012 04D1     		bne	.L107
+ 468:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       tmp |= PHYCFGR_OPMD;
+ 1662              		.loc 1 468 0
+ 1663 0014 FB7B     		ldrb	r3, [r7, #15]
+ 1664 0016 43F04003 		orr	r3, r3, #64
+ 1665 001a FB73     		strb	r3, [r7, #15]
+ 1666 001c 03E0     		b	.L108
+ 1667              	.L107:
+ 469:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    else
+ 470:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       tmp &= ~PHYCFGR_OPMD;
+ 1668              		.loc 1 470 0
+ 1669 001e FB7B     		ldrb	r3, [r7, #15]
+ 1670 0020 23F04003 		bic	r3, r3, #64
+ 1671 0024 FB73     		strb	r3, [r7, #15]
+ 1672              	.L108:
+ 471:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if(phyconf->mode == PHY_MODE_AUTONEGO)
+ 1673              		.loc 1 471 0
+ 1674 0026 7B68     		ldr	r3, [r7, #4]
+ 1675 0028 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 1676 002a 012B     		cmp	r3, #1
+ 1677 002c 04D1     		bne	.L109
+ 472:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       tmp |= PHYCFGR_OPMDC_ALLA;
+ 1678              		.loc 1 472 0
+ 1679 002e FB7B     		ldrb	r3, [r7, #15]
+ 1680 0030 43F03803 		orr	r3, r3, #56
+ 1681 0034 FB73     		strb	r3, [r7, #15]
+ 1682 0036 19E0     		b	.L110
+ 1683              	.L109:
+ 473:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    else
+ 474:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 475:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       if(phyconf->duplex == PHY_DUPLEX_FULL)
+ 1684              		.loc 1 475 0
+ 1685 0038 7B68     		ldr	r3, [r7, #4]
+ 1686 003a DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 1687 003c 012B     		cmp	r3, #1
+ 1688 003e 0DD1     		bne	.L111
+ 476:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       {
+ 477:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          if(phyconf->speed == PHY_SPEED_100)
+ 1689              		.loc 1 477 0
+ 1690 0040 7B68     		ldr	r3, [r7, #4]
+ 1691 0042 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 1692 0044 012B     		cmp	r3, #1
+ 1693 0046 04D1     		bne	.L112
+ 478:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****             tmp |= PHYCFGR_OPMDC_100F;
+ 1694              		.loc 1 478 0
+ 1695 0048 FB7B     		ldrb	r3, [r7, #15]
+ 1696 004a 43F01803 		orr	r3, r3, #24
+ 1697 004e FB73     		strb	r3, [r7, #15]
+ 1698 0050 0CE0     		b	.L110
+ 1699              	.L112:
+ 479:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          else
+ 480:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****             tmp |= PHYCFGR_OPMDC_10F;
+ 1700              		.loc 1 480 0
+ 1701 0052 FB7B     		ldrb	r3, [r7, #15]
+ 1702 0054 43F00803 		orr	r3, r3, #8
+ 1703 0058 FB73     		strb	r3, [r7, #15]
+ 1704 005a 07E0     		b	.L110
+ 1705              	.L111:
+ 481:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       }   
+ 482:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       else
+ 483:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       {
+ 484:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          if(phyconf->speed == PHY_SPEED_100)
+ 1706              		.loc 1 484 0
+ 1707 005c 7B68     		ldr	r3, [r7, #4]
+ 1708 005e 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 1709 0060 012B     		cmp	r3, #1
+ 1710 0062 03D1     		bne	.L110
+ 485:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****             tmp |= PHYCFGR_OPMDC_100H;
+ 1711              		.loc 1 485 0
+ 1712 0064 FB7B     		ldrb	r3, [r7, #15]
+ 1713 0066 43F01003 		orr	r3, r3, #16
+ 1714 006a FB73     		strb	r3, [r7, #15]
+ 1715              	.L110:
+ 486:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          else
+ 487:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****             tmp |= PHYCFGR_OPMDC_10H;
+ 488:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       }
+ 489:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 490:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setPHYCFGR(tmp);
+ 1716              		.loc 1 490 0
+ 1717 006c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1718 006e 4FF43850 		mov	r0, #11776
+ 1719 0072 1946     		mov	r1, r3
+ 1720 0074 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 491:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    wizphy_reset();
+ 1721              		.loc 1 491 0
+ 1722 0078 FFF7FEFF 		bl	wizphy_reset
+ 492:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 1723              		.loc 1 492 0
+ 1724 007c 1037     		adds	r7, r7, #16
+ 1725              		.cfi_def_cfa_offset 8
+ 1726 007e BD46     		mov	sp, r7
+ 1727              		.cfi_def_cfa_register 13
+ 1728              		@ sp needed
+ 1729 0080 80BD     		pop	{r7, pc}
+ 1730              		.cfi_endproc
+ 1731              	.LFE23:
+ 1733 0082 00BF     		.section	.text.wizphy_getphyconf,"ax",%progbits
+ 1734              		.align	2
+ 1735              		.global	wizphy_getphyconf
+ 1736              		.thumb
+ 1737              		.thumb_func
+ 1739              	wizphy_getphyconf:
+ 1740              	.LFB24:
+ 493:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 494:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void wizphy_getphyconf(wiz_PhyConf* phyconf)
+ 495:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 1741              		.loc 1 495 0
+ 1742              		.cfi_startproc
+ 1743              		@ args = 0, pretend = 0, frame = 16
+ 1744              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1745 0000 80B5     		push	{r7, lr}
+ 1746              		.cfi_def_cfa_offset 8
+ 1747              		.cfi_offset 7, -8
+ 1748              		.cfi_offset 14, -4
+ 1749 0002 84B0     		sub	sp, sp, #16
+ 1750              		.cfi_def_cfa_offset 24
+ 1751 0004 00AF     		add	r7, sp, #0
+ 1752              		.cfi_def_cfa_register 7
+ 1753 0006 7860     		str	r0, [r7, #4]
+ 496:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t tmp = 0;
+ 1754              		.loc 1 496 0
+ 1755 0008 0023     		movs	r3, #0
+ 1756 000a FB73     		strb	r3, [r7, #15]
+ 497:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    tmp = getPHYCFGR();
+ 1757              		.loc 1 497 0
+ 1758 000c 4FF43850 		mov	r0, #11776
+ 1759 0010 FFF7FEFF 		bl	WIZCHIP_READ
+ 1760 0014 0346     		mov	r3, r0
+ 1761 0016 FB73     		strb	r3, [r7, #15]
+ 498:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    phyconf->by   = (tmp & PHYCFGR_OPMD) ? PHY_CONFBY_SW : PHY_CONFBY_HW;
+ 1762              		.loc 1 498 0
+ 1763 0018 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1764 001a 03F04003 		and	r3, r3, #64
+ 1765 001e 002B     		cmp	r3, #0
+ 1766 0020 14BF     		ite	ne
+ 1767 0022 0123     		movne	r3, #1
+ 1768 0024 0023     		moveq	r3, #0
+ 1769 0026 DBB2     		uxtb	r3, r3
+ 1770 0028 1A46     		mov	r2, r3
+ 1771 002a 7B68     		ldr	r3, [r7, #4]
+ 1772 002c 1A70     		strb	r2, [r3]
+ 499:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    switch(tmp & PHYCFGR_OPMDC_ALLA)
+ 1773              		.loc 1 499 0
+ 1774 002e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1775 0030 03F03803 		and	r3, r3, #56
+ 1776 0034 202B     		cmp	r3, #32
+ 1777 0036 01D0     		beq	.L117
+ 1778 0038 382B     		cmp	r3, #56
+ 1779 003a 03D1     		bne	.L125
+ 1780              	.L117:
+ 500:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 501:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case PHYCFGR_OPMDC_ALLA:
+ 502:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case PHYCFGR_OPMDC_100FA: 
+ 503:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          phyconf->mode = PHY_MODE_AUTONEGO;
+ 1781              		.loc 1 503 0
+ 1782 003c 7B68     		ldr	r3, [r7, #4]
+ 1783 003e 0122     		movs	r2, #1
+ 1784 0040 5A70     		strb	r2, [r3, #1]
+ 504:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 1785              		.loc 1 504 0
+ 1786 0042 03E0     		b	.L118
+ 1787              	.L125:
+ 505:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       default:
+ 506:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          phyconf->mode = PHY_MODE_MANUAL;
+ 1788              		.loc 1 506 0
+ 1789 0044 7B68     		ldr	r3, [r7, #4]
+ 1790 0046 0022     		movs	r2, #0
+ 1791 0048 5A70     		strb	r2, [r3, #1]
+ 507:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 1792              		.loc 1 507 0
+ 1793 004a 00BF     		nop
+ 1794              	.L118:
+ 508:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 509:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    switch(tmp & PHYCFGR_OPMDC_ALLA)
+ 1795              		.loc 1 509 0
+ 1796 004c FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1797 004e 03F03803 		and	r3, r3, #56
+ 1798 0052 182B     		cmp	r3, #24
+ 1799 0054 03D0     		beq	.L120
+ 1800 0056 202B     		cmp	r3, #32
+ 1801 0058 01D0     		beq	.L120
+ 1802 005a 102B     		cmp	r3, #16
+ 1803 005c 03D1     		bne	.L126
+ 1804              	.L120:
+ 510:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 511:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case PHYCFGR_OPMDC_100FA:
+ 512:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case PHYCFGR_OPMDC_100F:
+ 513:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case PHYCFGR_OPMDC_100H:
+ 514:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          phyconf->speed = PHY_SPEED_100;
+ 1805              		.loc 1 514 0
+ 1806 005e 7B68     		ldr	r3, [r7, #4]
+ 1807 0060 0122     		movs	r2, #1
+ 1808 0062 9A70     		strb	r2, [r3, #2]
+ 515:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 1809              		.loc 1 515 0
+ 1810 0064 03E0     		b	.L121
+ 1811              	.L126:
+ 516:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       default:
+ 517:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          phyconf->speed = PHY_SPEED_10;
+ 1812              		.loc 1 517 0
+ 1813 0066 7B68     		ldr	r3, [r7, #4]
+ 1814 0068 0022     		movs	r2, #0
+ 1815 006a 9A70     		strb	r2, [r3, #2]
+ 518:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 1816              		.loc 1 518 0
+ 1817 006c 00BF     		nop
+ 1818              	.L121:
+ 519:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 520:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    switch(tmp & PHYCFGR_OPMDC_ALLA)
+ 1819              		.loc 1 520 0
+ 1820 006e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1821 0070 03F03803 		and	r3, r3, #56
+ 1822 0074 182B     		cmp	r3, #24
+ 1823 0076 03D0     		beq	.L123
+ 1824 0078 202B     		cmp	r3, #32
+ 1825 007a 01D0     		beq	.L123
+ 1826 007c 082B     		cmp	r3, #8
+ 1827 007e 03D1     		bne	.L127
+ 1828              	.L123:
+ 521:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 522:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case PHYCFGR_OPMDC_100FA:
+ 523:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case PHYCFGR_OPMDC_100F:
+ 524:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       case PHYCFGR_OPMDC_10F:
+ 525:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          phyconf->duplex = PHY_DUPLEX_FULL;
+ 1829              		.loc 1 525 0
+ 1830 0080 7B68     		ldr	r3, [r7, #4]
+ 1831 0082 0122     		movs	r2, #1
+ 1832 0084 DA70     		strb	r2, [r3, #3]
+ 526:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 1833              		.loc 1 526 0
+ 1834 0086 03E0     		b	.L115
+ 1835              	.L127:
+ 527:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       default:
+ 528:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          phyconf->duplex = PHY_DUPLEX_HALF;
+ 1836              		.loc 1 528 0
+ 1837 0088 7B68     		ldr	r3, [r7, #4]
+ 1838 008a 0022     		movs	r2, #0
+ 1839 008c DA70     		strb	r2, [r3, #3]
+ 529:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****          break;
+ 1840              		.loc 1 529 0
+ 1841 008e 00BF     		nop
+ 1842              	.L115:
+ 530:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 531:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 1843              		.loc 1 531 0
+ 1844 0090 1037     		adds	r7, r7, #16
+ 1845              		.cfi_def_cfa_offset 8
+ 1846 0092 BD46     		mov	sp, r7
+ 1847              		.cfi_def_cfa_register 13
+ 1848              		@ sp needed
+ 1849 0094 80BD     		pop	{r7, pc}
+ 1850              		.cfi_endproc
+ 1851              	.LFE24:
+ 1853 0096 00BF     		.section	.text.wizphy_getphystat,"ax",%progbits
+ 1854              		.align	2
+ 1855              		.global	wizphy_getphystat
+ 1856              		.thumb
+ 1857              		.thumb_func
+ 1859              	wizphy_getphystat:
+ 1860              	.LFB25:
+ 532:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 533:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void wizphy_getphystat(wiz_PhyConf* phyconf)
+ 534:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 1861              		.loc 1 534 0
+ 1862              		.cfi_startproc
+ 1863              		@ args = 0, pretend = 0, frame = 16
+ 1864              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1865 0000 80B5     		push	{r7, lr}
+ 1866              		.cfi_def_cfa_offset 8
+ 1867              		.cfi_offset 7, -8
+ 1868              		.cfi_offset 14, -4
+ 1869 0002 84B0     		sub	sp, sp, #16
+ 1870              		.cfi_def_cfa_offset 24
+ 1871 0004 00AF     		add	r7, sp, #0
+ 1872              		.cfi_def_cfa_register 7
+ 1873 0006 7860     		str	r0, [r7, #4]
+ 535:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t tmp = getPHYCFGR();
+ 1874              		.loc 1 535 0
+ 1875 0008 4FF43850 		mov	r0, #11776
+ 1876 000c FFF7FEFF 		bl	WIZCHIP_READ
+ 1877 0010 0346     		mov	r3, r0
+ 1878 0012 FB73     		strb	r3, [r7, #15]
+ 536:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    phyconf->duplex = (tmp & PHYCFGR_DPX_FULL) ? PHY_DUPLEX_FULL : PHY_DUPLEX_HALF;
+ 1879              		.loc 1 536 0
+ 1880 0014 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1881 0016 03F00403 		and	r3, r3, #4
+ 1882 001a 002B     		cmp	r3, #0
+ 1883 001c 14BF     		ite	ne
+ 1884 001e 0123     		movne	r3, #1
+ 1885 0020 0023     		moveq	r3, #0
+ 1886 0022 DBB2     		uxtb	r3, r3
+ 1887 0024 1A46     		mov	r2, r3
+ 1888 0026 7B68     		ldr	r3, [r7, #4]
+ 1889 0028 DA70     		strb	r2, [r3, #3]
+ 537:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    phyconf->speed  = (tmp & PHYCFGR_SPD_100) ? PHY_SPEED_100 : PHY_SPEED_10;
+ 1890              		.loc 1 537 0
+ 1891 002a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1892 002c 03F00203 		and	r3, r3, #2
+ 1893 0030 002B     		cmp	r3, #0
+ 1894 0032 14BF     		ite	ne
+ 1895 0034 0123     		movne	r3, #1
+ 1896 0036 0023     		moveq	r3, #0
+ 1897 0038 DBB2     		uxtb	r3, r3
+ 1898 003a 1A46     		mov	r2, r3
+ 1899 003c 7B68     		ldr	r3, [r7, #4]
+ 1900 003e 9A70     		strb	r2, [r3, #2]
+ 538:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 1901              		.loc 1 538 0
+ 1902 0040 1037     		adds	r7, r7, #16
+ 1903              		.cfi_def_cfa_offset 8
+ 1904 0042 BD46     		mov	sp, r7
+ 1905              		.cfi_def_cfa_register 13
+ 1906              		@ sp needed
+ 1907 0044 80BD     		pop	{r7, pc}
+ 1908              		.cfi_endproc
+ 1909              	.LFE25:
+ 1911 0046 00BF     		.section	.text.wizphy_setphypmode,"ax",%progbits
+ 1912              		.align	2
+ 1913              		.global	wizphy_setphypmode
+ 1914              		.thumb
+ 1915              		.thumb_func
+ 1917              	wizphy_setphypmode:
+ 1918              	.LFB26:
+ 539:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 540:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** int8_t wizphy_setphypmode(uint8_t pmode)
+ 541:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 1919              		.loc 1 541 0
+ 1920              		.cfi_startproc
+ 1921              		@ args = 0, pretend = 0, frame = 16
+ 1922              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1923 0000 80B5     		push	{r7, lr}
+ 1924              		.cfi_def_cfa_offset 8
+ 1925              		.cfi_offset 7, -8
+ 1926              		.cfi_offset 14, -4
+ 1927 0002 84B0     		sub	sp, sp, #16
+ 1928              		.cfi_def_cfa_offset 24
+ 1929 0004 00AF     		add	r7, sp, #0
+ 1930              		.cfi_def_cfa_register 7
+ 1931 0006 0346     		mov	r3, r0
+ 1932 0008 FB71     		strb	r3, [r7, #7]
+ 542:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t tmp = 0;
+ 1933              		.loc 1 542 0
+ 1934 000a 0023     		movs	r3, #0
+ 1935 000c FB73     		strb	r3, [r7, #15]
+ 543:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    tmp = getPHYCFGR();
+ 1936              		.loc 1 543 0
+ 1937 000e 4FF43850 		mov	r0, #11776
+ 1938 0012 FFF7FEFF 		bl	WIZCHIP_READ
+ 1939 0016 0346     		mov	r3, r0
+ 1940 0018 FB73     		strb	r3, [r7, #15]
+ 544:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if((tmp & PHYCFGR_OPMD)== 0) return -1;
+ 1941              		.loc 1 544 0
+ 1942 001a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1943 001c 03F04003 		and	r3, r3, #64
+ 1944 0020 002B     		cmp	r3, #0
+ 1945 0022 01D1     		bne	.L130
+ 1946              		.loc 1 544 0 is_stmt 0 discriminator 1
+ 1947 0024 FF23     		movs	r3, #255
+ 1948 0026 2FE0     		b	.L131
+ 1949              	.L130:
+ 545:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    tmp &= ~PHYCFGR_OPMDC_ALLA;         
+ 1950              		.loc 1 545 0 is_stmt 1
+ 1951 0028 FB7B     		ldrb	r3, [r7, #15]
+ 1952 002a 23F03803 		bic	r3, r3, #56
+ 1953 002e FB73     		strb	r3, [r7, #15]
+ 546:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if( pmode == PHY_POWER_DOWN)
+ 1954              		.loc 1 546 0
+ 1955 0030 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1956 0032 012B     		cmp	r3, #1
+ 1957 0034 04D1     		bne	.L132
+ 547:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       tmp |= PHYCFGR_OPMDC_PDOWN;
+ 1958              		.loc 1 547 0
+ 1959 0036 FB7B     		ldrb	r3, [r7, #15]
+ 1960 0038 43F03003 		orr	r3, r3, #48
+ 1961 003c FB73     		strb	r3, [r7, #15]
+ 1962 003e 03E0     		b	.L133
+ 1963              	.L132:
+ 548:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    else
+ 549:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       tmp |= PHYCFGR_OPMDC_ALLA;
+ 1964              		.loc 1 549 0
+ 1965 0040 FB7B     		ldrb	r3, [r7, #15]
+ 1966 0042 43F03803 		orr	r3, r3, #56
+ 1967 0046 FB73     		strb	r3, [r7, #15]
+ 1968              	.L133:
+ 550:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setPHYCFGR(tmp);
+ 1969              		.loc 1 550 0
+ 1970 0048 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1971 004a 4FF43850 		mov	r0, #11776
+ 1972 004e 1946     		mov	r1, r3
+ 1973 0050 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 551:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    wizphy_reset();
+ 1974              		.loc 1 551 0
+ 1975 0054 FFF7FEFF 		bl	wizphy_reset
+ 552:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    tmp = getPHYCFGR();
+ 1976              		.loc 1 552 0
+ 1977 0058 4FF43850 		mov	r0, #11776
+ 1978 005c FFF7FEFF 		bl	WIZCHIP_READ
+ 1979 0060 0346     		mov	r3, r0
+ 1980 0062 FB73     		strb	r3, [r7, #15]
+ 553:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if( pmode == PHY_POWER_DOWN)
+ 1981              		.loc 1 553 0
+ 1982 0064 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1983 0066 012B     		cmp	r3, #1
+ 1984 0068 06D1     		bne	.L134
+ 554:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 555:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       if(tmp & PHYCFGR_OPMDC_PDOWN) return 0;
+ 1985              		.loc 1 555 0
+ 1986 006a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1987 006c 03F03003 		and	r3, r3, #48
+ 1988 0070 002B     		cmp	r3, #0
+ 1989 0072 08D0     		beq	.L135
+ 1990              		.loc 1 555 0 is_stmt 0 discriminator 1
+ 1991 0074 0023     		movs	r3, #0
+ 1992 0076 07E0     		b	.L131
+ 1993              	.L134:
+ 556:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 557:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    else
+ 558:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    {
+ 559:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****       if(tmp & PHYCFGR_OPMDC_ALLA) return 0;
+ 1994              		.loc 1 559 0 is_stmt 1
+ 1995 0078 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 1996 007a 03F03803 		and	r3, r3, #56
+ 1997 007e 002B     		cmp	r3, #0
+ 1998 0080 01D0     		beq	.L135
+ 1999              		.loc 1 559 0 is_stmt 0 discriminator 1
+ 2000 0082 0023     		movs	r3, #0
+ 2001 0084 00E0     		b	.L131
+ 2002              	.L135:
+ 560:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    }
+ 561:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    return -1;
+ 2003              		.loc 1 561 0 is_stmt 1
+ 2004 0086 FF23     		movs	r3, #255
+ 2005              	.L131:
+ 2006 0088 5BB2     		sxtb	r3, r3
+ 562:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 2007              		.loc 1 562 0
+ 2008 008a 1846     		mov	r0, r3
+ 2009 008c 1037     		adds	r7, r7, #16
+ 2010              		.cfi_def_cfa_offset 8
+ 2011 008e BD46     		mov	sp, r7
+ 2012              		.cfi_def_cfa_register 13
+ 2013              		@ sp needed
+ 2014 0090 80BD     		pop	{r7, pc}
+ 2015              		.cfi_endproc
+ 2016              	.LFE26:
+ 2018 0092 00BF     		.section	.text.wizchip_setnetinfo,"ax",%progbits
+ 2019              		.align	2
+ 2020              		.global	wizchip_setnetinfo
+ 2021              		.thumb
+ 2022              		.thumb_func
+ 2024              	wizchip_setnetinfo:
+ 2025              	.LFB27:
+ 563:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif
+ 564:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 565:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 566:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void wizchip_setnetinfo(wiz_NetInfo* pnetinfo)
+ 567:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 2026              		.loc 1 567 0
+ 2027              		.cfi_startproc
+ 2028              		@ args = 0, pretend = 0, frame = 8
+ 2029              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2030 0000 80B5     		push	{r7, lr}
+ 2031              		.cfi_def_cfa_offset 8
+ 2032              		.cfi_offset 7, -8
+ 2033              		.cfi_offset 14, -4
+ 2034 0002 82B0     		sub	sp, sp, #8
+ 2035              		.cfi_def_cfa_offset 16
+ 2036 0004 00AF     		add	r7, sp, #0
+ 2037              		.cfi_def_cfa_register 7
+ 2038 0006 7860     		str	r0, [r7, #4]
+ 568:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setSHAR(pnetinfo->mac);
+ 2039              		.loc 1 568 0
+ 2040 0008 7B68     		ldr	r3, [r7, #4]
+ 2041 000a 4FF41060 		mov	r0, #2304
+ 2042 000e 1946     		mov	r1, r3
+ 2043 0010 0622     		movs	r2, #6
+ 2044 0012 FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 569:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setGAR(pnetinfo->gw);
+ 2045              		.loc 1 569 0
+ 2046 0016 7B68     		ldr	r3, [r7, #4]
+ 2047 0018 0E33     		adds	r3, r3, #14
+ 2048 001a 4FF48070 		mov	r0, #256
+ 2049 001e 1946     		mov	r1, r3
+ 2050 0020 0422     		movs	r2, #4
+ 2051 0022 FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 570:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setSUBR(pnetinfo->sn);
+ 2052              		.loc 1 570 0
+ 2053 0026 7B68     		ldr	r3, [r7, #4]
+ 2054 0028 0A33     		adds	r3, r3, #10
+ 2055 002a 4FF4A060 		mov	r0, #1280
+ 2056 002e 1946     		mov	r1, r3
+ 2057 0030 0422     		movs	r2, #4
+ 2058 0032 FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 571:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setSIPR(pnetinfo->ip);
+ 2059              		.loc 1 571 0
+ 2060 0036 7B68     		ldr	r3, [r7, #4]
+ 2061 0038 0633     		adds	r3, r3, #6
+ 2062 003a 4FF47060 		mov	r0, #3840
+ 2063 003e 1946     		mov	r1, r3
+ 2064 0040 0422     		movs	r2, #4
+ 2065 0042 FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 572:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    _DNS_[0] = pnetinfo->dns[0];
+ 2066              		.loc 1 572 0
+ 2067 0046 7B68     		ldr	r3, [r7, #4]
+ 2068 0048 9A7C     		ldrb	r2, [r3, #18]	@ zero_extendqisi2
+ 2069 004a 0A4B     		ldr	r3, .L137
+ 2070 004c 1A70     		strb	r2, [r3]
+ 573:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    _DNS_[1] = pnetinfo->dns[1];
+ 2071              		.loc 1 573 0
+ 2072 004e 7B68     		ldr	r3, [r7, #4]
+ 2073 0050 DA7C     		ldrb	r2, [r3, #19]	@ zero_extendqisi2
+ 2074 0052 084B     		ldr	r3, .L137
+ 2075 0054 5A70     		strb	r2, [r3, #1]
+ 574:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    _DNS_[2] = pnetinfo->dns[2];
+ 2076              		.loc 1 574 0
+ 2077 0056 7B68     		ldr	r3, [r7, #4]
+ 2078 0058 1A7D     		ldrb	r2, [r3, #20]	@ zero_extendqisi2
+ 2079 005a 064B     		ldr	r3, .L137
+ 2080 005c 9A70     		strb	r2, [r3, #2]
+ 575:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    _DNS_[3] = pnetinfo->dns[3];
+ 2081              		.loc 1 575 0
+ 2082 005e 7B68     		ldr	r3, [r7, #4]
+ 2083 0060 5A7D     		ldrb	r2, [r3, #21]	@ zero_extendqisi2
+ 2084 0062 044B     		ldr	r3, .L137
+ 2085 0064 DA70     		strb	r2, [r3, #3]
+ 576:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    _DHCP_   = pnetinfo->dhcp;
+ 2086              		.loc 1 576 0
+ 2087 0066 7B68     		ldr	r3, [r7, #4]
+ 2088 0068 9A7D     		ldrb	r2, [r3, #22]	@ zero_extendqisi2
+ 2089 006a 034B     		ldr	r3, .L137+4
+ 2090 006c 1A70     		strb	r2, [r3]
+ 577:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 2091              		.loc 1 577 0
+ 2092 006e 0837     		adds	r7, r7, #8
+ 2093              		.cfi_def_cfa_offset 8
+ 2094 0070 BD46     		mov	sp, r7
+ 2095              		.cfi_def_cfa_register 13
+ 2096              		@ sp needed
+ 2097 0072 80BD     		pop	{r7, pc}
+ 2098              	.L138:
+ 2099              		.align	2
+ 2100              	.L137:
+ 2101 0074 00000000 		.word	_DNS_
+ 2102 0078 00000000 		.word	_DHCP_
+ 2103              		.cfi_endproc
+ 2104              	.LFE27:
+ 2106              		.section	.text.wizchip_getnetinfo,"ax",%progbits
+ 2107              		.align	2
+ 2108              		.global	wizchip_getnetinfo
+ 2109              		.thumb
+ 2110              		.thumb_func
+ 2112              	wizchip_getnetinfo:
+ 2113              	.LFB28:
+ 578:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 579:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void wizchip_getnetinfo(wiz_NetInfo* pnetinfo)
+ 580:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 2114              		.loc 1 580 0
+ 2115              		.cfi_startproc
+ 2116              		@ args = 0, pretend = 0, frame = 8
+ 2117              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2118 0000 80B5     		push	{r7, lr}
+ 2119              		.cfi_def_cfa_offset 8
+ 2120              		.cfi_offset 7, -8
+ 2121              		.cfi_offset 14, -4
+ 2122 0002 82B0     		sub	sp, sp, #8
+ 2123              		.cfi_def_cfa_offset 16
+ 2124 0004 00AF     		add	r7, sp, #0
+ 2125              		.cfi_def_cfa_register 7
+ 2126 0006 7860     		str	r0, [r7, #4]
+ 581:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    getSHAR(pnetinfo->mac);
+ 2127              		.loc 1 581 0
+ 2128 0008 7B68     		ldr	r3, [r7, #4]
+ 2129 000a 4FF41060 		mov	r0, #2304
+ 2130 000e 1946     		mov	r1, r3
+ 2131 0010 0622     		movs	r2, #6
+ 2132 0012 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 582:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    getGAR(pnetinfo->gw);
+ 2133              		.loc 1 582 0
+ 2134 0016 7B68     		ldr	r3, [r7, #4]
+ 2135 0018 0E33     		adds	r3, r3, #14
+ 2136 001a 4FF48070 		mov	r0, #256
+ 2137 001e 1946     		mov	r1, r3
+ 2138 0020 0422     		movs	r2, #4
+ 2139 0022 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 583:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    getSUBR(pnetinfo->sn);
+ 2140              		.loc 1 583 0
+ 2141 0026 7B68     		ldr	r3, [r7, #4]
+ 2142 0028 0A33     		adds	r3, r3, #10
+ 2143 002a 4FF4A060 		mov	r0, #1280
+ 2144 002e 1946     		mov	r1, r3
+ 2145 0030 0422     		movs	r2, #4
+ 2146 0032 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 584:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    getSIPR(pnetinfo->ip);
+ 2147              		.loc 1 584 0
+ 2148 0036 7B68     		ldr	r3, [r7, #4]
+ 2149 0038 0633     		adds	r3, r3, #6
+ 2150 003a 4FF47060 		mov	r0, #3840
+ 2151 003e 1946     		mov	r1, r3
+ 2152 0040 0422     		movs	r2, #4
+ 2153 0042 FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 585:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    pnetinfo->dns[0]= _DNS_[0];
+ 2154              		.loc 1 585 0
+ 2155 0046 0B4B     		ldr	r3, .L140
+ 2156 0048 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 2157 004a 7B68     		ldr	r3, [r7, #4]
+ 2158 004c 9A74     		strb	r2, [r3, #18]
+ 586:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    pnetinfo->dns[1]= _DNS_[1];
+ 2159              		.loc 1 586 0
+ 2160 004e 094B     		ldr	r3, .L140
+ 2161 0050 5A78     		ldrb	r2, [r3, #1]	@ zero_extendqisi2
+ 2162 0052 7B68     		ldr	r3, [r7, #4]
+ 2163 0054 DA74     		strb	r2, [r3, #19]
+ 587:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    pnetinfo->dns[2]= _DNS_[2];
+ 2164              		.loc 1 587 0
+ 2165 0056 074B     		ldr	r3, .L140
+ 2166 0058 9A78     		ldrb	r2, [r3, #2]	@ zero_extendqisi2
+ 2167 005a 7B68     		ldr	r3, [r7, #4]
+ 2168 005c 1A75     		strb	r2, [r3, #20]
+ 588:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    pnetinfo->dns[3]= _DNS_[3];
+ 2169              		.loc 1 588 0
+ 2170 005e 054B     		ldr	r3, .L140
+ 2171 0060 DA78     		ldrb	r2, [r3, #3]	@ zero_extendqisi2
+ 2172 0062 7B68     		ldr	r3, [r7, #4]
+ 2173 0064 5A75     		strb	r2, [r3, #21]
+ 589:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    pnetinfo->dhcp  = _DHCP_;
+ 2174              		.loc 1 589 0
+ 2175 0066 044B     		ldr	r3, .L140+4
+ 2176 0068 1A78     		ldrb	r2, [r3]	@ zero_extendqisi2
+ 2177 006a 7B68     		ldr	r3, [r7, #4]
+ 2178 006c 9A75     		strb	r2, [r3, #22]
+ 590:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 2179              		.loc 1 590 0
+ 2180 006e 0837     		adds	r7, r7, #8
+ 2181              		.cfi_def_cfa_offset 8
+ 2182 0070 BD46     		mov	sp, r7
+ 2183              		.cfi_def_cfa_register 13
+ 2184              		@ sp needed
+ 2185 0072 80BD     		pop	{r7, pc}
+ 2186              	.L141:
+ 2187              		.align	2
+ 2188              	.L140:
+ 2189 0074 00000000 		.word	_DNS_
+ 2190 0078 00000000 		.word	_DHCP_
+ 2191              		.cfi_endproc
+ 2192              	.LFE28:
+ 2194              		.section	.text.wizchip_setnetmode,"ax",%progbits
+ 2195              		.align	2
+ 2196              		.global	wizchip_setnetmode
+ 2197              		.thumb
+ 2198              		.thumb_func
+ 2200              	wizchip_setnetmode:
+ 2201              	.LFB29:
+ 591:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 592:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** int8_t wizchip_setnetmode(netmode_type netmode)
+ 593:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 2202              		.loc 1 593 0
+ 2203              		.cfi_startproc
+ 2204              		@ args = 0, pretend = 0, frame = 16
+ 2205              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2206 0000 80B5     		push	{r7, lr}
+ 2207              		.cfi_def_cfa_offset 8
+ 2208              		.cfi_offset 7, -8
+ 2209              		.cfi_offset 14, -4
+ 2210 0002 84B0     		sub	sp, sp, #16
+ 2211              		.cfi_def_cfa_offset 24
+ 2212 0004 00AF     		add	r7, sp, #0
+ 2213              		.cfi_def_cfa_register 7
+ 2214 0006 0346     		mov	r3, r0
+ 2215 0008 FB71     		strb	r3, [r7, #7]
+ 594:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    uint8_t tmp = 0;
+ 2216              		.loc 1 594 0
+ 2217 000a 0023     		movs	r3, #0
+ 2218 000c FB73     		strb	r3, [r7, #15]
+ 595:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #if _WIZCHIP_ != 5500   
+ 596:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if(netmode & ~(NM_WAKEONLAN | NM_PPPOE | NM_PINGBLOCK)) return -1;
+ 597:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #else
+ 598:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    if(netmode & ~(NM_WAKEONLAN | NM_PPPOE | NM_PINGBLOCK | NM_FORCEARP)) return -1;
+ 2219              		.loc 1 598 0
+ 2220 000e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 2221 0010 23F03A03 		bic	r3, r3, #58
+ 2222 0014 002B     		cmp	r3, #0
+ 2223 0016 01D0     		beq	.L143
+ 2224              		.loc 1 598 0 is_stmt 0 discriminator 1
+ 2225 0018 FF23     		movs	r3, #255
+ 2226 001a 0EE0     		b	.L144
+ 2227              	.L143:
+ 599:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** #endif      
+ 600:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    tmp = getMR();
+ 2228              		.loc 1 600 0 is_stmt 1
+ 2229 001c 0020     		movs	r0, #0
+ 2230 001e FFF7FEFF 		bl	WIZCHIP_READ
+ 2231 0022 0346     		mov	r3, r0
+ 2232 0024 FB73     		strb	r3, [r7, #15]
+ 601:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    tmp |= (uint8_t)netmode;
+ 2233              		.loc 1 601 0
+ 2234 0026 FA7B     		ldrb	r2, [r7, #15]
+ 2235 0028 FB79     		ldrb	r3, [r7, #7]
+ 2236 002a 1343     		orrs	r3, r3, r2
+ 2237 002c FB73     		strb	r3, [r7, #15]
+ 602:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setMR(tmp);
+ 2238              		.loc 1 602 0
+ 2239 002e FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 2240 0030 0020     		movs	r0, #0
+ 2241 0032 1946     		mov	r1, r3
+ 2242 0034 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 603:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    return 0;
+ 2243              		.loc 1 603 0
+ 2244 0038 0023     		movs	r3, #0
+ 2245              	.L144:
+ 2246 003a 5BB2     		sxtb	r3, r3
+ 604:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 2247              		.loc 1 604 0
+ 2248 003c 1846     		mov	r0, r3
+ 2249 003e 1037     		adds	r7, r7, #16
+ 2250              		.cfi_def_cfa_offset 8
+ 2251 0040 BD46     		mov	sp, r7
+ 2252              		.cfi_def_cfa_register 13
+ 2253              		@ sp needed
+ 2254 0042 80BD     		pop	{r7, pc}
+ 2255              		.cfi_endproc
+ 2256              	.LFE29:
+ 2258              		.section	.text.wizchip_getnetmode,"ax",%progbits
+ 2259              		.align	2
+ 2260              		.global	wizchip_getnetmode
+ 2261              		.thumb
+ 2262              		.thumb_func
+ 2264              	wizchip_getnetmode:
+ 2265              	.LFB30:
+ 605:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 606:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** netmode_type wizchip_getnetmode(void)
+ 607:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 2266              		.loc 1 607 0
+ 2267              		.cfi_startproc
+ 2268              		@ args = 0, pretend = 0, frame = 0
+ 2269              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2270 0000 80B5     		push	{r7, lr}
+ 2271              		.cfi_def_cfa_offset 8
+ 2272              		.cfi_offset 7, -8
+ 2273              		.cfi_offset 14, -4
+ 2274 0002 00AF     		add	r7, sp, #0
+ 2275              		.cfi_def_cfa_register 7
+ 608:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    return (netmode_type) getMR();
+ 2276              		.loc 1 608 0
+ 2277 0004 0020     		movs	r0, #0
+ 2278 0006 FFF7FEFF 		bl	WIZCHIP_READ
+ 2279 000a 0346     		mov	r3, r0
+ 609:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 2280              		.loc 1 609 0
+ 2281 000c 1846     		mov	r0, r3
+ 2282 000e 80BD     		pop	{r7, pc}
+ 2283              		.cfi_endproc
+ 2284              	.LFE30:
+ 2286              		.section	.text.wizchip_settimeout,"ax",%progbits
+ 2287              		.align	2
+ 2288              		.global	wizchip_settimeout
+ 2289              		.thumb
+ 2290              		.thumb_func
+ 2292              	wizchip_settimeout:
+ 2293              	.LFB31:
+ 610:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 611:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void wizchip_settimeout(wiz_NetTimeout* nettime)
+ 612:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 2294              		.loc 1 612 0
+ 2295              		.cfi_startproc
+ 2296              		@ args = 0, pretend = 0, frame = 8
+ 2297              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2298 0000 80B5     		push	{r7, lr}
+ 2299              		.cfi_def_cfa_offset 8
+ 2300              		.cfi_offset 7, -8
+ 2301              		.cfi_offset 14, -4
+ 2302 0002 82B0     		sub	sp, sp, #8
+ 2303              		.cfi_def_cfa_offset 16
+ 2304 0004 00AF     		add	r7, sp, #0
+ 2305              		.cfi_def_cfa_register 7
+ 2306 0006 7860     		str	r0, [r7, #4]
+ 613:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setRCR(nettime->retry_cnt);
+ 2307              		.loc 1 613 0
+ 2308 0008 7B68     		ldr	r3, [r7, #4]
+ 2309 000a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 2310 000c 4FF4D850 		mov	r0, #6912
+ 2311 0010 1946     		mov	r1, r3
+ 2312 0012 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 614:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    setRTR(nettime->time_100us);
+ 2313              		.loc 1 614 0
+ 2314 0016 7B68     		ldr	r3, [r7, #4]
+ 2315 0018 5B88     		ldrh	r3, [r3, #2]
+ 2316 001a 1B0A     		lsrs	r3, r3, #8
+ 2317 001c 9BB2     		uxth	r3, r3
+ 2318 001e DBB2     		uxtb	r3, r3
+ 2319 0020 4FF4C850 		mov	r0, #6400
+ 2320 0024 1946     		mov	r1, r3
+ 2321 0026 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 2322 002a 7B68     		ldr	r3, [r7, #4]
+ 2323 002c 5B88     		ldrh	r3, [r3, #2]
+ 2324 002e DBB2     		uxtb	r3, r3
+ 2325 0030 4FF4D050 		mov	r0, #6656
+ 2326 0034 1946     		mov	r1, r3
+ 2327 0036 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 615:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 2328              		.loc 1 615 0
+ 2329 003a 0837     		adds	r7, r7, #8
+ 2330              		.cfi_def_cfa_offset 8
+ 2331 003c BD46     		mov	sp, r7
+ 2332              		.cfi_def_cfa_register 13
+ 2333              		@ sp needed
+ 2334 003e 80BD     		pop	{r7, pc}
+ 2335              		.cfi_endproc
+ 2336              	.LFE31:
+ 2338              		.section	.text.wizchip_gettimeout,"ax",%progbits
+ 2339              		.align	2
+ 2340              		.global	wizchip_gettimeout
+ 2341              		.thumb
+ 2342              		.thumb_func
+ 2344              	wizchip_gettimeout:
+ 2345              	.LFB32:
+ 616:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** 
+ 617:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** void wizchip_gettimeout(wiz_NetTimeout* nettime)
+ 618:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** {
+ 2346              		.loc 1 618 0
+ 2347              		.cfi_startproc
+ 2348              		@ args = 0, pretend = 0, frame = 8
+ 2349              		@ frame_needed = 1, uses_anonymous_args = 0
+ 2350 0000 90B5     		push	{r4, r7, lr}
+ 2351              		.cfi_def_cfa_offset 12
+ 2352              		.cfi_offset 4, -12
+ 2353              		.cfi_offset 7, -8
+ 2354              		.cfi_offset 14, -4
+ 2355 0002 83B0     		sub	sp, sp, #12
+ 2356              		.cfi_def_cfa_offset 24
+ 2357 0004 00AF     		add	r7, sp, #0
+ 2358              		.cfi_def_cfa_register 7
+ 2359 0006 7860     		str	r0, [r7, #4]
+ 619:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    nettime->retry_cnt = getRCR();
+ 2360              		.loc 1 619 0
+ 2361 0008 4FF4D850 		mov	r0, #6912
+ 2362 000c FFF7FEFF 		bl	WIZCHIP_READ
+ 2363 0010 0346     		mov	r3, r0
+ 2364 0012 1A46     		mov	r2, r3
+ 2365 0014 7B68     		ldr	r3, [r7, #4]
+ 2366 0016 1A70     		strb	r2, [r3]
+ 620:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c ****    nettime->time_100us = getRTR();
+ 2367              		.loc 1 620 0
+ 2368 0018 4FF4C850 		mov	r0, #6400
+ 2369 001c FFF7FEFF 		bl	WIZCHIP_READ
+ 2370 0020 0346     		mov	r3, r0
+ 2371 0022 9BB2     		uxth	r3, r3
+ 2372 0024 1B02     		lsls	r3, r3, #8
+ 2373 0026 9CB2     		uxth	r4, r3
+ 2374 0028 4FF4D050 		mov	r0, #6656
+ 2375 002c FFF7FEFF 		bl	WIZCHIP_READ
+ 2376 0030 0346     		mov	r3, r0
+ 2377 0032 9BB2     		uxth	r3, r3
+ 2378 0034 2344     		add	r3, r3, r4
+ 2379 0036 9AB2     		uxth	r2, r3
+ 2380 0038 7B68     		ldr	r3, [r7, #4]
+ 2381 003a 5A80     		strh	r2, [r3, #2]	@ movhi
+ 621:/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.c **** }
+ 2382              		.loc 1 621 0
+ 2383 003c 0C37     		adds	r7, r7, #12
+ 2384              		.cfi_def_cfa_offset 12
+ 2385 003e BD46     		mov	sp, r7
+ 2386              		.cfi_def_cfa_register 13
+ 2387              		@ sp needed
+ 2388 0040 90BD     		pop	{r4, r7, pc}
+ 2389              		.cfi_endproc
+ 2390              	.LFE32:
+ 2392 0042 00BF     		.text
+ 2393              	.Letext0:
+ 2394              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 2395              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 2396              		.file 4 "/home/virusv/TDSAST_IOT/Ethernet/wizchip_conf.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 wizchip_conf.c
+     /tmp/ccw7zUEO.s:19     .text.wizchip_cris_enter:0000000000000000 $t
+     /tmp/ccw7zUEO.s:24     .text.wizchip_cris_enter:0000000000000000 wizchip_cris_enter
+     /tmp/ccw7zUEO.s:49     .text.wizchip_cris_exit:0000000000000000 $t
+     /tmp/ccw7zUEO.s:54     .text.wizchip_cris_exit:0000000000000000 wizchip_cris_exit
+     /tmp/ccw7zUEO.s:78     .text.wizchip_cs_select:0000000000000000 $t
+     /tmp/ccw7zUEO.s:83     .text.wizchip_cs_select:0000000000000000 wizchip_cs_select
+     /tmp/ccw7zUEO.s:107    .text.wizchip_cs_deselect:0000000000000000 $t
+     /tmp/ccw7zUEO.s:112    .text.wizchip_cs_deselect:0000000000000000 wizchip_cs_deselect
+     /tmp/ccw7zUEO.s:136    .text.wizchip_bus_readbyte:0000000000000000 $t
+     /tmp/ccw7zUEO.s:141    .text.wizchip_bus_readbyte:0000000000000000 wizchip_bus_readbyte
+     /tmp/ccw7zUEO.s:174    .text.wizchip_bus_writebyte:0000000000000000 $t
+     /tmp/ccw7zUEO.s:179    .text.wizchip_bus_writebyte:0000000000000000 wizchip_bus_writebyte
+     /tmp/ccw7zUEO.s:213    .text.wizchip_spi_readbyte:0000000000000000 $t
+     /tmp/ccw7zUEO.s:218    .text.wizchip_spi_readbyte:0000000000000000 wizchip_spi_readbyte
+     /tmp/ccw7zUEO.s:244    .text.wizchip_spi_writebyte:0000000000000000 $t
+     /tmp/ccw7zUEO.s:249    .text.wizchip_spi_writebyte:0000000000000000 wizchip_spi_writebyte
+     /tmp/ccw7zUEO.s:283    .data.WIZCHIP:0000000000000000 WIZCHIP
+     /tmp/ccw7zUEO.s:280    .data.WIZCHIP:0000000000000000 $d
+     /tmp/ccw7zUEO.s:293    .bss._DNS_:0000000000000000 $d
+     /tmp/ccw7zUEO.s:296    .bss._DNS_:0000000000000000 _DNS_
+     /tmp/ccw7zUEO.s:301    .bss._DHCP_:0000000000000000 _DHCP_
+     /tmp/ccw7zUEO.s:302    .bss._DHCP_:0000000000000000 $d
+     /tmp/ccw7zUEO.s:304    .text.reg_wizchip_cris_cbfunc:0000000000000000 $t
+     /tmp/ccw7zUEO.s:309    .text.reg_wizchip_cris_cbfunc:0000000000000000 reg_wizchip_cris_cbfunc
+     /tmp/ccw7zUEO.s:366    .text.reg_wizchip_cris_cbfunc:000000000000003c $d
+     /tmp/ccw7zUEO.s:373    .text.reg_wizchip_cs_cbfunc:0000000000000000 $t
+     /tmp/ccw7zUEO.s:378    .text.reg_wizchip_cs_cbfunc:0000000000000000 reg_wizchip_cs_cbfunc
+     /tmp/ccw7zUEO.s:435    .text.reg_wizchip_cs_cbfunc:000000000000003c $d
+     /tmp/ccw7zUEO.s:442    .text.reg_wizchip_bus_cbfunc:0000000000000000 $t
+     /tmp/ccw7zUEO.s:447    .text.reg_wizchip_bus_cbfunc:0000000000000000 reg_wizchip_bus_cbfunc
+     /tmp/ccw7zUEO.s:513    .text.reg_wizchip_bus_cbfunc:0000000000000048 $d
+     /tmp/ccw7zUEO.s:520    .text.reg_wizchip_spi_cbfunc:0000000000000000 $t
+     /tmp/ccw7zUEO.s:525    .text.reg_wizchip_spi_cbfunc:0000000000000000 reg_wizchip_spi_cbfunc
+     /tmp/ccw7zUEO.s:591    .text.reg_wizchip_spi_cbfunc:0000000000000048 $d
+     /tmp/ccw7zUEO.s:598    .text.ctlwizchip:0000000000000000 $t
+     /tmp/ccw7zUEO.s:603    .text.ctlwizchip:0000000000000000 ctlwizchip
+     /tmp/ccw7zUEO.s:637    .text.ctlwizchip:0000000000000028 $d
+     /tmp/ccw7zUEO.s:653    .text.ctlwizchip:0000000000000068 $t
+     /tmp/ccw7zUEO.s:982    .text.wizchip_sw_reset:0000000000000000 wizchip_sw_reset
+     /tmp/ccw7zUEO.s:1065   .text.wizchip_init:0000000000000000 wizchip_init
+     /tmp/ccw7zUEO.s:1249   .text.wizchip_clrinterrupt:0000000000000000 wizchip_clrinterrupt
+     /tmp/ccw7zUEO.s:1301   .text.wizchip_getinterrupt:0000000000000000 wizchip_getinterrupt
+     /tmp/ccw7zUEO.s:1365   .text.wizchip_setinterruptmask:0000000000000000 wizchip_setinterruptmask
+     /tmp/ccw7zUEO.s:1415   .text.wizchip_getinterruptmask:0000000000000000 wizchip_getinterruptmask
+     /tmp/ccw7zUEO.s:1581   .text.wizphy_reset:0000000000000000 wizphy_reset
+     /tmp/ccw7zUEO.s:1639   .text.wizphy_setphyconf:0000000000000000 wizphy_setphyconf
+     /tmp/ccw7zUEO.s:1739   .text.wizphy_getphyconf:0000000000000000 wizphy_getphyconf
+     /tmp/ccw7zUEO.s:1917   .text.wizphy_setphypmode:0000000000000000 wizphy_setphypmode
+     /tmp/ccw7zUEO.s:1528   .text.wizphy_getphypmode:0000000000000000 wizphy_getphypmode
+     /tmp/ccw7zUEO.s:1478   .text.wizphy_getphylink:0000000000000000 wizphy_getphylink
+     /tmp/ccw7zUEO.s:873    .text.ctlwizchip:00000000000001b4 $d
+     /tmp/ccw7zUEO.s:878    .text.ctlnetwork:0000000000000000 $t
+     /tmp/ccw7zUEO.s:883    .text.ctlnetwork:0000000000000000 ctlnetwork
+     /tmp/ccw7zUEO.s:908    .text.ctlnetwork:0000000000000018 $d
+     /tmp/ccw7zUEO.s:914    .text.ctlnetwork:0000000000000030 $t
+     /tmp/ccw7zUEO.s:2024   .text.wizchip_setnetinfo:0000000000000000 wizchip_setnetinfo
+     /tmp/ccw7zUEO.s:2112   .text.wizchip_getnetinfo:0000000000000000 wizchip_getnetinfo
+     /tmp/ccw7zUEO.s:2200   .text.wizchip_setnetmode:0000000000000000 wizchip_setnetmode
+     /tmp/ccw7zUEO.s:2264   .text.wizchip_getnetmode:0000000000000000 wizchip_getnetmode
+     /tmp/ccw7zUEO.s:2292   .text.wizchip_settimeout:0000000000000000 wizchip_settimeout
+     /tmp/ccw7zUEO.s:2344   .text.wizchip_gettimeout:0000000000000000 wizchip_gettimeout
+     /tmp/ccw7zUEO.s:977    .text.wizchip_sw_reset:0000000000000000 $t
+     /tmp/ccw7zUEO.s:1060   .text.wizchip_init:0000000000000000 $t
+     /tmp/ccw7zUEO.s:1244   .text.wizchip_clrinterrupt:0000000000000000 $t
+     /tmp/ccw7zUEO.s:1296   .text.wizchip_getinterrupt:0000000000000000 $t
+     /tmp/ccw7zUEO.s:1360   .text.wizchip_setinterruptmask:0000000000000000 $t
+     /tmp/ccw7zUEO.s:1410   .text.wizchip_getinterruptmask:0000000000000000 $t
+     /tmp/ccw7zUEO.s:1473   .text.wizphy_getphylink:0000000000000000 $t
+     /tmp/ccw7zUEO.s:1523   .text.wizphy_getphypmode:0000000000000000 $t
+     /tmp/ccw7zUEO.s:1576   .text.wizphy_reset:0000000000000000 $t
+     /tmp/ccw7zUEO.s:1634   .text.wizphy_setphyconf:0000000000000000 $t
+     /tmp/ccw7zUEO.s:1734   .text.wizphy_getphyconf:0000000000000000 $t
+     /tmp/ccw7zUEO.s:1854   .text.wizphy_getphystat:0000000000000000 $t
+     /tmp/ccw7zUEO.s:1859   .text.wizphy_getphystat:0000000000000000 wizphy_getphystat
+     /tmp/ccw7zUEO.s:1912   .text.wizphy_setphypmode:0000000000000000 $t
+     /tmp/ccw7zUEO.s:2019   .text.wizchip_setnetinfo:0000000000000000 $t
+     /tmp/ccw7zUEO.s:2101   .text.wizchip_setnetinfo:0000000000000074 $d
+     /tmp/ccw7zUEO.s:2107   .text.wizchip_getnetinfo:0000000000000000 $t
+     /tmp/ccw7zUEO.s:2189   .text.wizchip_getnetinfo:0000000000000074 $d
+     /tmp/ccw7zUEO.s:2195   .text.wizchip_setnetmode:0000000000000000 $t
+     /tmp/ccw7zUEO.s:2259   .text.wizchip_getnetmode:0000000000000000 $t
+     /tmp/ccw7zUEO.s:2287   .text.wizchip_settimeout:0000000000000000 $t
+     /tmp/ccw7zUEO.s:2339   .text.wizchip_gettimeout:0000000000000000 $t
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+WIZCHIP_WRITE
+WIZCHIP_READ
+WIZCHIP_READ_BUF
+WIZCHIP_WRITE_BUF

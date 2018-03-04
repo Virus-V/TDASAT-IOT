@@ -1,0 +1,645 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"initialize.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.Init_i2c1_oled,"ax",%progbits
+  19              		.align	2
+  20              		.global	Init_i2c1_oled
+  21              		.thumb
+  22              		.thumb_func
+  24              	Init_i2c1_oled:
+  25              	.LFB29:
+  26              		.file 1 "/home/virusv/TDSAST_IOT/User/initialize.c"
+   1:/home/virusv/TDSAST_IOT/User/initialize.c **** /* 
+   2:/home/virusv/TDSAST_IOT/User/initialize.c ****  * File: /home/virusv/TDSAST_IOT/User/initialize.c
+   3:/home/virusv/TDSAST_IOT/User/initialize.c ****  * Project: /home/virusv/TDSAST_IOT
+   4:/home/virusv/TDSAST_IOT/User/initialize.c ****  * Created Date: Monday, September 25th 2017, 8:49:34 pm
+   5:/home/virusv/TDSAST_IOT/User/initialize.c ****  * Author: Virus.V
+   6:/home/virusv/TDSAST_IOT/User/initialize.c ****  * E-mail: virusv@qq.com
+   7:/home/virusv/TDSAST_IOT/User/initialize.c ****  * -----
+   8:/home/virusv/TDSAST_IOT/User/initialize.c ****  * Modified By: Virus.V
+   9:/home/virusv/TDSAST_IOT/User/initialize.c ****  * Last Modified: Sun Oct 01 2017
+  10:/home/virusv/TDSAST_IOT/User/initialize.c ****  * -----
+  11:/home/virusv/TDSAST_IOT/User/initialize.c ****  * Copyright (c) 2017 TD-SAST
+  12:/home/virusv/TDSAST_IOT/User/initialize.c ****  * 
+  13:/home/virusv/TDSAST_IOT/User/initialize.c ****  * This program is free software: you can redistribute it and/or modify
+  14:/home/virusv/TDSAST_IOT/User/initialize.c ****  * it under the terms of the GNU Lesser General Public License as published by
+  15:/home/virusv/TDSAST_IOT/User/initialize.c ****  * the Free Software Foundation, either version 3 of the License, or
+  16:/home/virusv/TDSAST_IOT/User/initialize.c ****  * (at your option) any later version.
+  17:/home/virusv/TDSAST_IOT/User/initialize.c ****  *  
+  18:/home/virusv/TDSAST_IOT/User/initialize.c ****  * This program is distributed in the hope that it will be useful,
+  19:/home/virusv/TDSAST_IOT/User/initialize.c ****  * but WITHOUT ANY WARRANTY; without even the implied warranty of
+  20:/home/virusv/TDSAST_IOT/User/initialize.c ****  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  21:/home/virusv/TDSAST_IOT/User/initialize.c ****  * GNU General Public License for more details.
+  22:/home/virusv/TDSAST_IOT/User/initialize.c ****  *  
+  23:/home/virusv/TDSAST_IOT/User/initialize.c ****  * You should have received a copy of the GNU General Public License
+  24:/home/virusv/TDSAST_IOT/User/initialize.c ****  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  25:/home/virusv/TDSAST_IOT/User/initialize.c ****  */
+  26:/home/virusv/TDSAST_IOT/User/initialize.c **** 
+  27:/home/virusv/TDSAST_IOT/User/initialize.c **** #include "stm32f10x.h"
+  28:/home/virusv/TDSAST_IOT/User/initialize.c **** #include "initialize.h"
+  29:/home/virusv/TDSAST_IOT/User/initialize.c **** 
+  30:/home/virusv/TDSAST_IOT/User/initialize.c **** void Init_i2c1_oled(void){
+  27              		.loc 1 30 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 24
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31 0000 80B5     		push	{r7, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 7, -8
+  34              		.cfi_offset 14, -4
+  35 0002 86B0     		sub	sp, sp, #24
+  36              		.cfi_def_cfa_offset 32
+  37 0004 00AF     		add	r7, sp, #0
+  38              		.cfi_def_cfa_register 7
+  31:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitTypeDef OLED_GPIO_InitStructure;
+  32:/home/virusv/TDSAST_IOT/User/initialize.c ****     I2C_InitTypeDef OLED_I2C_InitStructure;
+  33:/home/virusv/TDSAST_IOT/User/initialize.c ****     RCC_APB1PeriphClockCmd(RCC_APB1Periph_I2C2, ENABLE);
+  39              		.loc 1 33 0
+  40 0006 4FF48000 		mov	r0, #4194304
+  41 000a 0121     		movs	r1, #1
+  42 000c FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+  34:/home/virusv/TDSAST_IOT/User/initialize.c ****     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+  43              		.loc 1 34 0
+  44 0010 0820     		movs	r0, #8
+  45 0012 0121     		movs	r1, #1
+  46 0014 FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  35:/home/virusv/TDSAST_IOT/User/initialize.c ****     OLED_GPIO_InitStructure.GPIO_Pin = GPIO_Pin_10 | GPIO_Pin_11;
+  47              		.loc 1 35 0
+  48 0018 4FF44063 		mov	r3, #3072
+  49 001c BB82     		strh	r3, [r7, #20]	@ movhi
+  36:/home/virusv/TDSAST_IOT/User/initialize.c ****     OLED_GPIO_InitStructure.GPIO_Speed = GPIO_Speed_10MHz;
+  50              		.loc 1 36 0
+  51 001e 0123     		movs	r3, #1
+  52 0020 BB75     		strb	r3, [r7, #22]
+  37:/home/virusv/TDSAST_IOT/User/initialize.c ****     OLED_GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_OD;
+  53              		.loc 1 37 0
+  54 0022 1C23     		movs	r3, #28
+  55 0024 FB75     		strb	r3, [r7, #23]
+  38:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_Init(GPIOB, &OLED_GPIO_InitStructure);
+  56              		.loc 1 38 0
+  57 0026 07F11403 		add	r3, r7, #20
+  58 002a 1348     		ldr	r0, .L2
+  59 002c 1946     		mov	r1, r3
+  60 002e FFF7FEFF 		bl	GPIO_Init
+  39:/home/virusv/TDSAST_IOT/User/initialize.c **** 
+  40:/home/virusv/TDSAST_IOT/User/initialize.c ****     I2C_DeInit(I2C2); //这句一定要加
+  61              		.loc 1 40 0
+  62 0032 1248     		ldr	r0, .L2+4
+  63 0034 FFF7FEFF 		bl	I2C_DeInit
+  41:/home/virusv/TDSAST_IOT/User/initialize.c ****     OLED_I2C_InitStructure.I2C_ClockSpeed = 270000;
+  64              		.loc 1 41 0
+  65 0038 114B     		ldr	r3, .L2+8
+  66 003a 7B60     		str	r3, [r7, #4]
+  42:/home/virusv/TDSAST_IOT/User/initialize.c ****     OLED_I2C_InitStructure.I2C_Mode = I2C_Mode_I2C;
+  67              		.loc 1 42 0
+  68 003c 0023     		movs	r3, #0
+  69 003e 3B81     		strh	r3, [r7, #8]	@ movhi
+  43:/home/virusv/TDSAST_IOT/User/initialize.c ****     OLED_I2C_InitStructure.I2C_DutyCycle = I2C_DutyCycle_16_9;
+  70              		.loc 1 43 0
+  71 0040 4FF48043 		mov	r3, #16384
+  72 0044 7B81     		strh	r3, [r7, #10]	@ movhi
+  44:/home/virusv/TDSAST_IOT/User/initialize.c ****     OLED_I2C_InitStructure.I2C_OwnAddress1 = 0x45;
+  73              		.loc 1 44 0
+  74 0046 4523     		movs	r3, #69
+  75 0048 BB81     		strh	r3, [r7, #12]	@ movhi
+  45:/home/virusv/TDSAST_IOT/User/initialize.c ****     OLED_I2C_InitStructure.I2C_Ack = I2C_Ack_Enable;
+  76              		.loc 1 45 0
+  77 004a 4FF48063 		mov	r3, #1024
+  78 004e FB81     		strh	r3, [r7, #14]	@ movhi
+  46:/home/virusv/TDSAST_IOT/User/initialize.c ****     OLED_I2C_InitStructure.I2C_AcknowledgedAddress = I2C_AcknowledgedAddress_7bit; //响应七位�
+  79              		.loc 1 46 0
+  80 0050 4FF48043 		mov	r3, #16384
+  81 0054 3B82     		strh	r3, [r7, #16]	@ movhi
+  47:/home/virusv/TDSAST_IOT/User/initialize.c ****     I2C_Init(I2C2, &OLED_I2C_InitStructure);
+  82              		.loc 1 47 0
+  83 0056 3B1D     		adds	r3, r7, #4
+  84 0058 0848     		ldr	r0, .L2+4
+  85 005a 1946     		mov	r1, r3
+  86 005c FFF7FEFF 		bl	I2C_Init
+  48:/home/virusv/TDSAST_IOT/User/initialize.c ****     /* 启动时钟拉长 */
+  49:/home/virusv/TDSAST_IOT/User/initialize.c ****     I2C_StretchClockCmd(I2C2, ENABLE);
+  87              		.loc 1 49 0
+  88 0060 0648     		ldr	r0, .L2+4
+  89 0062 0121     		movs	r1, #1
+  90 0064 FFF7FEFF 		bl	I2C_StretchClockCmd
+  50:/home/virusv/TDSAST_IOT/User/initialize.c ****     I2C_Cmd(I2C2, ENABLE);
+  91              		.loc 1 50 0
+  92 0068 0448     		ldr	r0, .L2+4
+  93 006a 0121     		movs	r1, #1
+  94 006c FFF7FEFF 		bl	I2C_Cmd
+  51:/home/virusv/TDSAST_IOT/User/initialize.c **** }
+  95              		.loc 1 51 0
+  96 0070 1837     		adds	r7, r7, #24
+  97              		.cfi_def_cfa_offset 8
+  98 0072 BD46     		mov	sp, r7
+  99              		.cfi_def_cfa_register 13
+ 100              		@ sp needed
+ 101 0074 80BD     		pop	{r7, pc}
+ 102              	.L3:
+ 103 0076 00BF     		.align	2
+ 104              	.L2:
+ 105 0078 000C0140 		.word	1073810432
+ 106 007c 00580040 		.word	1073764352
+ 107 0080 B01E0400 		.word	270000
+ 108              		.cfi_endproc
+ 109              	.LFE29:
+ 111              		.section	.text.Init_led_lock,"ax",%progbits
+ 112              		.align	2
+ 113              		.global	Init_led_lock
+ 114              		.thumb
+ 115              		.thumb_func
+ 117              	Init_led_lock:
+ 118              	.LFB30:
+  52:/home/virusv/TDSAST_IOT/User/initialize.c **** 
+  53:/home/virusv/TDSAST_IOT/User/initialize.c **** // 蓝色灯泡引脚和锁控制引脚
+  54:/home/virusv/TDSAST_IOT/User/initialize.c **** void Init_led_lock(void){
+ 119              		.loc 1 54 0
+ 120              		.cfi_startproc
+ 121              		@ args = 0, pretend = 0, frame = 8
+ 122              		@ frame_needed = 1, uses_anonymous_args = 0
+ 123 0000 80B5     		push	{r7, lr}
+ 124              		.cfi_def_cfa_offset 8
+ 125              		.cfi_offset 7, -8
+ 126              		.cfi_offset 14, -4
+ 127 0002 82B0     		sub	sp, sp, #8
+ 128              		.cfi_def_cfa_offset 16
+ 129 0004 00AF     		add	r7, sp, #0
+ 130              		.cfi_def_cfa_register 7
+  55:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitTypeDef GPIO_InitStructure;
+  56:/home/virusv/TDSAST_IOT/User/initialize.c ****     RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOB, ENABLE);
+ 131              		.loc 1 56 0
+ 132 0006 0820     		movs	r0, #8
+ 133 0008 0121     		movs	r1, #1
+ 134 000a FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  57:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_8 | GPIO_Pin_9;
+ 135              		.loc 1 57 0
+ 136 000e 4FF44073 		mov	r3, #768
+ 137 0012 BB80     		strh	r3, [r7, #4]	@ movhi
+  58:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;  	
+ 138              		.loc 1 58 0
+ 139 0014 1023     		movs	r3, #16
+ 140 0016 FB71     		strb	r3, [r7, #7]
+  59:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;  
+ 141              		.loc 1 59 0
+ 142 0018 0323     		movs	r3, #3
+ 143 001a BB71     		strb	r3, [r7, #6]
+  60:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_Init(GPIOB, &GPIO_InitStructure);
+ 144              		.loc 1 60 0
+ 145 001c 3B1D     		adds	r3, r7, #4
+ 146 001e 0848     		ldr	r0, .L5
+ 147 0020 1946     		mov	r1, r3
+ 148 0022 FFF7FEFF 		bl	GPIO_Init
+  61:/home/virusv/TDSAST_IOT/User/initialize.c ****     // 熄灭灯
+  62:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_SetBits(GPIOB, GPIO_Pin_9);
+ 149              		.loc 1 62 0
+ 150 0026 0648     		ldr	r0, .L5
+ 151 0028 4FF40071 		mov	r1, #512
+ 152 002c FFF7FEFF 		bl	GPIO_SetBits
+  63:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_ResetBits(GPIOB, GPIO_Pin_8);  //开锁
+ 153              		.loc 1 63 0
+ 154 0030 0348     		ldr	r0, .L5
+ 155 0032 4FF48071 		mov	r1, #256
+ 156 0036 FFF7FEFF 		bl	GPIO_ResetBits
+  64:/home/virusv/TDSAST_IOT/User/initialize.c **** }
+ 157              		.loc 1 64 0
+ 158 003a 0837     		adds	r7, r7, #8
+ 159              		.cfi_def_cfa_offset 8
+ 160 003c BD46     		mov	sp, r7
+ 161              		.cfi_def_cfa_register 13
+ 162              		@ sp needed
+ 163 003e 80BD     		pop	{r7, pc}
+ 164              	.L6:
+ 165              		.align	2
+ 166              	.L5:
+ 167 0040 000C0140 		.word	1073810432
+ 168              		.cfi_endproc
+ 169              	.LFE30:
+ 171              		.section	.text.Init_spi1_w5500,"ax",%progbits
+ 172              		.align	2
+ 173              		.global	Init_spi1_w5500
+ 174              		.thumb
+ 175              		.thumb_func
+ 177              	Init_spi1_w5500:
+ 178              	.LFB31:
+  65:/home/virusv/TDSAST_IOT/User/initialize.c **** 
+  66:/home/virusv/TDSAST_IOT/User/initialize.c **** //w5500网卡
+  67:/home/virusv/TDSAST_IOT/User/initialize.c **** void Init_spi1_w5500(void){
+ 179              		.loc 1 67 0
+ 180              		.cfi_startproc
+ 181              		@ args = 0, pretend = 0, frame = 24
+ 182              		@ frame_needed = 1, uses_anonymous_args = 0
+ 183 0000 80B5     		push	{r7, lr}
+ 184              		.cfi_def_cfa_offset 8
+ 185              		.cfi_offset 7, -8
+ 186              		.cfi_offset 14, -4
+ 187 0002 86B0     		sub	sp, sp, #24
+ 188              		.cfi_def_cfa_offset 32
+ 189 0004 00AF     		add	r7, sp, #0
+ 190              		.cfi_def_cfa_register 7
+  68:/home/virusv/TDSAST_IOT/User/initialize.c ****     SPI_InitTypeDef SPI_InitStructure;
+  69:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitTypeDef GPIO_InitStructure;
+  70:/home/virusv/TDSAST_IOT/User/initialize.c ****     /* 打开SPI1外设和GPIOA的时钟 */
+  71:/home/virusv/TDSAST_IOT/User/initialize.c ****     RCC_APB2PeriphClockCmd(RCC_APB2Periph_SPI1 | RCC_APB2Periph_GPIOA , ENABLE);
+ 191              		.loc 1 71 0
+ 192 0006 41F20400 		movw	r0, #4100
+ 193 000a 0121     		movs	r1, #1
+ 194 000c FFF7FEFF 		bl	RCC_APB2PeriphClockCmd
+  72:/home/virusv/TDSAST_IOT/User/initialize.c ****     /*****GPIOA******
+  73:/home/virusv/TDSAST_IOT/User/initialize.c ****      3.PA5=>SPI1_SCK,Master,Alternate function push-pull
+  74:/home/virusv/TDSAST_IOT/User/initialize.c ****      4.PA6=>SPI1_MISO,Master,Input floating / Input pull-up
+  75:/home/virusv/TDSAST_IOT/User/initialize.c ****      5.PA7=>SPI1_MOSI,Master,Alternate function push-pull
+  76:/home/virusv/TDSAST_IOT/User/initialize.c ****      6.PA3=>W5500_RST,Output Push-pull
+  77:/home/virusv/TDSAST_IOT/User/initialize.c ****      7.PA11=>W5500_INT,上拉输入
+  78:/home/virusv/TDSAST_IOT/User/initialize.c ****      8.PA4=>W5500_SCS,推挽输出
+  79:/home/virusv/TDSAST_IOT/User/initialize.c ****     *****************/
+  80:/home/virusv/TDSAST_IOT/User/initialize.c ****     /* SPI1配置 */
+  81:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_5 | GPIO_Pin_7;
+ 195              		.loc 1 81 0
+ 196 0010 A023     		movs	r3, #160
+ 197 0012 3B80     		strh	r3, [r7]	@ movhi
+  82:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 198              		.loc 1 82 0
+ 199 0014 0323     		movs	r3, #3
+ 200 0016 BB70     		strb	r3, [r7, #2]
+  83:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_AF_PP; 
+ 201              		.loc 1 83 0
+ 202 0018 1823     		movs	r3, #24
+ 203 001a FB70     		strb	r3, [r7, #3]
+  84:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 204              		.loc 1 84 0
+ 205 001c 3B46     		mov	r3, r7
+ 206 001e 2748     		ldr	r0, .L8
+ 207 0020 1946     		mov	r1, r3
+ 208 0022 FFF7FEFF 		bl	GPIO_Init
+  85:/home/virusv/TDSAST_IOT/User/initialize.c **** 
+  86:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_6;
+ 209              		.loc 1 86 0
+ 210 0026 4023     		movs	r3, #64
+ 211 0028 3B80     		strh	r3, [r7]	@ movhi
+  87:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 212              		.loc 1 87 0
+ 213 002a 0323     		movs	r3, #3
+ 214 002c BB70     		strb	r3, [r7, #2]
+  88:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU; 
+ 215              		.loc 1 88 0
+ 216 002e 4823     		movs	r3, #72
+ 217 0030 FB70     		strb	r3, [r7, #3]
+  89:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 218              		.loc 1 89 0
+ 219 0032 3B46     		mov	r3, r7
+ 220 0034 2148     		ldr	r0, .L8
+ 221 0036 1946     		mov	r1, r3
+ 222 0038 FFF7FEFF 		bl	GPIO_Init
+  90:/home/virusv/TDSAST_IOT/User/initialize.c **** 
+  91:/home/virusv/TDSAST_IOT/User/initialize.c ****     /* W5500_RST引脚初始化配置(PA3) */
+  92:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Pin  = GPIO_Pin_3 | GPIO_Pin_4;
+ 223              		.loc 1 92 0
+ 224 003c 1823     		movs	r3, #24
+ 225 003e 3B80     		strh	r3, [r7]	@ movhi
+  93:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 226              		.loc 1 93 0
+ 227 0040 0323     		movs	r3, #3
+ 228 0042 BB70     		strb	r3, [r7, #2]
+  94:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_Out_PP;
+ 229              		.loc 1 94 0
+ 230 0044 1023     		movs	r3, #16
+ 231 0046 FB70     		strb	r3, [r7, #3]
+  95:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 232              		.loc 1 95 0
+ 233 0048 3B46     		mov	r3, r7
+ 234 004a 1C48     		ldr	r0, .L8
+ 235 004c 1946     		mov	r1, r3
+ 236 004e FFF7FEFF 		bl	GPIO_Init
+  96:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_ResetBits(GPIOA, GPIO_Pin_3);//复位引脚拉低,复位
+ 237              		.loc 1 96 0
+ 238 0052 1A48     		ldr	r0, .L8
+ 239 0054 0821     		movs	r1, #8
+ 240 0056 FFF7FEFF 		bl	GPIO_ResetBits
+  97:/home/virusv/TDSAST_IOT/User/initialize.c **** 
+  98:/home/virusv/TDSAST_IOT/User/initialize.c ****     /* W5500_INT引脚初始化配置(PA11) */	
+  99:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Pin = GPIO_Pin_11;
+ 241              		.loc 1 99 0
+ 242 005a 4FF40063 		mov	r3, #2048
+ 243 005e 3B80     		strh	r3, [r7]	@ movhi
+ 100:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_50MHz;
+ 244              		.loc 1 100 0
+ 245 0060 0323     		movs	r3, #3
+ 246 0062 BB70     		strb	r3, [r7, #2]
+ 101:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_IPU;
+ 247              		.loc 1 101 0
+ 248 0064 4823     		movs	r3, #72
+ 249 0066 FB70     		strb	r3, [r7, #3]
+ 102:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_Init(GPIOA, &GPIO_InitStructure);
+ 250              		.loc 1 102 0
+ 251 0068 3B46     		mov	r3, r7
+ 252 006a 1448     		ldr	r0, .L8
+ 253 006c 1946     		mov	r1, r3
+ 254 006e FFF7FEFF 		bl	GPIO_Init
+ 103:/home/virusv/TDSAST_IOT/User/initialize.c **** 
+ 104:/home/virusv/TDSAST_IOT/User/initialize.c ****     /* SPI1配置 */
+ 105:/home/virusv/TDSAST_IOT/User/initialize.c ****     SPI_InitStructure.SPI_Direction = SPI_Direction_2Lines_FullDuplex; //双线全双工
+ 255              		.loc 1 105 0
+ 256 0072 0023     		movs	r3, #0
+ 257 0074 BB80     		strh	r3, [r7, #4]	@ movhi
+ 106:/home/virusv/TDSAST_IOT/User/initialize.c ****     SPI_InitStructure.SPI_Mode = SPI_Mode_Master; //作为主机
+ 258              		.loc 1 106 0
+ 259 0076 4FF48273 		mov	r3, #260
+ 260 007a FB80     		strh	r3, [r7, #6]	@ movhi
+ 107:/home/virusv/TDSAST_IOT/User/initialize.c ****     SPI_InitStructure.SPI_DataSize = SPI_DataSize_8b; //传输数据为8位
+ 261              		.loc 1 107 0
+ 262 007c 0023     		movs	r3, #0
+ 263 007e 3B81     		strh	r3, [r7, #8]	@ movhi
+ 108:/home/virusv/TDSAST_IOT/User/initialize.c ****     SPI_InitStructure.SPI_CPOL = SPI_CPOL_High; //时钟初始极性为高
+ 264              		.loc 1 108 0
+ 265 0080 0223     		movs	r3, #2
+ 266 0082 7B81     		strh	r3, [r7, #10]	@ movhi
+ 109:/home/virusv/TDSAST_IOT/User/initialize.c ****     SPI_InitStructure.SPI_CPHA = SPI_CPHA_2Edge; //在第二个跳变同步，W5500总是在上升�
+ 267              		.loc 1 109 0
+ 268 0084 0123     		movs	r3, #1
+ 269 0086 BB81     		strh	r3, [r7, #12]	@ movhi
+ 110:/home/virusv/TDSAST_IOT/User/initialize.c ****     SPI_InitStructure.SPI_NSS = SPI_NSS_Soft; //软件管理NSS
+ 270              		.loc 1 110 0
+ 271 0088 4FF40073 		mov	r3, #512
+ 272 008c FB81     		strh	r3, [r7, #14]	@ movhi
+ 111:/home/virusv/TDSAST_IOT/User/initialize.c ****     SPI_InitStructure.SPI_BaudRatePrescaler = SPI_BaudRatePrescaler_4;//SPI_BaudRatePrescaler_2;
+ 273              		.loc 1 111 0
+ 274 008e 0823     		movs	r3, #8
+ 275 0090 3B82     		strh	r3, [r7, #16]	@ movhi
+ 112:/home/virusv/TDSAST_IOT/User/initialize.c ****     SPI_InitStructure.SPI_FirstBit = SPI_FirstBit_MSB;
+ 276              		.loc 1 112 0
+ 277 0092 0023     		movs	r3, #0
+ 278 0094 7B82     		strh	r3, [r7, #18]	@ movhi
+ 113:/home/virusv/TDSAST_IOT/User/initialize.c ****     SPI_InitStructure.SPI_CRCPolynomial = 7; //CRC
+ 279              		.loc 1 113 0
+ 280 0096 0723     		movs	r3, #7
+ 281 0098 BB82     		strh	r3, [r7, #20]	@ movhi
+ 114:/home/virusv/TDSAST_IOT/User/initialize.c ****     SPI_Init(SPI1, &SPI_InitStructure);
+ 282              		.loc 1 114 0
+ 283 009a 3B1D     		adds	r3, r7, #4
+ 284 009c 0848     		ldr	r0, .L8+4
+ 285 009e 1946     		mov	r1, r3
+ 286 00a0 FFF7FEFF 		bl	SPI_Init
+ 115:/home/virusv/TDSAST_IOT/User/initialize.c ****     /* 启动SPI1 */
+ 116:/home/virusv/TDSAST_IOT/User/initialize.c ****     SPI_Cmd(SPI1, ENABLE);
+ 287              		.loc 1 116 0
+ 288 00a4 0648     		ldr	r0, .L8+4
+ 289 00a6 0121     		movs	r1, #1
+ 290 00a8 FFF7FEFF 		bl	SPI_Cmd
+ 117:/home/virusv/TDSAST_IOT/User/initialize.c ****     GPIO_SetBits(GPIOA, GPIO_Pin_3);//复位引脚拉高,取消复位
+ 291              		.loc 1 117 0
+ 292 00ac 0348     		ldr	r0, .L8
+ 293 00ae 0821     		movs	r1, #8
+ 294 00b0 FFF7FEFF 		bl	GPIO_SetBits
+ 118:/home/virusv/TDSAST_IOT/User/initialize.c **** }
+ 295              		.loc 1 118 0
+ 296 00b4 1837     		adds	r7, r7, #24
+ 297              		.cfi_def_cfa_offset 8
+ 298 00b6 BD46     		mov	sp, r7
+ 299              		.cfi_def_cfa_register 13
+ 300              		@ sp needed
+ 301 00b8 80BD     		pop	{r7, pc}
+ 302              	.L9:
+ 303 00ba 00BF     		.align	2
+ 304              	.L8:
+ 305 00bc 00080140 		.word	1073809408
+ 306 00c0 00300140 		.word	1073819648
+ 307              		.cfi_endproc
+ 308              	.LFE31:
+ 310              		.section	.text.Init_tim2_ms_base,"ax",%progbits
+ 311              		.align	2
+ 312              		.global	Init_tim2_ms_base
+ 313              		.thumb
+ 314              		.thumb_func
+ 316              	Init_tim2_ms_base:
+ 317              	.LFB32:
+ 119:/home/virusv/TDSAST_IOT/User/initialize.c **** 
+ 120:/home/virusv/TDSAST_IOT/User/initialize.c **** // TIM2提供1ms时基
+ 121:/home/virusv/TDSAST_IOT/User/initialize.c **** void Init_tim2_ms_base(void){
+ 318              		.loc 1 121 0
+ 319              		.cfi_startproc
+ 320              		@ args = 0, pretend = 0, frame = 16
+ 321              		@ frame_needed = 1, uses_anonymous_args = 0
+ 322 0000 80B5     		push	{r7, lr}
+ 323              		.cfi_def_cfa_offset 8
+ 324              		.cfi_offset 7, -8
+ 325              		.cfi_offset 14, -4
+ 326 0002 84B0     		sub	sp, sp, #16
+ 327              		.cfi_def_cfa_offset 24
+ 328 0004 00AF     		add	r7, sp, #0
+ 329              		.cfi_def_cfa_register 7
+ 122:/home/virusv/TDSAST_IOT/User/initialize.c ****     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
+ 123:/home/virusv/TDSAST_IOT/User/initialize.c ****     NVIC_InitTypeDef NVIC_InitStructure;
+ 124:/home/virusv/TDSAST_IOT/User/initialize.c ****     /* 初始化TIM,优先级最低 */
+ 125:/home/virusv/TDSAST_IOT/User/initialize.c ****     NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
+ 330              		.loc 1 125 0
+ 331 0006 1C23     		movs	r3, #28
+ 332 0008 3B70     		strb	r3, [r7]
+ 126:/home/virusv/TDSAST_IOT/User/initialize.c ****     NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
+ 333              		.loc 1 126 0
+ 334 000a 0023     		movs	r3, #0
+ 335 000c 7B70     		strb	r3, [r7, #1]
+ 127:/home/virusv/TDSAST_IOT/User/initialize.c ****     NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
+ 336              		.loc 1 127 0
+ 337 000e 0323     		movs	r3, #3
+ 338 0010 BB70     		strb	r3, [r7, #2]
+ 128:/home/virusv/TDSAST_IOT/User/initialize.c ****     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
+ 339              		.loc 1 128 0
+ 340 0012 0123     		movs	r3, #1
+ 341 0014 FB70     		strb	r3, [r7, #3]
+ 129:/home/virusv/TDSAST_IOT/User/initialize.c ****     NVIC_Init(&NVIC_InitStructure);
+ 342              		.loc 1 129 0
+ 343 0016 3B46     		mov	r3, r7
+ 344 0018 1846     		mov	r0, r3
+ 345 001a FFF7FEFF 		bl	NVIC_Init
+ 130:/home/virusv/TDSAST_IOT/User/initialize.c ****     
+ 131:/home/virusv/TDSAST_IOT/User/initialize.c ****     //使能Timer2时钟
+ 132:/home/virusv/TDSAST_IOT/User/initialize.c **** 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
+ 346              		.loc 1 132 0
+ 347 001e 0120     		movs	r0, #1
+ 348 0020 0121     		movs	r1, #1
+ 349 0022 FFF7FEFF 		bl	RCC_APB1PeriphClockCmd
+ 133:/home/virusv/TDSAST_IOT/User/initialize.c **** 	TIM_TimeBaseStructure.TIM_Period = 9;						//设置在下一个更新事件装入活动的自动�
+ 350              		.loc 1 133 0
+ 351 0026 0923     		movs	r3, #9
+ 352 0028 3B81     		strh	r3, [r7, #8]	@ movhi
+ 134:/home/virusv/TDSAST_IOT/User/initialize.c **** 	TIM_TimeBaseStructure.TIM_Prescaler = 7199;					//设置用来作为TIMx时钟频率除数的预�
+ 353              		.loc 1 134 0
+ 354 002a 41F61F43 		movw	r3, #7199
+ 355 002e BB80     		strh	r3, [r7, #4]	@ movhi
+ 135:/home/virusv/TDSAST_IOT/User/initialize.c **** 	TIM_TimeBaseStructure.TIM_ClockDivision = TIM_CKD_DIV1;		//设置时钟分割:TDTS = TIM_CKD_DIV1
+ 356              		.loc 1 135 0
+ 357 0030 0023     		movs	r3, #0
+ 358 0032 7B81     		strh	r3, [r7, #10]	@ movhi
+ 136:/home/virusv/TDSAST_IOT/User/initialize.c **** 	TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;	//TIM向上计数模式
+ 359              		.loc 1 136 0
+ 360 0034 0023     		movs	r3, #0
+ 361 0036 FB80     		strh	r3, [r7, #6]	@ movhi
+ 137:/home/virusv/TDSAST_IOT/User/initialize.c **** 	TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);				//根据TIM_TimeBaseInitStruct中指定的参�
+ 362              		.loc 1 137 0
+ 363 0038 3B1D     		adds	r3, r7, #4
+ 364 003a 4FF08040 		mov	r0, #1073741824
+ 365 003e 1946     		mov	r1, r3
+ 366 0040 FFF7FEFF 		bl	TIM_TimeBaseInit
+ 138:/home/virusv/TDSAST_IOT/User/initialize.c **** 	TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE); //使能TIM2指定的中断
+ 367              		.loc 1 138 0
+ 368 0044 4FF08040 		mov	r0, #1073741824
+ 369 0048 0121     		movs	r1, #1
+ 370 004a 0122     		movs	r2, #1
+ 371 004c FFF7FEFF 		bl	TIM_ITConfig
+ 139:/home/virusv/TDSAST_IOT/User/initialize.c **** 	TIM_Cmd(TIM2, ENABLE); //使能TIMx外设
+ 372              		.loc 1 139 0
+ 373 0050 4FF08040 		mov	r0, #1073741824
+ 374 0054 0121     		movs	r1, #1
+ 375 0056 FFF7FEFF 		bl	TIM_Cmd
+ 140:/home/virusv/TDSAST_IOT/User/initialize.c **** }
+ 376              		.loc 1 140 0
+ 377 005a 1037     		adds	r7, r7, #16
+ 378              		.cfi_def_cfa_offset 8
+ 379 005c BD46     		mov	sp, r7
+ 380              		.cfi_def_cfa_register 13
+ 381              		@ sp needed
+ 382 005e 80BD     		pop	{r7, pc}
+ 383              		.cfi_endproc
+ 384              	.LFE32:
+ 386              		.section	.text.Init_iwdg_reset,"ax",%progbits
+ 387              		.align	2
+ 388              		.global	Init_iwdg_reset
+ 389              		.thumb
+ 390              		.thumb_func
+ 392              	Init_iwdg_reset:
+ 393              	.LFB33:
+ 141:/home/virusv/TDSAST_IOT/User/initialize.c **** 
+ 142:/home/virusv/TDSAST_IOT/User/initialize.c **** // 独立看门狗，防止服务器连接意外断开
+ 143:/home/virusv/TDSAST_IOT/User/initialize.c **** void Init_iwdg_reset(void){
+ 394              		.loc 1 143 0
+ 395              		.cfi_startproc
+ 396              		@ args = 0, pretend = 0, frame = 0
+ 397              		@ frame_needed = 1, uses_anonymous_args = 0
+ 398 0000 80B5     		push	{r7, lr}
+ 399              		.cfi_def_cfa_offset 8
+ 400              		.cfi_offset 7, -8
+ 401              		.cfi_offset 14, -4
+ 402 0002 00AF     		add	r7, sp, #0
+ 403              		.cfi_def_cfa_register 7
+ 144:/home/virusv/TDSAST_IOT/User/initialize.c ****     // 使能独立看门狗使用的LSI时钟
+ 145:/home/virusv/TDSAST_IOT/User/initialize.c ****     RCC_LSICmd(ENABLE);
+ 404              		.loc 1 145 0
+ 405 0004 0120     		movs	r0, #1
+ 406 0006 FFF7FEFF 		bl	RCC_LSICmd
+ 146:/home/virusv/TDSAST_IOT/User/initialize.c ****     // 等待时钟稳定
+ 147:/home/virusv/TDSAST_IOT/User/initialize.c ****     while(RCC_GetFlagStatus(RCC_FLAG_LSIRDY) == RESET);
+ 407              		.loc 1 147 0
+ 408 000a 00BF     		nop
+ 409              	.L12:
+ 410              		.loc 1 147 0 is_stmt 0 discriminator 1
+ 411 000c 6120     		movs	r0, #97
+ 412 000e FFF7FEFF 		bl	RCC_GetFlagStatus
+ 413 0012 0346     		mov	r3, r0
+ 414 0014 002B     		cmp	r3, #0
+ 415 0016 F9D0     		beq	.L12
+ 148:/home/virusv/TDSAST_IOT/User/initialize.c ****     // 在调试的时候暂停看门狗
+ 149:/home/virusv/TDSAST_IOT/User/initialize.c ****     DBGMCU_Config(DBGMCU_IWDG_STOP, ENABLE);
+ 416              		.loc 1 149 0 is_stmt 1
+ 417 0018 4FF48070 		mov	r0, #256
+ 418 001c 0121     		movs	r1, #1
+ 419 001e FFF7FEFF 		bl	DBGMCU_Config
+ 150:/home/virusv/TDSAST_IOT/User/initialize.c ****     // 开启独立看门狗，使能访问
+ 151:/home/virusv/TDSAST_IOT/User/initialize.c ****     IWDG_WriteAccessCmd(IWDG_WriteAccess_Enable);
+ 420              		.loc 1 151 0
+ 421 0022 45F25550 		movw	r0, #21845
+ 422 0026 FFF7FEFF 		bl	IWDG_WriteAccessCmd
+ 152:/home/virusv/TDSAST_IOT/User/initialize.c ****     /**
+ 153:/home/virusv/TDSAST_IOT/User/initialize.c ****      * 设置预分频
+ 154:/home/virusv/TDSAST_IOT/User/initialize.c ****      * 独立看门狗是内部一个独立的40KHz的震荡源提供频率
+ 155:/home/virusv/TDSAST_IOT/User/initialize.c ****      * 记录时间为 = (时钟频率(40KHz) / 分频数)* IWDG_SetReload(t)
+ 156:/home/virusv/TDSAST_IOT/User/initialize.c ****      * 最大记录时间 = (1/40K) * 256 * 0xFFF = 26.208秒
+ 157:/home/virusv/TDSAST_IOT/User/initialize.c ****      */
+ 158:/home/virusv/TDSAST_IOT/User/initialize.c ****     IWDG_SetPrescaler(IWDG_Prescaler_256);
+ 423              		.loc 1 158 0
+ 424 002a 0620     		movs	r0, #6
+ 425 002c FFF7FEFF 		bl	IWDG_SetPrescaler
+ 159:/home/virusv/TDSAST_IOT/User/initialize.c ****     // 0x30D 等于 4.9984 秒，约为5秒
+ 160:/home/virusv/TDSAST_IOT/User/initialize.c ****     IWDG_SetReload(0x30D);
+ 426              		.loc 1 160 0
+ 427 0030 40F20D30 		movw	r0, #781
+ 428 0034 FFF7FEFF 		bl	IWDG_SetReload
+ 161:/home/virusv/TDSAST_IOT/User/initialize.c ****     // 重置计数器
+ 162:/home/virusv/TDSAST_IOT/User/initialize.c ****     IWDG_ReloadCounter();
+ 429              		.loc 1 162 0
+ 430 0038 FFF7FEFF 		bl	IWDG_ReloadCounter
+ 163:/home/virusv/TDSAST_IOT/User/initialize.c ****     // 启动看门狗
+ 164:/home/virusv/TDSAST_IOT/User/initialize.c ****     IWDG_Enable();
+ 431              		.loc 1 164 0
+ 432 003c FFF7FEFF 		bl	IWDG_Enable
+ 165:/home/virusv/TDSAST_IOT/User/initialize.c ****     
+ 166:/home/virusv/TDSAST_IOT/User/initialize.c **** }...
+ 433              		.loc 1 166 0
+ 434 0040 80BD     		pop	{r7, pc}
+ 435              		.cfi_endproc
+ 436              	.LFE33:
+ 438 0042 00BF     		.text
+ 439              	.Letext0:
+ 440              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 441              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 442              		.file 4 "/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h"
+ 443              		.file 5 "/home/virusv/TDSAST_IOT/Libraries/inc/stm32f10x_gpio.h"
+ 444              		.file 6 "/home/virusv/TDSAST_IOT/Libraries/inc/stm32f10x_i2c.h"
+ 445              		.file 7 "/home/virusv/TDSAST_IOT/Libraries/inc/stm32f10x_spi.h"
+ 446              		.file 8 "/home/virusv/TDSAST_IOT/Libraries/inc/stm32f10x_tim.h"
+ 447              		.file 9 "/home/virusv/TDSAST_IOT/Libraries/inc/misc.h"
+ 448              		.file 10 "/home/virusv/TDSAST_IOT/CMSIS/CM3/CoreSupport/core_cm3.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 initialize.c
+     /tmp/ccqSUAzH.s:19     .text.Init_i2c1_oled:0000000000000000 $t
+     /tmp/ccqSUAzH.s:24     .text.Init_i2c1_oled:0000000000000000 Init_i2c1_oled
+     /tmp/ccqSUAzH.s:105    .text.Init_i2c1_oled:0000000000000078 $d
+     /tmp/ccqSUAzH.s:112    .text.Init_led_lock:0000000000000000 $t
+     /tmp/ccqSUAzH.s:117    .text.Init_led_lock:0000000000000000 Init_led_lock
+     /tmp/ccqSUAzH.s:167    .text.Init_led_lock:0000000000000040 $d
+     /tmp/ccqSUAzH.s:172    .text.Init_spi1_w5500:0000000000000000 $t
+     /tmp/ccqSUAzH.s:177    .text.Init_spi1_w5500:0000000000000000 Init_spi1_w5500
+     /tmp/ccqSUAzH.s:305    .text.Init_spi1_w5500:00000000000000bc $d
+     /tmp/ccqSUAzH.s:311    .text.Init_tim2_ms_base:0000000000000000 $t
+     /tmp/ccqSUAzH.s:316    .text.Init_tim2_ms_base:0000000000000000 Init_tim2_ms_base
+     /tmp/ccqSUAzH.s:387    .text.Init_iwdg_reset:0000000000000000 $t
+     /tmp/ccqSUAzH.s:392    .text.Init_iwdg_reset:0000000000000000 Init_iwdg_reset
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+RCC_APB1PeriphClockCmd
+RCC_APB2PeriphClockCmd
+GPIO_Init
+I2C_DeInit
+I2C_Init
+I2C_StretchClockCmd
+I2C_Cmd
+GPIO_SetBits
+GPIO_ResetBits
+SPI_Init
+SPI_Cmd
+NVIC_Init
+TIM_TimeBaseInit
+TIM_ITConfig
+TIM_Cmd
+RCC_LSICmd
+RCC_GetFlagStatus
+DBGMCU_Config
+IWDG_WriteAccessCmd
+IWDG_SetPrescaler
+IWDG_SetReload
+IWDG_ReloadCounter
+IWDG_Enable

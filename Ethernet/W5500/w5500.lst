@@ -1,0 +1,1316 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"w5500.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.section	.text.WIZCHIP_READ,"ax",%progbits
+  19              		.align	2
+  20              		.global	WIZCHIP_READ
+  21              		.thumb
+  22              		.thumb_func
+  24              	WIZCHIP_READ:
+  25              	.LFB0:
+  26              		.file 1 "/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c"
+   1:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //*****************************************************************************
+   2:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //
+   3:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! \file w5500.c
+   4:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! \brief W5500 HAL Interface.
+   5:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! \version 1.0.0
+   6:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! \date 2013/10/21
+   7:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! \par  Revision history
+   8:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //!       <2013/10/21> 1st Release
+   9:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! \author MidnightCow
+  10:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! \copyright
+  11:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //!
+  12:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! Copyright (c)  2013, WIZnet Co., LTD.
+  13:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! All rights reserved.
+  14:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! 
+  15:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! Redistribution and use in source and binary forms, with or without 
+  16:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! modification, are permitted provided that the following conditions 
+  17:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! are met: 
+  18:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! 
+  19:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //!     * Redistributions of source code must retain the above copyright 
+  20:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! notice, this list of conditions and the following disclaimer. 
+  21:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //!     * Redistributions in binary form must reproduce the above copyright
+  22:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! notice, this list of conditions and the following disclaimer in the
+  23:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! documentation and/or other materials provided with the distribution. 
+  24:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //!     * Neither the name of the <ORGANIZATION> nor the names of its 
+  25:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! contributors may be used to endorse or promote products derived 
+  26:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! from this software without specific prior written permission. 
+  27:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! 
+  28:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  29:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE 
+  30:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  31:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE 
+  32:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR 
+  33:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF 
+  34:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  35:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN 
+  36:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) 
+  37:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF 
+  38:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //! THE POSSIBILITY OF SUCH DAMAGE.
+  39:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //
+  40:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** //*****************************************************************************
+  41:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #include <stdio.h>
+  42:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #include "w5500.h"
+  43:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  44:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  45:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #define _W5500_SPI_VDM_OP_          0x00
+  46:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #define _W5500_SPI_FDM_OP_LEN1_     0x01
+  47:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #define _W5500_SPI_FDM_OP_LEN2_     0x02
+  48:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #define _W5500_SPI_FDM_OP_LEN4_     0x03
+  49:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  50:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** ////////////////////////////////////////////////////
+  51:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  52:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** uint8_t  WIZCHIP_READ(uint32_t AddrSel)
+  53:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** {
+  27              		.loc 1 53 0
+  28              		.cfi_startproc
+  29              		@ args = 0, pretend = 0, frame = 16
+  30              		@ frame_needed = 1, uses_anonymous_args = 0
+  31 0000 80B5     		push	{r7, lr}
+  32              		.cfi_def_cfa_offset 8
+  33              		.cfi_offset 7, -8
+  34              		.cfi_offset 14, -4
+  35 0002 84B0     		sub	sp, sp, #16
+  36              		.cfi_def_cfa_offset 24
+  37 0004 00AF     		add	r7, sp, #0
+  38              		.cfi_def_cfa_register 7
+  39 0006 7860     		str	r0, [r7, #4]
+  54:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    uint8_t ret;
+  55:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  56:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP_CRITICAL_ENTER();
+  40              		.loc 1 56 0
+  41 0008 164B     		ldr	r3, .L3
+  42 000a 9B68     		ldr	r3, [r3, #8]
+  43 000c 9847     		blx	r3
+  57:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.CS._select();
+  44              		.loc 1 57 0
+  45 000e 154B     		ldr	r3, .L3
+  46 0010 1B69     		ldr	r3, [r3, #16]
+  47 0012 9847     		blx	r3
+  58:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  59:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #if( (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_))
+  60:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  61:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #if  ( _WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_SPI_VDM_ )
+  62:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    	   AddrSel |= (_W5500_SPI_READ_ | _W5500_SPI_VDM_OP_);
+  63:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #elif( _WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_SPI_FDM_ )
+  64:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    	   AddrSel |= (_W5500_SPI_READ_ | _W5500_SPI_FDM_OP_LEN1_);
+  65:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #else
+  66:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       #error "Unsupported _WIZCHIP_IO_SPI_ in W5500 !!!"
+  67:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #endif
+  68:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  69:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.IF.SPI._write_byte((AddrSel & 0x00FF0000) >> 16);
+  48              		.loc 1 69 0
+  49 0014 134B     		ldr	r3, .L3
+  50 0016 DB69     		ldr	r3, [r3, #28]
+  51 0018 7A68     		ldr	r2, [r7, #4]
+  52 001a 02F47F02 		and	r2, r2, #16711680
+  53 001e 120C     		lsrs	r2, r2, #16
+  54 0020 D2B2     		uxtb	r2, r2
+  55 0022 1046     		mov	r0, r2
+  56 0024 9847     		blx	r3
+  70:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.IF.SPI._write_byte((AddrSel & 0x0000FF00) >>  8);
+  57              		.loc 1 70 0
+  58 0026 0F4B     		ldr	r3, .L3
+  59 0028 DB69     		ldr	r3, [r3, #28]
+  60 002a 7A68     		ldr	r2, [r7, #4]
+  61 002c 02F47F42 		and	r2, r2, #65280
+  62 0030 120A     		lsrs	r2, r2, #8
+  63 0032 D2B2     		uxtb	r2, r2
+  64 0034 1046     		mov	r0, r2
+  65 0036 9847     		blx	r3
+  71:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.IF.SPI._write_byte((AddrSel & 0x000000FF) >>  0);
+  66              		.loc 1 71 0
+  67 0038 0A4B     		ldr	r3, .L3
+  68 003a DB69     		ldr	r3, [r3, #28]
+  69 003c 7A68     		ldr	r2, [r7, #4]
+  70 003e D2B2     		uxtb	r2, r2
+  71 0040 1046     		mov	r0, r2
+  72 0042 9847     		blx	r3
+  72:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    ret = WIZCHIP.IF.SPI._read_byte();
+  73              		.loc 1 72 0
+  74 0044 074B     		ldr	r3, .L3
+  75 0046 9B69     		ldr	r3, [r3, #24]
+  76 0048 9847     		blx	r3
+  77 004a 0346     		mov	r3, r0
+  78 004c FB73     		strb	r3, [r7, #15]
+  73:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  74:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #elif ( (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_BUS_) )
+  75:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  76:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #if  (_WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_BUS_DIR_)
+  77:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  78:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #elif(_WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_BUS_INDIR_)
+  79:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  80:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #else
+  81:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       #error "Unsupported _WIZCHIP_IO_MODE_BUS_ in W5500 !!!"
+  82:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #endif
+  83:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #else
+  84:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #error "Unknown _WIZCHIP_IO_MODE_ in W5000. !!!"   
+  85:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #endif
+  86:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  87:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.CS._deselect();
+  79              		.loc 1 87 0
+  80 004e 054B     		ldr	r3, .L3
+  81 0050 5B69     		ldr	r3, [r3, #20]
+  82 0052 9847     		blx	r3
+  88:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP_CRITICAL_EXIT();
+  83              		.loc 1 88 0
+  84 0054 034B     		ldr	r3, .L3
+  85 0056 DB68     		ldr	r3, [r3, #12]
+  86 0058 9847     		blx	r3
+  89:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    return ret;
+  87              		.loc 1 89 0
+  88 005a FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+  90:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** }
+  89              		.loc 1 90 0
+  90 005c 1846     		mov	r0, r3
+  91 005e 1037     		adds	r7, r7, #16
+  92              		.cfi_def_cfa_offset 8
+  93 0060 BD46     		mov	sp, r7
+  94              		.cfi_def_cfa_register 13
+  95              		@ sp needed
+  96 0062 80BD     		pop	{r7, pc}
+  97              	.L4:
+  98              		.align	2
+  99              	.L3:
+ 100 0064 00000000 		.word	WIZCHIP
+ 101              		.cfi_endproc
+ 102              	.LFE0:
+ 104              		.section	.text.WIZCHIP_WRITE,"ax",%progbits
+ 105              		.align	2
+ 106              		.global	WIZCHIP_WRITE
+ 107              		.thumb
+ 108              		.thumb_func
+ 110              	WIZCHIP_WRITE:
+ 111              	.LFB1:
+  91:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  92:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** void     WIZCHIP_WRITE(uint32_t AddrSel, uint8_t wb )
+  93:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** {
+ 112              		.loc 1 93 0
+ 113              		.cfi_startproc
+ 114              		@ args = 0, pretend = 0, frame = 8
+ 115              		@ frame_needed = 1, uses_anonymous_args = 0
+ 116 0000 80B5     		push	{r7, lr}
+ 117              		.cfi_def_cfa_offset 8
+ 118              		.cfi_offset 7, -8
+ 119              		.cfi_offset 14, -4
+ 120 0002 82B0     		sub	sp, sp, #8
+ 121              		.cfi_def_cfa_offset 16
+ 122 0004 00AF     		add	r7, sp, #0
+ 123              		.cfi_def_cfa_register 7
+ 124 0006 7860     		str	r0, [r7, #4]
+ 125 0008 0B46     		mov	r3, r1
+ 126 000a FB70     		strb	r3, [r7, #3]
+  94:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 	WIZCHIP_CRITICAL_ENTER();
+ 127              		.loc 1 94 0
+ 128 000c 174B     		ldr	r3, .L6
+ 129 000e 9B68     		ldr	r3, [r3, #8]
+ 130 0010 9847     		blx	r3
+  95:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.CS._select();
+ 131              		.loc 1 95 0
+ 132 0012 164B     		ldr	r3, .L6
+ 133 0014 1B69     		ldr	r3, [r3, #16]
+ 134 0016 9847     		blx	r3
+  96:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  97:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #if( (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_))
+  98:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+  99:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #if  ( _WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_SPI_VDM_ )
+ 100:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    	   AddrSel |= (_W5500_SPI_WRITE_ | _W5500_SPI_VDM_OP_);
+ 135              		.loc 1 100 0
+ 136 0018 7B68     		ldr	r3, [r7, #4]
+ 137 001a 43F00403 		orr	r3, r3, #4
+ 138 001e 7B60     		str	r3, [r7, #4]
+ 101:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #elif( _WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_SPI_FDM_ )
+ 102:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    	   AddrSel |= (_W5500_SPI_WRITE_ | _W5500_SPI_FDM_OP_LEN1_);
+ 103:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #else
+ 104:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       #error "Unsupported _WIZCHIP_IO_SPI_ in W5500 !!!"
+ 105:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #endif
+ 106:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 107:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.IF.SPI._write_byte((AddrSel & 0x00FF0000) >> 16);
+ 139              		.loc 1 107 0
+ 140 0020 124B     		ldr	r3, .L6
+ 141 0022 DB69     		ldr	r3, [r3, #28]
+ 142 0024 7A68     		ldr	r2, [r7, #4]
+ 143 0026 02F47F02 		and	r2, r2, #16711680
+ 144 002a 120C     		lsrs	r2, r2, #16
+ 145 002c D2B2     		uxtb	r2, r2
+ 146 002e 1046     		mov	r0, r2
+ 147 0030 9847     		blx	r3
+ 108:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.IF.SPI._write_byte((AddrSel & 0x0000FF00) >>  8);
+ 148              		.loc 1 108 0
+ 149 0032 0E4B     		ldr	r3, .L6
+ 150 0034 DB69     		ldr	r3, [r3, #28]
+ 151 0036 7A68     		ldr	r2, [r7, #4]
+ 152 0038 02F47F42 		and	r2, r2, #65280
+ 153 003c 120A     		lsrs	r2, r2, #8
+ 154 003e D2B2     		uxtb	r2, r2
+ 155 0040 1046     		mov	r0, r2
+ 156 0042 9847     		blx	r3
+ 109:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.IF.SPI._write_byte((AddrSel & 0x000000FF) >>  0);
+ 157              		.loc 1 109 0
+ 158 0044 094B     		ldr	r3, .L6
+ 159 0046 DB69     		ldr	r3, [r3, #28]
+ 160 0048 7A68     		ldr	r2, [r7, #4]
+ 161 004a D2B2     		uxtb	r2, r2
+ 162 004c 1046     		mov	r0, r2
+ 163 004e 9847     		blx	r3
+ 110:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.IF.SPI._write_byte(wb);
+ 164              		.loc 1 110 0
+ 165 0050 064B     		ldr	r3, .L6
+ 166 0052 DB69     		ldr	r3, [r3, #28]
+ 167 0054 FA78     		ldrb	r2, [r7, #3]	@ zero_extendqisi2
+ 168 0056 1046     		mov	r0, r2
+ 169 0058 9847     		blx	r3
+ 111:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 112:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #elif ( (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_BUS_) )
+ 113:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 114:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #if  (_WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_BUS_DIR_)
+ 115:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 116:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #elif(_WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_BUS_INDIR_)
+ 117:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 118:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #else
+ 119:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       #error "Unsupported _WIZCHIP_IO_MODE_BUS_ in W5500 !!!"
+ 120:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #endif
+ 121:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #else
+ 122:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #error "Unknown _WIZCHIP_IO_MODE_ in W5500. !!!"
+ 123:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #endif
+ 124:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 125:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.CS._deselect();
+ 170              		.loc 1 125 0
+ 171 005a 044B     		ldr	r3, .L6
+ 172 005c 5B69     		ldr	r3, [r3, #20]
+ 173 005e 9847     		blx	r3
+ 126:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP_CRITICAL_EXIT();
+ 174              		.loc 1 126 0
+ 175 0060 024B     		ldr	r3, .L6
+ 176 0062 DB68     		ldr	r3, [r3, #12]
+ 177 0064 9847     		blx	r3
+ 127:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** }
+ 178              		.loc 1 127 0
+ 179 0066 0837     		adds	r7, r7, #8
+ 180              		.cfi_def_cfa_offset 8
+ 181 0068 BD46     		mov	sp, r7
+ 182              		.cfi_def_cfa_register 13
+ 183              		@ sp needed
+ 184 006a 80BD     		pop	{r7, pc}
+ 185              	.L7:
+ 186              		.align	2
+ 187              	.L6:
+ 188 006c 00000000 		.word	WIZCHIP
+ 189              		.cfi_endproc
+ 190              	.LFE1:
+ 192              		.section	.text.WIZCHIP_READ_BUF,"ax",%progbits
+ 193              		.align	2
+ 194              		.global	WIZCHIP_READ_BUF
+ 195              		.thumb
+ 196              		.thumb_func
+ 198              	WIZCHIP_READ_BUF:
+ 199              	.LFB2:
+ 128:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          
+ 129:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** void     WIZCHIP_READ_BUF (uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
+ 130:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** {
+ 200              		.loc 1 130 0
+ 201              		.cfi_startproc
+ 202              		@ args = 0, pretend = 0, frame = 24
+ 203              		@ frame_needed = 1, uses_anonymous_args = 0
+ 204 0000 90B5     		push	{r4, r7, lr}
+ 205              		.cfi_def_cfa_offset 12
+ 206              		.cfi_offset 4, -12
+ 207              		.cfi_offset 7, -8
+ 208              		.cfi_offset 14, -4
+ 209 0002 87B0     		sub	sp, sp, #28
+ 210              		.cfi_def_cfa_offset 40
+ 211 0004 00AF     		add	r7, sp, #0
+ 212              		.cfi_def_cfa_register 7
+ 213 0006 F860     		str	r0, [r7, #12]
+ 214 0008 B960     		str	r1, [r7, #8]
+ 215 000a 1346     		mov	r3, r2
+ 216 000c FB80     		strh	r3, [r7, #6]	@ movhi
+ 131:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    uint16_t i = 0;
+ 217              		.loc 1 131 0
+ 218 000e 0023     		movs	r3, #0
+ 219 0010 FB82     		strh	r3, [r7, #22]	@ movhi
+ 132:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    uint16_t j = 0;
+ 220              		.loc 1 132 0
+ 221 0012 0023     		movs	r3, #0
+ 222 0014 BB82     		strh	r3, [r7, #20]	@ movhi
+ 133:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP_CRITICAL_ENTER();
+ 223              		.loc 1 133 0
+ 224 0016 1C4B     		ldr	r3, .L11
+ 225 0018 9B68     		ldr	r3, [r3, #8]
+ 226 001a 9847     		blx	r3
+ 134:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.CS._select();
+ 227              		.loc 1 134 0
+ 228 001c 1A4B     		ldr	r3, .L11
+ 229 001e 1B69     		ldr	r3, [r3, #16]
+ 230 0020 9847     		blx	r3
+ 135:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 136:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #if( (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_))
+ 137:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 138:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #if  ( _WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_SPI_VDM_ )
+ 139:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       AddrSel |= (_W5500_SPI_READ_ | _W5500_SPI_VDM_OP_);
+ 140:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       WIZCHIP.IF.SPI._write_byte((AddrSel & 0x00FF0000) >> 16);
+ 231              		.loc 1 140 0
+ 232 0022 194B     		ldr	r3, .L11
+ 233 0024 DB69     		ldr	r3, [r3, #28]
+ 234 0026 FA68     		ldr	r2, [r7, #12]
+ 235 0028 02F47F02 		and	r2, r2, #16711680
+ 236 002c 120C     		lsrs	r2, r2, #16
+ 237 002e D2B2     		uxtb	r2, r2
+ 238 0030 1046     		mov	r0, r2
+ 239 0032 9847     		blx	r3
+ 141:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       WIZCHIP.IF.SPI._write_byte((AddrSel & 0x0000FF00) >>  8);
+ 240              		.loc 1 141 0
+ 241 0034 144B     		ldr	r3, .L11
+ 242 0036 DB69     		ldr	r3, [r3, #28]
+ 243 0038 FA68     		ldr	r2, [r7, #12]
+ 244 003a 02F47F42 		and	r2, r2, #65280
+ 245 003e 120A     		lsrs	r2, r2, #8
+ 246 0040 D2B2     		uxtb	r2, r2
+ 247 0042 1046     		mov	r0, r2
+ 248 0044 9847     		blx	r3
+ 142:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       WIZCHIP.IF.SPI._write_byte((AddrSel & 0x000000FF) >>  0);
+ 249              		.loc 1 142 0
+ 250 0046 104B     		ldr	r3, .L11
+ 251 0048 DB69     		ldr	r3, [r3, #28]
+ 252 004a FA68     		ldr	r2, [r7, #12]
+ 253 004c D2B2     		uxtb	r2, r2
+ 254 004e 1046     		mov	r0, r2
+ 255 0050 9847     		blx	r3
+ 143:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       for(i = 0; i < len; i++)
+ 256              		.loc 1 143 0
+ 257 0052 0023     		movs	r3, #0
+ 258 0054 FB82     		strh	r3, [r7, #22]	@ movhi
+ 259 0056 0AE0     		b	.L9
+ 260              	.L10:
+ 144:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****         pBuf[i] = WIZCHIP.IF.SPI._read_byte();
+ 261              		.loc 1 144 0 discriminator 3
+ 262 0058 FB8A     		ldrh	r3, [r7, #22]
+ 263 005a BA68     		ldr	r2, [r7, #8]
+ 264 005c D418     		adds	r4, r2, r3
+ 265 005e 0A4B     		ldr	r3, .L11
+ 266 0060 9B69     		ldr	r3, [r3, #24]
+ 267 0062 9847     		blx	r3
+ 268 0064 0346     		mov	r3, r0
+ 269 0066 2370     		strb	r3, [r4]
+ 143:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       for(i = 0; i < len; i++)
+ 270              		.loc 1 143 0 discriminator 3
+ 271 0068 FB8A     		ldrh	r3, [r7, #22]
+ 272 006a 0133     		adds	r3, r3, #1
+ 273 006c FB82     		strh	r3, [r7, #22]	@ movhi
+ 274              	.L9:
+ 143:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       for(i = 0; i < len; i++)
+ 275              		.loc 1 143 0 is_stmt 0 discriminator 1
+ 276 006e FA8A     		ldrh	r2, [r7, #22]
+ 277 0070 FB88     		ldrh	r3, [r7, #6]
+ 278 0072 9A42     		cmp	r2, r3
+ 279 0074 F0D3     		bcc	.L10
+ 145:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #elif( _WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_SPI_FDM_ )
+ 146:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       AddrSel |= (_W5500_SPI_READ_ | _W5500_SPI_FDM_OP_LEN4_);
+ 147:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       for(i = 0; i < len/4; i++)
+ 148:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       {
+ 149:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          WIZCHIP.IF.SPI._write_byte((AddrSel & 0x00FF0000) >> 16);
+ 150:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          WIZCHIP.IF.SPI._write_byte((AddrSel & 0x0000FF00) >>  8);
+ 151:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          WIZCHIP.IF.SPI._write_byte((AddrSel & 0x000000FF) >>  0);
+ 152:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          pBuf[i*4]   = WIZCHIP.IF.SPI._read_byte();
+ 153:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          pBuf[i*4+1] = WIZCHIP.IF.SPI._read_byte();
+ 154:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          pBuf[i*4+2] = WIZCHIP.IF.SPI._read_byte();            
+ 155:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          pBuf[i*4+3] = WIZCHIP.IF.SPI._read_byte();            
+ 156:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          //AddrSel += (4 << 8);    // offset address + 4
+ 157:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          AddrSel = WIZCHIP_OFFSET_INC(AddrSel,4);
+ 158:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       }
+ 159:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       len %= 4;      // for the rest data
+ 160:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       if(len)
+ 161:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       {
+ 162:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          AddrSel -= 1;  // change _W5500_SPI_FDM_OP_LEN4_ to _W5500_SPI_FDM_OP_LEN2_
+ 163:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          i *= 4;
+ 164:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          for(j = 0; j < len/2 ; j++)
+ 165:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          {
+ 166:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte((AddrSel & 0x00FF0000) >> 16);
+ 167:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte((AddrSel & 0x0000FF00) >>  8);
+ 168:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte((AddrSel & 0x000000FF) >>  0);
+ 169:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             pBuf[i]   = WIZCHIP.IF.SPI._read_byte();
+ 170:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             pBuf[i+1] = WIZCHIP.IF.SPI._read_byte();
+ 171:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             i += 2;
+ 172:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             //AddrSel += (2 << 8);    // offset address + 2
+ 173:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             AddrSel = WIZCHIP_OFFSET_INC(AddrSel,2);
+ 174:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          }
+ 175:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          len %= 2;
+ 176:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          if(len)
+ 177:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          {
+ 178:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             AddrSel -= 1;  // change _W5500_SPI_FDM_OP_LEN2_ to _W5500_SPI_FDM_OP_LEN1_
+ 179:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte((AddrSel & 0x00FF0000) >> 16);
+ 180:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte((AddrSel & 0x0000FF00) >>  8);
+ 181:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte((AddrSel & 0x000000FF) >>  0);
+ 182:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             pBuf[i]   = WIZCHIP.IF.SPI._read_byte();
+ 183:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          }      
+ 184:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       }
+ 185:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #else
+ 186:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       #error "Unsupported _WIZCHIP_IO_SPI_ in W5500 !!!"
+ 187:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #endif
+ 188:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 189:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #elif ( (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_BUS_) )
+ 190:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 191:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #if  (_WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_BUS_DIR_)
+ 192:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 193:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #elif(_WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_BUS_INDIR_)
+ 194:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 195:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #else
+ 196:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       #error "Unsupported _WIZCHIP_IO_MODE_BUS_ in W5500 !!!"
+ 197:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #endif
+ 198:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #else
+ 199:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #error "Unknown _WIZCHIP_IO_MODE_ in W5500. !!!!"
+ 200:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #endif
+ 201:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 202:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.CS._deselect();
+ 280              		.loc 1 202 0 is_stmt 1
+ 281 0076 044B     		ldr	r3, .L11
+ 282 0078 5B69     		ldr	r3, [r3, #20]
+ 283 007a 9847     		blx	r3
+ 203:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP_CRITICAL_EXIT();
+ 284              		.loc 1 203 0
+ 285 007c 024B     		ldr	r3, .L11
+ 286 007e DB68     		ldr	r3, [r3, #12]
+ 287 0080 9847     		blx	r3
+ 204:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** }
+ 288              		.loc 1 204 0
+ 289 0082 1C37     		adds	r7, r7, #28
+ 290              		.cfi_def_cfa_offset 12
+ 291 0084 BD46     		mov	sp, r7
+ 292              		.cfi_def_cfa_register 13
+ 293              		@ sp needed
+ 294 0086 90BD     		pop	{r4, r7, pc}
+ 295              	.L12:
+ 296              		.align	2
+ 297              	.L11:
+ 298 0088 00000000 		.word	WIZCHIP
+ 299              		.cfi_endproc
+ 300              	.LFE2:
+ 302              		.section	.text.WIZCHIP_WRITE_BUF,"ax",%progbits
+ 303              		.align	2
+ 304              		.global	WIZCHIP_WRITE_BUF
+ 305              		.thumb
+ 306              		.thumb_func
+ 308              	WIZCHIP_WRITE_BUF:
+ 309              	.LFB3:
+ 205:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 206:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** void     WIZCHIP_WRITE_BUF(uint32_t AddrSel, uint8_t* pBuf, uint16_t len)
+ 207:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** {
+ 310              		.loc 1 207 0
+ 311              		.cfi_startproc
+ 312              		@ args = 0, pretend = 0, frame = 24
+ 313              		@ frame_needed = 1, uses_anonymous_args = 0
+ 314 0000 80B5     		push	{r7, lr}
+ 315              		.cfi_def_cfa_offset 8
+ 316              		.cfi_offset 7, -8
+ 317              		.cfi_offset 14, -4
+ 318 0002 86B0     		sub	sp, sp, #24
+ 319              		.cfi_def_cfa_offset 32
+ 320 0004 00AF     		add	r7, sp, #0
+ 321              		.cfi_def_cfa_register 7
+ 322 0006 F860     		str	r0, [r7, #12]
+ 323 0008 B960     		str	r1, [r7, #8]
+ 324 000a 1346     		mov	r3, r2
+ 325 000c FB80     		strh	r3, [r7, #6]	@ movhi
+ 208:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    uint16_t i = 0;
+ 326              		.loc 1 208 0
+ 327 000e 0023     		movs	r3, #0
+ 328 0010 FB82     		strh	r3, [r7, #22]	@ movhi
+ 209:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    uint16_t j = 0;
+ 329              		.loc 1 209 0
+ 330 0012 0023     		movs	r3, #0
+ 331 0014 BB82     		strh	r3, [r7, #20]	@ movhi
+ 210:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP_CRITICAL_ENTER();
+ 332              		.loc 1 210 0
+ 333 0016 1E4B     		ldr	r3, .L16
+ 334 0018 9B68     		ldr	r3, [r3, #8]
+ 335 001a 9847     		blx	r3
+ 211:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.CS._select();
+ 336              		.loc 1 211 0
+ 337 001c 1C4B     		ldr	r3, .L16
+ 338 001e 1B69     		ldr	r3, [r3, #16]
+ 339 0020 9847     		blx	r3
+ 212:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 213:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #if( (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_SPI_))
+ 214:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 215:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #if  ( _WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_SPI_VDM_ )
+ 216:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       AddrSel |= (_W5500_SPI_WRITE_ | _W5500_SPI_VDM_OP_);
+ 340              		.loc 1 216 0
+ 341 0022 FB68     		ldr	r3, [r7, #12]
+ 342 0024 43F00403 		orr	r3, r3, #4
+ 343 0028 FB60     		str	r3, [r7, #12]
+ 217:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       WIZCHIP.IF.SPI._write_byte((AddrSel & 0x00FF0000) >> 16);
+ 344              		.loc 1 217 0
+ 345 002a 194B     		ldr	r3, .L16
+ 346 002c DB69     		ldr	r3, [r3, #28]
+ 347 002e FA68     		ldr	r2, [r7, #12]
+ 348 0030 02F47F02 		and	r2, r2, #16711680
+ 349 0034 120C     		lsrs	r2, r2, #16
+ 350 0036 D2B2     		uxtb	r2, r2
+ 351 0038 1046     		mov	r0, r2
+ 352 003a 9847     		blx	r3
+ 218:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       WIZCHIP.IF.SPI._write_byte((AddrSel & 0x0000FF00) >>  8);
+ 353              		.loc 1 218 0
+ 354 003c 144B     		ldr	r3, .L16
+ 355 003e DB69     		ldr	r3, [r3, #28]
+ 356 0040 FA68     		ldr	r2, [r7, #12]
+ 357 0042 02F47F42 		and	r2, r2, #65280
+ 358 0046 120A     		lsrs	r2, r2, #8
+ 359 0048 D2B2     		uxtb	r2, r2
+ 360 004a 1046     		mov	r0, r2
+ 361 004c 9847     		blx	r3
+ 219:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       WIZCHIP.IF.SPI._write_byte((AddrSel & 0x000000FF) >>  0);
+ 362              		.loc 1 219 0
+ 363 004e 104B     		ldr	r3, .L16
+ 364 0050 DB69     		ldr	r3, [r3, #28]
+ 365 0052 FA68     		ldr	r2, [r7, #12]
+ 366 0054 D2B2     		uxtb	r2, r2
+ 367 0056 1046     		mov	r0, r2
+ 368 0058 9847     		blx	r3
+ 220:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       for(i = 0; i < len; i++)
+ 369              		.loc 1 220 0
+ 370 005a 0023     		movs	r3, #0
+ 371 005c FB82     		strh	r3, [r7, #22]	@ movhi
+ 372 005e 0AE0     		b	.L14
+ 373              	.L15:
+ 221:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          WIZCHIP.IF.SPI._write_byte(pBuf[i]);
+ 374              		.loc 1 221 0 discriminator 3
+ 375 0060 0B4B     		ldr	r3, .L16
+ 376 0062 DB69     		ldr	r3, [r3, #28]
+ 377 0064 FA8A     		ldrh	r2, [r7, #22]
+ 378 0066 B968     		ldr	r1, [r7, #8]
+ 379 0068 0A44     		add	r2, r2, r1
+ 380 006a 1278     		ldrb	r2, [r2]	@ zero_extendqisi2
+ 381 006c 1046     		mov	r0, r2
+ 382 006e 9847     		blx	r3
+ 220:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       for(i = 0; i < len; i++)
+ 383              		.loc 1 220 0 discriminator 3
+ 384 0070 FB8A     		ldrh	r3, [r7, #22]
+ 385 0072 0133     		adds	r3, r3, #1
+ 386 0074 FB82     		strh	r3, [r7, #22]	@ movhi
+ 387              	.L14:
+ 220:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       for(i = 0; i < len; i++)
+ 388              		.loc 1 220 0 is_stmt 0 discriminator 1
+ 389 0076 FA8A     		ldrh	r2, [r7, #22]
+ 390 0078 FB88     		ldrh	r3, [r7, #6]
+ 391 007a 9A42     		cmp	r2, r3
+ 392 007c F0D3     		bcc	.L15
+ 222:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #elif( _WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_SPI_FDM_ )
+ 223:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       AddrSel |= (_W5500_SPI_WRITE_ | _W5500_SPI_FDM_OP_LEN4_);
+ 224:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       for(i = 0; i < len/4; i++)
+ 225:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       {
+ 226:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          WIZCHIP.IF.SPI._write_byte((AddrSel & 0x00FF0000) >> 16);
+ 227:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          WIZCHIP.IF.SPI._write_byte((AddrSel & 0x0000FF00) >>  8);
+ 228:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          WIZCHIP.IF.SPI._write_byte((AddrSel & 0x000000FF) >>  0);
+ 229:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          WIZCHIP.IF.SPI._write_byte(pBuf[i*4]  );
+ 230:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          WIZCHIP.IF.SPI._write_byte(pBuf[i*4+1]);
+ 231:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          WIZCHIP.IF.SPI._write_byte(pBuf[i*4+2]);            
+ 232:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          WIZCHIP.IF.SPI._write_byte(pBuf[i*4+3]);            
+ 233:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          //AddrSel += (4 << 8);    // offset address + 4
+ 234:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          AddrSel = WIZCHIP_OFFSET_INC(AddrSel,4);
+ 235:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       }
+ 236:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       len %= 4;      // for the rest data
+ 237:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       if(len)
+ 238:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       {
+ 239:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          AddrSel -= 1;  // change _W5500_SPI_FDM_OP_LEN4_ to _W5500_SPI_FDM_OP_LEN2_
+ 240:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          i *= 4;
+ 241:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          for(j = 0; j < len/2 ; j++)
+ 242:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          {
+ 243:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte((AddrSel & 0x00FF0000) >> 16);
+ 244:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte((AddrSel & 0x0000FF00) >>  8);
+ 245:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte((AddrSel & 0x000000FF) >>  0);
+ 246:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte(pBuf[i]  );
+ 247:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte(pBuf[i+1]);
+ 248:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             i += 2;
+ 249:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             //AddrSel += (2 << 8);    // offset address + 2
+ 250:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             AddrSel = WIZCHIP_OFFSET_INC(AddrSel, 2);
+ 251:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          }
+ 252:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          len %= 2;
+ 253:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          if(len)
+ 254:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          {
+ 255:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             AddrSel -= 1;  // change _W5500_SPI_FDM_OP_LEN2_ to _W5500_SPI_FDM_OP_LEN1_
+ 256:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte((AddrSel & 0x00FF0000) >> 16);
+ 257:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte((AddrSel & 0x0000FF00) >>  8);
+ 258:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte((AddrSel & 0x000000FF) >>  0);
+ 259:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****             WIZCHIP.IF.SPI._write_byte(pBuf[i]);
+ 260:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****          }      
+ 261:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       }
+ 262:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #else
+ 263:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       #error "Unsupported _WIZCHIP_IO_SPI_ in W5500 !!!"
+ 264:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #endif
+ 265:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 266:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #elif ( (_WIZCHIP_IO_MODE_ & _WIZCHIP_IO_MODE_BUS_) )
+ 267:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 268:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #if  (_WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_BUS_DIR_)
+ 269:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 270:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #elif(_WIZCHIP_IO_MODE_ == _WIZCHIP_IO_MODE_BUS_INDIR_)
+ 271:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 272:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #else
+ 273:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       #error "Unsupported _WIZCHIP_IO_MODE_BUS_ in W5500 !!!"
+ 274:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #endif
+ 275:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #else
+ 276:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    #error "Unknown _WIZCHIP_IO_MODE_ in W5500. !!!!"
+ 277:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** #endif
+ 278:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 279:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP.CS._deselect();
+ 393              		.loc 1 279 0 is_stmt 1
+ 394 007e 044B     		ldr	r3, .L16
+ 395 0080 5B69     		ldr	r3, [r3, #20]
+ 396 0082 9847     		blx	r3
+ 280:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP_CRITICAL_EXIT();
+ 397              		.loc 1 280 0
+ 398 0084 024B     		ldr	r3, .L16
+ 399 0086 DB68     		ldr	r3, [r3, #12]
+ 400 0088 9847     		blx	r3
+ 281:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** }
+ 401              		.loc 1 281 0
+ 402 008a 1837     		adds	r7, r7, #24
+ 403              		.cfi_def_cfa_offset 8
+ 404 008c BD46     		mov	sp, r7
+ 405              		.cfi_def_cfa_register 13
+ 406              		@ sp needed
+ 407 008e 80BD     		pop	{r7, pc}
+ 408              	.L17:
+ 409              		.align	2
+ 410              	.L16:
+ 411 0090 00000000 		.word	WIZCHIP
+ 412              		.cfi_endproc
+ 413              	.LFE3:
+ 415              		.section	.text.getSn_TX_FSR,"ax",%progbits
+ 416              		.align	2
+ 417              		.global	getSn_TX_FSR
+ 418              		.thumb
+ 419              		.thumb_func
+ 421              	getSn_TX_FSR:
+ 422              	.LFB4:
+ 282:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 283:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 284:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** uint16_t getSn_TX_FSR(uint8_t sn)
+ 285:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** {
+ 423              		.loc 1 285 0
+ 424              		.cfi_startproc
+ 425              		@ args = 0, pretend = 0, frame = 16
+ 426              		@ frame_needed = 1, uses_anonymous_args = 0
+ 427 0000 90B5     		push	{r4, r7, lr}
+ 428              		.cfi_def_cfa_offset 12
+ 429              		.cfi_offset 4, -12
+ 430              		.cfi_offset 7, -8
+ 431              		.cfi_offset 14, -4
+ 432 0002 85B0     		sub	sp, sp, #20
+ 433              		.cfi_def_cfa_offset 32
+ 434 0004 00AF     		add	r7, sp, #0
+ 435              		.cfi_def_cfa_register 7
+ 436 0006 0346     		mov	r3, r0
+ 437 0008 FB71     		strb	r3, [r7, #7]
+ 286:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    uint16_t val=0,val1=0;
+ 438              		.loc 1 286 0
+ 439 000a 0023     		movs	r3, #0
+ 440 000c FB81     		strh	r3, [r7, #14]	@ movhi
+ 441 000e 0023     		movs	r3, #0
+ 442 0010 BB81     		strh	r3, [r7, #12]	@ movhi
+ 443              	.L20:
+ 287:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    do
+ 288:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    {
+ 289:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       val1 = WIZCHIP_READ(Sn_TX_FSR(sn));
+ 444              		.loc 1 289 0
+ 445 0012 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 446 0014 9B00     		lsls	r3, r3, #2
+ 447 0016 0133     		adds	r3, r3, #1
+ 448 0018 DB00     		lsls	r3, r3, #3
+ 449 001a 03F50053 		add	r3, r3, #8192
+ 450 001e 1846     		mov	r0, r3
+ 451 0020 FFF7FEFF 		bl	WIZCHIP_READ
+ 452 0024 0346     		mov	r3, r0
+ 453 0026 BB81     		strh	r3, [r7, #12]	@ movhi
+ 290:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       val1 = (val1 << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_TX_FSR(sn),1));
+ 454              		.loc 1 290 0
+ 455 0028 BB89     		ldrh	r3, [r7, #12]	@ movhi
+ 456 002a 1B02     		lsls	r3, r3, #8
+ 457 002c 9CB2     		uxth	r4, r3
+ 458 002e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 459 0030 9B00     		lsls	r3, r3, #2
+ 460 0032 0133     		adds	r3, r3, #1
+ 461 0034 DB00     		lsls	r3, r3, #3
+ 462 0036 03F50453 		add	r3, r3, #8448
+ 463 003a 1846     		mov	r0, r3
+ 464 003c FFF7FEFF 		bl	WIZCHIP_READ
+ 465 0040 0346     		mov	r3, r0
+ 466 0042 9BB2     		uxth	r3, r3
+ 467 0044 2344     		add	r3, r3, r4
+ 468 0046 BB81     		strh	r3, [r7, #12]	@ movhi
+ 291:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       if (val1 != 0)
+ 469              		.loc 1 291 0
+ 470 0048 BB89     		ldrh	r3, [r7, #12]
+ 471 004a 002B     		cmp	r3, #0
+ 472 004c 1AD0     		beq	.L19
+ 292:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       {
+ 293:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****         val = WIZCHIP_READ(Sn_TX_FSR(sn));
+ 473              		.loc 1 293 0
+ 474 004e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 475 0050 9B00     		lsls	r3, r3, #2
+ 476 0052 0133     		adds	r3, r3, #1
+ 477 0054 DB00     		lsls	r3, r3, #3
+ 478 0056 03F50053 		add	r3, r3, #8192
+ 479 005a 1846     		mov	r0, r3
+ 480 005c FFF7FEFF 		bl	WIZCHIP_READ
+ 481 0060 0346     		mov	r3, r0
+ 482 0062 FB81     		strh	r3, [r7, #14]	@ movhi
+ 294:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****         val = (val << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_TX_FSR(sn),1));
+ 483              		.loc 1 294 0
+ 484 0064 FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 485 0066 1B02     		lsls	r3, r3, #8
+ 486 0068 9CB2     		uxth	r4, r3
+ 487 006a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 488 006c 9B00     		lsls	r3, r3, #2
+ 489 006e 0133     		adds	r3, r3, #1
+ 490 0070 DB00     		lsls	r3, r3, #3
+ 491 0072 03F50453 		add	r3, r3, #8448
+ 492 0076 1846     		mov	r0, r3
+ 493 0078 FFF7FEFF 		bl	WIZCHIP_READ
+ 494 007c 0346     		mov	r3, r0
+ 495 007e 9BB2     		uxth	r3, r3
+ 496 0080 2344     		add	r3, r3, r4
+ 497 0082 FB81     		strh	r3, [r7, #14]	@ movhi
+ 498              	.L19:
+ 295:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       }
+ 296:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    }while (val != val1);
+ 499              		.loc 1 296 0
+ 500 0084 FA89     		ldrh	r2, [r7, #14]
+ 501 0086 BB89     		ldrh	r3, [r7, #12]
+ 502 0088 9A42     		cmp	r2, r3
+ 503 008a C2D1     		bne	.L20
+ 297:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    return val;
+ 504              		.loc 1 297 0
+ 505 008c FB89     		ldrh	r3, [r7, #14]
+ 298:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** }
+ 506              		.loc 1 298 0
+ 507 008e 1846     		mov	r0, r3
+ 508 0090 1437     		adds	r7, r7, #20
+ 509              		.cfi_def_cfa_offset 12
+ 510 0092 BD46     		mov	sp, r7
+ 511              		.cfi_def_cfa_register 13
+ 512              		@ sp needed
+ 513 0094 90BD     		pop	{r4, r7, pc}
+ 514              		.cfi_endproc
+ 515              	.LFE4:
+ 517 0096 00BF     		.section	.text.getSn_RX_RSR,"ax",%progbits
+ 518              		.align	2
+ 519              		.global	getSn_RX_RSR
+ 520              		.thumb
+ 521              		.thumb_func
+ 523              	getSn_RX_RSR:
+ 524              	.LFB5:
+ 299:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 300:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 301:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** uint16_t getSn_RX_RSR(uint8_t sn)
+ 302:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** {
+ 525              		.loc 1 302 0
+ 526              		.cfi_startproc
+ 527              		@ args = 0, pretend = 0, frame = 16
+ 528              		@ frame_needed = 1, uses_anonymous_args = 0
+ 529 0000 90B5     		push	{r4, r7, lr}
+ 530              		.cfi_def_cfa_offset 12
+ 531              		.cfi_offset 4, -12
+ 532              		.cfi_offset 7, -8
+ 533              		.cfi_offset 14, -4
+ 534 0002 85B0     		sub	sp, sp, #20
+ 535              		.cfi_def_cfa_offset 32
+ 536 0004 00AF     		add	r7, sp, #0
+ 537              		.cfi_def_cfa_register 7
+ 538 0006 0346     		mov	r3, r0
+ 539 0008 FB71     		strb	r3, [r7, #7]
+ 303:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    uint16_t val=0,val1=0;
+ 540              		.loc 1 303 0
+ 541 000a 0023     		movs	r3, #0
+ 542 000c FB81     		strh	r3, [r7, #14]	@ movhi
+ 543 000e 0023     		movs	r3, #0
+ 544 0010 BB81     		strh	r3, [r7, #12]	@ movhi
+ 545              	.L24:
+ 304:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    do
+ 305:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    {
+ 306:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       val1 = WIZCHIP_READ(Sn_RX_RSR(sn));
+ 546              		.loc 1 306 0
+ 547 0012 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 548 0014 9B00     		lsls	r3, r3, #2
+ 549 0016 0133     		adds	r3, r3, #1
+ 550 0018 DB00     		lsls	r3, r3, #3
+ 551 001a 03F51853 		add	r3, r3, #9728
+ 552 001e 1846     		mov	r0, r3
+ 553 0020 FFF7FEFF 		bl	WIZCHIP_READ
+ 554 0024 0346     		mov	r3, r0
+ 555 0026 BB81     		strh	r3, [r7, #12]	@ movhi
+ 307:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       val1 = (val1 << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_RX_RSR(sn),1));
+ 556              		.loc 1 307 0
+ 557 0028 BB89     		ldrh	r3, [r7, #12]	@ movhi
+ 558 002a 1B02     		lsls	r3, r3, #8
+ 559 002c 9CB2     		uxth	r4, r3
+ 560 002e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 561 0030 9B00     		lsls	r3, r3, #2
+ 562 0032 0133     		adds	r3, r3, #1
+ 563 0034 DB00     		lsls	r3, r3, #3
+ 564 0036 03F51C53 		add	r3, r3, #9984
+ 565 003a 1846     		mov	r0, r3
+ 566 003c FFF7FEFF 		bl	WIZCHIP_READ
+ 567 0040 0346     		mov	r3, r0
+ 568 0042 9BB2     		uxth	r3, r3
+ 569 0044 2344     		add	r3, r3, r4
+ 570 0046 BB81     		strh	r3, [r7, #12]	@ movhi
+ 308:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       if (val1 != 0)
+ 571              		.loc 1 308 0
+ 572 0048 BB89     		ldrh	r3, [r7, #12]
+ 573 004a 002B     		cmp	r3, #0
+ 574 004c 1AD0     		beq	.L23
+ 309:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       {
+ 310:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****         val = WIZCHIP_READ(Sn_RX_RSR(sn));
+ 575              		.loc 1 310 0
+ 576 004e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 577 0050 9B00     		lsls	r3, r3, #2
+ 578 0052 0133     		adds	r3, r3, #1
+ 579 0054 DB00     		lsls	r3, r3, #3
+ 580 0056 03F51853 		add	r3, r3, #9728
+ 581 005a 1846     		mov	r0, r3
+ 582 005c FFF7FEFF 		bl	WIZCHIP_READ
+ 583 0060 0346     		mov	r3, r0
+ 584 0062 FB81     		strh	r3, [r7, #14]	@ movhi
+ 311:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****         val = (val << 8) + WIZCHIP_READ(WIZCHIP_OFFSET_INC(Sn_RX_RSR(sn),1));
+ 585              		.loc 1 311 0
+ 586 0064 FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 587 0066 1B02     		lsls	r3, r3, #8
+ 588 0068 9CB2     		uxth	r4, r3
+ 589 006a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 590 006c 9B00     		lsls	r3, r3, #2
+ 591 006e 0133     		adds	r3, r3, #1
+ 592 0070 DB00     		lsls	r3, r3, #3
+ 593 0072 03F51C53 		add	r3, r3, #9984
+ 594 0076 1846     		mov	r0, r3
+ 595 0078 FFF7FEFF 		bl	WIZCHIP_READ
+ 596 007c 0346     		mov	r3, r0
+ 597 007e 9BB2     		uxth	r3, r3
+ 598 0080 2344     		add	r3, r3, r4
+ 599 0082 FB81     		strh	r3, [r7, #14]	@ movhi
+ 600              	.L23:
+ 312:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****       }
+ 313:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    }while (val != val1);
+ 601              		.loc 1 313 0
+ 602 0084 FA89     		ldrh	r2, [r7, #14]
+ 603 0086 BB89     		ldrh	r3, [r7, #12]
+ 604 0088 9A42     		cmp	r2, r3
+ 605 008a C2D1     		bne	.L24
+ 314:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    return val;
+ 606              		.loc 1 314 0
+ 607 008c FB89     		ldrh	r3, [r7, #14]
+ 315:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** }
+ 608              		.loc 1 315 0
+ 609 008e 1846     		mov	r0, r3
+ 610 0090 1437     		adds	r7, r7, #20
+ 611              		.cfi_def_cfa_offset 12
+ 612 0092 BD46     		mov	sp, r7
+ 613              		.cfi_def_cfa_register 13
+ 614              		@ sp needed
+ 615 0094 90BD     		pop	{r4, r7, pc}
+ 616              		.cfi_endproc
+ 617              	.LFE5:
+ 619 0096 00BF     		.section	.text.wiz_send_data,"ax",%progbits
+ 620              		.align	2
+ 621              		.global	wiz_send_data
+ 622              		.thumb
+ 623              		.thumb_func
+ 625              	wiz_send_data:
+ 626              	.LFB6:
+ 316:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 317:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** void wiz_send_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
+ 318:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** {
+ 627              		.loc 1 318 0
+ 628              		.cfi_startproc
+ 629              		@ args = 0, pretend = 0, frame = 16
+ 630              		@ frame_needed = 1, uses_anonymous_args = 0
+ 631 0000 90B5     		push	{r4, r7, lr}
+ 632              		.cfi_def_cfa_offset 12
+ 633              		.cfi_offset 4, -12
+ 634              		.cfi_offset 7, -8
+ 635              		.cfi_offset 14, -4
+ 636 0002 85B0     		sub	sp, sp, #20
+ 637              		.cfi_def_cfa_offset 32
+ 638 0004 00AF     		add	r7, sp, #0
+ 639              		.cfi_def_cfa_register 7
+ 640 0006 0346     		mov	r3, r0
+ 641 0008 3960     		str	r1, [r7]
+ 642 000a FB71     		strb	r3, [r7, #7]
+ 643 000c 1346     		mov	r3, r2	@ movhi
+ 644 000e BB80     		strh	r3, [r7, #4]	@ movhi
+ 319:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    uint16_t ptr = 0;
+ 645              		.loc 1 319 0
+ 646 0010 0023     		movs	r3, #0
+ 647 0012 FB81     		strh	r3, [r7, #14]	@ movhi
+ 320:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    uint32_t addrsel = 0;
+ 648              		.loc 1 320 0
+ 649 0014 0023     		movs	r3, #0
+ 650 0016 BB60     		str	r3, [r7, #8]
+ 321:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    if(len == 0)  return;
+ 651              		.loc 1 321 0
+ 652 0018 BB88     		ldrh	r3, [r7, #4]
+ 653 001a 002B     		cmp	r3, #0
+ 654 001c 00D1     		bne	.L27
+ 655 001e 47E0     		b	.L26
+ 656              	.L27:
+ 322:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    ptr = getSn_TX_WR(sn);
+ 657              		.loc 1 322 0
+ 658 0020 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 659 0022 9B00     		lsls	r3, r3, #2
+ 660 0024 0133     		adds	r3, r3, #1
+ 661 0026 DB00     		lsls	r3, r3, #3
+ 662 0028 03F51053 		add	r3, r3, #9216
+ 663 002c 1846     		mov	r0, r3
+ 664 002e FFF7FEFF 		bl	WIZCHIP_READ
+ 665 0032 0346     		mov	r3, r0
+ 666 0034 9BB2     		uxth	r3, r3
+ 667 0036 1B02     		lsls	r3, r3, #8
+ 668 0038 9CB2     		uxth	r4, r3
+ 669 003a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 670 003c 9B00     		lsls	r3, r3, #2
+ 671 003e 0133     		adds	r3, r3, #1
+ 672 0040 DB00     		lsls	r3, r3, #3
+ 673 0042 03F51453 		add	r3, r3, #9472
+ 674 0046 1846     		mov	r0, r3
+ 675 0048 FFF7FEFF 		bl	WIZCHIP_READ
+ 676 004c 0346     		mov	r3, r0
+ 677 004e 9BB2     		uxth	r3, r3
+ 678 0050 2344     		add	r3, r3, r4
+ 679 0052 FB81     		strh	r3, [r7, #14]	@ movhi
+ 323:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    
+ 324:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    addrsel = (ptr << 8) + (WIZCHIP_TXBUF_BLOCK(sn) << 3);
+ 680              		.loc 1 324 0
+ 681 0054 FB89     		ldrh	r3, [r7, #14]
+ 682 0056 1A02     		lsls	r2, r3, #8
+ 683 0058 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 684 005a 9B00     		lsls	r3, r3, #2
+ 685 005c 0233     		adds	r3, r3, #2
+ 686 005e DB00     		lsls	r3, r3, #3
+ 687 0060 1344     		add	r3, r3, r2
+ 688 0062 BB60     		str	r3, [r7, #8]
+ 325:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP_WRITE_BUF(addrsel,wizdata, len);
+ 689              		.loc 1 325 0
+ 690 0064 BB88     		ldrh	r3, [r7, #4]
+ 691 0066 B868     		ldr	r0, [r7, #8]
+ 692 0068 3968     		ldr	r1, [r7]
+ 693 006a 1A46     		mov	r2, r3
+ 694 006c FFF7FEFF 		bl	WIZCHIP_WRITE_BUF
+ 326:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    
+ 327:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    ptr += len;
+ 695              		.loc 1 327 0
+ 696 0070 FA89     		ldrh	r2, [r7, #14]	@ movhi
+ 697 0072 BB88     		ldrh	r3, [r7, #4]	@ movhi
+ 698 0074 1344     		add	r3, r3, r2
+ 699 0076 FB81     		strh	r3, [r7, #14]	@ movhi
+ 328:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    setSn_TX_WR(sn,ptr);
+ 700              		.loc 1 328 0
+ 701 0078 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 702 007a 9B00     		lsls	r3, r3, #2
+ 703 007c 0133     		adds	r3, r3, #1
+ 704 007e DB00     		lsls	r3, r3, #3
+ 705 0080 03F51053 		add	r3, r3, #9216
+ 706 0084 1A46     		mov	r2, r3
+ 707 0086 FB89     		ldrh	r3, [r7, #14]
+ 708 0088 1B0A     		lsrs	r3, r3, #8
+ 709 008a 9BB2     		uxth	r3, r3
+ 710 008c DBB2     		uxtb	r3, r3
+ 711 008e 1046     		mov	r0, r2
+ 712 0090 1946     		mov	r1, r3
+ 713 0092 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 714 0096 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 715 0098 9B00     		lsls	r3, r3, #2
+ 716 009a 0133     		adds	r3, r3, #1
+ 717 009c DB00     		lsls	r3, r3, #3
+ 718 009e 03F51453 		add	r3, r3, #9472
+ 719 00a2 1A46     		mov	r2, r3
+ 720 00a4 FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 721 00a6 DBB2     		uxtb	r3, r3
+ 722 00a8 1046     		mov	r0, r2
+ 723 00aa 1946     		mov	r1, r3
+ 724 00ac FFF7FEFF 		bl	WIZCHIP_WRITE
+ 725              	.L26:
+ 329:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** }
+ 726              		.loc 1 329 0
+ 727 00b0 1437     		adds	r7, r7, #20
+ 728              		.cfi_def_cfa_offset 12
+ 729 00b2 BD46     		mov	sp, r7
+ 730              		.cfi_def_cfa_register 13
+ 731              		@ sp needed
+ 732 00b4 90BD     		pop	{r4, r7, pc}
+ 733              		.cfi_endproc
+ 734              	.LFE6:
+ 736 00b6 00BF     		.section	.text.wiz_recv_data,"ax",%progbits
+ 737              		.align	2
+ 738              		.global	wiz_recv_data
+ 739              		.thumb
+ 740              		.thumb_func
+ 742              	wiz_recv_data:
+ 743              	.LFB7:
+ 330:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 331:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** void wiz_recv_data(uint8_t sn, uint8_t *wizdata, uint16_t len)
+ 332:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** {
+ 744              		.loc 1 332 0
+ 745              		.cfi_startproc
+ 746              		@ args = 0, pretend = 0, frame = 16
+ 747              		@ frame_needed = 1, uses_anonymous_args = 0
+ 748 0000 90B5     		push	{r4, r7, lr}
+ 749              		.cfi_def_cfa_offset 12
+ 750              		.cfi_offset 4, -12
+ 751              		.cfi_offset 7, -8
+ 752              		.cfi_offset 14, -4
+ 753 0002 85B0     		sub	sp, sp, #20
+ 754              		.cfi_def_cfa_offset 32
+ 755 0004 00AF     		add	r7, sp, #0
+ 756              		.cfi_def_cfa_register 7
+ 757 0006 0346     		mov	r3, r0
+ 758 0008 3960     		str	r1, [r7]
+ 759 000a FB71     		strb	r3, [r7, #7]
+ 760 000c 1346     		mov	r3, r2	@ movhi
+ 761 000e BB80     		strh	r3, [r7, #4]	@ movhi
+ 333:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    uint16_t ptr = 0;
+ 762              		.loc 1 333 0
+ 763 0010 0023     		movs	r3, #0
+ 764 0012 FB81     		strh	r3, [r7, #14]	@ movhi
+ 334:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    uint32_t addrsel = 0;
+ 765              		.loc 1 334 0
+ 766 0014 0023     		movs	r3, #0
+ 767 0016 BB60     		str	r3, [r7, #8]
+ 335:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    
+ 336:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    if(len == 0) return;
+ 768              		.loc 1 336 0
+ 769 0018 BB88     		ldrh	r3, [r7, #4]
+ 770 001a 002B     		cmp	r3, #0
+ 771 001c 00D1     		bne	.L30
+ 772 001e 47E0     		b	.L29
+ 773              	.L30:
+ 337:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    ptr = getSn_RX_RD(sn);
+ 774              		.loc 1 337 0
+ 775 0020 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 776 0022 9B00     		lsls	r3, r3, #2
+ 777 0024 0133     		adds	r3, r3, #1
+ 778 0026 DB00     		lsls	r3, r3, #3
+ 779 0028 03F52053 		add	r3, r3, #10240
+ 780 002c 1846     		mov	r0, r3
+ 781 002e FFF7FEFF 		bl	WIZCHIP_READ
+ 782 0032 0346     		mov	r3, r0
+ 783 0034 9BB2     		uxth	r3, r3
+ 784 0036 1B02     		lsls	r3, r3, #8
+ 785 0038 9CB2     		uxth	r4, r3
+ 786 003a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 787 003c 9B00     		lsls	r3, r3, #2
+ 788 003e 0133     		adds	r3, r3, #1
+ 789 0040 DB00     		lsls	r3, r3, #3
+ 790 0042 03F52453 		add	r3, r3, #10496
+ 791 0046 1846     		mov	r0, r3
+ 792 0048 FFF7FEFF 		bl	WIZCHIP_READ
+ 793 004c 0346     		mov	r3, r0
+ 794 004e 9BB2     		uxth	r3, r3
+ 795 0050 2344     		add	r3, r3, r4
+ 796 0052 FB81     		strh	r3, [r7, #14]	@ movhi
+ 338:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    addrsel = (ptr << 8) + (WIZCHIP_RXBUF_BLOCK(sn) << 3);
+ 797              		.loc 1 338 0
+ 798 0054 FB89     		ldrh	r3, [r7, #14]
+ 799 0056 1A02     		lsls	r2, r3, #8
+ 800 0058 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 801 005a 9B00     		lsls	r3, r3, #2
+ 802 005c 0333     		adds	r3, r3, #3
+ 803 005e DB00     		lsls	r3, r3, #3
+ 804 0060 1344     		add	r3, r3, r2
+ 805 0062 BB60     		str	r3, [r7, #8]
+ 339:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    
+ 340:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    WIZCHIP_READ_BUF(addrsel, wizdata, len);
+ 806              		.loc 1 340 0
+ 807 0064 BB88     		ldrh	r3, [r7, #4]
+ 808 0066 B868     		ldr	r0, [r7, #8]
+ 809 0068 3968     		ldr	r1, [r7]
+ 810 006a 1A46     		mov	r2, r3
+ 811 006c FFF7FEFF 		bl	WIZCHIP_READ_BUF
+ 341:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    ptr += len;
+ 812              		.loc 1 341 0
+ 813 0070 FA89     		ldrh	r2, [r7, #14]	@ movhi
+ 814 0072 BB88     		ldrh	r3, [r7, #4]	@ movhi
+ 815 0074 1344     		add	r3, r3, r2
+ 816 0076 FB81     		strh	r3, [r7, #14]	@ movhi
+ 342:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    
+ 343:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    setSn_RX_RD(sn,ptr);
+ 817              		.loc 1 343 0
+ 818 0078 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 819 007a 9B00     		lsls	r3, r3, #2
+ 820 007c 0133     		adds	r3, r3, #1
+ 821 007e DB00     		lsls	r3, r3, #3
+ 822 0080 03F52053 		add	r3, r3, #10240
+ 823 0084 1A46     		mov	r2, r3
+ 824 0086 FB89     		ldrh	r3, [r7, #14]
+ 825 0088 1B0A     		lsrs	r3, r3, #8
+ 826 008a 9BB2     		uxth	r3, r3
+ 827 008c DBB2     		uxtb	r3, r3
+ 828 008e 1046     		mov	r0, r2
+ 829 0090 1946     		mov	r1, r3
+ 830 0092 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 831 0096 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 832 0098 9B00     		lsls	r3, r3, #2
+ 833 009a 0133     		adds	r3, r3, #1
+ 834 009c DB00     		lsls	r3, r3, #3
+ 835 009e 03F52453 		add	r3, r3, #10496
+ 836 00a2 1A46     		mov	r2, r3
+ 837 00a4 FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 838 00a6 DBB2     		uxtb	r3, r3
+ 839 00a8 1046     		mov	r0, r2
+ 840 00aa 1946     		mov	r1, r3
+ 841 00ac FFF7FEFF 		bl	WIZCHIP_WRITE
+ 842              	.L29:
+ 344:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** }
+ 843              		.loc 1 344 0
+ 844 00b0 1437     		adds	r7, r7, #20
+ 845              		.cfi_def_cfa_offset 12
+ 846 00b2 BD46     		mov	sp, r7
+ 847              		.cfi_def_cfa_register 13
+ 848              		@ sp needed
+ 849 00b4 90BD     		pop	{r4, r7, pc}
+ 850              		.cfi_endproc
+ 851              	.LFE7:
+ 853 00b6 00BF     		.section	.text.wiz_recv_ignore,"ax",%progbits
+ 854              		.align	2
+ 855              		.global	wiz_recv_ignore
+ 856              		.thumb
+ 857              		.thumb_func
+ 859              	wiz_recv_ignore:
+ 860              	.LFB8:
+ 345:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 346:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** 
+ 347:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** void wiz_recv_ignore(uint8_t sn, uint16_t len)
+ 348:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** {
+ 861              		.loc 1 348 0
+ 862              		.cfi_startproc
+ 863              		@ args = 0, pretend = 0, frame = 16
+ 864              		@ frame_needed = 1, uses_anonymous_args = 0
+ 865 0000 90B5     		push	{r4, r7, lr}
+ 866              		.cfi_def_cfa_offset 12
+ 867              		.cfi_offset 4, -12
+ 868              		.cfi_offset 7, -8
+ 869              		.cfi_offset 14, -4
+ 870 0002 85B0     		sub	sp, sp, #20
+ 871              		.cfi_def_cfa_offset 32
+ 872 0004 00AF     		add	r7, sp, #0
+ 873              		.cfi_def_cfa_register 7
+ 874 0006 0346     		mov	r3, r0
+ 875 0008 0A46     		mov	r2, r1
+ 876 000a FB71     		strb	r3, [r7, #7]
+ 877 000c 1346     		mov	r3, r2	@ movhi
+ 878 000e BB80     		strh	r3, [r7, #4]	@ movhi
+ 349:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    uint16_t ptr = 0;
+ 879              		.loc 1 349 0
+ 880 0010 0023     		movs	r3, #0
+ 881 0012 FB81     		strh	r3, [r7, #14]	@ movhi
+ 350:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    ptr = getSn_RX_RD(sn);
+ 882              		.loc 1 350 0
+ 883 0014 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 884 0016 9B00     		lsls	r3, r3, #2
+ 885 0018 0133     		adds	r3, r3, #1
+ 886 001a DB00     		lsls	r3, r3, #3
+ 887 001c 03F52053 		add	r3, r3, #10240
+ 888 0020 1846     		mov	r0, r3
+ 889 0022 FFF7FEFF 		bl	WIZCHIP_READ
+ 890 0026 0346     		mov	r3, r0
+ 891 0028 9BB2     		uxth	r3, r3
+ 892 002a 1B02     		lsls	r3, r3, #8
+ 893 002c 9CB2     		uxth	r4, r3
+ 894 002e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 895 0030 9B00     		lsls	r3, r3, #2
+ 896 0032 0133     		adds	r3, r3, #1
+ 897 0034 DB00     		lsls	r3, r3, #3
+ 898 0036 03F52453 		add	r3, r3, #10496
+ 899 003a 1846     		mov	r0, r3
+ 900 003c FFF7FEFF 		bl	WIZCHIP_READ
+ 901 0040 0346     		mov	r3, r0
+ 902 0042 9BB2     		uxth	r3, r3
+ 903 0044 2344     		add	r3, r3, r4
+ 904 0046 FB81     		strh	r3, [r7, #14]	@ movhi
+ 351:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    ptr += len;
+ 905              		.loc 1 351 0
+ 906 0048 FA89     		ldrh	r2, [r7, #14]	@ movhi
+ 907 004a BB88     		ldrh	r3, [r7, #4]	@ movhi
+ 908 004c 1344     		add	r3, r3, r2
+ 909 004e FB81     		strh	r3, [r7, #14]	@ movhi
+ 352:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c ****    setSn_RX_RD(sn,ptr);
+ 910              		.loc 1 352 0
+ 911 0050 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 912 0052 9B00     		lsls	r3, r3, #2
+ 913 0054 0133     		adds	r3, r3, #1
+ 914 0056 DB00     		lsls	r3, r3, #3
+ 915 0058 03F52053 		add	r3, r3, #10240
+ 916 005c 1A46     		mov	r2, r3
+ 917 005e FB89     		ldrh	r3, [r7, #14]
+ 918 0060 1B0A     		lsrs	r3, r3, #8
+ 919 0062 9BB2     		uxth	r3, r3
+ 920 0064 DBB2     		uxtb	r3, r3
+ 921 0066 1046     		mov	r0, r2
+ 922 0068 1946     		mov	r1, r3
+ 923 006a FFF7FEFF 		bl	WIZCHIP_WRITE
+ 924 006e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 925 0070 9B00     		lsls	r3, r3, #2
+ 926 0072 0133     		adds	r3, r3, #1
+ 927 0074 DB00     		lsls	r3, r3, #3
+ 928 0076 03F52453 		add	r3, r3, #10496
+ 929 007a 1A46     		mov	r2, r3
+ 930 007c FB89     		ldrh	r3, [r7, #14]	@ movhi
+ 931 007e DBB2     		uxtb	r3, r3
+ 932 0080 1046     		mov	r0, r2
+ 933 0082 1946     		mov	r1, r3
+ 934 0084 FFF7FEFF 		bl	WIZCHIP_WRITE
+ 353:/home/virusv/TDSAST_IOT/Ethernet/W5500/w5500.c **** }
+ 935              		.loc 1 353 0
+ 936 0088 1437     		adds	r7, r7, #20
+ 937              		.cfi_def_cfa_offset 12
+ 938 008a BD46     		mov	sp, r7
+ 939              		.cfi_def_cfa_register 13
+ 940              		@ sp needed
+ 941 008c 90BD     		pop	{r4, r7, pc}
+ 942              		.cfi_endproc
+ 943              	.LFE8:
+ 945 008e 00BF     		.text
+ 946              	.Letext0:
+ 947              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 948              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 949              		.file 4 "./Ethernet/wizchip_conf.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 w5500.c
+     /tmp/cczWY5KX.s:19     .text.WIZCHIP_READ:0000000000000000 $t
+     /tmp/cczWY5KX.s:24     .text.WIZCHIP_READ:0000000000000000 WIZCHIP_READ
+     /tmp/cczWY5KX.s:100    .text.WIZCHIP_READ:0000000000000064 $d
+     /tmp/cczWY5KX.s:105    .text.WIZCHIP_WRITE:0000000000000000 $t
+     /tmp/cczWY5KX.s:110    .text.WIZCHIP_WRITE:0000000000000000 WIZCHIP_WRITE
+     /tmp/cczWY5KX.s:188    .text.WIZCHIP_WRITE:000000000000006c $d
+     /tmp/cczWY5KX.s:193    .text.WIZCHIP_READ_BUF:0000000000000000 $t
+     /tmp/cczWY5KX.s:198    .text.WIZCHIP_READ_BUF:0000000000000000 WIZCHIP_READ_BUF
+     /tmp/cczWY5KX.s:298    .text.WIZCHIP_READ_BUF:0000000000000088 $d
+     /tmp/cczWY5KX.s:303    .text.WIZCHIP_WRITE_BUF:0000000000000000 $t
+     /tmp/cczWY5KX.s:308    .text.WIZCHIP_WRITE_BUF:0000000000000000 WIZCHIP_WRITE_BUF
+     /tmp/cczWY5KX.s:411    .text.WIZCHIP_WRITE_BUF:0000000000000090 $d
+     /tmp/cczWY5KX.s:416    .text.getSn_TX_FSR:0000000000000000 $t
+     /tmp/cczWY5KX.s:421    .text.getSn_TX_FSR:0000000000000000 getSn_TX_FSR
+     /tmp/cczWY5KX.s:518    .text.getSn_RX_RSR:0000000000000000 $t
+     /tmp/cczWY5KX.s:523    .text.getSn_RX_RSR:0000000000000000 getSn_RX_RSR
+     /tmp/cczWY5KX.s:620    .text.wiz_send_data:0000000000000000 $t
+     /tmp/cczWY5KX.s:625    .text.wiz_send_data:0000000000000000 wiz_send_data
+     /tmp/cczWY5KX.s:737    .text.wiz_recv_data:0000000000000000 $t
+     /tmp/cczWY5KX.s:742    .text.wiz_recv_data:0000000000000000 wiz_recv_data
+     /tmp/cczWY5KX.s:854    .text.wiz_recv_ignore:0000000000000000 $t
+     /tmp/cczWY5KX.s:859    .text.wiz_recv_ignore:0000000000000000 wiz_recv_ignore
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+WIZCHIP

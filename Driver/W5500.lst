@@ -1,0 +1,2427 @@
+   1              		.syntax unified
+   2              		.cpu cortex-m3
+   3              		.fpu softvfp
+   4              		.eabi_attribute 20, 1
+   5              		.eabi_attribute 21, 1
+   6              		.eabi_attribute 23, 3
+   7              		.eabi_attribute 24, 1
+   8              		.eabi_attribute 25, 1
+   9              		.eabi_attribute 26, 1
+  10              		.eabi_attribute 30, 6
+  11              		.eabi_attribute 34, 1
+  12              		.eabi_attribute 18, 4
+  13              		.thumb
+  14              		.file	"W5500.c"
+  15              		.text
+  16              	.Ltext0:
+  17              		.cfi_sections	.debug_frame
+  18              		.comm	Gateway_IP,4,4
+  19              		.comm	Sub_Mask,4,4
+  20              		.comm	Phy_Addr,6,4
+  21              		.comm	IP_Addr,4,4
+  22              		.comm	UDP_DIPR,4,4
+  23              		.comm	UDP_DPORT,2,4
+  24              		.comm	Rx_Buffer,2048,4
+  25              		.comm	Tx_Buffer,2048,4
+  26              		.comm	W5500_Interrupt,1,1
+  27              		.section	.text.SPI1_Send_Byte,"ax",%progbits
+  28              		.align	2
+  29              		.global	SPI1_Send_Byte
+  30              		.thumb
+  31              		.thumb_func
+  33              	SPI1_Send_Byte:
+  34              	.LFB29:
+  35              		.file 1 "/home/virusv/TDSAST_IOT/Driver/W5500.c"
+   1:/home/virusv/TDSAST_IOT/Driver/W5500.c **** #include <stdint.h>
+   2:/home/virusv/TDSAST_IOT/Driver/W5500.c **** #include "stm32f10x.h"
+   3:/home/virusv/TDSAST_IOT/Driver/W5500.c **** #include "stm32f10x_conf.h"
+   4:/home/virusv/TDSAST_IOT/Driver/W5500.c **** #include "W5500.h"
+   5:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+   6:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /***************----- 网络参数变量定义 -----***************/
+   7:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint8_t Gateway_IP[4];	//网关IP地址 
+   8:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint8_t Sub_Mask[4];	//子网掩码 
+   9:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint8_t Phy_Addr[6];	//物理地址(MAC) 
+  10:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint8_t IP_Addr[4];		//本机IP地址 
+  11:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+  12:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint8_t UDP_DIPR[4];	//UDP(广播)模式,目的主机IP地址
+  13:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint8_t UDP_DPORT[2];	//UDP(广播)模式,目的主机端口号
+  14:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+  15:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /***************----- 端口数据缓冲区 -----***************/
+  16:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint8_t Rx_Buffer[2048];	//端口接收数据缓冲区 
+  17:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint8_t Tx_Buffer[2048];	//端口发送数据缓冲区 
+  18:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+  19:/home/virusv/TDSAST_IOT/Driver/W5500.c **** __IO uint8_t W5500_Interrupt;	//W5500中断标志(0:无中断,1:有中断)
+  20:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+  21:/home/virusv/TDSAST_IOT/Driver/W5500.c **** extern void delay_ms(uint32_t x);
+  22:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+  23:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : SPI1_Send_Byte
+  24:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : SPI1发送1个字节数据
+  25:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : dat:待发送的数据
+  26:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+  27:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 无
+  28:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 无
+  29:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+  30:/home/virusv/TDSAST_IOT/Driver/W5500.c **** void SPI1_Send_Byte(uint8_t dat){
+  36              		.loc 1 30 0
+  37              		.cfi_startproc
+  38              		@ args = 0, pretend = 0, frame = 8
+  39              		@ frame_needed = 1, uses_anonymous_args = 0
+  40 0000 80B5     		push	{r7, lr}
+  41              		.cfi_def_cfa_offset 8
+  42              		.cfi_offset 7, -8
+  43              		.cfi_offset 14, -4
+  44 0002 82B0     		sub	sp, sp, #8
+  45              		.cfi_def_cfa_offset 16
+  46 0004 00AF     		add	r7, sp, #0
+  47              		.cfi_def_cfa_register 7
+  48 0006 0346     		mov	r3, r0
+  49 0008 FB71     		strb	r3, [r7, #7]
+  31:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI_I2S_SendData(SPI1,dat);//写1个字节数据
+  50              		.loc 1 31 0
+  51 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+  52 000c 9BB2     		uxth	r3, r3
+  53 000e 0748     		ldr	r0, .L3
+  54 0010 1946     		mov	r1, r3
+  55 0012 FFF7FEFF 		bl	SPI_I2S_SendData
+  32:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	while(SPI_I2S_GetFlagStatus(SPI1, SPI_I2S_FLAG_TXE) == RESET);//等待数据寄存器空
+  56              		.loc 1 32 0
+  57 0016 00BF     		nop
+  58              	.L2:
+  59              		.loc 1 32 0 is_stmt 0 discriminator 1
+  60 0018 0448     		ldr	r0, .L3
+  61 001a 0221     		movs	r1, #2
+  62 001c FFF7FEFF 		bl	SPI_I2S_GetFlagStatus
+  63 0020 0346     		mov	r3, r0
+  64 0022 002B     		cmp	r3, #0
+  65 0024 F8D0     		beq	.L2
+  33:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+  66              		.loc 1 33 0 is_stmt 1
+  67 0026 0837     		adds	r7, r7, #8
+  68              		.cfi_def_cfa_offset 8
+  69 0028 BD46     		mov	sp, r7
+  70              		.cfi_def_cfa_register 13
+  71              		@ sp needed
+  72 002a 80BD     		pop	{r7, pc}
+  73              	.L4:
+  74              		.align	2
+  75              	.L3:
+  76 002c 00300140 		.word	1073819648
+  77              		.cfi_endproc
+  78              	.LFE29:
+  80              		.section	.text.SPI1_Send_Short,"ax",%progbits
+  81              		.align	2
+  82              		.global	SPI1_Send_Short
+  83              		.thumb
+  84              		.thumb_func
+  86              	SPI1_Send_Short:
+  87              	.LFB30:
+  34:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+  35:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+  36:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : SPI1_Send_Short
+  37:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : SPI1发送2个字节数据(16位)
+  38:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : dat:待发送的16位数据
+  39:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+  40:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 无
+  41:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 无
+  42:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+  43:/home/virusv/TDSAST_IOT/Driver/W5500.c **** void SPI1_Send_Short(uint16_t dat){
+  88              		.loc 1 43 0
+  89              		.cfi_startproc
+  90              		@ args = 0, pretend = 0, frame = 8
+  91              		@ frame_needed = 1, uses_anonymous_args = 0
+  92 0000 80B5     		push	{r7, lr}
+  93              		.cfi_def_cfa_offset 8
+  94              		.cfi_offset 7, -8
+  95              		.cfi_offset 14, -4
+  96 0002 82B0     		sub	sp, sp, #8
+  97              		.cfi_def_cfa_offset 16
+  98 0004 00AF     		add	r7, sp, #0
+  99              		.cfi_def_cfa_register 7
+ 100 0006 0346     		mov	r3, r0
+ 101 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+  44:/home/virusv/TDSAST_IOT/Driver/W5500.c ****     //SPI1_Send_Byte(dat<<8); //写数据高位
+  45:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(dat>>8); //写数据高位
+ 102              		.loc 1 45 0
+ 103 000a FB88     		ldrh	r3, [r7, #6]
+ 104 000c 1B0A     		lsrs	r3, r3, #8
+ 105 000e 9BB2     		uxth	r3, r3
+ 106 0010 DBB2     		uxtb	r3, r3
+ 107 0012 1846     		mov	r0, r3
+ 108 0014 FFF7FEFF 		bl	SPI1_Send_Byte
+  46:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(dat);	//写数据低位
+ 109              		.loc 1 46 0
+ 110 0018 FB88     		ldrh	r3, [r7, #6]	@ movhi
+ 111 001a DBB2     		uxtb	r3, r3
+ 112 001c 1846     		mov	r0, r3
+ 113 001e FFF7FEFF 		bl	SPI1_Send_Byte
+  47:/home/virusv/TDSAST_IOT/Driver/W5500.c ****     
+  48:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 114              		.loc 1 48 0
+ 115 0022 0837     		adds	r7, r7, #8
+ 116              		.cfi_def_cfa_offset 8
+ 117 0024 BD46     		mov	sp, r7
+ 118              		.cfi_def_cfa_register 13
+ 119              		@ sp needed
+ 120 0026 80BD     		pop	{r7, pc}
+ 121              		.cfi_endproc
+ 122              	.LFE30:
+ 124              		.section	.text.Write_W5500_1Byte,"ax",%progbits
+ 125              		.align	2
+ 126              		.global	Write_W5500_1Byte
+ 127              		.thumb
+ 128              		.thumb_func
+ 130              	Write_W5500_1Byte:
+ 131              	.LFB31:
+  49:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+  50:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+  51:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Write_W5500_1Byte
+  52:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 通过SPI1向指定地址寄存器写1个字节数据
+  53:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : reg:16位寄存器地址,dat:待写入的数据
+  54:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+  55:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 无
+  56:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 无
+  57:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+  58:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+  59:/home/virusv/TDSAST_IOT/Driver/W5500.c **** void Write_W5500_1Byte(uint16_t reg, uint8_t dat){
+ 132              		.loc 1 59 0
+ 133              		.cfi_startproc
+ 134              		@ args = 0, pretend = 0, frame = 8
+ 135              		@ frame_needed = 1, uses_anonymous_args = 0
+ 136 0000 80B5     		push	{r7, lr}
+ 137              		.cfi_def_cfa_offset 8
+ 138              		.cfi_offset 7, -8
+ 139              		.cfi_offset 14, -4
+ 140 0002 82B0     		sub	sp, sp, #8
+ 141              		.cfi_def_cfa_offset 16
+ 142 0004 00AF     		add	r7, sp, #0
+ 143              		.cfi_def_cfa_register 7
+ 144 0006 0346     		mov	r3, r0
+ 145 0008 0A46     		mov	r2, r1
+ 146 000a FB80     		strh	r3, [r7, #6]	@ movhi
+ 147 000c 1346     		mov	r3, r2
+ 148 000e 7B71     		strb	r3, [r7, #5]
+  60:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_ResetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为低电平
+ 149              		.loc 1 60 0
+ 150 0010 0A48     		ldr	r0, .L7
+ 151 0012 1021     		movs	r1, #16
+ 152 0014 FFF7FEFF 		bl	GPIO_ResetBits
+  61:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+  62:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Short(reg);//通过SPI1写16位寄存器地址
+ 153              		.loc 1 62 0
+ 154 0018 FB88     		ldrh	r3, [r7, #6]
+ 155 001a 1846     		mov	r0, r3
+ 156 001c FFF7FEFF 		bl	SPI1_Send_Short
+  63:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//SPI1_Send_Byte(FDM1|RWB_WRITE|COMMON_R);//通过SPI1写控制字节,1个字节数据长度,写�
+  64:/home/virusv/TDSAST_IOT/Driver/W5500.c ****     SPI1_Send_Byte(VDM|RWB_WRITE|COMMON_R);//通过SPI1写控制字节,1个字节数据长度,写�
+ 157              		.loc 1 64 0
+ 158 0020 0420     		movs	r0, #4
+ 159 0022 FFF7FEFF 		bl	SPI1_Send_Byte
+  65:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(dat);//写1个字节数据
+ 160              		.loc 1 65 0
+ 161 0026 7B79     		ldrb	r3, [r7, #5]	@ zero_extendqisi2
+ 162 0028 1846     		mov	r0, r3
+ 163 002a FFF7FEFF 		bl	SPI1_Send_Byte
+  66:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+  67:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_SetBits(W5500_SCS_PORT, W5500_SCS); //置W5500的SCS为高电平
+ 164              		.loc 1 67 0
+ 165 002e 0348     		ldr	r0, .L7
+ 166 0030 1021     		movs	r1, #16
+ 167 0032 FFF7FEFF 		bl	GPIO_SetBits
+  68:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 168              		.loc 1 68 0
+ 169 0036 0837     		adds	r7, r7, #8
+ 170              		.cfi_def_cfa_offset 8
+ 171 0038 BD46     		mov	sp, r7
+ 172              		.cfi_def_cfa_register 13
+ 173              		@ sp needed
+ 174 003a 80BD     		pop	{r7, pc}
+ 175              	.L8:
+ 176              		.align	2
+ 177              	.L7:
+ 178 003c 00080140 		.word	1073809408
+ 179              		.cfi_endproc
+ 180              	.LFE31:
+ 182              		.section	.text.Write_W5500_2Byte,"ax",%progbits
+ 183              		.align	2
+ 184              		.global	Write_W5500_2Byte
+ 185              		.thumb
+ 186              		.thumb_func
+ 188              	Write_W5500_2Byte:
+ 189              	.LFB32:
+  69:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+  70:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+  71:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Write_W5500_2Byte
+  72:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 通过SPI1向指定地址寄存器写2个字节数据
+  73:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : reg:16位寄存器地址,dat:16位待写入的数据(2个字节)
+  74:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+  75:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 无
+  76:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 无
+  77:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+  78:/home/virusv/TDSAST_IOT/Driver/W5500.c **** void Write_W5500_2Byte(uint16_t reg, uint16_t dat){
+ 190              		.loc 1 78 0
+ 191              		.cfi_startproc
+ 192              		@ args = 0, pretend = 0, frame = 8
+ 193              		@ frame_needed = 1, uses_anonymous_args = 0
+ 194 0000 80B5     		push	{r7, lr}
+ 195              		.cfi_def_cfa_offset 8
+ 196              		.cfi_offset 7, -8
+ 197              		.cfi_offset 14, -4
+ 198 0002 82B0     		sub	sp, sp, #8
+ 199              		.cfi_def_cfa_offset 16
+ 200 0004 00AF     		add	r7, sp, #0
+ 201              		.cfi_def_cfa_register 7
+ 202 0006 0346     		mov	r3, r0
+ 203 0008 0A46     		mov	r2, r1
+ 204 000a FB80     		strh	r3, [r7, #6]	@ movhi
+ 205 000c 1346     		mov	r3, r2	@ movhi
+ 206 000e BB80     		strh	r3, [r7, #4]	@ movhi
+  79:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_ResetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为低电平
+ 207              		.loc 1 79 0
+ 208 0010 0A48     		ldr	r0, .L10
+ 209 0012 1021     		movs	r1, #16
+ 210 0014 FFF7FEFF 		bl	GPIO_ResetBits
+  80:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		
+  81:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Short(reg);//通过SPI1写16位寄存器地址
+ 211              		.loc 1 81 0
+ 212 0018 FB88     		ldrh	r3, [r7, #6]
+ 213 001a 1846     		mov	r0, r3
+ 214 001c FFF7FEFF 		bl	SPI1_Send_Short
+  82:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(VDM|RWB_WRITE|COMMON_R);//通过SPI1写控制字节,2个字节数据长度,写数�
+ 215              		.loc 1 82 0
+ 216 0020 0420     		movs	r0, #4
+ 217 0022 FFF7FEFF 		bl	SPI1_Send_Byte
+  83:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Short(dat);//写16位数据
+ 218              		.loc 1 83 0
+ 219 0026 BB88     		ldrh	r3, [r7, #4]
+ 220 0028 1846     		mov	r0, r3
+ 221 002a FFF7FEFF 		bl	SPI1_Send_Short
+  84:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+  85:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_SetBits(W5500_SCS_PORT, W5500_SCS); //置W5500的SCS为高电平
+ 222              		.loc 1 85 0
+ 223 002e 0348     		ldr	r0, .L10
+ 224 0030 1021     		movs	r1, #16
+ 225 0032 FFF7FEFF 		bl	GPIO_SetBits
+  86:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 226              		.loc 1 86 0
+ 227 0036 0837     		adds	r7, r7, #8
+ 228              		.cfi_def_cfa_offset 8
+ 229 0038 BD46     		mov	sp, r7
+ 230              		.cfi_def_cfa_register 13
+ 231              		@ sp needed
+ 232 003a 80BD     		pop	{r7, pc}
+ 233              	.L11:
+ 234              		.align	2
+ 235              	.L10:
+ 236 003c 00080140 		.word	1073809408
+ 237              		.cfi_endproc
+ 238              	.LFE32:
+ 240              		.section	.text.Write_W5500_nByte,"ax",%progbits
+ 241              		.align	2
+ 242              		.global	Write_W5500_nByte
+ 243              		.thumb
+ 244              		.thumb_func
+ 246              	Write_W5500_nByte:
+ 247              	.LFB33:
+  87:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+  88:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+  89:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Write_W5500_nByte
+  90:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 通过SPI1向指定地址寄存器写n个字节数据
+  91:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : reg:16位寄存器地址,*dat_ptr:待写入数据缓冲区指针,size:待写入的数
+  92:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+  93:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 无
+  94:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 无
+  95:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+  96:/home/virusv/TDSAST_IOT/Driver/W5500.c **** void Write_W5500_nByte(uint16_t reg, uint8_t *dat_ptr, uint16_t size){
+ 248              		.loc 1 96 0
+ 249              		.cfi_startproc
+ 250              		@ args = 0, pretend = 0, frame = 16
+ 251              		@ frame_needed = 1, uses_anonymous_args = 0
+ 252 0000 80B5     		push	{r7, lr}
+ 253              		.cfi_def_cfa_offset 8
+ 254              		.cfi_offset 7, -8
+ 255              		.cfi_offset 14, -4
+ 256 0002 84B0     		sub	sp, sp, #16
+ 257              		.cfi_def_cfa_offset 24
+ 258 0004 00AF     		add	r7, sp, #0
+ 259              		.cfi_def_cfa_register 7
+ 260 0006 0346     		mov	r3, r0
+ 261 0008 3960     		str	r1, [r7]
+ 262 000a FB80     		strh	r3, [r7, #6]	@ movhi
+ 263 000c 1346     		mov	r3, r2	@ movhi
+ 264 000e BB80     		strh	r3, [r7, #4]	@ movhi
+  97:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	uint16_t i;
+  98:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+  99:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_ResetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为低电平	
+ 265              		.loc 1 99 0
+ 266 0010 1148     		ldr	r0, .L15
+ 267 0012 1021     		movs	r1, #16
+ 268 0014 FFF7FEFF 		bl	GPIO_ResetBits
+ 100:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 101:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Short(reg);//通过SPI1写16位寄存器地址
+ 269              		.loc 1 101 0
+ 270 0018 FB88     		ldrh	r3, [r7, #6]
+ 271 001a 1846     		mov	r0, r3
+ 272 001c FFF7FEFF 		bl	SPI1_Send_Short
+ 102:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(VDM|RWB_WRITE|COMMON_R);//通过SPI1写控制字节,N个字节数据长度,写数�
+ 273              		.loc 1 102 0
+ 274 0020 0420     		movs	r0, #4
+ 275 0022 FFF7FEFF 		bl	SPI1_Send_Byte
+ 103:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 104:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	for(i=0;i<size;i++){
+ 276              		.loc 1 104 0
+ 277 0026 0023     		movs	r3, #0
+ 278 0028 FB81     		strh	r3, [r7, #14]	@ movhi
+ 279 002a 09E0     		b	.L13
+ 280              	.L14:
+ 105:/home/virusv/TDSAST_IOT/Driver/W5500.c ****         //循环将缓冲区的size个字节数据写入W5500
+ 106:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		SPI1_Send_Byte(*dat_ptr++);//写一个字节数据
+ 281              		.loc 1 106 0 discriminator 3
+ 282 002c 3B68     		ldr	r3, [r7]
+ 283 002e 5A1C     		adds	r2, r3, #1
+ 284 0030 3A60     		str	r2, [r7]
+ 285 0032 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 286 0034 1846     		mov	r0, r3
+ 287 0036 FFF7FEFF 		bl	SPI1_Send_Byte
+ 104:/home/virusv/TDSAST_IOT/Driver/W5500.c ****         //循环将缓冲区的size个字节数据写入W5500
+ 288              		.loc 1 104 0 discriminator 3
+ 289 003a FB89     		ldrh	r3, [r7, #14]
+ 290 003c 0133     		adds	r3, r3, #1
+ 291 003e FB81     		strh	r3, [r7, #14]	@ movhi
+ 292              	.L13:
+ 104:/home/virusv/TDSAST_IOT/Driver/W5500.c ****         //循环将缓冲区的size个字节数据写入W5500
+ 293              		.loc 1 104 0 is_stmt 0 discriminator 1
+ 294 0040 FA89     		ldrh	r2, [r7, #14]
+ 295 0042 BB88     		ldrh	r3, [r7, #4]
+ 296 0044 9A42     		cmp	r2, r3
+ 297 0046 F1D3     		bcc	.L14
+ 107:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	}
+ 108:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 109:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_SetBits(W5500_SCS_PORT, W5500_SCS); //置W5500的SCS为高电平
+ 298              		.loc 1 109 0 is_stmt 1
+ 299 0048 0348     		ldr	r0, .L15
+ 300 004a 1021     		movs	r1, #16
+ 301 004c FFF7FEFF 		bl	GPIO_SetBits
+ 110:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 302              		.loc 1 110 0
+ 303 0050 1037     		adds	r7, r7, #16
+ 304              		.cfi_def_cfa_offset 8
+ 305 0052 BD46     		mov	sp, r7
+ 306              		.cfi_def_cfa_register 13
+ 307              		@ sp needed
+ 308 0054 80BD     		pop	{r7, pc}
+ 309              	.L16:
+ 310 0056 00BF     		.align	2
+ 311              	.L15:
+ 312 0058 00080140 		.word	1073809408
+ 313              		.cfi_endproc
+ 314              	.LFE33:
+ 316              		.section	.text.Write_W5500_SOCK_1Byte,"ax",%progbits
+ 317              		.align	2
+ 318              		.global	Write_W5500_SOCK_1Byte
+ 319              		.thumb
+ 320              		.thumb_func
+ 322              	Write_W5500_SOCK_1Byte:
+ 323              	.LFB34:
+ 111:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 112:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+ 113:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Write_W5500_SOCK_1Byte
+ 114:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 通过SPI1向指定端口寄存器写1个字节数据
+ 115:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : s:端口号,reg:16位寄存器地址,dat:待写入的数据
+ 116:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+ 117:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 无
+ 118:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 无
+ 119:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+ 120:/home/virusv/TDSAST_IOT/Driver/W5500.c **** void Write_W5500_SOCK_1Byte(SOCKET s, uint16_t reg, uint8_t dat){
+ 324              		.loc 1 120 0
+ 325              		.cfi_startproc
+ 326              		@ args = 0, pretend = 0, frame = 8
+ 327              		@ frame_needed = 1, uses_anonymous_args = 0
+ 328 0000 80B5     		push	{r7, lr}
+ 329              		.cfi_def_cfa_offset 8
+ 330              		.cfi_offset 7, -8
+ 331              		.cfi_offset 14, -4
+ 332 0002 82B0     		sub	sp, sp, #8
+ 333              		.cfi_def_cfa_offset 16
+ 334 0004 00AF     		add	r7, sp, #0
+ 335              		.cfi_def_cfa_register 7
+ 336 0006 0346     		mov	r3, r0
+ 337 0008 FB71     		strb	r3, [r7, #7]
+ 338 000a 0B46     		mov	r3, r1	@ movhi
+ 339 000c BB80     		strh	r3, [r7, #4]	@ movhi
+ 340 000e 1346     		mov	r3, r2
+ 341 0010 BB71     		strb	r3, [r7, #6]
+ 121:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_ResetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为低电平	
+ 342              		.loc 1 121 0
+ 343 0012 1048     		ldr	r0, .L18
+ 344 0014 1021     		movs	r1, #16
+ 345 0016 FFF7FEFF 		bl	GPIO_ResetBits
+ 122:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		
+ 123:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Short(reg);//通过SPI1写16位寄存器地址
+ 346              		.loc 1 123 0
+ 347 001a BB88     		ldrh	r3, [r7, #4]
+ 348 001c 1846     		mov	r0, r3
+ 349 001e FFF7FEFF 		bl	SPI1_Send_Short
+ 124:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(VDM|RWB_WRITE|(s*0x20+0x08));//通过SPI1写控制字节,1个字节数据长度,写
+ 350              		.loc 1 124 0
+ 351 0022 FB79     		ldrb	r3, [r7, #7]
+ 352 0024 5B01     		lsls	r3, r3, #5
+ 353 0026 DBB2     		uxtb	r3, r3
+ 354 0028 0833     		adds	r3, r3, #8
+ 355 002a DBB2     		uxtb	r3, r3
+ 356 002c DBB2     		uxtb	r3, r3
+ 357 002e 43F00403 		orr	r3, r3, #4
+ 358 0032 DBB2     		uxtb	r3, r3
+ 359 0034 DBB2     		uxtb	r3, r3
+ 360 0036 1846     		mov	r0, r3
+ 361 0038 FFF7FEFF 		bl	SPI1_Send_Byte
+ 125:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(dat);//写1个字节数据
+ 362              		.loc 1 125 0
+ 363 003c BB79     		ldrb	r3, [r7, #6]	@ zero_extendqisi2
+ 364 003e 1846     		mov	r0, r3
+ 365 0040 FFF7FEFF 		bl	SPI1_Send_Byte
+ 126:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 127:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_SetBits(W5500_SCS_PORT, W5500_SCS); //置W5500的SCS为高电平
+ 366              		.loc 1 127 0
+ 367 0044 0348     		ldr	r0, .L18
+ 368 0046 1021     		movs	r1, #16
+ 369 0048 FFF7FEFF 		bl	GPIO_SetBits
+ 128:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 370              		.loc 1 128 0
+ 371 004c 0837     		adds	r7, r7, #8
+ 372              		.cfi_def_cfa_offset 8
+ 373 004e BD46     		mov	sp, r7
+ 374              		.cfi_def_cfa_register 13
+ 375              		@ sp needed
+ 376 0050 80BD     		pop	{r7, pc}
+ 377              	.L19:
+ 378 0052 00BF     		.align	2
+ 379              	.L18:
+ 380 0054 00080140 		.word	1073809408
+ 381              		.cfi_endproc
+ 382              	.LFE34:
+ 384              		.section	.text.Write_W5500_SOCK_2Byte,"ax",%progbits
+ 385              		.align	2
+ 386              		.global	Write_W5500_SOCK_2Byte
+ 387              		.thumb
+ 388              		.thumb_func
+ 390              	Write_W5500_SOCK_2Byte:
+ 391              	.LFB35:
+ 129:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 130:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+ 131:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Write_W5500_SOCK_2Byte
+ 132:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 通过SPI1向指定端口寄存器写2个字节数据
+ 133:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : s:端口号,reg:16位寄存器地址,dat:16位待写入的数据(2个字节)
+ 134:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+ 135:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 无
+ 136:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 无
+ 137:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+ 138:/home/virusv/TDSAST_IOT/Driver/W5500.c **** void Write_W5500_SOCK_2Byte(SOCKET s, uint16_t reg, uint16_t dat){
+ 392              		.loc 1 138 0
+ 393              		.cfi_startproc
+ 394              		@ args = 0, pretend = 0, frame = 8
+ 395              		@ frame_needed = 1, uses_anonymous_args = 0
+ 396 0000 80B5     		push	{r7, lr}
+ 397              		.cfi_def_cfa_offset 8
+ 398              		.cfi_offset 7, -8
+ 399              		.cfi_offset 14, -4
+ 400 0002 82B0     		sub	sp, sp, #8
+ 401              		.cfi_def_cfa_offset 16
+ 402 0004 00AF     		add	r7, sp, #0
+ 403              		.cfi_def_cfa_register 7
+ 404 0006 0346     		mov	r3, r0
+ 405 0008 FB71     		strb	r3, [r7, #7]
+ 406 000a 0B46     		mov	r3, r1	@ movhi
+ 407 000c BB80     		strh	r3, [r7, #4]	@ movhi
+ 408 000e 1346     		mov	r3, r2	@ movhi
+ 409 0010 7B80     		strh	r3, [r7, #2]	@ movhi
+ 139:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_ResetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为低电平
+ 410              		.loc 1 139 0
+ 411 0012 1048     		ldr	r0, .L21
+ 412 0014 1021     		movs	r1, #16
+ 413 0016 FFF7FEFF 		bl	GPIO_ResetBits
+ 140:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			
+ 141:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Short(reg);//通过SPI1写16位寄存器地址
+ 414              		.loc 1 141 0
+ 415 001a BB88     		ldrh	r3, [r7, #4]
+ 416 001c 1846     		mov	r0, r3
+ 417 001e FFF7FEFF 		bl	SPI1_Send_Short
+ 142:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(VDM|RWB_WRITE|(s*0x20+0x08));//通过SPI1写控制字节,2个字节数据长度,写
+ 418              		.loc 1 142 0
+ 419 0022 FB79     		ldrb	r3, [r7, #7]
+ 420 0024 5B01     		lsls	r3, r3, #5
+ 421 0026 DBB2     		uxtb	r3, r3
+ 422 0028 0833     		adds	r3, r3, #8
+ 423 002a DBB2     		uxtb	r3, r3
+ 424 002c DBB2     		uxtb	r3, r3
+ 425 002e 43F00403 		orr	r3, r3, #4
+ 426 0032 DBB2     		uxtb	r3, r3
+ 427 0034 DBB2     		uxtb	r3, r3
+ 428 0036 1846     		mov	r0, r3
+ 429 0038 FFF7FEFF 		bl	SPI1_Send_Byte
+ 143:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Short(dat);//写16位数据
+ 430              		.loc 1 143 0
+ 431 003c 7B88     		ldrh	r3, [r7, #2]
+ 432 003e 1846     		mov	r0, r3
+ 433 0040 FFF7FEFF 		bl	SPI1_Send_Short
+ 144:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 145:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_SetBits(W5500_SCS_PORT, W5500_SCS); //置W5500的SCS为高电平
+ 434              		.loc 1 145 0
+ 435 0044 0348     		ldr	r0, .L21
+ 436 0046 1021     		movs	r1, #16
+ 437 0048 FFF7FEFF 		bl	GPIO_SetBits
+ 146:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 438              		.loc 1 146 0
+ 439 004c 0837     		adds	r7, r7, #8
+ 440              		.cfi_def_cfa_offset 8
+ 441 004e BD46     		mov	sp, r7
+ 442              		.cfi_def_cfa_register 13
+ 443              		@ sp needed
+ 444 0050 80BD     		pop	{r7, pc}
+ 445              	.L22:
+ 446 0052 00BF     		.align	2
+ 447              	.L21:
+ 448 0054 00080140 		.word	1073809408
+ 449              		.cfi_endproc
+ 450              	.LFE35:
+ 452              		.section	.text.Write_W5500_SOCK_4Byte,"ax",%progbits
+ 453              		.align	2
+ 454              		.global	Write_W5500_SOCK_4Byte
+ 455              		.thumb
+ 456              		.thumb_func
+ 458              	Write_W5500_SOCK_4Byte:
+ 459              	.LFB36:
+ 147:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 148:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+ 149:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Write_W5500_SOCK_4Byte
+ 150:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 通过SPI1向指定端口寄存器写4个字节数据
+ 151:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : s:端口号,reg:16位寄存器地址,*dat_ptr:待写入的4个字节缓冲区指针
+ 152:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+ 153:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 无
+ 154:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 无
+ 155:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+ 156:/home/virusv/TDSAST_IOT/Driver/W5500.c **** void Write_W5500_SOCK_4Byte(SOCKET s, uint16_t reg, uint8_t *dat_ptr){
+ 460              		.loc 1 156 0
+ 461              		.cfi_startproc
+ 462              		@ args = 0, pretend = 0, frame = 8
+ 463              		@ frame_needed = 1, uses_anonymous_args = 0
+ 464 0000 80B5     		push	{r7, lr}
+ 465              		.cfi_def_cfa_offset 8
+ 466              		.cfi_offset 7, -8
+ 467              		.cfi_offset 14, -4
+ 468 0002 82B0     		sub	sp, sp, #8
+ 469              		.cfi_def_cfa_offset 16
+ 470 0004 00AF     		add	r7, sp, #0
+ 471              		.cfi_def_cfa_register 7
+ 472 0006 0346     		mov	r3, r0
+ 473 0008 3A60     		str	r2, [r7]
+ 474 000a FB71     		strb	r3, [r7, #7]
+ 475 000c 0B46     		mov	r3, r1	@ movhi
+ 476 000e BB80     		strh	r3, [r7, #4]	@ movhi
+ 157:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_ResetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为低电平
+ 477              		.loc 1 157 0
+ 478 0010 1B48     		ldr	r0, .L24
+ 479 0012 1021     		movs	r1, #16
+ 480 0014 FFF7FEFF 		bl	GPIO_ResetBits
+ 158:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			
+ 159:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Short(reg);//通过SPI1写16位寄存器地址
+ 481              		.loc 1 159 0
+ 482 0018 BB88     		ldrh	r3, [r7, #4]
+ 483 001a 1846     		mov	r0, r3
+ 484 001c FFF7FEFF 		bl	SPI1_Send_Short
+ 160:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(VDM|RWB_WRITE|(s*0x20+0x08));//通过SPI1写控制字节,4个字节数据长度,写
+ 485              		.loc 1 160 0
+ 486 0020 FB79     		ldrb	r3, [r7, #7]
+ 487 0022 5B01     		lsls	r3, r3, #5
+ 488 0024 DBB2     		uxtb	r3, r3
+ 489 0026 0833     		adds	r3, r3, #8
+ 490 0028 DBB2     		uxtb	r3, r3
+ 491 002a DBB2     		uxtb	r3, r3
+ 492 002c 43F00403 		orr	r3, r3, #4
+ 493 0030 DBB2     		uxtb	r3, r3
+ 494 0032 DBB2     		uxtb	r3, r3
+ 495 0034 1846     		mov	r0, r3
+ 496 0036 FFF7FEFF 		bl	SPI1_Send_Byte
+ 161:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 162:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(*dat_ptr++);//写第1个字节数据
+ 497              		.loc 1 162 0
+ 498 003a 3B68     		ldr	r3, [r7]
+ 499 003c 5A1C     		adds	r2, r3, #1
+ 500 003e 3A60     		str	r2, [r7]
+ 501 0040 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 502 0042 1846     		mov	r0, r3
+ 503 0044 FFF7FEFF 		bl	SPI1_Send_Byte
+ 163:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(*dat_ptr++);//写第2个字节数据
+ 504              		.loc 1 163 0
+ 505 0048 3B68     		ldr	r3, [r7]
+ 506 004a 5A1C     		adds	r2, r3, #1
+ 507 004c 3A60     		str	r2, [r7]
+ 508 004e 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 509 0050 1846     		mov	r0, r3
+ 510 0052 FFF7FEFF 		bl	SPI1_Send_Byte
+ 164:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(*dat_ptr++);//写第3个字节数据
+ 511              		.loc 1 164 0
+ 512 0056 3B68     		ldr	r3, [r7]
+ 513 0058 5A1C     		adds	r2, r3, #1
+ 514 005a 3A60     		str	r2, [r7]
+ 515 005c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 516 005e 1846     		mov	r0, r3
+ 517 0060 FFF7FEFF 		bl	SPI1_Send_Byte
+ 165:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(*dat_ptr++);//写第4个字节数据
+ 518              		.loc 1 165 0
+ 519 0064 3B68     		ldr	r3, [r7]
+ 520 0066 5A1C     		adds	r2, r3, #1
+ 521 0068 3A60     		str	r2, [r7]
+ 522 006a 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 523 006c 1846     		mov	r0, r3
+ 524 006e FFF7FEFF 		bl	SPI1_Send_Byte
+ 166:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 167:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_SetBits(W5500_SCS_PORT, W5500_SCS); //置W5500的SCS为高电平
+ 525              		.loc 1 167 0
+ 526 0072 0348     		ldr	r0, .L24
+ 527 0074 1021     		movs	r1, #16
+ 528 0076 FFF7FEFF 		bl	GPIO_SetBits
+ 168:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 529              		.loc 1 168 0
+ 530 007a 0837     		adds	r7, r7, #8
+ 531              		.cfi_def_cfa_offset 8
+ 532 007c BD46     		mov	sp, r7
+ 533              		.cfi_def_cfa_register 13
+ 534              		@ sp needed
+ 535 007e 80BD     		pop	{r7, pc}
+ 536              	.L25:
+ 537              		.align	2
+ 538              	.L24:
+ 539 0080 00080140 		.word	1073809408
+ 540              		.cfi_endproc
+ 541              	.LFE36:
+ 543              		.section	.text.Read_W5500_1Byte,"ax",%progbits
+ 544              		.align	2
+ 545              		.global	Read_W5500_1Byte
+ 546              		.thumb
+ 547              		.thumb_func
+ 549              	Read_W5500_1Byte:
+ 550              	.LFB37:
+ 169:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 170:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+ 171:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Read_W5500_1Byte
+ 172:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 读W5500指定地址寄存器的1个字节数据
+ 173:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : reg:16位寄存器地址
+ 174:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+ 175:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 读取到寄存器的1个字节数据
+ 176:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 无
+ 177:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+ 178:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint8_t Read_W5500_1Byte(uint16_t reg){
+ 551              		.loc 1 178 0
+ 552              		.cfi_startproc
+ 553              		@ args = 0, pretend = 0, frame = 16
+ 554              		@ frame_needed = 1, uses_anonymous_args = 0
+ 555 0000 80B5     		push	{r7, lr}
+ 556              		.cfi_def_cfa_offset 8
+ 557              		.cfi_offset 7, -8
+ 558              		.cfi_offset 14, -4
+ 559 0002 84B0     		sub	sp, sp, #16
+ 560              		.cfi_def_cfa_offset 24
+ 561 0004 00AF     		add	r7, sp, #0
+ 562              		.cfi_def_cfa_register 7
+ 563 0006 0346     		mov	r3, r0
+ 564 0008 FB80     		strh	r3, [r7, #6]	@ movhi
+ 179:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	uint8_t i;
+ 180:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_ResetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为低电平
+ 565              		.loc 1 180 0
+ 566 000a 1048     		ldr	r0, .L28
+ 567 000c 1021     		movs	r1, #16
+ 568 000e FFF7FEFF 		bl	GPIO_ResetBits
+ 181:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			
+ 182:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Short(reg);//通过SPI1写16位寄存器地址
+ 569              		.loc 1 182 0
+ 570 0012 FB88     		ldrh	r3, [r7, #6]
+ 571 0014 1846     		mov	r0, r3
+ 572 0016 FFF7FEFF 		bl	SPI1_Send_Short
+ 183:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(VDM|RWB_READ|COMMON_R);//通过SPI1写控制字节,1个字节数据长度,读数据
+ 573              		.loc 1 183 0
+ 574 001a 0020     		movs	r0, #0
+ 575 001c FFF7FEFF 		bl	SPI1_Send_Byte
+ 184:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 185:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	i = SPI_I2S_ReceiveData(SPI1);
+ 576              		.loc 1 185 0
+ 577 0020 0B48     		ldr	r0, .L28+4
+ 578 0022 FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 579 0026 0346     		mov	r3, r0
+ 580 0028 FB73     		strb	r3, [r7, #15]
+ 186:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(0x00);//发送一个哑数据
+ 581              		.loc 1 186 0
+ 582 002a 0020     		movs	r0, #0
+ 583 002c FFF7FEFF 		bl	SPI1_Send_Byte
+ 187:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	i = SPI_I2S_ReceiveData(SPI1);//读取1个字节数据
+ 584              		.loc 1 187 0
+ 585 0030 0748     		ldr	r0, .L28+4
+ 586 0032 FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 587 0036 0346     		mov	r3, r0
+ 588 0038 FB73     		strb	r3, [r7, #15]
+ 188:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 189:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_SetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为高电平
+ 589              		.loc 1 189 0
+ 590 003a 0448     		ldr	r0, .L28
+ 591 003c 1021     		movs	r1, #16
+ 592 003e FFF7FEFF 		bl	GPIO_SetBits
+ 190:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	return i;//返回读取到的寄存器数据
+ 593              		.loc 1 190 0
+ 594 0042 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 191:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 595              		.loc 1 191 0
+ 596 0044 1846     		mov	r0, r3
+ 597 0046 1037     		adds	r7, r7, #16
+ 598              		.cfi_def_cfa_offset 8
+ 599 0048 BD46     		mov	sp, r7
+ 600              		.cfi_def_cfa_register 13
+ 601              		@ sp needed
+ 602 004a 80BD     		pop	{r7, pc}
+ 603              	.L29:
+ 604              		.align	2
+ 605              	.L28:
+ 606 004c 00080140 		.word	1073809408
+ 607 0050 00300140 		.word	1073819648
+ 608              		.cfi_endproc
+ 609              	.LFE37:
+ 611              		.section	.text.Read_W5500_SOCK_1Byte,"ax",%progbits
+ 612              		.align	2
+ 613              		.global	Read_W5500_SOCK_1Byte
+ 614              		.thumb
+ 615              		.thumb_func
+ 617              	Read_W5500_SOCK_1Byte:
+ 618              	.LFB38:
+ 192:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 193:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+ 194:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Read_W5500_SOCK_1Byte
+ 195:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 读W5500指定端口寄存器的1个字节数据
+ 196:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : s:端口号,reg:16位寄存器地址
+ 197:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+ 198:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 读取到寄存器的1个字节数据
+ 199:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 无
+ 200:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+ 201:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint8_t Read_W5500_SOCK_1Byte(SOCKET s, uint16_t reg){
+ 619              		.loc 1 201 0
+ 620              		.cfi_startproc
+ 621              		@ args = 0, pretend = 0, frame = 16
+ 622              		@ frame_needed = 1, uses_anonymous_args = 0
+ 623 0000 80B5     		push	{r7, lr}
+ 624              		.cfi_def_cfa_offset 8
+ 625              		.cfi_offset 7, -8
+ 626              		.cfi_offset 14, -4
+ 627 0002 84B0     		sub	sp, sp, #16
+ 628              		.cfi_def_cfa_offset 24
+ 629 0004 00AF     		add	r7, sp, #0
+ 630              		.cfi_def_cfa_register 7
+ 631 0006 0346     		mov	r3, r0
+ 632 0008 0A46     		mov	r2, r1
+ 633 000a FB71     		strb	r3, [r7, #7]
+ 634 000c 1346     		mov	r3, r2	@ movhi
+ 635 000e BB80     		strh	r3, [r7, #4]	@ movhi
+ 202:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	uint8_t i;
+ 203:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_ResetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为低电平
+ 636              		.loc 1 203 0
+ 637 0010 1248     		ldr	r0, .L32
+ 638 0012 1021     		movs	r1, #16
+ 639 0014 FFF7FEFF 		bl	GPIO_ResetBits
+ 204:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			
+ 205:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Short(reg);//通过SPI1写16位寄存器地址
+ 640              		.loc 1 205 0
+ 641 0018 BB88     		ldrh	r3, [r7, #4]
+ 642 001a 1846     		mov	r0, r3
+ 643 001c FFF7FEFF 		bl	SPI1_Send_Short
+ 206:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(VDM|RWB_READ|(s*0x20+0x08));//通过SPI1写控制字节,1个字节数据长度,读�
+ 644              		.loc 1 206 0
+ 645 0020 FB79     		ldrb	r3, [r7, #7]
+ 646 0022 5B01     		lsls	r3, r3, #5
+ 647 0024 DBB2     		uxtb	r3, r3
+ 648 0026 0833     		adds	r3, r3, #8
+ 649 0028 DBB2     		uxtb	r3, r3
+ 650 002a 1846     		mov	r0, r3
+ 651 002c FFF7FEFF 		bl	SPI1_Send_Byte
+ 207:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 208:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	i = SPI_I2S_ReceiveData(SPI1);
+ 652              		.loc 1 208 0
+ 653 0030 0B48     		ldr	r0, .L32+4
+ 654 0032 FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 655 0036 0346     		mov	r3, r0
+ 656 0038 FB73     		strb	r3, [r7, #15]
+ 209:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(0x00);//发送一个哑数据
+ 657              		.loc 1 209 0
+ 658 003a 0020     		movs	r0, #0
+ 659 003c FFF7FEFF 		bl	SPI1_Send_Byte
+ 210:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	i = SPI_I2S_ReceiveData(SPI1);//读取1个字节数据
+ 660              		.loc 1 210 0
+ 661 0040 0748     		ldr	r0, .L32+4
+ 662 0042 FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 663 0046 0346     		mov	r3, r0
+ 664 0048 FB73     		strb	r3, [r7, #15]
+ 211:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 212:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_SetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为高电平
+ 665              		.loc 1 212 0
+ 666 004a 0448     		ldr	r0, .L32
+ 667 004c 1021     		movs	r1, #16
+ 668 004e FFF7FEFF 		bl	GPIO_SetBits
+ 213:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	return i;//返回读取到的寄存器数据
+ 669              		.loc 1 213 0
+ 670 0052 FB7B     		ldrb	r3, [r7, #15]	@ zero_extendqisi2
+ 214:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 671              		.loc 1 214 0
+ 672 0054 1846     		mov	r0, r3
+ 673 0056 1037     		adds	r7, r7, #16
+ 674              		.cfi_def_cfa_offset 8
+ 675 0058 BD46     		mov	sp, r7
+ 676              		.cfi_def_cfa_register 13
+ 677              		@ sp needed
+ 678 005a 80BD     		pop	{r7, pc}
+ 679              	.L33:
+ 680              		.align	2
+ 681              	.L32:
+ 682 005c 00080140 		.word	1073809408
+ 683 0060 00300140 		.word	1073819648
+ 684              		.cfi_endproc
+ 685              	.LFE38:
+ 687              		.section	.text.Read_W5500_SOCK_2Byte,"ax",%progbits
+ 688              		.align	2
+ 689              		.global	Read_W5500_SOCK_2Byte
+ 690              		.thumb
+ 691              		.thumb_func
+ 693              	Read_W5500_SOCK_2Byte:
+ 694              	.LFB39:
+ 215:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 216:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+ 217:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Read_W5500_SOCK_2Byte
+ 218:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 读W5500指定端口寄存器的2个字节数据
+ 219:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : s:端口号,reg:16位寄存器地址
+ 220:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+ 221:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 读取到寄存器的2个字节数据(16位)
+ 222:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 无
+ 223:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+ 224:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint16_t Read_W5500_SOCK_2Byte(SOCKET s, uint16_t reg){
+ 695              		.loc 1 224 0
+ 696              		.cfi_startproc
+ 697              		@ args = 0, pretend = 0, frame = 16
+ 698              		@ frame_needed = 1, uses_anonymous_args = 0
+ 699 0000 90B5     		push	{r4, r7, lr}
+ 700              		.cfi_def_cfa_offset 12
+ 701              		.cfi_offset 4, -12
+ 702              		.cfi_offset 7, -8
+ 703              		.cfi_offset 14, -4
+ 704 0002 85B0     		sub	sp, sp, #20
+ 705              		.cfi_def_cfa_offset 32
+ 706 0004 00AF     		add	r7, sp, #0
+ 707              		.cfi_def_cfa_register 7
+ 708 0006 0346     		mov	r3, r0
+ 709 0008 0A46     		mov	r2, r1
+ 710 000a FB71     		strb	r3, [r7, #7]
+ 711 000c 1346     		mov	r3, r2	@ movhi
+ 712 000e BB80     		strh	r3, [r7, #4]	@ movhi
+ 225:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	uint16_t i;
+ 226:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 227:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_ResetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为低电平
+ 713              		.loc 1 227 0
+ 714 0010 1A48     		ldr	r0, .L36
+ 715 0012 1021     		movs	r1, #16
+ 716 0014 FFF7FEFF 		bl	GPIO_ResetBits
+ 228:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			
+ 229:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Short(reg);//通过SPI1写16位寄存器地址
+ 717              		.loc 1 229 0
+ 718 0018 BB88     		ldrh	r3, [r7, #4]
+ 719 001a 1846     		mov	r0, r3
+ 720 001c FFF7FEFF 		bl	SPI1_Send_Short
+ 230:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(VDM|RWB_READ|(s*0x20+0x08));//通过SPI1写控制字节,2个字节数据长度,读�
+ 721              		.loc 1 230 0
+ 722 0020 FB79     		ldrb	r3, [r7, #7]
+ 723 0022 5B01     		lsls	r3, r3, #5
+ 724 0024 DBB2     		uxtb	r3, r3
+ 725 0026 0833     		adds	r3, r3, #8
+ 726 0028 DBB2     		uxtb	r3, r3
+ 727 002a 1846     		mov	r0, r3
+ 728 002c FFF7FEFF 		bl	SPI1_Send_Byte
+ 231:/home/virusv/TDSAST_IOT/Driver/W5500.c ****     //TODO:这儿有问题
+ 232:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	i = SPI_I2S_ReceiveData(SPI1);
+ 729              		.loc 1 232 0
+ 730 0030 1348     		ldr	r0, .L36+4
+ 731 0032 FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 732 0036 0346     		mov	r3, r0
+ 733 0038 FB81     		strh	r3, [r7, #14]	@ movhi
+ 233:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(0x00);//发送一个哑数据
+ 734              		.loc 1 233 0
+ 735 003a 0020     		movs	r0, #0
+ 736 003c FFF7FEFF 		bl	SPI1_Send_Byte
+ 234:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	i = SPI_I2S_ReceiveData(SPI1);//读取高位数据
+ 737              		.loc 1 234 0
+ 738 0040 0F48     		ldr	r0, .L36+4
+ 739 0042 FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 740 0046 0346     		mov	r3, r0
+ 741 0048 FB81     		strh	r3, [r7, #14]	@ movhi
+ 235:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(0x00);//发送一个哑数据
+ 742              		.loc 1 235 0
+ 743 004a 0020     		movs	r0, #0
+ 744 004c FFF7FEFF 		bl	SPI1_Send_Byte
+ 236:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	i = (i << 8) | SPI_I2S_ReceiveData(SPI1);  
+ 745              		.loc 1 236 0
+ 746 0050 FB89     		ldrh	r3, [r7, #14]
+ 747 0052 1B02     		lsls	r3, r3, #8
+ 748 0054 9CB2     		uxth	r4, r3
+ 749 0056 0A48     		ldr	r0, .L36+4
+ 750 0058 FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 751 005c 0346     		mov	r3, r0
+ 752 005e 9BB2     		uxth	r3, r3
+ 753 0060 2246     		mov	r2, r4	@ movhi
+ 754 0062 1343     		orrs	r3, r3, r2
+ 755 0064 9BB2     		uxth	r3, r3
+ 756 0066 FB81     		strh	r3, [r7, #14]	@ movhi
+ 237:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 238:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_SetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为高电平
+ 757              		.loc 1 238 0
+ 758 0068 0448     		ldr	r0, .L36
+ 759 006a 1021     		movs	r1, #16
+ 760 006c FFF7FEFF 		bl	GPIO_SetBits
+ 239:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	return i;//返回读取到的寄存器数据
+ 761              		.loc 1 239 0
+ 762 0070 FB89     		ldrh	r3, [r7, #14]
+ 240:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 763              		.loc 1 240 0
+ 764 0072 1846     		mov	r0, r3
+ 765 0074 1437     		adds	r7, r7, #20
+ 766              		.cfi_def_cfa_offset 12
+ 767 0076 BD46     		mov	sp, r7
+ 768              		.cfi_def_cfa_register 13
+ 769              		@ sp needed
+ 770 0078 90BD     		pop	{r4, r7, pc}
+ 771              	.L37:
+ 772 007a 00BF     		.align	2
+ 773              	.L36:
+ 774 007c 00080140 		.word	1073809408
+ 775 0080 00300140 		.word	1073819648
+ 776              		.cfi_endproc
+ 777              	.LFE39:
+ 779              		.section	.text.Read_SOCK_Data_Buffer,"ax",%progbits
+ 780              		.align	2
+ 781              		.global	Read_SOCK_Data_Buffer
+ 782              		.thumb
+ 783              		.thumb_func
+ 785              	Read_SOCK_Data_Buffer:
+ 786              	.LFB40:
+ 241:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 242:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+ 243:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Read_SOCK_Data_Buffer
+ 244:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 从W5500接收数据缓冲区中读取数据
+ 245:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : s:端口号,*dat_ptr:数据保存缓冲区指针
+ 246:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+ 247:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 读取到的数据长度,rx_size个字节
+ 248:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 无
+ 249:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+ 250:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint16_t Read_SOCK_Data_Buffer(SOCKET s, uint8_t *dat_ptr){
+ 787              		.loc 1 250 0
+ 788              		.cfi_startproc
+ 789              		@ args = 0, pretend = 0, frame = 24
+ 790              		@ frame_needed = 1, uses_anonymous_args = 0
+ 791 0000 80B5     		push	{r7, lr}
+ 792              		.cfi_def_cfa_offset 8
+ 793              		.cfi_offset 7, -8
+ 794              		.cfi_offset 14, -4
+ 795 0002 86B0     		sub	sp, sp, #24
+ 796              		.cfi_def_cfa_offset 32
+ 797 0004 00AF     		add	r7, sp, #0
+ 798              		.cfi_def_cfa_register 7
+ 799 0006 0346     		mov	r3, r0
+ 800 0008 3960     		str	r1, [r7]
+ 801 000a FB71     		strb	r3, [r7, #7]
+ 251:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	uint16_t rx_size, offset, offset1, i;
+ 252:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	uint8_t j;
+ 253:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 254:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	rx_size = Read_W5500_SOCK_2Byte(s,Sn_RX_RSR);
+ 802              		.loc 1 254 0
+ 803 000c FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 804 000e 1846     		mov	r0, r3
+ 805 0010 2621     		movs	r1, #38
+ 806 0012 FFF7FEFF 		bl	Read_W5500_SOCK_2Byte
+ 807 0016 0346     		mov	r3, r0
+ 808 0018 FB82     		strh	r3, [r7, #22]	@ movhi
+ 255:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	if(rx_size == 0) return 0;//没接收到数据则返回
+ 809              		.loc 1 255 0
+ 810 001a FB8A     		ldrh	r3, [r7, #22]
+ 811 001c 002B     		cmp	r3, #0
+ 812 001e 01D1     		bne	.L39
+ 813              		.loc 1 255 0 is_stmt 0 discriminator 1
+ 814 0020 0023     		movs	r3, #0
+ 815 0022 A5E0     		b	.L40
+ 816              	.L39:
+ 256:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	if(rx_size > 1460) rx_size = 1460;
+ 817              		.loc 1 256 0 is_stmt 1
+ 818 0024 FB8A     		ldrh	r3, [r7, #22]
+ 819 0026 40F2B452 		movw	r2, #1460
+ 820 002a 9342     		cmp	r3, r2
+ 821 002c 02D9     		bls	.L41
+ 822              		.loc 1 256 0 is_stmt 0 discriminator 1
+ 823 002e 40F2B453 		movw	r3, #1460
+ 824 0032 FB82     		strh	r3, [r7, #22]	@ movhi
+ 825              	.L41:
+ 257:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 258:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	offset = Read_W5500_SOCK_2Byte(s,Sn_RX_RD);
+ 826              		.loc 1 258 0 is_stmt 1
+ 827 0034 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 828 0036 1846     		mov	r0, r3
+ 829 0038 2821     		movs	r1, #40
+ 830 003a FFF7FEFF 		bl	Read_W5500_SOCK_2Byte
+ 831 003e 0346     		mov	r3, r0
+ 832 0040 7B82     		strh	r3, [r7, #18]	@ movhi
+ 259:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	offset1 = offset;
+ 833              		.loc 1 259 0
+ 834 0042 7B8A     		ldrh	r3, [r7, #18]	@ movhi
+ 835 0044 3B82     		strh	r3, [r7, #16]	@ movhi
+ 260:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	offset &= (S_RX_SIZE - 1);  //计算实际的物理地址
+ 836              		.loc 1 260 0
+ 837 0046 7B8A     		ldrh	r3, [r7, #18]	@ movhi
+ 838 0048 C3F30A03 		ubfx	r3, r3, #0, #11
+ 839 004c 7B82     		strh	r3, [r7, #18]	@ movhi
+ 261:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 262:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_ResetBits(W5500_SCS_PORT, W5500_SCS);  //置W5500的SCS为低电平
+ 840              		.loc 1 262 0
+ 841 004e 4A48     		ldr	r0, .L50
+ 842 0050 1021     		movs	r1, #16
+ 843 0052 FFF7FEFF 		bl	GPIO_ResetBits
+ 263:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 264:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Short(offset);  //写16位地址
+ 844              		.loc 1 264 0
+ 845 0056 7B8A     		ldrh	r3, [r7, #18]
+ 846 0058 1846     		mov	r0, r3
+ 847 005a FFF7FEFF 		bl	SPI1_Send_Short
+ 265:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(VDM|RWB_READ|(s*0x20+0x18));  //写控制字节,N个字节数据长度,读数据,�
+ 848              		.loc 1 265 0
+ 849 005e FB79     		ldrb	r3, [r7, #7]
+ 850 0060 5B01     		lsls	r3, r3, #5
+ 851 0062 DBB2     		uxtb	r3, r3
+ 852 0064 1833     		adds	r3, r3, #24
+ 853 0066 DBB2     		uxtb	r3, r3
+ 854 0068 1846     		mov	r0, r3
+ 855 006a FFF7FEFF 		bl	SPI1_Send_Byte
+ 266:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	j = SPI_I2S_ReceiveData(SPI1);
+ 856              		.loc 1 266 0
+ 857 006e 4348     		ldr	r0, .L50+4
+ 858 0070 FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 859 0074 0346     		mov	r3, r0
+ 860 0076 FB73     		strb	r3, [r7, #15]
+ 267:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	
+ 268:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	if((offset+rx_size) < S_RX_SIZE){
+ 861              		.loc 1 268 0
+ 862 0078 7A8A     		ldrh	r2, [r7, #18]
+ 863 007a FB8A     		ldrh	r3, [r7, #22]
+ 864 007c 1344     		add	r3, r3, r2
+ 865 007e B3F5006F 		cmp	r3, #2048
+ 866 0082 17DA     		bge	.L42
+ 269:/home/virusv/TDSAST_IOT/Driver/W5500.c ****         //如果最大地址未超过W5500接收缓冲区寄存器的最大地址
+ 270:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		for(i = 0;i < rx_size; i++){
+ 867              		.loc 1 270 0
+ 868 0084 0023     		movs	r3, #0
+ 869 0086 BB82     		strh	r3, [r7, #20]	@ movhi
+ 870 0088 0FE0     		b	.L43
+ 871              	.L44:
+ 271:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环读取rx_size个字节数据
+ 272:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			SPI1_Send_Byte(0x00);//发送一个哑数据
+ 872              		.loc 1 272 0 discriminator 3
+ 873 008a 0020     		movs	r0, #0
+ 874 008c FFF7FEFF 		bl	SPI1_Send_Byte
+ 273:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			j=SPI_I2S_ReceiveData(SPI1);//读取1个字节数据
+ 875              		.loc 1 273 0 discriminator 3
+ 876 0090 3A48     		ldr	r0, .L50+4
+ 877 0092 FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 878 0096 0346     		mov	r3, r0
+ 879 0098 FB73     		strb	r3, [r7, #15]
+ 274:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			*dat_ptr++=j;//将读取到的数据保存到数据保存缓冲区
+ 880              		.loc 1 274 0 discriminator 3
+ 881 009a 3B68     		ldr	r3, [r7]
+ 882 009c 5A1C     		adds	r2, r3, #1
+ 883 009e 3A60     		str	r2, [r7]
+ 884 00a0 FA7B     		ldrb	r2, [r7, #15]
+ 885 00a2 1A70     		strb	r2, [r3]
+ 270:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环读取rx_size个字节数据
+ 886              		.loc 1 270 0 discriminator 3
+ 887 00a4 BB8A     		ldrh	r3, [r7, #20]
+ 888 00a6 0133     		adds	r3, r3, #1
+ 889 00a8 BB82     		strh	r3, [r7, #20]	@ movhi
+ 890              	.L43:
+ 270:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环读取rx_size个字节数据
+ 891              		.loc 1 270 0 is_stmt 0 discriminator 1
+ 892 00aa BA8A     		ldrh	r2, [r7, #20]
+ 893 00ac FB8A     		ldrh	r3, [r7, #22]
+ 894 00ae 9A42     		cmp	r2, r3
+ 895 00b0 EBD3     		bcc	.L44
+ 896 00b2 47E0     		b	.L45
+ 897              	.L42:
+ 275:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			//dat_ptr++;//数据保存缓冲区指针地址自增1
+ 276:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		}
+ 277:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	}else{
+ 278:/home/virusv/TDSAST_IOT/Driver/W5500.c ****         //如果最大地址超过W5500接收缓冲区寄存器的最大地址
+ 279:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		offset = S_RX_SIZE-offset;
+ 898              		.loc 1 279 0 is_stmt 1
+ 899 00b4 7B8A     		ldrh	r3, [r7, #18]	@ movhi
+ 900 00b6 C3F50063 		rsb	r3, r3, #2048
+ 901 00ba 7B82     		strh	r3, [r7, #18]	@ movhi
+ 280:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		for(i=0; i < offset; i++){
+ 902              		.loc 1 280 0
+ 903 00bc 0023     		movs	r3, #0
+ 904 00be BB82     		strh	r3, [r7, #20]	@ movhi
+ 905 00c0 0FE0     		b	.L46
+ 906              	.L47:
+ 281:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环读取出前offset个字节数据
+ 282:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			SPI1_Send_Byte(0x00);//发送一个哑数据
+ 907              		.loc 1 282 0 discriminator 3
+ 908 00c2 0020     		movs	r0, #0
+ 909 00c4 FFF7FEFF 		bl	SPI1_Send_Byte
+ 283:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			j = SPI_I2S_ReceiveData(SPI1);//读取1个字节数据
+ 910              		.loc 1 283 0 discriminator 3
+ 911 00c8 2C48     		ldr	r0, .L50+4
+ 912 00ca FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 913 00ce 0346     		mov	r3, r0
+ 914 00d0 FB73     		strb	r3, [r7, #15]
+ 284:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //TODO:这儿改了
+ 285:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			*dat_ptr++ = j;//将读取到的数据保存到数据保存缓冲区
+ 915              		.loc 1 285 0 discriminator 3
+ 916 00d2 3B68     		ldr	r3, [r7]
+ 917 00d4 5A1C     		adds	r2, r3, #1
+ 918 00d6 3A60     		str	r2, [r7]
+ 919 00d8 FA7B     		ldrb	r2, [r7, #15]
+ 920 00da 1A70     		strb	r2, [r3]
+ 280:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环读取出前offset个字节数据
+ 921              		.loc 1 280 0 discriminator 3
+ 922 00dc BB8A     		ldrh	r3, [r7, #20]
+ 923 00de 0133     		adds	r3, r3, #1
+ 924 00e0 BB82     		strh	r3, [r7, #20]	@ movhi
+ 925              	.L46:
+ 280:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环读取出前offset个字节数据
+ 926              		.loc 1 280 0 is_stmt 0 discriminator 1
+ 927 00e2 BA8A     		ldrh	r2, [r7, #20]
+ 928 00e4 7B8A     		ldrh	r3, [r7, #18]
+ 929 00e6 9A42     		cmp	r2, r3
+ 930 00e8 EBD3     		bcc	.L47
+ 286:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			//dat_ptr++;//数据保存缓冲区指针地址自增1
+ 287:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		}
+ 288:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		GPIO_SetBits(W5500_SCS_PORT, W5500_SCS); //置W5500的SCS为高电平
+ 931              		.loc 1 288 0 is_stmt 1
+ 932 00ea 2348     		ldr	r0, .L50
+ 933 00ec 1021     		movs	r1, #16
+ 934 00ee FFF7FEFF 		bl	GPIO_SetBits
+ 289:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 290:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		GPIO_ResetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为低电平
+ 935              		.loc 1 290 0
+ 936 00f2 2148     		ldr	r0, .L50
+ 937 00f4 1021     		movs	r1, #16
+ 938 00f6 FFF7FEFF 		bl	GPIO_ResetBits
+ 291:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 292:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		SPI1_Send_Short(0x00);//写16位地址
+ 939              		.loc 1 292 0
+ 940 00fa 0020     		movs	r0, #0
+ 941 00fc FFF7FEFF 		bl	SPI1_Send_Short
+ 293:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		SPI1_Send_Byte(VDM|RWB_READ|(s*0x20+0x18));//写控制字节,N个字节数据长度,读数据,选
+ 942              		.loc 1 293 0
+ 943 0100 FB79     		ldrb	r3, [r7, #7]
+ 944 0102 5B01     		lsls	r3, r3, #5
+ 945 0104 DBB2     		uxtb	r3, r3
+ 946 0106 1833     		adds	r3, r3, #24
+ 947 0108 DBB2     		uxtb	r3, r3
+ 948 010a 1846     		mov	r0, r3
+ 949 010c FFF7FEFF 		bl	SPI1_Send_Byte
+ 294:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		j=SPI_I2S_ReceiveData(SPI1);
+ 950              		.loc 1 294 0
+ 951 0110 1A48     		ldr	r0, .L50+4
+ 952 0112 FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 953 0116 0346     		mov	r3, r0
+ 954 0118 FB73     		strb	r3, [r7, #15]
+ 295:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 296:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		for(;i<rx_size;i++){
+ 955              		.loc 1 296 0
+ 956 011a 0FE0     		b	.L48
+ 957              	.L49:
+ 297:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环读取后rx_size-offset个字节数据
+ 298:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			SPI1_Send_Byte(0x00);//发送一个哑数据
+ 958              		.loc 1 298 0 discriminator 2
+ 959 011c 0020     		movs	r0, #0
+ 960 011e FFF7FEFF 		bl	SPI1_Send_Byte
+ 299:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			j=SPI_I2S_ReceiveData(SPI1);//读取1个字节数据
+ 961              		.loc 1 299 0 discriminator 2
+ 962 0122 1648     		ldr	r0, .L50+4
+ 963 0124 FFF7FEFF 		bl	SPI_I2S_ReceiveData
+ 964 0128 0346     		mov	r3, r0
+ 965 012a FB73     		strb	r3, [r7, #15]
+ 300:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //TODO:这个修改了
+ 301:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			*dat_ptr++=j;//将读取到的数据保存到数据保存缓冲区
+ 966              		.loc 1 301 0 discriminator 2
+ 967 012c 3B68     		ldr	r3, [r7]
+ 968 012e 5A1C     		adds	r2, r3, #1
+ 969 0130 3A60     		str	r2, [r7]
+ 970 0132 FA7B     		ldrb	r2, [r7, #15]
+ 971 0134 1A70     		strb	r2, [r3]
+ 296:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环读取后rx_size-offset个字节数据
+ 972              		.loc 1 296 0 discriminator 2
+ 973 0136 BB8A     		ldrh	r3, [r7, #20]
+ 974 0138 0133     		adds	r3, r3, #1
+ 975 013a BB82     		strh	r3, [r7, #20]	@ movhi
+ 976              	.L48:
+ 296:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环读取后rx_size-offset个字节数据
+ 977              		.loc 1 296 0 is_stmt 0 discriminator 1
+ 978 013c BA8A     		ldrh	r2, [r7, #20]
+ 979 013e FB8A     		ldrh	r3, [r7, #22]
+ 980 0140 9A42     		cmp	r2, r3
+ 981 0142 EBD3     		bcc	.L49
+ 982              	.L45:
+ 302:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			//dat_ptr++;//数据保存缓冲区指针地址自增1
+ 303:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		}
+ 304:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	}
+ 305:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_SetBits(W5500_SCS_PORT, W5500_SCS); //置W5500的SCS为高电平
+ 983              		.loc 1 305 0 is_stmt 1
+ 984 0144 0C48     		ldr	r0, .L50
+ 985 0146 1021     		movs	r1, #16
+ 986 0148 FFF7FEFF 		bl	GPIO_SetBits
+ 306:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 307:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	offset1 += rx_size;//更新实际物理地址,即下次读取接收到的数据的起始地址
+ 987              		.loc 1 307 0
+ 988 014c 3A8A     		ldrh	r2, [r7, #16]	@ movhi
+ 989 014e FB8A     		ldrh	r3, [r7, #22]	@ movhi
+ 990 0150 1344     		add	r3, r3, r2
+ 991 0152 3B82     		strh	r3, [r7, #16]	@ movhi
+ 308:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_2Byte(s, Sn_RX_RD, offset1);
+ 992              		.loc 1 308 0
+ 993 0154 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 994 0156 3B8A     		ldrh	r3, [r7, #16]
+ 995 0158 1046     		mov	r0, r2
+ 996 015a 2821     		movs	r1, #40
+ 997 015c 1A46     		mov	r2, r3
+ 998 015e FFF7FEFF 		bl	Write_W5500_SOCK_2Byte
+ 309:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_1Byte(s, Sn_CR, RECV);//发送启动接收命令
+ 999              		.loc 1 309 0
+ 1000 0162 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1001 0164 1846     		mov	r0, r3
+ 1002 0166 0121     		movs	r1, #1
+ 1003 0168 4022     		movs	r2, #64
+ 1004 016a FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 310:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	return rx_size;//返回接收到数据的长度
+ 1005              		.loc 1 310 0
+ 1006 016e FB8A     		ldrh	r3, [r7, #22]
+ 1007              	.L40:
+ 311:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 1008              		.loc 1 311 0
+ 1009 0170 1846     		mov	r0, r3
+ 1010 0172 1837     		adds	r7, r7, #24
+ 1011              		.cfi_def_cfa_offset 8
+ 1012 0174 BD46     		mov	sp, r7
+ 1013              		.cfi_def_cfa_register 13
+ 1014              		@ sp needed
+ 1015 0176 80BD     		pop	{r7, pc}
+ 1016              	.L51:
+ 1017              		.align	2
+ 1018              	.L50:
+ 1019 0178 00080140 		.word	1073809408
+ 1020 017c 00300140 		.word	1073819648
+ 1021              		.cfi_endproc
+ 1022              	.LFE40:
+ 1024              		.section	.text.Write_SOCK_Data_Buffer,"ax",%progbits
+ 1025              		.align	2
+ 1026              		.global	Write_SOCK_Data_Buffer
+ 1027              		.thumb
+ 1028              		.thumb_func
+ 1030              	Write_SOCK_Data_Buffer:
+ 1031              	.LFB41:
+ 312:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 313:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+ 314:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Write_SOCK_Data_Buffer
+ 315:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 将数据写入W5500的数据发送缓冲区
+ 316:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : s:端口号,*dat_ptr:数据保存缓冲区指针,size:待写入数据的长度
+ 317:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+ 318:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 无
+ 319:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 无
+ 320:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+ 321:/home/virusv/TDSAST_IOT/Driver/W5500.c **** void Write_SOCK_Data_Buffer(SOCKET s, uint8_t *dat_ptr, uint16_t size){
+ 1032              		.loc 1 321 0
+ 1033              		.cfi_startproc
+ 1034              		@ args = 0, pretend = 0, frame = 16
+ 1035              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1036 0000 80B5     		push	{r7, lr}
+ 1037              		.cfi_def_cfa_offset 8
+ 1038              		.cfi_offset 7, -8
+ 1039              		.cfi_offset 14, -4
+ 1040 0002 84B0     		sub	sp, sp, #16
+ 1041              		.cfi_def_cfa_offset 24
+ 1042 0004 00AF     		add	r7, sp, #0
+ 1043              		.cfi_def_cfa_register 7
+ 1044 0006 0346     		mov	r3, r0
+ 1045 0008 3960     		str	r1, [r7]
+ 1046 000a FB71     		strb	r3, [r7, #7]
+ 1047 000c 1346     		mov	r3, r2	@ movhi
+ 1048 000e BB80     		strh	r3, [r7, #4]	@ movhi
+ 322:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	uint16_t offset, offset1, i;
+ 323:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 324:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//如果是UDP模式,可以在此设置目的主机的IP和端口号
+ 325:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	if((Read_W5500_SOCK_1Byte(s,Sn_MR)&0x0f) != SOCK_UDP){
+ 1049              		.loc 1 325 0
+ 1050 0010 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1051 0012 1846     		mov	r0, r3
+ 1052 0014 0021     		movs	r1, #0
+ 1053 0016 FFF7FEFF 		bl	Read_W5500_SOCK_1Byte
+ 326:/home/virusv/TDSAST_IOT/Driver/W5500.c ****         //如果Socket打开失败
+ 327:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		Write_W5500_SOCK_4Byte(s, Sn_DIPR, UDP_DIPR);//设置目的主机IP  		
+ 1054              		.loc 1 327 0
+ 1055 001a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1056 001c 1846     		mov	r0, r3
+ 1057 001e 0C21     		movs	r1, #12
+ 1058 0020 504A     		ldr	r2, .L61
+ 1059 0022 FFF7FEFF 		bl	Write_W5500_SOCK_4Byte
+ 328:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		Write_W5500_SOCK_2Byte(s, Sn_DPORTR, UDP_DPORT[0]*256 + UDP_DPORT[1]);//设置目的主机端口�
+ 1060              		.loc 1 328 0
+ 1061 0026 504B     		ldr	r3, .L61+4
+ 1062 0028 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1063 002a 9BB2     		uxth	r3, r3
+ 1064 002c 1B02     		lsls	r3, r3, #8
+ 1065 002e 9AB2     		uxth	r2, r3
+ 1066 0030 4D4B     		ldr	r3, .L61+4
+ 1067 0032 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 1068 0034 9BB2     		uxth	r3, r3
+ 1069 0036 1344     		add	r3, r3, r2
+ 1070 0038 9BB2     		uxth	r3, r3
+ 1071 003a FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 1072 003c 1046     		mov	r0, r2
+ 1073 003e 1021     		movs	r1, #16
+ 1074 0040 1A46     		mov	r2, r3
+ 1075 0042 FFF7FEFF 		bl	Write_W5500_SOCK_2Byte
+ 329:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	}
+ 330:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 331:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	offset = Read_W5500_SOCK_2Byte(s,Sn_TX_WR);
+ 1076              		.loc 1 331 0
+ 1077 0046 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1078 0048 1846     		mov	r0, r3
+ 1079 004a 2421     		movs	r1, #36
+ 1080 004c FFF7FEFF 		bl	Read_W5500_SOCK_2Byte
+ 1081 0050 0346     		mov	r3, r0
+ 1082 0052 BB81     		strh	r3, [r7, #12]	@ movhi
+ 332:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	offset1 = offset;
+ 1083              		.loc 1 332 0
+ 1084 0054 BB89     		ldrh	r3, [r7, #12]	@ movhi
+ 1085 0056 7B81     		strh	r3, [r7, #10]	@ movhi
+ 333:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	offset &= (S_TX_SIZE-1); //计算实际的物理地址
+ 1086              		.loc 1 333 0
+ 1087 0058 BB89     		ldrh	r3, [r7, #12]	@ movhi
+ 1088 005a C3F30A03 		ubfx	r3, r3, #0, #11
+ 1089 005e BB81     		strh	r3, [r7, #12]	@ movhi
+ 334:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 335:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_ResetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为低电平
+ 1090              		.loc 1 335 0
+ 1091 0060 4248     		ldr	r0, .L61+8
+ 1092 0062 1021     		movs	r1, #16
+ 1093 0064 FFF7FEFF 		bl	GPIO_ResetBits
+ 336:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 337:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Short(offset);//写16位地址
+ 1094              		.loc 1 337 0
+ 1095 0068 BB89     		ldrh	r3, [r7, #12]
+ 1096 006a 1846     		mov	r0, r3
+ 1097 006c FFF7FEFF 		bl	SPI1_Send_Short
+ 338:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	SPI1_Send_Byte(VDM|RWB_WRITE|(s*0x20+0x10));//写控制字节,N个字节数据长度,写数据,选
+ 1098              		.loc 1 338 0
+ 1099 0070 FB79     		ldrb	r3, [r7, #7]
+ 1100 0072 5B01     		lsls	r3, r3, #5
+ 1101 0074 DBB2     		uxtb	r3, r3
+ 1102 0076 1033     		adds	r3, r3, #16
+ 1103 0078 DBB2     		uxtb	r3, r3
+ 1104 007a DBB2     		uxtb	r3, r3
+ 1105 007c 43F00403 		orr	r3, r3, #4
+ 1106 0080 DBB2     		uxtb	r3, r3
+ 1107 0082 DBB2     		uxtb	r3, r3
+ 1108 0084 1846     		mov	r0, r3
+ 1109 0086 FFF7FEFF 		bl	SPI1_Send_Byte
+ 339:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 340:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	if((offset+size) < S_TX_SIZE){
+ 1110              		.loc 1 340 0
+ 1111 008a BA89     		ldrh	r2, [r7, #12]
+ 1112 008c BB88     		ldrh	r3, [r7, #4]
+ 1113 008e 1344     		add	r3, r3, r2
+ 1114 0090 B3F5006F 		cmp	r3, #2048
+ 1115 0094 11DA     		bge	.L53
+ 341:/home/virusv/TDSAST_IOT/Driver/W5500.c ****         //如果最大地址未超过W5500发送缓冲区寄存器的最大地址
+ 342:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		for(i=0;i<size;i++){
+ 1116              		.loc 1 342 0
+ 1117 0096 0023     		movs	r3, #0
+ 1118 0098 FB81     		strh	r3, [r7, #14]	@ movhi
+ 1119 009a 09E0     		b	.L54
+ 1120              	.L55:
+ 343:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环写入size个字节数据
+ 344:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			SPI1_Send_Byte(*dat_ptr++);//写入一个字节的数据		
+ 1121              		.loc 1 344 0 discriminator 3
+ 1122 009c 3B68     		ldr	r3, [r7]
+ 1123 009e 5A1C     		adds	r2, r3, #1
+ 1124 00a0 3A60     		str	r2, [r7]
+ 1125 00a2 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1126 00a4 1846     		mov	r0, r3
+ 1127 00a6 FFF7FEFF 		bl	SPI1_Send_Byte
+ 342:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环写入size个字节数据
+ 1128              		.loc 1 342 0 discriminator 3
+ 1129 00aa FB89     		ldrh	r3, [r7, #14]
+ 1130 00ac 0133     		adds	r3, r3, #1
+ 1131 00ae FB81     		strh	r3, [r7, #14]	@ movhi
+ 1132              	.L54:
+ 342:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环写入size个字节数据
+ 1133              		.loc 1 342 0 is_stmt 0 discriminator 1
+ 1134 00b0 FA89     		ldrh	r2, [r7, #14]
+ 1135 00b2 BB88     		ldrh	r3, [r7, #4]
+ 1136 00b4 9A42     		cmp	r2, r3
+ 1137 00b6 F1D3     		bcc	.L55
+ 1138 00b8 3BE0     		b	.L56
+ 1139              	.L53:
+ 345:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		}
+ 346:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	}else{
+ 347:/home/virusv/TDSAST_IOT/Driver/W5500.c ****         //如果最大地址超过W5500发送缓冲区寄存器的最大地址
+ 348:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		offset = S_TX_SIZE-offset;
+ 1140              		.loc 1 348 0 is_stmt 1
+ 1141 00ba BB89     		ldrh	r3, [r7, #12]	@ movhi
+ 1142 00bc C3F50063 		rsb	r3, r3, #2048
+ 1143 00c0 BB81     		strh	r3, [r7, #12]	@ movhi
+ 349:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		for(i=0; i < offset; i++){
+ 1144              		.loc 1 349 0
+ 1145 00c2 0023     		movs	r3, #0
+ 1146 00c4 FB81     		strh	r3, [r7, #14]	@ movhi
+ 1147 00c6 09E0     		b	.L57
+ 1148              	.L58:
+ 350:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环写入前offset个字节数据
+ 351:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			SPI1_Send_Byte(*dat_ptr++);//写入一个字节的数据
+ 1149              		.loc 1 351 0 discriminator 3
+ 1150 00c8 3B68     		ldr	r3, [r7]
+ 1151 00ca 5A1C     		adds	r2, r3, #1
+ 1152 00cc 3A60     		str	r2, [r7]
+ 1153 00ce 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1154 00d0 1846     		mov	r0, r3
+ 1155 00d2 FFF7FEFF 		bl	SPI1_Send_Byte
+ 349:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		for(i=0; i < offset; i++){
+ 1156              		.loc 1 349 0 discriminator 3
+ 1157 00d6 FB89     		ldrh	r3, [r7, #14]
+ 1158 00d8 0133     		adds	r3, r3, #1
+ 1159 00da FB81     		strh	r3, [r7, #14]	@ movhi
+ 1160              	.L57:
+ 349:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		for(i=0; i < offset; i++){
+ 1161              		.loc 1 349 0 is_stmt 0 discriminator 1
+ 1162 00dc FA89     		ldrh	r2, [r7, #14]
+ 1163 00de BB89     		ldrh	r3, [r7, #12]
+ 1164 00e0 9A42     		cmp	r2, r3
+ 1165 00e2 F1D3     		bcc	.L58
+ 352:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		}
+ 353:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		GPIO_SetBits(W5500_SCS_PORT, W5500_SCS); //置W5500的SCS为高电平
+ 1166              		.loc 1 353 0 is_stmt 1
+ 1167 00e4 2148     		ldr	r0, .L61+8
+ 1168 00e6 1021     		movs	r1, #16
+ 1169 00e8 FFF7FEFF 		bl	GPIO_SetBits
+ 354:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 355:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		GPIO_ResetBits(W5500_SCS_PORT, W5500_SCS);//置W5500的SCS为低电平
+ 1170              		.loc 1 355 0
+ 1171 00ec 1F48     		ldr	r0, .L61+8
+ 1172 00ee 1021     		movs	r1, #16
+ 1173 00f0 FFF7FEFF 		bl	GPIO_ResetBits
+ 356:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 357:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		SPI1_Send_Short(0x00);//写16位地址
+ 1174              		.loc 1 357 0
+ 1175 00f4 0020     		movs	r0, #0
+ 1176 00f6 FFF7FEFF 		bl	SPI1_Send_Short
+ 358:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		SPI1_Send_Byte(VDM|RWB_WRITE|(s*0x20+0x10));//写控制字节,N个字节数据长度,写数据,�
+ 1177              		.loc 1 358 0
+ 1178 00fa FB79     		ldrb	r3, [r7, #7]
+ 1179 00fc 5B01     		lsls	r3, r3, #5
+ 1180 00fe DBB2     		uxtb	r3, r3
+ 1181 0100 1033     		adds	r3, r3, #16
+ 1182 0102 DBB2     		uxtb	r3, r3
+ 1183 0104 DBB2     		uxtb	r3, r3
+ 1184 0106 43F00403 		orr	r3, r3, #4
+ 1185 010a DBB2     		uxtb	r3, r3
+ 1186 010c DBB2     		uxtb	r3, r3
+ 1187 010e 1846     		mov	r0, r3
+ 1188 0110 FFF7FEFF 		bl	SPI1_Send_Byte
+ 359:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 360:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		for(;i<size;i++){
+ 1189              		.loc 1 360 0
+ 1190 0114 09E0     		b	.L59
+ 1191              	.L60:
+ 361:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环写入size-offset个字节数据
+ 362:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			SPI1_Send_Byte(*dat_ptr++);//写入一个字节的数据
+ 1192              		.loc 1 362 0 discriminator 2
+ 1193 0116 3B68     		ldr	r3, [r7]
+ 1194 0118 5A1C     		adds	r2, r3, #1
+ 1195 011a 3A60     		str	r2, [r7]
+ 1196 011c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1197 011e 1846     		mov	r0, r3
+ 1198 0120 FFF7FEFF 		bl	SPI1_Send_Byte
+ 360:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环写入size-offset个字节数据
+ 1199              		.loc 1 360 0 discriminator 2
+ 1200 0124 FB89     		ldrh	r3, [r7, #14]
+ 1201 0126 0133     		adds	r3, r3, #1
+ 1202 0128 FB81     		strh	r3, [r7, #14]	@ movhi
+ 1203              	.L59:
+ 360:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //循环写入size-offset个字节数据
+ 1204              		.loc 1 360 0 is_stmt 0 discriminator 1
+ 1205 012a FA89     		ldrh	r2, [r7, #14]
+ 1206 012c BB88     		ldrh	r3, [r7, #4]
+ 1207 012e 9A42     		cmp	r2, r3
+ 1208 0130 F1D3     		bcc	.L60
+ 1209              	.L56:
+ 363:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		}
+ 364:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	}
+ 365:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_SetBits(W5500_SCS_PORT, W5500_SCS); //置W5500的SCS为高电平
+ 1210              		.loc 1 365 0 is_stmt 1
+ 1211 0132 0E48     		ldr	r0, .L61+8
+ 1212 0134 1021     		movs	r1, #16
+ 1213 0136 FFF7FEFF 		bl	GPIO_SetBits
+ 366:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 367:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	offset1 += size;//更新实际物理地址,即下次写待发送数据到发送数据缓冲区的�
+ 1214              		.loc 1 367 0
+ 1215 013a 7A89     		ldrh	r2, [r7, #10]	@ movhi
+ 1216 013c BB88     		ldrh	r3, [r7, #4]	@ movhi
+ 1217 013e 1344     		add	r3, r3, r2
+ 1218 0140 7B81     		strh	r3, [r7, #10]	@ movhi
+ 368:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_2Byte(s, Sn_TX_WR, offset1);
+ 1219              		.loc 1 368 0
+ 1220 0142 FA79     		ldrb	r2, [r7, #7]	@ zero_extendqisi2
+ 1221 0144 7B89     		ldrh	r3, [r7, #10]
+ 1222 0146 1046     		mov	r0, r2
+ 1223 0148 2421     		movs	r1, #36
+ 1224 014a 1A46     		mov	r2, r3
+ 1225 014c FFF7FEFF 		bl	Write_W5500_SOCK_2Byte
+ 369:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_1Byte(s, Sn_CR, SEND);//发送启动发送命令				
+ 1226              		.loc 1 369 0
+ 1227 0150 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1228 0152 1846     		mov	r0, r3
+ 1229 0154 0121     		movs	r1, #1
+ 1230 0156 2022     		movs	r2, #32
+ 1231 0158 FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 370:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 1232              		.loc 1 370 0
+ 1233 015c 1037     		adds	r7, r7, #16
+ 1234              		.cfi_def_cfa_offset 8
+ 1235 015e BD46     		mov	sp, r7
+ 1236              		.cfi_def_cfa_register 13
+ 1237              		@ sp needed
+ 1238 0160 80BD     		pop	{r7, pc}
+ 1239              	.L62:
+ 1240 0162 00BF     		.align	2
+ 1241              	.L61:
+ 1242 0164 00000000 		.word	UDP_DIPR
+ 1243 0168 00000000 		.word	UDP_DPORT
+ 1244 016c 00080140 		.word	1073809408
+ 1245              		.cfi_endproc
+ 1246              	.LFE41:
+ 1248              		.section	.text.W5500_Hardware_Reset,"ax",%progbits
+ 1249              		.align	2
+ 1250              		.global	W5500_Hardware_Reset
+ 1251              		.thumb
+ 1252              		.thumb_func
+ 1254              	W5500_Hardware_Reset:
+ 1255              	.LFB42:
+ 371:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 372:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+ 373:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : W5500_Hardware_Reset
+ 374:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 硬件复位W5500
+ 375:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : 无
+ 376:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+ 377:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 无
+ 378:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : W5500的复位引脚保持低电平至少500us以上,才能重围W5500
+ 379:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+ 380:/home/virusv/TDSAST_IOT/Driver/W5500.c **** void W5500_Hardware_Reset(void){
+ 1256              		.loc 1 380 0
+ 1257              		.cfi_startproc
+ 1258              		@ args = 0, pretend = 0, frame = 0
+ 1259              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1260 0000 80B5     		push	{r7, lr}
+ 1261              		.cfi_def_cfa_offset 8
+ 1262              		.cfi_offset 7, -8
+ 1263              		.cfi_offset 14, -4
+ 1264 0002 00AF     		add	r7, sp, #0
+ 1265              		.cfi_def_cfa_register 7
+ 381:/home/virusv/TDSAST_IOT/Driver/W5500.c ****     //printf("HR start\n");
+ 382:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_ResetBits(W5500_RST_PORT, W5500_RST);//复位引脚拉低
+ 1266              		.loc 1 382 0
+ 1267 0004 0B48     		ldr	r0, .L65
+ 1268 0006 0821     		movs	r1, #8
+ 1269 0008 FFF7FEFF 		bl	GPIO_ResetBits
+ 383:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	delay_ms(50);
+ 1270              		.loc 1 383 0
+ 1271 000c 3220     		movs	r0, #50
+ 1272 000e FFF7FEFF 		bl	delay_ms
+ 384:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	GPIO_SetBits(W5500_RST_PORT, W5500_RST);//复位引脚拉高
+ 1273              		.loc 1 384 0
+ 1274 0012 0848     		ldr	r0, .L65
+ 1275 0014 0821     		movs	r1, #8
+ 1276 0016 FFF7FEFF 		bl	GPIO_SetBits
+ 385:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	delay_ms(200);
+ 1277              		.loc 1 385 0
+ 1278 001a C820     		movs	r0, #200
+ 1279 001c FFF7FEFF 		bl	delay_ms
+ 386:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	while((Read_W5500_1Byte(PHYCFGR)&LINK)==0);//等待以太网连接完成
+ 1280              		.loc 1 386 0
+ 1281 0020 00BF     		nop
+ 1282              	.L64:
+ 1283              		.loc 1 386 0 is_stmt 0 discriminator 1
+ 1284 0022 2E20     		movs	r0, #46
+ 1285 0024 FFF7FEFF 		bl	Read_W5500_1Byte
+ 1286 0028 0346     		mov	r3, r0
+ 1287 002a 03F00103 		and	r3, r3, #1
+ 1288 002e 002B     		cmp	r3, #0
+ 1289 0030 F7D0     		beq	.L64
+ 387:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 1290              		.loc 1 387 0 is_stmt 1
+ 1291 0032 80BD     		pop	{r7, pc}
+ 1292              	.L66:
+ 1293              		.align	2
+ 1294              	.L65:
+ 1295 0034 00080140 		.word	1073809408
+ 1296              		.cfi_endproc
+ 1297              	.LFE42:
+ 1299              		.section	.text.W5500_Init,"ax",%progbits
+ 1300              		.align	2
+ 1301              		.global	W5500_Init
+ 1302              		.thumb
+ 1303              		.thumb_func
+ 1305              	W5500_Init:
+ 1306              	.LFB43:
+ 388:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 389:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+ 390:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : W5500_Init
+ 391:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 初始化W5500寄存器函数
+ 392:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : 无
+ 393:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+ 394:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 无
+ 395:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 在使用W5500之前，先对W5500初始化
+ 396:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+ 397:/home/virusv/TDSAST_IOT/Driver/W5500.c **** void W5500_Init(void){
+ 1307              		.loc 1 397 0
+ 1308              		.cfi_startproc
+ 1309              		@ args = 0, pretend = 0, frame = 8
+ 1310              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1311 0000 80B5     		push	{r7, lr}
+ 1312              		.cfi_def_cfa_offset 8
+ 1313              		.cfi_offset 7, -8
+ 1314              		.cfi_offset 14, -4
+ 1315 0002 82B0     		sub	sp, sp, #8
+ 1316              		.cfi_def_cfa_offset 16
+ 1317 0004 00AF     		add	r7, sp, #0
+ 1318              		.cfi_def_cfa_register 7
+ 398:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	uint8_t i=0;
+ 1319              		.loc 1 398 0
+ 1320 0006 0023     		movs	r3, #0
+ 1321 0008 FB71     		strb	r3, [r7, #7]
+ 399:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 400:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_1Byte(MR, RST);//软件复位W5500,置1有效,复位后自动清0
+ 1322              		.loc 1 400 0
+ 1323 000a 0020     		movs	r0, #0
+ 1324 000c 8021     		movs	r1, #128
+ 1325 000e FFF7FEFF 		bl	Write_W5500_1Byte
+ 401:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	delay_ms(10);//延时10ms,自己定义该函数
+ 1326              		.loc 1 401 0
+ 1327 0012 0A20     		movs	r0, #10
+ 1328 0014 FFF7FEFF 		bl	delay_ms
+ 402:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 403:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//设置网关(Gateway)的IP地址,Gateway_IP为4字节unsigned char数组,自己定义 
+ 404:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//使用网关可以使通信突破子网的局限，通过网关可以访问到其它子网或进
+ 405:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_nByte(GAR, Gateway_IP, 4);
+ 1329              		.loc 1 405 0
+ 1330 0018 0120     		movs	r0, #1
+ 1331 001a 2049     		ldr	r1, .L70
+ 1332 001c 0422     		movs	r2, #4
+ 1333 001e FFF7FEFF 		bl	Write_W5500_nByte
+ 406:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 407:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//设置子网掩码(MASK)值,SUB_MASK为4字节unsigned char数组,自己定义
+ 408:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//子网掩码用于子网运算
+ 409:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_nByte(SUBR, Sub_Mask, 4);
+ 1334              		.loc 1 409 0
+ 1335 0022 0520     		movs	r0, #5
+ 1336 0024 1E49     		ldr	r1, .L70+4
+ 1337 0026 0422     		movs	r2, #4
+ 1338 0028 FFF7FEFF 		bl	Write_W5500_nByte
+ 410:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	
+ 411:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//设置物理地址,PHY_ADDR为6字节unsigned char数组,自己定义,用于唯一标识网络�
+ 412:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//该地址值需要到IEEE申请，按照OUI的规定，前3个字节为厂商代码，后三个�
+ 413:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//如果自己定义物理地址，注意第一个字节必须为偶数
+ 414:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_nByte(SHAR, Phy_Addr, 6);
+ 1339              		.loc 1 414 0
+ 1340 002c 0920     		movs	r0, #9
+ 1341 002e 1D49     		ldr	r1, .L70+8
+ 1342 0030 0622     		movs	r2, #6
+ 1343 0032 FFF7FEFF 		bl	Write_W5500_nByte
+ 415:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 416:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//设置本机的IP地址,IP_ADDR为4字节unsigned char数组,自己定义
+ 417:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//注意，网关IP必须与本机IP属于同一个子网，否则本机将无法找到网关
+ 418:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_nByte(SIPR, IP_Addr, 4);
+ 1344              		.loc 1 418 0
+ 1345 0036 0F20     		movs	r0, #15
+ 1346 0038 1B49     		ldr	r1, .L70+12
+ 1347 003a 0422     		movs	r2, #4
+ 1348 003c FFF7FEFF 		bl	Write_W5500_nByte
+ 419:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	
+ 420:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//设置发送缓冲区和接收缓冲区的大小，参考W5500数据手册
+ 421:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	for(i=0;i<8;i++){
+ 1349              		.loc 1 421 0
+ 1350 0040 0023     		movs	r3, #0
+ 1351 0042 FB71     		strb	r3, [r7, #7]
+ 1352 0044 0EE0     		b	.L68
+ 1353              	.L69:
+ 422:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		Write_W5500_SOCK_1Byte(i, Sn_RXBUF_SIZE, 0x02); //Socket Rx memory size=2k
+ 1354              		.loc 1 422 0 discriminator 3
+ 1355 0046 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1356 0048 1846     		mov	r0, r3
+ 1357 004a 1E21     		movs	r1, #30
+ 1358 004c 0222     		movs	r2, #2
+ 1359 004e FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 423:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		Write_W5500_SOCK_1Byte(i, Sn_TXBUF_SIZE, 0x02); //Socket Tx mempry size=2k
+ 1360              		.loc 1 423 0 discriminator 3
+ 1361 0052 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1362 0054 1846     		mov	r0, r3
+ 1363 0056 1F21     		movs	r1, #31
+ 1364 0058 0222     		movs	r2, #2
+ 1365 005a FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 421:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		Write_W5500_SOCK_1Byte(i, Sn_RXBUF_SIZE, 0x02); //Socket Rx memory size=2k
+ 1366              		.loc 1 421 0 discriminator 3
+ 1367 005e FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1368 0060 0133     		adds	r3, r3, #1
+ 1369 0062 FB71     		strb	r3, [r7, #7]
+ 1370              	.L68:
+ 421:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		Write_W5500_SOCK_1Byte(i, Sn_RXBUF_SIZE, 0x02); //Socket Rx memory size=2k
+ 1371              		.loc 1 421 0 is_stmt 0 discriminator 1
+ 1372 0064 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1373 0066 072B     		cmp	r3, #7
+ 1374 0068 EDD9     		bls	.L69
+ 424:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	}
+ 425:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 426:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//设置重试时间，默认为2000(200ms) 
+ 427:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//每一单位数值为100微秒,初始化时值设为2000(0x07D0),等于200毫秒
+ 428:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_2Byte(RTR, 0x7d0);
+ 1375              		.loc 1 428 0 is_stmt 1
+ 1376 006a 1920     		movs	r0, #25
+ 1377 006c 4FF4FA61 		mov	r1, #2000
+ 1378 0070 FFF7FEFF 		bl	Write_W5500_2Byte
+ 429:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 430:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//设置重试次数，默认为8次 
+ 431:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//如果重发的次数超过设定值,则产生超时中断(相关的端口中断寄存器中的S
+ 432:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_1Byte(RCR,8);
+ 1379              		.loc 1 432 0
+ 1380 0074 1B20     		movs	r0, #27
+ 1381 0076 0821     		movs	r1, #8
+ 1382 0078 FFF7FEFF 		bl	Write_W5500_1Byte
+ 433:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 434:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//启动中断，参考W5500数据手册确定自己需要的中断类型
+ 435:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//IMR_CONFLICT是IP地址冲突异常中断,IMR_UNREACH是UDP通信时，地址无法到达的异�
+ 436:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//其它是Socket事件中断，根据需要添加
+ 437:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_1Byte(IMR, IM_IR7 | IM_IR6);
+ 1383              		.loc 1 437 0
+ 1384 007c 1620     		movs	r0, #22
+ 1385 007e C021     		movs	r1, #192
+ 1386 0080 FFF7FEFF 		bl	Write_W5500_1Byte
+ 438:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_1Byte(SIMR, S0_IMR); //这儿只打开了Socket0的中断
+ 1387              		.loc 1 438 0
+ 1388 0084 1820     		movs	r0, #24
+ 1389 0086 0121     		movs	r1, #1
+ 1390 0088 FFF7FEFF 		bl	Write_W5500_1Byte
+ 439:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_1Byte(0, Sn_IMR, IMR_SENDOK | IMR_TIMEOUT | IMR_RECV | IMR_DISCON | IMR_CON);
+ 1391              		.loc 1 439 0
+ 1392 008c 0020     		movs	r0, #0
+ 1393 008e 2C21     		movs	r1, #44
+ 1394 0090 1F22     		movs	r2, #31
+ 1395 0092 FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 440:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 1396              		.loc 1 440 0
+ 1397 0096 0837     		adds	r7, r7, #8
+ 1398              		.cfi_def_cfa_offset 8
+ 1399 0098 BD46     		mov	sp, r7
+ 1400              		.cfi_def_cfa_register 13
+ 1401              		@ sp needed
+ 1402 009a 80BD     		pop	{r7, pc}
+ 1403              	.L71:
+ 1404              		.align	2
+ 1405              	.L70:
+ 1406 009c 00000000 		.word	Gateway_IP
+ 1407 00a0 00000000 		.word	Sub_Mask
+ 1408 00a4 00000000 		.word	Phy_Addr
+ 1409 00a8 00000000 		.word	IP_Addr
+ 1410              		.cfi_endproc
+ 1411              	.LFE43:
+ 1413              		.section	.text.Detect_Gateway,"ax",%progbits
+ 1414              		.align	2
+ 1415              		.global	Detect_Gateway
+ 1416              		.thumb
+ 1417              		.thumb_func
+ 1419              	Detect_Gateway:
+ 1420              	.LFB44:
+ 441:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 442:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+ 443:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Detect_Gateway
+ 444:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 检查网关服务器
+ 445:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : 无
+ 446:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+ 447:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 成功返回TRUE(0xFF),失败返回FALSE(0x00)
+ 448:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 无
+ 449:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+ 450:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint8_t Detect_Gateway(void){
+ 1421              		.loc 1 450 0
+ 1422              		.cfi_startproc
+ 1423              		@ args = 0, pretend = 0, frame = 8
+ 1424              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1425 0000 80B5     		push	{r7, lr}
+ 1426              		.cfi_def_cfa_offset 8
+ 1427              		.cfi_offset 7, -8
+ 1428              		.cfi_offset 14, -4
+ 1429 0002 82B0     		sub	sp, sp, #8
+ 1430              		.cfi_def_cfa_offset 16
+ 1431 0004 00AF     		add	r7, sp, #0
+ 1432              		.cfi_def_cfa_register 7
+ 451:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	uint8_t ip_adde[4];
+ 452:/home/virusv/TDSAST_IOT/Driver/W5500.c ****     uint8_t j=0;
+ 1433              		.loc 1 452 0
+ 1434 0006 0023     		movs	r3, #0
+ 1435 0008 FB71     		strb	r3, [r7, #7]
+ 453:/home/virusv/TDSAST_IOT/Driver/W5500.c ****     /* 获得一个与当前ip不同网段的ip，其实就是全部字段+1 */
+ 454:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	ip_adde[0]=IP_Addr[0]+1;
+ 1436              		.loc 1 454 0
+ 1437 000a 334B     		ldr	r3, .L80
+ 1438 000c 1B78     		ldrb	r3, [r3]	@ zero_extendqisi2
+ 1439 000e 0133     		adds	r3, r3, #1
+ 1440 0010 DBB2     		uxtb	r3, r3
+ 1441 0012 3B70     		strb	r3, [r7]
+ 455:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	ip_adde[1]=IP_Addr[1]+1;
+ 1442              		.loc 1 455 0
+ 1443 0014 304B     		ldr	r3, .L80
+ 1444 0016 5B78     		ldrb	r3, [r3, #1]	@ zero_extendqisi2
+ 1445 0018 0133     		adds	r3, r3, #1
+ 1446 001a DBB2     		uxtb	r3, r3
+ 1447 001c 7B70     		strb	r3, [r7, #1]
+ 456:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	ip_adde[2]=IP_Addr[2]+1;
+ 1448              		.loc 1 456 0
+ 1449 001e 2E4B     		ldr	r3, .L80
+ 1450 0020 9B78     		ldrb	r3, [r3, #2]	@ zero_extendqisi2
+ 1451 0022 0133     		adds	r3, r3, #1
+ 1452 0024 DBB2     		uxtb	r3, r3
+ 1453 0026 BB70     		strb	r3, [r7, #2]
+ 457:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	ip_adde[3]=IP_Addr[3]+1;
+ 1454              		.loc 1 457 0
+ 1455 0028 2B4B     		ldr	r3, .L80
+ 1456 002a DB78     		ldrb	r3, [r3, #3]	@ zero_extendqisi2
+ 1457 002c 0133     		adds	r3, r3, #1
+ 1458 002e DBB2     		uxtb	r3, r3
+ 1459 0030 FB70     		strb	r3, [r7, #3]
+ 458:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 459:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//检查网关及获取网关的物理地址
+ 460:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_4Byte(0, Sn_DIPR, ip_adde);  //向目的地址寄存器写入与本机IP不同的
+ 1460              		.loc 1 460 0
+ 1461 0032 3B46     		mov	r3, r7
+ 1462 0034 0020     		movs	r0, #0
+ 1463 0036 0C21     		movs	r1, #12
+ 1464 0038 1A46     		mov	r2, r3
+ 1465 003a FFF7FEFF 		bl	Write_W5500_SOCK_4Byte
+ 461:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_1Byte(0, Sn_MR, MR_TCP);  //设置socket为TCP模式
+ 1466              		.loc 1 461 0
+ 1467 003e 0020     		movs	r0, #0
+ 1468 0040 0021     		movs	r1, #0
+ 1469 0042 0122     		movs	r2, #1
+ 1470 0044 FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 462:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_1Byte(0, Sn_CR, OPEN);  //打开Socket	
+ 1471              		.loc 1 462 0
+ 1472 0048 0020     		movs	r0, #0
+ 1473 004a 0121     		movs	r1, #1
+ 1474 004c 0122     		movs	r2, #1
+ 1475 004e FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 463:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	delay_ms(5);  //延时5ms
+ 1476              		.loc 1 463 0
+ 1477 0052 0520     		movs	r0, #5
+ 1478 0054 FFF7FEFF 		bl	delay_ms
+ 464:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	
+ 465:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	if(Read_W5500_SOCK_1Byte(0, Sn_SR) != SOCK_INIT){
+ 1479              		.loc 1 465 0
+ 1480 0058 0020     		movs	r0, #0
+ 1481 005a 0321     		movs	r1, #3
+ 1482 005c FFF7FEFF 		bl	Read_W5500_SOCK_1Byte
+ 1483 0060 0346     		mov	r3, r0
+ 1484 0062 132B     		cmp	r3, #19
+ 1485 0064 06D0     		beq	.L73
+ 466:/home/virusv/TDSAST_IOT/Driver/W5500.c ****         //如果socket打开失败
+ 467:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		Write_W5500_SOCK_1Byte(0, Sn_CR, CLOSE);  //打开不成功,关闭Socket
+ 1486              		.loc 1 467 0
+ 1487 0066 0020     		movs	r0, #0
+ 1488 0068 0121     		movs	r1, #1
+ 1489 006a 1022     		movs	r2, #16
+ 1490 006c FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 468:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		return 0;//返回FALSE(0x00)
+ 1491              		.loc 1 468 0
+ 1492 0070 0023     		movs	r3, #0
+ 1493 0072 2CE0     		b	.L79
+ 1494              	.L73:
+ 469:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	}
+ 470:/home/virusv/TDSAST_IOT/Driver/W5500.c ****     //设置Socket为Connect模式
+ 471:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_1Byte(0, Sn_CR, CONNECT);
+ 1495              		.loc 1 471 0
+ 1496 0074 0020     		movs	r0, #0
+ 1497 0076 0121     		movs	r1, #1
+ 1498 0078 0422     		movs	r2, #4
+ 1499 007a FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 1500              	.L78:
+ 472:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	do{
+ 473:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		j = Read_W5500_SOCK_1Byte(0, Sn_IR); //读取Socket0中断标志寄存器
+ 1501              		.loc 1 473 0
+ 1502 007e 0020     		movs	r0, #0
+ 1503 0080 0221     		movs	r1, #2
+ 1504 0082 FFF7FEFF 		bl	Read_W5500_SOCK_1Byte
+ 1505 0086 0346     		mov	r3, r0
+ 1506 0088 FB71     		strb	r3, [r7, #7]
+ 474:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		if(j != 0) Write_W5500_SOCK_1Byte(0, Sn_IR, j);
+ 1507              		.loc 1 474 0
+ 1508 008a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1509 008c 002B     		cmp	r3, #0
+ 1510 008e 05D0     		beq	.L75
+ 1511              		.loc 1 474 0 is_stmt 0 discriminator 1
+ 1512 0090 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1513 0092 0020     		movs	r0, #0
+ 1514 0094 0221     		movs	r1, #2
+ 1515 0096 1A46     		mov	r2, r3
+ 1516 0098 FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 1517              	.L75:
+ 475:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		delay_ms(5);//延时5ms 
+ 1518              		.loc 1 475 0 is_stmt 1
+ 1519 009c 0520     		movs	r0, #5
+ 1520 009e FFF7FEFF 		bl	delay_ms
+ 476:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		if((j & IR_TIMEOUT) == IR_TIMEOUT){ 
+ 1521              		.loc 1 476 0
+ 1522 00a2 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1523 00a4 03F00803 		and	r3, r3, #8
+ 1524 00a8 002B     		cmp	r3, #0
+ 1525 00aa 01D0     		beq	.L76
+ 477:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //连接超时
+ 478:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			return 0;	
+ 1526              		.loc 1 478 0
+ 1527 00ac 0023     		movs	r3, #0
+ 1528 00ae 0EE0     		b	.L79
+ 1529              	.L76:
+ 479:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		}else if(Read_W5500_SOCK_1Byte(0, Sn_DHAR) != 0xff){
+ 1530              		.loc 1 479 0
+ 1531 00b0 0020     		movs	r0, #0
+ 1532 00b2 0621     		movs	r1, #6
+ 1533 00b4 FFF7FEFF 		bl	Read_W5500_SOCK_1Byte
+ 1534 00b8 0346     		mov	r3, r0
+ 1535 00ba FF2B     		cmp	r3, #255
+ 1536 00bc 06D0     		beq	.L77
+ 480:/home/virusv/TDSAST_IOT/Driver/W5500.c ****             //获得到了网关的ip地址
+ 481:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			Write_W5500_SOCK_1Byte(0, Sn_CR, CLOSE);//关闭Socket
+ 1537              		.loc 1 481 0
+ 1538 00be 0020     		movs	r0, #0
+ 1539 00c0 0121     		movs	r1, #1
+ 1540 00c2 1022     		movs	r2, #16
+ 1541 00c4 FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 482:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 			return 1;							
+ 1542              		.loc 1 482 0
+ 1543 00c8 0123     		movs	r3, #1
+ 1544 00ca 00E0     		b	.L79
+ 1545              	.L77:
+ 483:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		}
+ 484:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	}while(1);
+ 1546              		.loc 1 484 0
+ 1547 00cc D7E7     		b	.L78
+ 1548              	.L79:
+ 485:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 1549              		.loc 1 485 0 discriminator 1
+ 1550 00ce 1846     		mov	r0, r3
+ 1551 00d0 0837     		adds	r7, r7, #8
+ 1552              		.cfi_def_cfa_offset 8
+ 1553 00d2 BD46     		mov	sp, r7
+ 1554              		.cfi_def_cfa_register 13
+ 1555              		@ sp needed
+ 1556 00d4 80BD     		pop	{r7, pc}
+ 1557              	.L81:
+ 1558 00d6 00BF     		.align	2
+ 1559              	.L80:
+ 1560 00d8 00000000 		.word	IP_Addr
+ 1561              		.cfi_endproc
+ 1562              	.LFE44:
+ 1564              		.section	.text.Socket_Connect,"ax",%progbits
+ 1565              		.align	2
+ 1566              		.global	Socket_Connect
+ 1567              		.thumb
+ 1568              		.thumb_func
+ 1570              	Socket_Connect:
+ 1571              	.LFB45:
+ 486:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+ 487:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Socket_Connect
+ 488:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 设置指定Socket(0~7)为客户端与远程服务器连接
+ 489:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : s:待设定的端口
+ 490:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+ 491:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 成功返回TRUE(0xFF),失败返回FALSE(0x00)
+ 492:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 当本机Socket工作在客户端模式时,引用该程序,与远程服务器建立�
+ 493:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *			如果启动连接后出现超时中断，则与服务器连接失败,需要重新调用该程�
+ 494:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *			该程序每调用一次,就与服务器产生一次连接
+ 495:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+ 496:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint8_t Socket_Connect(SOCKET s){
+ 1572              		.loc 1 496 0
+ 1573              		.cfi_startproc
+ 1574              		@ args = 0, pretend = 0, frame = 8
+ 1575              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1576 0000 80B5     		push	{r7, lr}
+ 1577              		.cfi_def_cfa_offset 8
+ 1578              		.cfi_offset 7, -8
+ 1579              		.cfi_offset 14, -4
+ 1580 0002 82B0     		sub	sp, sp, #8
+ 1581              		.cfi_def_cfa_offset 16
+ 1582 0004 00AF     		add	r7, sp, #0
+ 1583              		.cfi_def_cfa_register 7
+ 1584 0006 0346     		mov	r3, r0
+ 1585 0008 FB71     		strb	r3, [r7, #7]
+ 497:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_1Byte(s, Sn_MR, MR_TCP);//设置socket为TCP模式
+ 1586              		.loc 1 497 0
+ 1587 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1588 000c 1846     		mov	r0, r3
+ 1589 000e 0021     		movs	r1, #0
+ 1590 0010 0122     		movs	r2, #1
+ 1591 0012 FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 498:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_1Byte(s, Sn_CR, OPEN);//打开Socket
+ 1592              		.loc 1 498 0
+ 1593 0016 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1594 0018 1846     		mov	r0, r3
+ 1595 001a 0121     		movs	r1, #1
+ 1596 001c 0122     		movs	r2, #1
+ 1597 001e FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 499:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	delay_ms(5);//延时5ms
+ 1598              		.loc 1 499 0
+ 1599 0022 0520     		movs	r0, #5
+ 1600 0024 FFF7FEFF 		bl	delay_ms
+ 500:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	if(Read_W5500_SOCK_1Byte(s, Sn_SR)!=SOCK_INIT){
+ 1601              		.loc 1 500 0
+ 1602 0028 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1603 002a 1846     		mov	r0, r3
+ 1604 002c 0321     		movs	r1, #3
+ 1605 002e FFF7FEFF 		bl	Read_W5500_SOCK_1Byte
+ 1606 0032 0346     		mov	r3, r0
+ 1607 0034 132B     		cmp	r3, #19
+ 1608 0036 07D0     		beq	.L83
+ 501:/home/virusv/TDSAST_IOT/Driver/W5500.c ****         //如果socket打开失败
+ 502:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		Write_W5500_SOCK_1Byte(s, Sn_CR, CLOSE);//打开不成功,关闭Socket
+ 1609              		.loc 1 502 0
+ 1610 0038 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1611 003a 1846     		mov	r0, r3
+ 1612 003c 0121     		movs	r1, #1
+ 1613 003e 1022     		movs	r2, #16
+ 1614 0040 FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 503:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		return 0;//返回FALSE(0x00)
+ 1615              		.loc 1 503 0
+ 1616 0044 0023     		movs	r3, #0
+ 1617 0046 06E0     		b	.L84
+ 1618              	.L83:
+ 504:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	}
+ 505:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_1Byte(s, Sn_CR, CONNECT);//设置Socket为Connect模式
+ 1619              		.loc 1 505 0
+ 1620 0048 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1621 004a 1846     		mov	r0, r3
+ 1622 004c 0121     		movs	r1, #1
+ 1623 004e 0422     		movs	r2, #4
+ 1624 0050 FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 506:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	return 1;//返回TRUE,设置成功
+ 1625              		.loc 1 506 0
+ 1626 0054 0123     		movs	r3, #1
+ 1627              	.L84:
+ 507:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 1628              		.loc 1 507 0
+ 1629 0056 1846     		mov	r0, r3
+ 1630 0058 0837     		adds	r7, r7, #8
+ 1631              		.cfi_def_cfa_offset 8
+ 1632 005a BD46     		mov	sp, r7
+ 1633              		.cfi_def_cfa_register 13
+ 1634              		@ sp needed
+ 1635 005c 80BD     		pop	{r7, pc}
+ 1636              		.cfi_endproc
+ 1637              	.LFE45:
+ 1639 005e 00BF     		.section	.text.Socket_Listen,"ax",%progbits
+ 1640              		.align	2
+ 1641              		.global	Socket_Listen
+ 1642              		.thumb
+ 1643              		.thumb_func
+ 1645              	Socket_Listen:
+ 1646              	.LFB46:
+ 508:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 509:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+ 510:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Socket_Listen
+ 511:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 设置指定Socket(0~7)作为服务器等待远程主机的连接
+ 512:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : s:待设定的端口
+ 513:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+ 514:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 成功返回TRUE(0xFF),失败返回FALSE(0x00)
+ 515:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 当本机Socket工作在服务器模式时,引用该程序,等等远程主机的连�
+ 516:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *			该程序只调用一次,就使W5500设置为服务器模式
+ 517:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+ 518:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint8_t Socket_Listen(SOCKET s){
+ 1647              		.loc 1 518 0
+ 1648              		.cfi_startproc
+ 1649              		@ args = 0, pretend = 0, frame = 8
+ 1650              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1651 0000 80B5     		push	{r7, lr}
+ 1652              		.cfi_def_cfa_offset 8
+ 1653              		.cfi_offset 7, -8
+ 1654              		.cfi_offset 14, -4
+ 1655 0002 82B0     		sub	sp, sp, #8
+ 1656              		.cfi_def_cfa_offset 16
+ 1657 0004 00AF     		add	r7, sp, #0
+ 1658              		.cfi_def_cfa_register 7
+ 1659 0006 0346     		mov	r3, r0
+ 1660 0008 FB71     		strb	r3, [r7, #7]
+ 519:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_1Byte(s, Sn_MR, MR_TCP);//设置socket为TCP模式 
+ 1661              		.loc 1 519 0
+ 1662 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1663 000c 1846     		mov	r0, r3
+ 1664 000e 0021     		movs	r1, #0
+ 1665 0010 0122     		movs	r2, #1
+ 1666 0012 FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 520:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_1Byte(s, Sn_CR, OPEN);//打开Socket	
+ 1667              		.loc 1 520 0
+ 1668 0016 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1669 0018 1846     		mov	r0, r3
+ 1670 001a 0121     		movs	r1, #1
+ 1671 001c 0122     		movs	r2, #1
+ 1672 001e FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 521:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	delay_ms(5);//延时5ms
+ 1673              		.loc 1 521 0
+ 1674 0022 0520     		movs	r0, #5
+ 1675 0024 FFF7FEFF 		bl	delay_ms
+ 522:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	if(Read_W5500_SOCK_1Byte(s, Sn_SR)!=SOCK_INIT){
+ 1676              		.loc 1 522 0
+ 1677 0028 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1678 002a 1846     		mov	r0, r3
+ 1679 002c 0321     		movs	r1, #3
+ 1680 002e FFF7FEFF 		bl	Read_W5500_SOCK_1Byte
+ 1681 0032 0346     		mov	r3, r0
+ 1682 0034 132B     		cmp	r3, #19
+ 1683 0036 07D0     		beq	.L86
+ 523:/home/virusv/TDSAST_IOT/Driver/W5500.c ****         //如果socket打开失败
+ 524:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		Write_W5500_SOCK_1Byte(s, Sn_CR, CLOSE);//打开不成功,关闭Socket
+ 1684              		.loc 1 524 0
+ 1685 0038 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1686 003a 1846     		mov	r0, r3
+ 1687 003c 0121     		movs	r1, #1
+ 1688 003e 1022     		movs	r2, #16
+ 1689 0040 FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 525:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		return 0;//返回FALSE(0x00)
+ 1690              		.loc 1 525 0
+ 1691 0044 0023     		movs	r3, #0
+ 1692 0046 19E0     		b	.L87
+ 1693              	.L86:
+ 526:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	}	
+ 527:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_1Byte(s, Sn_CR, LISTEN);//设置Socket为侦听模式	
+ 1694              		.loc 1 527 0
+ 1695 0048 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1696 004a 1846     		mov	r0, r3
+ 1697 004c 0121     		movs	r1, #1
+ 1698 004e 0222     		movs	r2, #2
+ 1699 0050 FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 528:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	delay_ms(5);//延时5ms 
+ 1700              		.loc 1 528 0
+ 1701 0054 0520     		movs	r0, #5
+ 1702 0056 FFF7FEFF 		bl	delay_ms
+ 529:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	if(Read_W5500_SOCK_1Byte(s, Sn_SR) != SOCK_LISTEN){
+ 1703              		.loc 1 529 0
+ 1704 005a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1705 005c 1846     		mov	r0, r3
+ 1706 005e 0321     		movs	r1, #3
+ 1707 0060 FFF7FEFF 		bl	Read_W5500_SOCK_1Byte
+ 1708 0064 0346     		mov	r3, r0
+ 1709 0066 142B     		cmp	r3, #20
+ 1710 0068 07D0     		beq	.L88
+ 530:/home/virusv/TDSAST_IOT/Driver/W5500.c ****         //如果socket设置失败
+ 531:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		Write_W5500_SOCK_1Byte(s, Sn_CR, CLOSE);//设置不成功,关闭Socket
+ 1711              		.loc 1 531 0
+ 1712 006a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1713 006c 1846     		mov	r0, r3
+ 1714 006e 0121     		movs	r1, #1
+ 1715 0070 1022     		movs	r2, #16
+ 1716 0072 FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 532:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		return 0;//返回FALSE(0x00)
+ 1717              		.loc 1 532 0
+ 1718 0076 0023     		movs	r3, #0
+ 1719 0078 00E0     		b	.L87
+ 1720              	.L88:
+ 533:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	}
+ 534:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 535:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	return 1;
+ 1721              		.loc 1 535 0
+ 1722 007a 0123     		movs	r3, #1
+ 1723              	.L87:
+ 536:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 537:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//至此完成了Socket的打开和设置侦听工作,至于远程客户端是否与它建立连�
+ 538:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//以判断Socket的连接是否成功。参考W5500数据手册的Socket中断状态
+ 539:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//在服务器侦听模式不需要设置目的IP和目的端口号
+ 540:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }
+ 1724              		.loc 1 540 0
+ 1725 007c 1846     		mov	r0, r3
+ 1726 007e 0837     		adds	r7, r7, #8
+ 1727              		.cfi_def_cfa_offset 8
+ 1728 0080 BD46     		mov	sp, r7
+ 1729              		.cfi_def_cfa_register 13
+ 1730              		@ sp needed
+ 1731 0082 80BD     		pop	{r7, pc}
+ 1732              		.cfi_endproc
+ 1733              	.LFE46:
+ 1735              		.section	.text.Socket_UDP,"ax",%progbits
+ 1736              		.align	2
+ 1737              		.global	Socket_UDP
+ 1738              		.thumb
+ 1739              		.thumb_func
+ 1741              	Socket_UDP:
+ 1742              	.LFB47:
+ 541:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 542:/home/virusv/TDSAST_IOT/Driver/W5500.c **** /*******************************************************************************
+ 543:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 函数名  : Socket_UDP
+ 544:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 描述    : 设置指定Socket(0~7)为UDP模式
+ 545:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输入    : s:待设定的端口
+ 546:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 输出    : 无
+ 547:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 返回值  : 成功返回TRUE(0xFF),失败返回FALSE(0x00)
+ 548:/home/virusv/TDSAST_IOT/Driver/W5500.c **** * 说明    : 如果Socket工作在UDP模式,引用该程序,在UDP模式下,Socket通信不需要�
+ 549:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *			该程序只调用一次，就使W5500设置为UDP模式
+ 550:/home/virusv/TDSAST_IOT/Driver/W5500.c **** *******************************************************************************/
+ 551:/home/virusv/TDSAST_IOT/Driver/W5500.c **** uint8_t Socket_UDP(SOCKET s){
+ 1743              		.loc 1 551 0
+ 1744              		.cfi_startproc
+ 1745              		@ args = 0, pretend = 0, frame = 8
+ 1746              		@ frame_needed = 1, uses_anonymous_args = 0
+ 1747 0000 80B5     		push	{r7, lr}
+ 1748              		.cfi_def_cfa_offset 8
+ 1749              		.cfi_offset 7, -8
+ 1750              		.cfi_offset 14, -4
+ 1751 0002 82B0     		sub	sp, sp, #8
+ 1752              		.cfi_def_cfa_offset 16
+ 1753 0004 00AF     		add	r7, sp, #0
+ 1754              		.cfi_def_cfa_register 7
+ 1755 0006 0346     		mov	r3, r0
+ 1756 0008 FB71     		strb	r3, [r7, #7]
+ 552:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_1Byte(s, Sn_MR, MR_UDP);//设置Socket为UDP模式*/
+ 1757              		.loc 1 552 0
+ 1758 000a FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1759 000c 1846     		mov	r0, r3
+ 1760 000e 0021     		movs	r1, #0
+ 1761 0010 0222     		movs	r2, #2
+ 1762 0012 FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 553:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	Write_W5500_SOCK_1Byte(s, Sn_CR, OPEN);//打开Socket*/
+ 1763              		.loc 1 553 0
+ 1764 0016 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1765 0018 1846     		mov	r0, r3
+ 1766 001a 0121     		movs	r1, #1
+ 1767 001c 0122     		movs	r2, #1
+ 1768 001e FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 554:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	delay_ms(5);//延时5ms
+ 1769              		.loc 1 554 0
+ 1770 0022 0520     		movs	r0, #5
+ 1771 0024 FFF7FEFF 		bl	delay_ms
+ 555:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	if(Read_W5500_SOCK_1Byte(s, Sn_SR)!=SOCK_UDP){
+ 1772              		.loc 1 555 0
+ 1773 0028 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1774 002a 1846     		mov	r0, r3
+ 1775 002c 0321     		movs	r1, #3
+ 1776 002e FFF7FEFF 		bl	Read_W5500_SOCK_1Byte
+ 1777 0032 0346     		mov	r3, r0
+ 1778 0034 222B     		cmp	r3, #34
+ 1779 0036 07D0     		beq	.L90
+ 556:/home/virusv/TDSAST_IOT/Driver/W5500.c ****         //如果Socket打开失败
+ 557:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		Write_W5500_SOCK_1Byte(s, Sn_CR, CLOSE);//打开不成功,关闭Socket
+ 1780              		.loc 1 557 0
+ 1781 0038 FB79     		ldrb	r3, [r7, #7]	@ zero_extendqisi2
+ 1782 003a 1846     		mov	r0, r3
+ 1783 003c 0121     		movs	r1, #1
+ 1784 003e 1022     		movs	r2, #16
+ 1785 0040 FFF7FEFF 		bl	Write_W5500_SOCK_1Byte
+ 558:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		return 0;//返回FALSE(0x00)
+ 1786              		.loc 1 558 0
+ 1787 0044 0023     		movs	r3, #0
+ 1788 0046 00E0     		b	.L91
+ 1789              	.L90:
+ 559:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	}
+ 560:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	else
+ 561:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 		return 1;
+ 1790              		.loc 1 561 0
+ 1791 0048 0123     		movs	r3, #1
+ 1792              	.L91:
+ 562:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 
+ 563:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//至此完成了Socket的打开和UDP模式设置,在这种模式下它不需要与远程主机�
+ 564:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//因为Socket不需要建立连接,所以在发送数据前都可以设置目的主机IP和目的
+ 565:/home/virusv/TDSAST_IOT/Driver/W5500.c **** 	//如果目的主机IP和目的Socket的端口号是固定的,在运行过程中没有改变,那�
+ 566:/home/virusv/TDSAST_IOT/Driver/W5500.c **** }...
+ 1793              		.loc 1 566 0
+ 1794 004a 1846     		mov	r0, r3
+ 1795 004c 0837     		adds	r7, r7, #8
+ 1796              		.cfi_def_cfa_offset 8
+ 1797 004e BD46     		mov	sp, r7
+ 1798              		.cfi_def_cfa_register 13
+ 1799              		@ sp needed
+ 1800 0050 80BD     		pop	{r7, pc}
+ 1801              		.cfi_endproc
+ 1802              	.LFE47:
+ 1804 0052 00BF     		.text
+ 1805              	.Letext0:
+ 1806              		.file 2 "/usr/include/newlib/machine/_default_types.h"
+ 1807              		.file 3 "/usr/include/newlib/sys/_stdint.h"
+ 1808              		.file 4 "/home/virusv/TDSAST_IOT/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h"
+ 1809              		.file 5 "/home/virusv/TDSAST_IOT/Driver/W5500.h"
+ 1810              		.file 6 "/home/virusv/TDSAST_IOT/CMSIS/CM3/CoreSupport/core_cm3.h"
+DEFINED SYMBOLS
+                            *ABS*:0000000000000000 W5500.c
+                            *COM*:0000000000000004 Gateway_IP
+                            *COM*:0000000000000004 Sub_Mask
+                            *COM*:0000000000000006 Phy_Addr
+                            *COM*:0000000000000004 IP_Addr
+                            *COM*:0000000000000004 UDP_DIPR
+                            *COM*:0000000000000002 UDP_DPORT
+                            *COM*:0000000000000800 Rx_Buffer
+                            *COM*:0000000000000800 Tx_Buffer
+                            *COM*:0000000000000001 W5500_Interrupt
+     /tmp/ccl668hg.s:28     .text.SPI1_Send_Byte:0000000000000000 $t
+     /tmp/ccl668hg.s:33     .text.SPI1_Send_Byte:0000000000000000 SPI1_Send_Byte
+     /tmp/ccl668hg.s:76     .text.SPI1_Send_Byte:000000000000002c $d
+     /tmp/ccl668hg.s:81     .text.SPI1_Send_Short:0000000000000000 $t
+     /tmp/ccl668hg.s:86     .text.SPI1_Send_Short:0000000000000000 SPI1_Send_Short
+     /tmp/ccl668hg.s:125    .text.Write_W5500_1Byte:0000000000000000 $t
+     /tmp/ccl668hg.s:130    .text.Write_W5500_1Byte:0000000000000000 Write_W5500_1Byte
+     /tmp/ccl668hg.s:178    .text.Write_W5500_1Byte:000000000000003c $d
+     /tmp/ccl668hg.s:183    .text.Write_W5500_2Byte:0000000000000000 $t
+     /tmp/ccl668hg.s:188    .text.Write_W5500_2Byte:0000000000000000 Write_W5500_2Byte
+     /tmp/ccl668hg.s:236    .text.Write_W5500_2Byte:000000000000003c $d
+     /tmp/ccl668hg.s:241    .text.Write_W5500_nByte:0000000000000000 $t
+     /tmp/ccl668hg.s:246    .text.Write_W5500_nByte:0000000000000000 Write_W5500_nByte
+     /tmp/ccl668hg.s:312    .text.Write_W5500_nByte:0000000000000058 $d
+     /tmp/ccl668hg.s:317    .text.Write_W5500_SOCK_1Byte:0000000000000000 $t
+     /tmp/ccl668hg.s:322    .text.Write_W5500_SOCK_1Byte:0000000000000000 Write_W5500_SOCK_1Byte
+     /tmp/ccl668hg.s:380    .text.Write_W5500_SOCK_1Byte:0000000000000054 $d
+     /tmp/ccl668hg.s:385    .text.Write_W5500_SOCK_2Byte:0000000000000000 $t
+     /tmp/ccl668hg.s:390    .text.Write_W5500_SOCK_2Byte:0000000000000000 Write_W5500_SOCK_2Byte
+     /tmp/ccl668hg.s:448    .text.Write_W5500_SOCK_2Byte:0000000000000054 $d
+     /tmp/ccl668hg.s:453    .text.Write_W5500_SOCK_4Byte:0000000000000000 $t
+     /tmp/ccl668hg.s:458    .text.Write_W5500_SOCK_4Byte:0000000000000000 Write_W5500_SOCK_4Byte
+     /tmp/ccl668hg.s:539    .text.Write_W5500_SOCK_4Byte:0000000000000080 $d
+     /tmp/ccl668hg.s:544    .text.Read_W5500_1Byte:0000000000000000 $t
+     /tmp/ccl668hg.s:549    .text.Read_W5500_1Byte:0000000000000000 Read_W5500_1Byte
+     /tmp/ccl668hg.s:606    .text.Read_W5500_1Byte:000000000000004c $d
+     /tmp/ccl668hg.s:612    .text.Read_W5500_SOCK_1Byte:0000000000000000 $t
+     /tmp/ccl668hg.s:617    .text.Read_W5500_SOCK_1Byte:0000000000000000 Read_W5500_SOCK_1Byte
+     /tmp/ccl668hg.s:682    .text.Read_W5500_SOCK_1Byte:000000000000005c $d
+     /tmp/ccl668hg.s:688    .text.Read_W5500_SOCK_2Byte:0000000000000000 $t
+     /tmp/ccl668hg.s:693    .text.Read_W5500_SOCK_2Byte:0000000000000000 Read_W5500_SOCK_2Byte
+     /tmp/ccl668hg.s:774    .text.Read_W5500_SOCK_2Byte:000000000000007c $d
+     /tmp/ccl668hg.s:780    .text.Read_SOCK_Data_Buffer:0000000000000000 $t
+     /tmp/ccl668hg.s:785    .text.Read_SOCK_Data_Buffer:0000000000000000 Read_SOCK_Data_Buffer
+     /tmp/ccl668hg.s:1019   .text.Read_SOCK_Data_Buffer:0000000000000178 $d
+     /tmp/ccl668hg.s:1025   .text.Write_SOCK_Data_Buffer:0000000000000000 $t
+     /tmp/ccl668hg.s:1030   .text.Write_SOCK_Data_Buffer:0000000000000000 Write_SOCK_Data_Buffer
+     /tmp/ccl668hg.s:1242   .text.Write_SOCK_Data_Buffer:0000000000000164 $d
+     /tmp/ccl668hg.s:1249   .text.W5500_Hardware_Reset:0000000000000000 $t
+     /tmp/ccl668hg.s:1254   .text.W5500_Hardware_Reset:0000000000000000 W5500_Hardware_Reset
+     /tmp/ccl668hg.s:1295   .text.W5500_Hardware_Reset:0000000000000034 $d
+     /tmp/ccl668hg.s:1300   .text.W5500_Init:0000000000000000 $t
+     /tmp/ccl668hg.s:1305   .text.W5500_Init:0000000000000000 W5500_Init
+     /tmp/ccl668hg.s:1406   .text.W5500_Init:000000000000009c $d
+     /tmp/ccl668hg.s:1414   .text.Detect_Gateway:0000000000000000 $t
+     /tmp/ccl668hg.s:1419   .text.Detect_Gateway:0000000000000000 Detect_Gateway
+     /tmp/ccl668hg.s:1560   .text.Detect_Gateway:00000000000000d8 $d
+     /tmp/ccl668hg.s:1565   .text.Socket_Connect:0000000000000000 $t
+     /tmp/ccl668hg.s:1570   .text.Socket_Connect:0000000000000000 Socket_Connect
+     /tmp/ccl668hg.s:1640   .text.Socket_Listen:0000000000000000 $t
+     /tmp/ccl668hg.s:1645   .text.Socket_Listen:0000000000000000 Socket_Listen
+     /tmp/ccl668hg.s:1736   .text.Socket_UDP:0000000000000000 $t
+     /tmp/ccl668hg.s:1741   .text.Socket_UDP:0000000000000000 Socket_UDP
+                     .debug_frame:0000000000000010 $d
+
+UNDEFINED SYMBOLS
+SPI_I2S_SendData
+SPI_I2S_GetFlagStatus
+GPIO_ResetBits
+GPIO_SetBits
+SPI_I2S_ReceiveData
+delay_ms
