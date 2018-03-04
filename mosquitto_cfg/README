@@ -1,6 +1,0 @@
-所有匿名设备只可以订阅开锁
-发送开锁信息时，需要用extdoor这个用户名
-extdoor:extdoor12345
-
-Run Mosquitto
-mosquitto -c /root/mosquitto_cfg/mosquitto.cfg -d
