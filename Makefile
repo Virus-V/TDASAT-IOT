@@ -20,14 +20,15 @@ include $(ROOT_DIR)/Internet/internet.mk
 include $(ROOT_DIR)/libemqtt/libemqtt.mk
 include $(ROOT_DIR)/Libraries/libraries.mk
 include $(ROOT_DIR)/User/user.mk
+include $(ROOT_DIR)/OS/rtos.mk
 
 ALL_SRC_FILE = $(CMSIS_SRC_FILES) $(DRIVER_SRC_FILES) $(ETHERNET_SRC_FILES) \
 				$(INTERNET_SRC_FILES) $(LIBRARIES_SRC_FILES) $(USER_SRC_FILES) \
-				$(LIBEMQTT_SRC_FILES)
+				$(LIBEMQTT_SRC_FILES) $(RTOS_SRC_FILES)
 		
 ALL_INC_PATH = $(CMSIS_INC_DIRS) $(DRIVER_INC_DIRS) $(ETHERNET_INC_DIRS) \
 				$(INTERNET_INC_DIRS) $(LIBRARIES_INC_DIRS) $(USER_INC_DIRS) \
-				$(LIBEMQTT_INC_DIRS)
+				$(LIBEMQTT_INC_DIRS) $(RTOS_INC_DIRS)
 		
 ALL_LIB_PATH = $(CMSIS_LIB_DIRS) 
 ALL_OBJ_FILE = $(subst .c,.o,$(ALL_SRC_FILE)) $(subst .s,.o,$(STARTUP_FILE))

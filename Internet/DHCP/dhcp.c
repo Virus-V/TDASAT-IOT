@@ -22,8 +22,6 @@ Function declaration Part
 */
 void send_DHCP_DISCOVER(void);
 void send_DHCP_REQUEST(uint8_t *Cip, uint8_t *d_addr);
-void send_DHCP_REREQUEST(void);
-void send_DHCP_RELEASE(void);
 void send_DHCP_DECLINE(void);
 
 uint8_t check_DHCP_state(void);
@@ -31,7 +29,6 @@ int8_t check_DHCP_leasedIP(void);
 
 uint8_t check_DHCP_timeout(void);
 void reset_DHCP_timeout(void);
-void DHCP_timerHandler(void);
 
 int8_t parseDHCPMSG(uint16_t length);
 

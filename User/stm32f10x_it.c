@@ -23,6 +23,8 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x_it.h"
+#include "DHCP/dhcp.h"
+#include "DNS/dns.h"
 /** @addtogroup STM32F10x_StdPeriph_Template
   * @{
   */
@@ -31,7 +33,6 @@
 /* Private define ------------------------------------------------------------*/
 /* Private macro -------------------------------------------------------------*/
 /* Private variables ---------------------------------------------------------*/
-extern __O uint32_t Delay;
 /* Private function prototypes -----------------------------------------------*/
 /* Private functions ---------------------------------------------------------*/
 
@@ -99,42 +100,42 @@ void UsageFault_Handler(void)
   {
   }
 }
-
-/**
-  * @brief  This function handles SVCall exception.
-  * @param  None
-  * @retval None
-  */
-void SVC_Handler(void)
-{
-}
-
-/**
-  * @brief  This function handles Debug Monitor exception.
-  * @param  None
-  * @retval None
-  */
-void DebugMon_Handler(void)
-{
-}
-
-/**
-  * @brief  This function handles PendSVC exception.
-  * @param  None
-  * @retval None
-  */
-void PendSV_Handler(void)
-{
-}
-
-/**
-  * @brief  This function handles SysTick Handler.
-  * @param  None
-  * @retval None
-  */
-void SysTick_Handler(void)
-{
-}
+//
+///**
+//  * @brief  This function handles SVCall exception.
+//  * @param  None
+//  * @retval None
+//  */
+//void SVC_Handler(void)
+//{
+//}
+//
+///**
+//  * @brief  This function handles Debug Monitor exception.
+//  * @param  None
+//  * @retval None
+//  */
+//void DebugMon_Handler(void)
+//{
+//}
+//
+///**
+//  * @brief  This function handles PendSVC exception.
+//  * @param  None
+//  * @retval None
+//  */
+//void PendSV_Handler(void)
+//{
+//}
+//
+///**
+//  * @brief  This function handles SysTick Handler.
+//  * @param  None
+//  * @retval None
+//  */
+//void SysTick_Handler(void)
+//{
+//}
 
 /******************************************************************************/
 /*                 STM32F10x Peripherals Interrupt Handlers                   */
@@ -156,9 +157,16 @@ void DMA1_Channel3_IRQHandler(void)
 /* 定时器2的中断函数 */
 void TIM2_IRQHandler(void){
   extern __IO uint32_t Timer2_Counter,Interval_counter;
-
+  static uint32_t timeSecond = 0;
   if(TIM_GetITStatus(TIM2, TIM_IT_Update) == SET){
     TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
+    // 调度dhcp超时函数
+    if(++timeSecond > 999){
+    	timeSecond = 0;
+    	DHCP_timerHandler();
+    	DNS_timerHandler();
+    }
+
     Timer2_Counter++;
     Interval_counter++;
   }

@@ -36,4 +36,6 @@ void Init_led_lock(void);
 void Init_tim2_ms_base(void);
 // 独立看门狗
 void Init_iwdg_reset(void);
+// 实时时钟初始化
+void Init_RTC(void);
 #endif

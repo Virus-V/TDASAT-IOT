@@ -121,13 +121,13 @@ void Init_spi1_w5500(void){
 void Init_tim2_ms_base(void){
     TIM_TimeBaseInitTypeDef TIM_TimeBaseStructure;
     NVIC_InitTypeDef NVIC_InitStructure;
-    /* 初始化TIM,优先级最低 */
+    /* 初始化TIM */
     NVIC_InitStructure.NVIC_IRQChannel = TIM2_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 0;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 3;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority = 9;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority = 0;
     NVIC_InitStructure.NVIC_IRQChannelCmd = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
-    
+
     //使能Timer2时钟
 	RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
 	TIM_TimeBaseStructure.TIM_Period = 9;						//设置在下一个更新事件装入活动的自动重装载寄存器周期的值(计数到10为1ms)
@@ -157,10 +157,29 @@ void Init_iwdg_reset(void){
      */
     IWDG_SetPrescaler(IWDG_Prescaler_256);
     // 0x30D 等于 4.9984 秒，约为5秒
-    IWDG_SetReload(0x30D);
+    IWDG_SetReload(0xFFF);
     // 重置计数器
     IWDG_ReloadCounter();
     // 启动看门狗
     IWDG_Enable();
-    
+}
+
+/**
+ * 实时时钟初始化
+ */
+void Init_RTC(void){
+	// 首先打开BKP和PWR
+	RCC_APB1PeriphClockCmd(RCC_APB1Periph_BKP|RCC_APB1Periph_PWR, ENABLE);
+	// 使能对BKP的访问
+	PWR_BackupAccessCmd(ENABLE);
+	BKP_DeInit();
+	// 打开LSE时钟
+	RCC_LSEConfig(RCC_LSE_ON);
+	while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET);
+	// 配置RTC时钟
+	RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
+	// 使能RTC
+	RCC_RTCCLKCmd(ENABLE);
+	RTC_WaitForLastTask();
+	RTC_SetPrescaler(32767);	// 设置预分频值,时钟LSE:32768Hz,1秒
 }
