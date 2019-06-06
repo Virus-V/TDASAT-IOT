@@ -163,23 +163,3 @@ void Init_iwdg_reset(void){
     // 启动看门狗
     IWDG_Enable();
 }
-
-/**
- * 实时时钟初始化
- */
-void Init_RTC(void){
-	// 首先打开BKP和PWR
-	RCC_APB1PeriphClockCmd(RCC_APB1Periph_BKP|RCC_APB1Periph_PWR, ENABLE);
-	// 使能对BKP的访问
-	PWR_BackupAccessCmd(ENABLE);
-	BKP_DeInit();
-	// 打开LSE时钟
-	RCC_LSEConfig(RCC_LSE_ON);
-	while(RCC_GetFlagStatus(RCC_FLAG_LSERDY) == RESET);
-	// 配置RTC时钟
-	RCC_RTCCLKConfig(RCC_RTCCLKSource_LSE);
-	// 使能RTC
-	RCC_RTCCLKCmd(ENABLE);
-	RTC_WaitForLastTask();
-	RTC_SetPrescaler(32767);	// 设置预分频值,时钟LSE:32768Hz,1秒
-}

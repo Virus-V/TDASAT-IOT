@@ -40,7 +40,6 @@
 #include "socket.h"
 #include "DNS/dns.h"
 #include "DHCP/dhcp.h"
-#include "NTP/ntp.h"
 #include "libemqtt.h"
 
 #define SOCK_MQTT       0
@@ -52,8 +51,6 @@ __IO uint32_t Interval_counter = 0; // MQTT发送心跳包的延时
 __IO uint32_t Timer2_Counter = 0; //Timer2定时器计数变量(ms)
 #define DATA_BUF_SIZE   2048
 
-#define NTP_HOST "ntp.api.bz"
-#define NTP_PORT 123
 /* Broker服务器信息 */
 #define MQTT_BROKER_HOST "www.wanw.xin"
 const uint8_t MQTT_BROKER_IP[4] = {};	// 手动指定ip
@@ -66,6 +63,8 @@ const uint8_t MQTT_BROKER_IP[4] = {};	// 手动指定ip
 #define LOCAL_PORT 1124
 
 #define MQTT_RCVBUFSIZE 1024
+// 强制锁定超时时间
+#define FORCE_LOCK_TIMEOUT	10*60*1000	// 10分钟
 
 volatile char *infoMsg = NULL;	// 显示信息,不优化
 uint8_t const memsize[2][8] = {{2,2,2,2,2,2,2,2},{2,2,2,2,2,2,2,2}};
@@ -84,14 +83,12 @@ wiz_NetInfo gWIZNETINFO = { {0x00, 0x08, 0xdc,0x00, 0xab, 0xcd}, //MAC
 							NETINFO_DHCP }; // or NETINFO_STATIC or NETINFO_DHCP
 /* 备用DNS服务器 */
 uint8_t secondary_dns_server[4] = {8, 8, 4, 4}; // Google public DNS Server (Secondary)
-//uint8_t ip_from_dns[4]; // 从dns获得的ip地址
 /* 获得IP标志位 */
-volatile uint8_t ip_configed = 0,lock_status = 0;
+volatile uint8_t ip_configed = 0,lock_status = 0,force_lock=0;
 /* MQTT代理对象 */
 mqtt_broker_handle_t broker;
 // Mutex
 SemaphoreHandle_t lockNotify;	// 开锁通知 Binary
-SemaphoreHandle_t w5500Data;	// W5500设备数据互斥锁
 SemaphoreHandle_t socketLock;	// socket互斥锁
 // Tasks
 TaskHandle_t dhcpClientTask;
@@ -188,7 +185,6 @@ static void vTask_Main(void * pvParameters);
 static void vTask_Display(void * pvParameters);
 static void vTask_DHCP(void * pvParameters);
 static void vTask_LockOn(void * pvParameters);
-//static void vTask_Main(void * pvParameters);
 
 int main(void){
     uint8_t tmp = 0;
@@ -204,7 +200,8 @@ int main(void){
     // 初始化独立看门狗
     Init_iwdg_reset();
     // 初始化RTC
-    Init_RTC();
+	//Init_RTC();
+
     /* 发送初始化指令序列 */
     Driver_OLED_Send_START(OLED_COMMAND);
 	Driver_OLED_SendDatas(oled_init, sizeof(oled_init));
@@ -249,12 +246,6 @@ int main(void){
 	lockNotify = xSemaphoreCreateBinary();
 	if(lockNotify == NULL){
 		// "Failed to Create Lock notify Semaphore!"
-		while(1);
-	}
-	// W5500互斥锁
-	w5500Data = xSemaphoreCreateMutex();
-	if(w5500Data == NULL){
-		//"Failed to Create W5500 Device Mutex!"
 		while(1);
 	}
 	socketLock= xSemaphoreCreateMutex();
@@ -306,7 +297,7 @@ static void vTask_Display(void * pvParameters){
 	/* 清空屏幕 */
 	Driver_OLED_Fill(0x0);
 	while(1){
-		if(!ip_configed) {
+		while(!ip_configed) {
 			// 换出当前任务
 			taskYIELD();
 		}
@@ -317,15 +308,17 @@ static void vTask_Display(void * pvParameters){
 		// 显示网络信息
 		ctlwizchip(CW_GET_ID,(void*)tmpstr);
 		/* 打印版本信息 */
-		Driver_OLED_ShowString(0, 0, "TDSAST-IOT V2.0.0", 8, times % 2);
+		Driver_OLED_ShowString(0, 0, "TDSAST-IOT V2.1.0", 8, times % 2);
 		snprintf(disp, sizeof(disp), "%s:%s", tmpstr, (netinfo.dhcp == NETINFO_DHCP ? "DHCP" : "STATIC"));
 		Driver_OLED_ClearRow(((times) % 6) + 1);
 		Driver_OLED_ShowString(0, ((times) % 6) + 1, disp, 8, 0);
+		taskYIELD();
 
-//		snprintf(disp, sizeof(disp), "MAC:%02X:%02X:%02X:%02X:%02X:%02X",netinfo.mac[0],netinfo.mac[1],netinfo.mac[2],
-//				netinfo.mac[3],netinfo.mac[4],netinfo.mac[5]);
-//		Driver_OLED_ClearRow(((times + 1) % 6) + 1);
-//		Driver_OLED_ShowString(0, ((times + 1) % 6) + 1, disp, 8, 0);
+		snprintf(disp, sizeof(disp), "MAC:%02X:%02X:%02X:%02X:%02X:%02X",netinfo.mac[0],netinfo.mac[1],netinfo.mac[2],
+				netinfo.mac[3],netinfo.mac[4],netinfo.mac[5]);
+		Driver_OLED_ClearRow(((times + 4) % 6) + 1);
+		Driver_OLED_ShowString(0, ((times + 4) % 6) + 1, disp, 8, 0);
+		taskYIELD();
 
 		// 显示当前ip地址
 		taskENTER_CRITICAL();
@@ -337,23 +330,28 @@ static void vTask_Display(void * pvParameters){
 		snprintf(disp, sizeof(disp), "MQTT:%d.%d.%d.%d",tmpstr[0],tmpstr[1],tmpstr[2],tmpstr[3]);
 		Driver_OLED_ClearRow(((times + 1) % 6) + 1);
 		Driver_OLED_ShowString(0, ((times + 1) % 6) + 1, disp, 8, 0);
+		taskYIELD();
 
 		snprintf(disp, sizeof(disp), "IP:%d.%d.%d.%d", netinfo.ip[0],netinfo.ip[1],netinfo.ip[2],netinfo.ip[3]);
 		Driver_OLED_ClearRow(((times + 2) % 6) + 1);
 		Driver_OLED_ShowString(0, ((times + 2) % 6) + 1, disp, 8, 0);
+		taskYIELD();
 
 		snprintf(disp, sizeof(disp), "GAW:%d.%d.%d.%d", netinfo.gw[0],netinfo.gw[1],netinfo.gw[2],netinfo.gw[3]);
 		Driver_OLED_ClearRow(((times + 3) % 6) + 1);
 		Driver_OLED_ShowString(0, ((times + 3) % 6) + 1, disp, 8, 0);
-		// 这个可以不要
-		snprintf(disp, sizeof(disp), "MSK:%d.%d.%d.%d", netinfo.sn[0],netinfo.sn[1],netinfo.sn[2],netinfo.sn[3]);
-		Driver_OLED_ClearRow(((times + 4) % 6) + 1);
-		Driver_OLED_ShowString(0, ((times + 4) % 6) + 1, disp, 8, 0);
+		taskYIELD();
+
+//		// 这个可以不要
+//		snprintf(disp, sizeof(disp), "MSK:%d.%d.%d.%d", netinfo.sn[0],netinfo.sn[1],netinfo.sn[2],netinfo.sn[3]);
+//		Driver_OLED_ClearRow(((times + 4) % 6) + 1);
+//		Driver_OLED_ShowString(0, ((times + 4) % 6) + 1, disp, 8, 0);
 
 		snprintf(disp, sizeof(disp), "DNS:%d.%d.%d.%d", netinfo.dns[0],netinfo.dns[1],netinfo.dns[2],netinfo.dns[3]);
 		Driver_OLED_ClearRow(((times + 5) % 6) + 1);
 		Driver_OLED_ShowString(0, ((times + 5) % 6) + 1, disp, 8, 0);
 		times++;
+		taskYIELD();
 		if(msg){
 			Driver_OLED_ShowString(0, 7, msg, 8, 0); // 显示在最后一行
 			msg = NULL;
@@ -367,56 +365,33 @@ static void vTask_Main(void * pvParameters){
 	uint8_t tmp;
     int packet_length;  // 包长度
 	uint16_t msg_id, msg_id_rcv;
-//	/* 从DNS获得IP地址,失败返回0 */
-//	xSemaphoreTake(w5500Device, portMAX_DELAY); // 上锁
-//	if(DNSClient(NTP_HOST, server_ip) == 0){
-//		Driver_OLED_ShowString(0, 0, "DNS NTP Failed!", 8, 0);
-//		// "Failed to get NTP server IP!"
-//		while(1);
-//	}
-//	// 解锁
-//	xSemaphoreGive(w5500Device);
-//	/* 喂狗 */
-//	IWDG_ReloadCounter();
-//	uint64_t time;
-//	// NTP 校时
-//	xSemaphoreTake(w5500Device, portMAX_DELAY);
-//	if(GetNTPTime(SOCK_UDPS, server_ip, NTP_PORT, &time)){
-//		Driver_OLED_ShowString(0, 0, "NTP Failed!", 8, 0);
-//		//"Sync time failed!"
-//		while(1);
-//	}
-//	// 解锁
-//	xSemaphoreGive(w5500Device);
-//	// 设置rtc
-//	RTC_SetCounter(time);
-//	/* 喂狗 */
-//	IWDG_ReloadCounter();
-
 	while(1){
 
-		if(!ip_configed) {
+		while(!ip_configed) {
 			// 换出当前任务
 			taskYIELD();
 		}
 
-		/* 喂狗 */
-		IWDG_ReloadCounter();
+		// 强制上锁标志
+		if(force_lock){
+			lock_status = 1;
+			GPIO_SetBits(GPIOB, GPIO_Pin_8);  //上锁
+			/* 喂狗 */
+			IWDG_ReloadCounter();
+			if(Timer2_Counter > FORCE_LOCK_TIMEOUT){
+				force_lock = 0;
+			}
+		}else{
+			lock_status = 0;
+			GPIO_ResetBits(GPIOB, GPIO_Pin_8);  //开锁
+		}
 
 		/* 从DNS获得IP地址,失败返回0 */
-
 		if(DNSClient(MQTT_BROKER_HOST, server_ip) == 0){
+			infoMsg = "Use Static MQTT!";
 			// 设置成指定的ip,临界区
 			memcpy(server_ip, MQTT_BROKER_IP, 4);
 		}
-
-		/* 喂狗 */
-		IWDG_ReloadCounter();
-
-		/* 初始化MQTT客户端 */
-		mqtt_init(&broker, MQTT_CLIENT_ID);
-		/* 登录MQTT服务器 */
-		mqtt_init_auth(&broker, MQTT_USERNAME, MQTT_PASSWORD);
 
 		xSemaphoreTake(socketLock, portMAX_DELAY);
 		/* 先关闭该socket */
@@ -424,9 +399,17 @@ static void vTask_Main(void * pvParameters){
 		/* 打开MQTT的socket */
 		socket(SOCK_MQTT, Sn_MR_TCP, LOCAL_PORT, Sn_MR_ND | SOCK_IO_BLOCK);
 		/* 连接MQTT服务器 */
-		connect(SOCK_MQTT, server_ip, MQTT_BROKER_PORT);
+		if(connect(SOCK_MQTT, server_ip, MQTT_BROKER_PORT) != SOCK_OK){
+			infoMsg = "Connect failed!";
+			xSemaphoreGive(socketLock);
+			continue;
+		}
 		xSemaphoreGive(socketLock);
 
+		/* 初始化MQTT客户端 */
+		mqtt_init(&broker, MQTT_CLIENT_ID);
+		/* 登录MQTT服务器 */
+		mqtt_init_auth(&broker, MQTT_USERNAME, MQTT_PASSWORD);
 		/* MQTT stuffs */
 		mqtt_set_alive(&broker, 30);    // 心跳超时30秒,默认是300秒
 		broker.socket_info = (void*)SOCK_MQTT; //这个只会传给send对应的函数的第一个参数
@@ -540,8 +523,11 @@ static void vTask_Main(void * pvParameters){
 				}
 			}
 		}
+		// 走到这里是刚才连接断开了
 		GPIO_SetBits(GPIOB, GPIO_Pin_9); // 熄灭灯
-		GPIO_ResetBits(GPIOB, GPIO_Pin_8);  //开锁
+		// 设置强制锁定信号
+		force_lock = 1;
+		Timer2_Counter = 0;	// 清零计时器当前值
 	}
 }
 
@@ -570,6 +556,7 @@ static void vTask_DHCP( void * pvParameters ){
 			ctlnetwork(CN_SET_NETINFO, (void*)&gWIZNETINFO);
 			//ip已被成功配置
 			ip_configed = 1;
+			infoMsg = "Get IP!!";
 			// 喂狗
 			IWDG_ReloadCounter();
 			// 显示ip租约时间

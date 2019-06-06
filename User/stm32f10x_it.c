@@ -172,6 +172,4 @@ void TIM2_IRQHandler(void){
   }
 }
 
-void SPI2_IRQHandler(void){
-}
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/
